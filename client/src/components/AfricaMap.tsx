@@ -20,12 +20,12 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
 
-    const width = 500;
-    const height = 400;
+    const width = 600;
+    const height = 500;
 
-    // Africa-optimized projection similar to your reference
+    // Better Africa-centered projection with proper fitting
     const projection = d3.geoMercator()
-      .scale(350)
+      .scale(500)
       .center([20, 0])
       .translate([width / 2, height / 2]);
 
@@ -214,17 +214,225 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
               [43.25, -12.04]
             ]]
           }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Algeria", "iso": "DZA" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-8.67, 36.0], [12.0, 36.0], [12.0, 23.0], [11.0, 23.0], [9.0, 21.0], 
+              [8.0, 19.0], [5.67, 19.0], [2.0, 19.0], [-2.0, 21.0], [-8.67, 27.0], [-8.67, 36.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Libya", "iso": "LBY" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [12.0, 33.0], [25.0, 33.0], [25.0, 19.5], [23.0, 20.0], [20.0, 21.0], 
+              [17.0, 21.0], [15.0, 22.0], [12.0, 23.0], [12.0, 33.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Sudan", "iso": "SDN" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [25.0, 22.0], [39.0, 22.0], [39.0, 8.5], [35.0, 9.0], [33.0, 9.5], 
+              [29.0, 9.5], [25.0, 12.0], [25.0, 22.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Chad", "iso": "TCD" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [13.0, 23.0], [24.0, 23.0], [24.0, 7.5], [18.0, 7.5], [15.0, 8.0], 
+              [13.0, 10.0], [13.0, 23.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Niger", "iso": "NER" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [0.0, 23.0], [16.0, 23.0], [16.0, 11.0], [12.0, 11.0], [4.0, 13.0], 
+              [1.0, 15.0], [0.0, 16.0], [0.0, 23.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Mali", "iso": "MLI" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-12.0, 25.0], [4.0, 25.0], [4.0, 10.0], [0.0, 11.0], [-5.0, 11.0], 
+              [-7.5, 12.5], [-12.0, 14.0], [-12.0, 25.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Burkina Faso", "iso": "BFA" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-5.5, 15.0], [2.0, 15.0], [2.0, 9.5], [-2.0, 9.5], [-5.5, 11.0], [-5.5, 15.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Ivory Coast", "iso": "CIV" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-8.6, 10.5], [-2.5, 10.5], [-2.5, 4.0], [-7.5, 4.0], [-8.6, 5.5], [-8.6, 10.5]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Guinea", "iso": "GIN" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [-15.0, 12.5], [-7.5, 12.5], [-7.5, 7.0], [-11.0, 7.0], [-15.0, 9.0], [-15.0, 12.5]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Cameroon", "iso": "CMR" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [8.5, 13.0], [16.0, 13.0], [16.0, 1.5], [11.0, 2.0], [8.5, 4.0], [8.5, 13.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Central African Republic", "iso": "CAF" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [14.0, 11.0], [27.0, 11.0], [27.0, 2.0], [18.0, 2.0], [14.0, 4.0], [14.0, 11.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Democratic Republic of Congo", "iso": "COD" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [12.0, 4.0], [31.0, 4.0], [31.0, -13.0], [25.0, -13.0], [18.0, -9.0], 
+              [12.0, -5.0], [12.0, 4.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Angola", "iso": "AGO" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [11.5, -4.5], [24.0, -4.5], [24.0, -18.0], [16.0, -18.0], [11.5, -13.0], [11.5, -4.5]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Namibia", "iso": "NAM" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [11.5, -17.0], [25.0, -17.0], [25.0, -29.0], [16.5, -29.0], [11.5, -22.0], [11.5, -17.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Zimbabwe", "iso": "ZWE" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [25.0, -15.5], [33.0, -15.5], [33.0, -22.5], [25.0, -22.5], [25.0, -15.5]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Mozambique", "iso": "MOZ" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [30.0, -10.0], [41.0, -10.0], [41.0, -27.0], [32.0, -27.0], [30.0, -22.0], [30.0, -10.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Uganda", "iso": "UGA" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [29.5, 4.0], [35.0, 4.0], [35.0, -1.5], [29.5, -1.5], [29.5, 4.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Somalia", "iso": "SOM" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [41.0, 12.0], [51.0, 12.0], [51.0, -1.5], [41.0, -1.5], [41.0, 12.0]
+            ]]
+          }
+        },
+        {
+          "type": "Feature",
+          "properties": { "name": "Tunisia", "iso": "TUN" },
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [[
+              [7.5, 37.5], [12.0, 37.5], [12.0, 30.0], [7.5, 30.0], [7.5, 37.5]
+            ]]
+          }
         }
       ]
     };
 
-    // Create color scale based on country data
-    const maxCredits = Math.max(...(countryData?.map(d => d.totalCredits) || [1]));
-    const colorScale = d3.scaleSequential(d3.interpolateBlues)
-      .domain([0, maxCredits]);
+    // Create proper heatmap color scale
+    const dataValues = countryData?.map(d => d.totalCredits) || [];
+    const minValue = Math.min(...dataValues);
+    const maxValue = Math.max(...dataValues);
+    
+    // Professional heatmap colors: light to dark blue
+    const colorScale = d3.scaleSequential()
+      .domain([minValue, maxValue])
+      .interpolator(d3.interpolateBlues);
 
     // Create tooltip
     const tooltip = d3.select(tooltipRef.current);
+
+    // Add background for the map (remove green background)
+    svg.append("rect")
+      .attr("width", width)
+      .attr("height", height)
+      .attr("fill", "transparent");
 
     // Draw Africa countries
     svg.selectAll("path")
@@ -234,30 +442,54 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
       .attr("d", path as any)
       .attr("fill", (d: any) => {
         const countryInfo = countryData?.find(c => c.country === d.properties.name);
-        return countryInfo ? colorScale(countryInfo.totalCredits) : "#374151";
+        if (countryInfo) {
+          return colorScale(countryInfo.totalCredits);
+        } else {
+          // Countries with no data are transparent/light gray
+          return "#f8f9fa";
+        }
       })
-      .attr("stroke", "#1f2937")
-      .attr("stroke-width", 1)
-      .style("cursor", "pointer")
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 0.5)
+      .style("cursor", (d: any) => {
+        const countryInfo = countryData?.find(c => c.country === d.properties.name);
+        return countryInfo ? "pointer" : "default";
+      })
       .on("click", (event, d: any) => {
-        onCountryClick?.(d.properties.name);
-      })
-      .on("mouseover", function(event, d: any) {
-        d3.select(this)
-          .transition()
-          .duration(200)
-          .attr("stroke-width", 2)
-          .attr("stroke", "#10b981");
-        
         const countryInfo = countryData?.find(c => c.country === d.properties.name);
         if (countryInfo) {
+          onCountryClick?.(d.properties.name);
+        }
+      })
+      .on("mouseover", function(event, d: any) {
+        const countryInfo = countryData?.find(c => c.country === d.properties.name);
+        
+        if (countryInfo) {
+          d3.select(this)
+            .transition()
+            .duration(150)
+            .attr("stroke", "#374151")
+            .attr("stroke-width", 2);
+          
           tooltip
             .style("visibility", "visible")
             .html(`
-              <div class="bg-gray-900 border border-gray-700 rounded-lg p-3 shadow-lg">
-                <p class="text-white font-semibold">${countryInfo.country}</p>
-                <p class="text-emerald-400 text-sm">Credits: ${countryInfo.totalCredits.toLocaleString()}</p>
-                <p class="text-blue-400 text-sm">Projects: ${countryInfo.activeProjects}</p>
+              <div class="bg-white border border-gray-300 rounded-lg p-3 shadow-lg text-gray-900">
+                <p class="font-semibold text-lg">${countryInfo.country}</p>
+                <p class="text-blue-600 text-sm">Credits: ${countryInfo.totalCredits.toLocaleString()}</p>
+                <p class="text-gray-600 text-sm">Projects: ${countryInfo.activeProjects}</p>
+              </div>
+            `)
+            .style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 10) + "px");
+        } else {
+          // Show country name even if no data
+          tooltip
+            .style("visibility", "visible")
+            .html(`
+              <div class="bg-white border border-gray-300 rounded-lg p-3 shadow-lg text-gray-900">
+                <p class="font-semibold">${d.properties.name}</p>
+                <p class="text-gray-500 text-sm">No data available</p>
               </div>
             `)
             .style("left", (event.pageX + 10) + "px")
@@ -272,30 +504,14 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
       .on("mouseout", function() {
         d3.select(this)
           .transition()
-          .duration(200)
-          .attr("stroke-width", 1)
-          .attr("stroke", "#1f2937");
+          .duration(150)
+          .attr("stroke", "#ffffff")
+          .attr("stroke-width", 0.5);
         
         tooltip.style("visibility", "hidden");
       });
 
-    // Add country labels for countries with data
-    svg.selectAll("text")
-      .data(africaCountries.features.filter((d: any) => 
-        countryData?.some(c => c.country === d.properties.name)
-      ))
-      .enter()
-      .append("text")
-      .attr("x", (d: any) => path.centroid(d as any)[0])
-      .attr("y", (d: any) => path.centroid(d as any)[1])
-      .attr("text-anchor", "middle")
-      .attr("font-size", "10px")
-      .attr("fill", "#ffffff")
-      .attr("pointer-events", "none")
-      .text((d: any) => {
-        const countryInfo = countryData?.find(c => c.country === d.properties.name);
-        return countryInfo ? countryInfo.totalCredits.toLocaleString() : '';
-      });
+    // No labels - keep it clean like Datawrapper
 
   }, [countryData, isLoading, onCountryClick]);
 
@@ -323,13 +539,14 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
           <CardTitle className="text-lg font-semibold text-white">Geographic Distribution</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-96 relative">
+          <div className="h-96 relative bg-transparent">
             <svg
               ref={svgRef}
               width="100%"
               height="100%"
-              viewBox="0 0 500 400"
+              viewBox="0 0 600 500"
               preserveAspectRatio="xMidYMid meet"
+              style={{ background: "transparent" }}
             />
             
             {/* Tooltip container */}
@@ -340,21 +557,21 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
             />
           </div>
           
-          {/* Color Legend */}
+          {/* Professional Color Legend like Datawrapper */}
           <div className="mt-4 flex items-center justify-between text-sm">
-            <span className="text-gray-400">Low Activity</span>
-            <div className="flex space-x-1">
-              {[1, 2, 3, 4, 5].map((i) => (
+            <span className="text-gray-400">{countryData && countryData.length > 0 ? Math.min(...countryData.map(d => d.totalCredits)).toLocaleString() : '0'}</span>
+            <div className="flex">
+              {[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9].map((i) => (
                 <div
                   key={i}
-                  className="w-4 h-4 rounded"
+                  className="w-6 h-4"
                   style={{
-                    backgroundColor: d3.interpolateBlues(i / 5)
+                    backgroundColor: d3.interpolateBlues(i)
                   }}
                 />
               ))}
             </div>
-            <span className="text-gray-400">High Activity</span>
+            <span className="text-gray-400">{countryData && countryData.length > 0 ? Math.max(...countryData.map(d => d.totalCredits)).toLocaleString() : '0'}</span>
           </div>
           
           {/* Top Countries List */}
