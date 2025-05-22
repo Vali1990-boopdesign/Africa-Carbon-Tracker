@@ -1,4 +1,6 @@
 import { transactions, buyerProfiles, type Transaction, type InsertTransaction, type BuyerProfile, type InsertBuyerProfile, type DashboardMetrics, type CountryData, type SectorData, type TimeSeriesData, type TopBuyerData } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, gte, lte, like, or, sql } from "drizzle-orm";
 
 export interface IStorage {
   // Transaction operations
@@ -312,4 +314,178 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getTransactions(): Promise<Transaction[]> {
+    return await db.select().from(transactions);
+  }
+
+  async getTransactionsByFilters(filters: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<Transaction[]> {
+    const conditions = [];
+
+    if (filters.country) {
+      conditions.push(eq(transactions.country, filters.country));
+    }
+
+    if (filters.sector) {
+      conditions.push(eq(transactions.buyerSector, filters.sector));
+    }
+
+    if (filters.projectType) {
+      conditions.push(eq(transactions.type, filters.projectType));
+    }
+
+    if (filters.startYear) {
+      conditions.push(gte(transactions.retirementYear, filters.startYear));
+    }
+
+    if (filters.endYear) {
+      conditions.push(lte(transactions.retirementYear, filters.endYear));
+    }
+
+    if (filters.search) {
+      conditions.push(
+        or(
+          like(transactions.buyerBrandName, `%${filters.search}%`),
+          like(transactions.country, `%${filters.search}%`),
+          like(transactions.projectName, `%${filters.search}%`)
+        )
+      );
+    }
+
+    if (conditions.length === 0) {
+      return await this.getTransactions();
+    }
+
+    return await db.select().from(transactions).where(and(...conditions));
+  }
+
+  async createTransaction(transaction: InsertTransaction): Promise<Transaction> {
+    const [newTransaction] = await db
+      .insert(transactions)
+      .values(transaction)
+      .returning();
+    return newTransaction;
+  }
+
+  async getBuyerProfiles(): Promise<BuyerProfile[]> {
+    return await db.select().from(buyerProfiles);
+  }
+
+  async getBuyerProfile(brandName: string): Promise<BuyerProfile | undefined> {
+    const [profile] = await db
+      .select()
+      .from(buyerProfiles)
+      .where(eq(buyerProfiles.brandName, brandName));
+    return profile || undefined;
+  }
+
+  async createBuyerProfile(profile: InsertBuyerProfile): Promise<BuyerProfile> {
+    const [newProfile] = await db
+      .insert(buyerProfiles)
+      .values(profile)
+      .returning();
+    return newProfile;
+  }
+
+  async getDashboardMetrics(): Promise<DashboardMetrics> {
+    const transactionData = await db.select().from(transactions);
+    const totalCreditsRetired = transactionData.reduce((sum, t) => sum + t.creditsRetired, 0);
+    const uniqueBuyers = new Set(transactionData.map(t => t.buyerBrandName)).size;
+    const uniqueCountries = new Set(transactionData.map(t => t.country)).size;
+
+    return {
+      totalCreditsRetired: Math.round(totalCreditsRetired / 1000), // Convert to thousands
+      totalCreditsGrowth: 12.5,
+      activeBuyers: uniqueBuyers,
+      activeBuyersGrowth: 234,
+      africanCountries: uniqueCountries,
+      newCountriesThisQuarter: 6,
+      averageCreditPrice: 12.45,
+      priceChange: -2.1
+    };
+  }
+
+  async getCountryData(): Promise<CountryData[]> {
+    const transactionData = await db.select().from(transactions);
+    const countryMap = new Map<string, { credits: number; projects: Set<string> }>();
+
+    transactionData.forEach(t => {
+      if (!countryMap.has(t.country)) {
+        countryMap.set(t.country, { credits: 0, projects: new Set() });
+      }
+      const data = countryMap.get(t.country)!;
+      data.credits += t.creditsRetired;
+      data.projects.add(t.projectName);
+    });
+
+    // Sample coordinates for African countries
+    const coordinates: Record<string, [number, number]> = {
+      "South Africa": [-30.5595, 22.9375],
+      "Kenya": [-0.0236, 37.9062],
+      "Nigeria": [9.0820, 8.6753]
+    };
+
+    return Array.from(countryMap.entries()).map(([country, data]) => ({
+      country,
+      totalCredits: data.credits,
+      activeProjects: data.projects.size,
+      coordinates: coordinates[country] || [0, 0]
+    }));
+  }
+
+  async getSectorData(): Promise<SectorData[]> {
+    const transactionData = await db.select().from(transactions);
+    const sectorMap = new Map<string, number>();
+    const totalCredits = transactionData.reduce((sum, t) => sum + t.creditsRetired, 0);
+
+    transactionData.forEach(t => {
+      sectorMap.set(t.buyerSector, (sectorMap.get(t.buyerSector) || 0) + t.creditsRetired);
+    });
+
+    const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6"];
+    
+    return Array.from(sectorMap.entries()).map(([sector, credits], index) => ({
+      sector,
+      totalCredits: credits,
+      percentage: Math.round((credits / totalCredits) * 100),
+      color: colors[index % colors.length]
+    }));
+  }
+
+  async getTimeSeriesData(): Promise<TimeSeriesData[]> {
+    const transactionData = await db.select().from(transactions);
+    return transactionData.map(t => ({
+      year: t.retirementYear,
+      country: t.country,
+      credits: t.creditsRetired
+    }));
+  }
+
+  async getTopBuyers(limit: number = 10): Promise<TopBuyerData[]> {
+    const buyerProfileData = await db.select().from(buyerProfiles);
+    const totalCredits = buyerProfileData.reduce((sum, b) => sum + b.cumulativeRetirements, 0);
+    
+    const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444"];
+    
+    return buyerProfileData
+      .sort((a, b) => b.cumulativeRetirements - a.cumulativeRetirements)
+      .slice(0, limit)
+      .map((buyer, index) => ({
+        brandName: buyer.brandName,
+        sector: buyer.sector,
+        totalCredits: buyer.cumulativeRetirements,
+        percentage: Math.round((buyer.cumulativeRetirements / totalCredits) * 100),
+        initials: buyer.brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
+        color: colors[index % colors.length]
+      }));
+  }
+}
+
+export const storage = new DatabaseStorage();
