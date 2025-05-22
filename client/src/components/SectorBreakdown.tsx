@@ -87,7 +87,7 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
                   dataKey="totalCredits"
                 >
                   {sectorData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />

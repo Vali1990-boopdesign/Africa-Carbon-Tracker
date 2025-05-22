@@ -62,7 +62,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       icon: Users,
       iconBg: "bg-blue-500/20",
       iconColor: "text-blue-500",
-      hasSparkline: true,
     },
     {
       title: "African Countries",
@@ -117,20 +116,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                       </span>
                       <span className="text-gray-400 text-sm">{card.changeLabel}</span>
                     </div>
-                    {card.hasSparkline && (
-                      <div className="flex items-end space-x-1 mt-2">
-                        {[2, 3, 4, 3, 5].map((height, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-1 bg-blue-400 rounded"
-                            style={{ height: `${height * 4}px` }}
-                            initial={{ height: 0 }}
-                            animate={{ height: `${height * 4}px` }}
-                            transition={{ delay: 0.5 + i * 0.1 }}
-                          />
-                        ))}
-                      </div>
-                    )}
                   </div>
                   <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
                     <card.icon className={card.iconColor} size={24} />
