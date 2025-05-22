@@ -1,0 +1,144 @@
+# v0.dev Prompt: Africa Carbon Credits Analytics Dashboard
+
+Create a modern, interactive SaaS-style dashboard for analyzing African carbon credit purchases with the following specifications:
+
+## Design Requirements:
+- Dark mode interface with glass-morphism effects
+- Vibrant accent colors: emerald green for positive metrics, amber for neutral, subtle animations
+- Responsive design that works on desktop and tablet
+- Smooth transitions and micro-interactions on hover
+- Clean, professional aesthetic with excellent data-ink ratio
+
+## Layout Structure:
+
+### 1. Header Section
+- Title: "Africa Carbon Credits Analytics"
+- Date range selector (2011-2023) with custom range option
+- Global filters dropdown: Country, Buyer Sector, Project Type
+- Export data button (CSV/PDF)
+- Dark mode toggle
+
+### 2. Key Metrics Cards (Top Row)
+- Total Credits Retired (with YoY % change indicator)
+- Active Buyers Count (with trend sparkline)
+- Total African Countries
+- Average Credit Price (if available)
+- Each card should have subtle gradient background and hover effects
+
+### 3. Main Visualization Area (3-column grid)
+
+**Left Column (30%)**:
+- Interactive map of Africa using D3.js
+  - Choropleth showing credit volumes by country
+  - Hover to see country details
+  - Click to filter entire dashboard
+  - Show bilateral agreement indicators
+
+**Center Column (40%)**:
+- Tabbed section with:
+  - **Tab 1**: Time series line chart showing yearly trends
+    - Multiple lines for top 5 countries
+    - Toggle countries on/off
+    - Zoom and pan capabilities
+  - **Tab 2**: Stacked bar chart by project type
+    - Interactive legend
+    - Drill-down capabilities
+  - **Tab 3**: Bubble chart of buyers
+    - X-axis: Total credits
+    - Y-axis: Number of transactions
+    - Bubble size: Years active
+    - Color by sector
+
+**Right Column (30%)**:
+- **Top Buyers List** (collapsible)
+  - Horizontal bar chart of top 10
+  - Show % of total
+  - Click to see buyer profile
+- **Sector Breakdown** (pie/donut chart)
+  - Interactive segments
+  - Show values on hover
+
+### 4. Detailed Data Table (Bottom Section)
+- Searchable, sortable table with pagination
+- Columns: Buyer, Country, Project Type, Credits, Year, Sector
+- Row actions: View details, Export
+- Bulk selection for export
+
+## Interactive Features:
+1. **Cross-filtering**: Clicking any element filters all visualizations
+2. **Tooltips**: Rich, informative tooltips with formatted numbers
+3. **Search**: Global search bar to find buyers, countries, or projects
+4. **Breadcrumb navigation**: Show active filters with remove option
+5. **Responsive loading states**: Skeleton screens while data loads
+
+## Technical Implementation:
+- Use React with TypeScript
+- D3.js for custom visualizations
+- Recharts for standard charts
+- Tailwind CSS for styling
+- Framer Motion for animations
+- React Query for data management
+- Virtualized lists for performance
+
+## Data Structure:
+```typescript
+interface Transaction {
+  registryId: string;
+  projectName: string;
+  country: string;
+  continent: string;
+  region: string;
+  scope: string;
+  type: string;
+  reductionRemoval: string;
+  retirementYear: number;
+  creditsRetired: number;
+  retirementReason: string;
+  buyerBrandName: string;
+  buyerClassification: string;
+  buyerSector: string;
+  buyerHQLocation: string;
+}
+
+interface BuyerProfile {
+  brandName: string;
+  classification: string;
+  sector: string;
+  hqLocation: string;
+  hqRegion: string;
+  yearlyRetirements: {
+    2020: number;
+    2021: number;
+    2022: number;
+    2023: number;
+  };
+  cumulativeRetirements: number;
+}
+```
+
+## Sample Component Structure:
+- App.tsx (main layout)
+- components/
+  - MetricsCards.tsx
+  - AfricaMap.tsx
+  - TimeSeriesChart.tsx
+  - BuyersTable.tsx
+  - FilterBar.tsx
+  - SectorBreakdown.tsx
+
+## Color Palette:
+- Background: #0f0f0f (dark) / #ffffff (light)
+- Card backgrounds: #1a1a1a with subtle gradients
+- Primary: #10b981 (emerald)
+- Secondary: #f59e0b (amber)
+- Accent: #3b82f6 (blue)
+- Text: #e5e5e5 (primary), #a3a3a3 (secondary)
+
+## Performance Requirements:
+- Handle 10,000+ records smoothly
+- Lazy load visualizations
+- Implement virtual scrolling for tables
+- Cache filtered results
+- Debounce search inputs
+
+Make this dashboard feel premium, data-rich, and incredibly smooth to interact with. Focus on making complex data accessible through beautiful, intuitive visualizations.
