@@ -375,11 +375,7 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
     // Create tooltip
     const tooltip = d3.select(tooltipRef.current);
 
-    // Add background for the map (remove green background)
-    svg.append("rect")
-      .attr("width", width)
-      .attr("height", height)
-      .attr("fill", "transparent");
+    // No background - keep it clean
 
     // Draw Africa countries
     svg.selectAll("path")
@@ -392,8 +388,8 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
         if (countryInfo) {
           return colorScale(countryInfo.totalCredits);
         } else {
-          // Countries with no data are transparent/light gray
-          return "#f8f9fa";
+          // Countries with no data are completely transparent
+          return "transparent";
         }
       })
       .attr("stroke", "#ffffff")
@@ -486,14 +482,14 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
           <CardTitle className="text-lg font-semibold text-white">Geographic Distribution</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="h-96 relative bg-transparent">
+          <div className="h-96 relative" style={{ backgroundColor: "transparent" }}>
             <svg
               ref={svgRef}
               width="100%"
               height="100%"
               viewBox="0 0 600 500"
               preserveAspectRatio="xMidYMid meet"
-              style={{ background: "transparent" }}
+              style={{ backgroundColor: "transparent" }}
             />
             
             {/* Tooltip container */}
