@@ -12,7 +12,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {[...Array(4)].map((_, i) => (
             <Card key={i} className="glass-effect border-gray-700 animate-pulse">
               <CardContent className="p-6">
@@ -88,7 +88,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         {cards.map((card, index) => (
           <motion.div
             key={card.title}
@@ -96,7 +96,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="glass-effect border-gray-700 hover:border-gray-600 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/20">
+            <Card className="glass-effect border-gray-700 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>

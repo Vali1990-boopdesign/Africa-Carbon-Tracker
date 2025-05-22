@@ -186,7 +186,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 {currentTransactions.map((transaction, index) => (
                   <motion.tr
                     key={transaction.id}
-                    className="border-gray-800 hover:bg-dark-800/50 transition-colors"
+                    className="border-gray-800 hover:bg-emerald-500/5 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
