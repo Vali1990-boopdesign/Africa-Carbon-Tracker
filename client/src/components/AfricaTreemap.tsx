@@ -160,7 +160,7 @@ export function AfricaTreemap({
                 return (
                   <div
                     key={item.country}
-                    className={`${colors[index].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
+                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
                     style={{ 
                       gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
                       gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
