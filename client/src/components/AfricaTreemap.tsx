@@ -34,20 +34,50 @@ export function AfricaTreemap({
   });
 
   // Material Design 3 color schemes with accessibility-compliant contrast ratios
+  // Extended color palette to handle many countries in authentic data
   const creditColors = [
-    { bg: "bg-blue-900", text: "text-white" },    // Dark backgrounds get white text
+    { bg: "bg-blue-900", text: "text-white" },
     { bg: "bg-blue-800", text: "text-white" },
     { bg: "bg-blue-700", text: "text-white" },
     { bg: "bg-blue-600", text: "text-white" },
     { bg: "bg-blue-500", text: "text-white" },
-    { bg: "bg-blue-400", text: "text-gray-900" }, // Light backgrounds get dark text
+    { bg: "bg-blue-400", text: "text-gray-900" },
     { bg: "bg-blue-300", text: "text-gray-900" },
     { bg: "bg-blue-200", text: "text-gray-900" },
-    { bg: "bg-blue-100", text: "text-gray-900" },
-    { bg: "bg-slate-200", text: "text-gray-900" },
-    { bg: "bg-slate-100", text: "text-gray-900" },
-    { bg: "bg-gray-100", text: "text-gray-900" },
-    { bg: "bg-gray-50", text: "text-gray-900" }
+    { bg: "bg-emerald-600", text: "text-white" },
+    { bg: "bg-emerald-500", text: "text-white" },
+    { bg: "bg-emerald-400", text: "text-gray-900" },
+    { bg: "bg-purple-600", text: "text-white" },
+    { bg: "bg-purple-500", text: "text-white" },
+    { bg: "bg-purple-400", text: "text-gray-900" },
+    { bg: "bg-amber-500", text: "text-gray-900" },
+    { bg: "bg-amber-400", text: "text-gray-900" },
+    { bg: "bg-rose-600", text: "text-white" },
+    { bg: "bg-rose-500", text: "text-white" },
+    { bg: "bg-rose-400", text: "text-gray-900" },
+    { bg: "bg-teal-600", text: "text-white" },
+    { bg: "bg-teal-500", text: "text-white" },
+    { bg: "bg-teal-400", text: "text-gray-900" },
+    { bg: "bg-indigo-600", text: "text-white" },
+    { bg: "bg-indigo-500", text: "text-white" },
+    { bg: "bg-indigo-400", text: "text-gray-900" },
+    { bg: "bg-orange-500", text: "text-gray-900" },
+    { bg: "bg-orange-400", text: "text-gray-900" },
+    { bg: "bg-pink-600", text: "text-white" },
+    { bg: "bg-pink-500", text: "text-white" },
+    { bg: "bg-pink-400", text: "text-gray-900" },
+    { bg: "bg-cyan-600", text: "text-white" },
+    { bg: "bg-cyan-500", text: "text-white" },
+    { bg: "bg-cyan-400", text: "text-gray-900" },
+    { bg: "bg-slate-600", text: "text-white" },
+    { bg: "bg-slate-500", text: "text-white" },
+    { bg: "bg-slate-400", text: "text-gray-900" },
+    { bg: "bg-gray-600", text: "text-white" },
+    { bg: "bg-gray-500", text: "text-white" },
+    { bg: "bg-gray-400", text: "text-gray-900" },
+    { bg: "bg-stone-600", text: "text-white" },
+    { bg: "bg-stone-500", text: "text-white" },
+    { bg: "bg-stone-400", text: "text-gray-900" }
   ];
   
   const projectColors = [
