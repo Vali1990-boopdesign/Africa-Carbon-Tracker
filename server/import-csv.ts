@@ -155,15 +155,13 @@ export async function importCSVData() {
   }
 }
 
-// Run import if called directly
-if (require.main === module) {
-  importCSVData()
-    .then(result => {
-      console.log("Import successful:", result);
-      process.exit(0);
-    })
-    .catch(error => {
-      console.error("Import failed:", error);
-      process.exit(1);
-    });
-}
+// Auto-run import
+importCSVData()
+  .then(result => {
+    console.log("Import successful:", result);
+    process.exit(0);
+  })
+  .catch(error => {
+    console.error("Import failed:", error);
+    process.exit(1);
+  });
