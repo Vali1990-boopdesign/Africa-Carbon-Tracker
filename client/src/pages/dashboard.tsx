@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { FiltersBar } from "@/components/FiltersBar";
 import { MetricsCards } from "@/components/MetricsCards";
-import { AfricaMap } from "@/components/AfricaMap";
+import { AfricaChoroplethWithTabs } from "@/components/AfricaChoroplethWithTabs";
 import { TimeSeriesChart } from "@/components/TimeSeriesChart";
 import { TopBuyers } from "@/components/TopBuyers";
 import { SectorBreakdown } from "@/components/SectorBreakdown";
@@ -110,8 +110,8 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
           {/* Left Column - Africa Map & Key Insights (30%) */}
           <div className="lg:col-span-3 space-y-6">
-            <AfricaMap
-              countryData={countryData}
+            <AfricaChoroplethWithTabs
+              data={countryData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
             />
