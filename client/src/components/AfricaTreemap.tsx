@@ -204,11 +204,12 @@ export function AfricaTreemap({
               {sortedData.map((item, index) => {
                 const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
                 const size = getCountrySize(item);
+                const colorIndex = Math.min(index, colors.length - 1);
                 
                 return (
                   <div
                     key={item.country}
-                    className={`${colors[index].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
+                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
                     style={{ 
                       gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
                       gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
@@ -218,13 +219,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className={`font-semibold text-xs ${colors[index].text} mb-1`}>
+                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
                         {item.country}
                       </div>
-                      <div className={`text-xs font-bold ${colors[index].text}`}>
+                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
                         {item.activeProjects}
                       </div>
-                      <div className={`text-xs ${colors[index].text} opacity-80`}>
+                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
                         {percentage}%
                       </div>
                     </div>
