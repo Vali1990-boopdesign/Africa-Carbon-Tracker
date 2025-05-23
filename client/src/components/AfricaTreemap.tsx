@@ -119,13 +119,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className="font-semibold text-xs text-gray-900 dark:text-gray-100 mb-1">
+                      <div className="font-semibold text-xs text-white drop-shadow-lg mb-1">
                         {item.country}
                       </div>
-                      <div className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                      <div className="text-xs font-bold text-white drop-shadow-lg">
                         {item.totalCredits.toLocaleString()}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                      <div className="text-xs text-white/90 drop-shadow-lg">
                         {percentage}%
                       </div>
                     </div>
@@ -167,13 +167,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className="font-semibold text-xs text-gray-900 dark:text-gray-100 mb-1">
+                      <div className="font-semibold text-xs text-white drop-shadow-lg mb-1">
                         {item.country}
                       </div>
-                      <div className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                      <div className="text-xs font-bold text-white drop-shadow-lg">
                         {item.activeProjects}
                       </div>
-                      <div className="text-xs text-gray-600 dark:text-gray-400">
+                      <div className="text-xs text-white/90 drop-shadow-lg">
                         {percentage}%
                       </div>
                     </div>
