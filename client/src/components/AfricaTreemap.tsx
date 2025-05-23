@@ -33,17 +33,37 @@ export function AfricaTreemap({
     return bValue - aValue;
   });
 
-  // Color schemes
+  // Material Design 3 color schemes with accessibility-compliant contrast ratios
   const creditColors = [
-    "bg-blue-600", "bg-blue-500", "bg-blue-400", "bg-blue-300", 
-    "bg-blue-200", "bg-blue-100", "bg-slate-200", "bg-slate-100",
-    "bg-gray-100", "bg-gray-50", "bg-gray-50", "bg-gray-50", "bg-gray-50"
+    { bg: "bg-blue-900", text: "text-white" },    // Dark backgrounds get white text
+    { bg: "bg-blue-800", text: "text-white" },
+    { bg: "bg-blue-700", text: "text-white" },
+    { bg: "bg-blue-600", text: "text-white" },
+    { bg: "bg-blue-500", text: "text-white" },
+    { bg: "bg-blue-400", text: "text-gray-900" }, // Light backgrounds get dark text
+    { bg: "bg-blue-300", text: "text-gray-900" },
+    { bg: "bg-blue-200", text: "text-gray-900" },
+    { bg: "bg-blue-100", text: "text-gray-900" },
+    { bg: "bg-slate-200", text: "text-gray-900" },
+    { bg: "bg-slate-100", text: "text-gray-900" },
+    { bg: "bg-gray-100", text: "text-gray-900" },
+    { bg: "bg-gray-50", text: "text-gray-900" }
   ];
   
   const projectColors = [
-    "bg-green-600", "bg-green-500", "bg-green-400", "bg-green-300", 
-    "bg-green-200", "bg-green-100", "bg-slate-200", "bg-slate-100",
-    "bg-gray-100", "bg-gray-50", "bg-gray-50", "bg-gray-50", "bg-gray-50"
+    { bg: "bg-green-900", text: "text-white" },   // Dark backgrounds get white text
+    { bg: "bg-green-800", text: "text-white" },
+    { bg: "bg-green-700", text: "text-white" },
+    { bg: "bg-green-600", text: "text-white" },
+    { bg: "bg-green-500", text: "text-white" },
+    { bg: "bg-green-400", text: "text-gray-900" }, // Light backgrounds get dark text
+    { bg: "bg-green-300", text: "text-gray-900" },
+    { bg: "bg-green-200", text: "text-gray-900" },
+    { bg: "bg-green-100", text: "text-gray-900" },
+    { bg: "bg-slate-200", text: "text-gray-900" },
+    { bg: "bg-slate-100", text: "text-gray-900" },
+    { bg: "bg-gray-100", text: "text-gray-900" },
+    { bg: "bg-gray-50", text: "text-gray-900" }
   ];
 
   const colors = activeTab === "credits" ? creditColors : projectColors;
@@ -109,7 +129,7 @@ export function AfricaTreemap({
                 return (
                   <div
                     key={item.country}
-                    className={`${colors[index]} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
+                    className={`${colors[index].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
                     style={{ 
                       gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
                       gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
@@ -119,13 +139,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className="font-semibold text-xs text-white drop-shadow-lg mb-1">
+                      <div className={`font-semibold text-xs ${colors[index].text} mb-1`}>
                         {item.country}
                       </div>
-                      <div className="text-xs font-bold text-white drop-shadow-lg">
+                      <div className={`text-xs font-bold ${colors[index].text}`}>
                         {item.totalCredits.toLocaleString()}
                       </div>
-                      <div className="text-xs text-white/90 drop-shadow-lg">
+                      <div className={`text-xs ${colors[index].text} opacity-80`}>
                         {percentage}%
                       </div>
                     </div>
@@ -157,7 +177,7 @@ export function AfricaTreemap({
                 return (
                   <div
                     key={item.country}
-                    className={`${colors[index]} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
+                    className={`${colors[index].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
                     style={{ 
                       gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
                       gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
@@ -167,13 +187,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className="font-semibold text-xs text-white drop-shadow-lg mb-1">
+                      <div className={`font-semibold text-xs ${colors[index].text} mb-1`}>
                         {item.country}
                       </div>
-                      <div className="text-xs font-bold text-white drop-shadow-lg">
+                      <div className={`text-xs font-bold ${colors[index].text}`}>
                         {item.activeProjects}
                       </div>
-                      <div className="text-xs text-white/90 drop-shadow-lg">
+                      <div className={`text-xs ${colors[index].text} opacity-80`}>
                         {percentage}%
                       </div>
                     </div>
