@@ -125,6 +125,7 @@ export function AfricaTreemap({
               {sortedData.map((item, index) => {
                 const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
                 const size = getCountrySize(item);
+                const colorIndex = Math.min(index, colors.length - 1);
                 
                 return (
                   <div
@@ -139,13 +140,13 @@ export function AfricaTreemap({
                     title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                   >
                     <div className="text-center">
-                      <div className={`font-semibold text-xs ${colors[index].text} mb-1`}>
+                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
                         {item.country}
                       </div>
-                      <div className={`text-xs font-bold ${colors[index].text}`}>
+                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
                         {item.totalCredits.toLocaleString()}
                       </div>
-                      <div className={`text-xs ${colors[index].text} opacity-80`}>
+                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
                         {percentage}%
                       </div>
                     </div>
