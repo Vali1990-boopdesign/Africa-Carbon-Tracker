@@ -88,24 +88,24 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
       <Card className="glass-effect border-gray-700 h-96">
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={onTabChange}>
-            <TabsList className="grid w-full grid-cols-3 bg-gray-100 dark:bg-gray-800 h-11 p-1 rounded-lg">
+            <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700">
               <TabsTrigger 
                 value="trends" 
-                className="h-9 rounded-md text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:text-gray-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
               >
                 <TrendingUp className="mr-2" size={16} />
                 Trends
               </TabsTrigger>
               <TabsTrigger 
                 value="projects"
-                className="h-9 rounded-md text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:text-gray-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
               >
                 <BarChart3 className="mr-2" size={16} />
                 Projects
               </TabsTrigger>
               <TabsTrigger 
                 value="buyers"
-                className="h-9 rounded-md text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 data-[state=active]:text-gray-900 dark:data-[state=active]:text-white data-[state=active]:shadow-sm"
+                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
               >
                 <Axis3d className="mr-2" size={16} />
                 Buyers
