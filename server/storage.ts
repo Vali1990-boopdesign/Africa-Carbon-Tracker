@@ -351,30 +351,53 @@ export class MemStorage implements IStorage {
     }));
   }
 
-  async getTimeSeriesData(): Promise<TimeSeriesData[]> {
-    const transactions = Array.from(this.transactions.values());
-    return transactions.map(t => ({
+  async getTimeSeriesData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<TimeSeriesData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
+    return filteredTransactions.map(t => ({
       year: t.retirementYear,
       country: t.country,
       credits: t.creditsRetired
     }));
   }
 
-  async getTopBuyers(limit: number = 10): Promise<TopBuyerData[]> {
-    const buyerProfiles = Array.from(this.buyerProfiles.values());
-    const totalCredits = buyerProfiles.reduce((sum, b) => sum + b.cumulativeRetirements, 0);
+  async getTopBuyers(limit: number = 10, filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<TopBuyerData[]> {
+    // Use filtered transactions to calculate top buyers for the filtered dataset
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
+    const buyerMap = new Map<string, { credits: number; sector: string }>();
     
+    filteredTransactions.forEach(t => {
+      if (!buyerMap.has(t.buyerBrandName)) {
+        buyerMap.set(t.buyerBrandName, { credits: 0, sector: t.buyerSector });
+      }
+      buyerMap.get(t.buyerBrandName)!.credits += t.creditsRetired;
+    });
+
+    const totalCredits = Array.from(buyerMap.values()).reduce((sum, b) => sum + b.credits, 0);
     const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444"];
     
-    return buyerProfiles
-      .sort((a, b) => b.cumulativeRetirements - a.cumulativeRetirements)
+    return Array.from(buyerMap.entries())
+      .sort((a, b) => b[1].credits - a[1].credits)
       .slice(0, limit)
-      .map((buyer, index) => ({
-        brandName: buyer.brandName,
-        sector: buyer.sector,
-        totalCredits: buyer.cumulativeRetirements,
-        percentage: Math.round((buyer.cumulativeRetirements / totalCredits) * 100),
-        initials: buyer.brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
+      .map(([brandName, data], index) => ({
+        brandName,
+        sector: data.sector,
+        totalCredits: data.credits,
+        percentage: totalCredits > 0 ? Math.round((data.credits / totalCredits) * 100) : 0,
+        initials: brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
         color: colors[index % colors.length]
       }));
   }
@@ -486,11 +509,18 @@ export class DatabaseStorage implements IStorage {
     };
   }
 
-  async getCountryData(): Promise<CountryData[]> {
-    const transactionData = await db.select().from(transactions);
+  async getCountryData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<CountryData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const countryMap = new Map<string, { credits: number; projects: Set<string> }>();
 
-    transactionData.forEach(t => {
+    filteredTransactions.forEach(t => {
       if (!countryMap.has(t.country)) {
         countryMap.set(t.country, { credits: 0, projects: new Set() });
       }
