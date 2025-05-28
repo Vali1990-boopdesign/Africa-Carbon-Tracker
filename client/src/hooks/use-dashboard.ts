@@ -69,24 +69,96 @@ export function useDashboard() {
     },
   });
 
-  // Country data query
+  // Country data query with filters
   const { data: countryData, isLoading: countryLoading } = useQuery<CountryData[]>({
-    queryKey: ["/api/dashboard/countries"],
+    queryKey: ["/api/dashboard/countries", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.append(key, value.toString());
+        }
+      });
+      
+      const response = await fetch(`/api/dashboard/countries?${params.toString()}`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    },
   });
 
-  // Sector data query
+  // Sector data query with filters
   const { data: sectorData, isLoading: sectorLoading } = useQuery<SectorData[]>({
-    queryKey: ["/api/dashboard/sectors"],
+    queryKey: ["/api/dashboard/sectors", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.append(key, value.toString());
+        }
+      });
+      
+      const response = await fetch(`/api/dashboard/sectors?${params.toString()}`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    },
   });
 
-  // Time series data query
+  // Time series data query with filters
   const { data: timeSeriesData, isLoading: timeSeriesLoading } = useQuery<TimeSeriesData[]>({
-    queryKey: ["/api/dashboard/timeseries"],
+    queryKey: ["/api/dashboard/timeseries", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.append(key, value.toString());
+        }
+      });
+      
+      const response = await fetch(`/api/dashboard/timeseries?${params.toString()}`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    },
   });
 
-  // Top buyers query
+  // Top buyers query with filters
   const { data: topBuyers, isLoading: topBuyersLoading } = useQuery<TopBuyerData[]>({
-    queryKey: ["/api/dashboard/top-buyers"],
+    queryKey: ["/api/dashboard/top-buyers", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.append(key, value.toString());
+        }
+      });
+      
+      const response = await fetch(`/api/dashboard/top-buyers?${params.toString()}`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    },
   });
 
   // Filter management

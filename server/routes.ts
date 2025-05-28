@@ -45,41 +45,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Country data for map
+  // Country data for map with filters
   app.get("/api/dashboard/countries", async (req, res) => {
     try {
-      const countryData = await storage.getCountryData();
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const countryData = await storage.getCountryData(filters);
       res.json(countryData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch country data" });
     }
   });
 
-  // Sector data for pie chart
+  // Sector data for pie chart with filters
   app.get("/api/dashboard/sectors", async (req, res) => {
     try {
-      const sectorData = await storage.getSectorData();
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const sectorData = await storage.getSectorData(filters);
       res.json(sectorData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch sector data" });
     }
   });
 
-  // Time series data for charts
+  // Time series data for charts with filters
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
-      const timeSeriesData = await storage.getTimeSeriesData();
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const timeSeriesData = await storage.getTimeSeriesData(filters);
       res.json(timeSeriesData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch time series data" });
     }
   });
 
-  // Top buyers data
+  // Top buyers data with filters
   app.get("/api/dashboard/top-buyers", async (req, res) => {
     try {
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-      const topBuyers = await storage.getTopBuyers(limit);
+      
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const topBuyers = await storage.getTopBuyers(limit, filters);
       res.json(topBuyers);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch top buyers" });

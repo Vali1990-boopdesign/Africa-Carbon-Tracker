@@ -29,10 +29,38 @@ export interface IStorage {
     endYear?: number;
     search?: string;
   }): Promise<DashboardMetrics>;
-  getCountryData(): Promise<CountryData[]>;
-  getSectorData(): Promise<SectorData[]>;
-  getTimeSeriesData(): Promise<TimeSeriesData[]>;
-  getTopBuyers(limit?: number): Promise<TopBuyerData[]>;
+  getCountryData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<CountryData[]>;
+  getSectorData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<SectorData[]>;
+  getTimeSeriesData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<TimeSeriesData[]>;
+  getTopBuyers(limit?: number, filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<TopBuyerData[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -262,11 +290,18 @@ export class MemStorage implements IStorage {
     };
   }
 
-  async getCountryData(): Promise<CountryData[]> {
-    const transactions = Array.from(this.transactions.values());
+  async getCountryData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<CountryData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const countryMap = new Map<string, { credits: number; projects: Set<string> }>();
 
-    transactions.forEach(t => {
+    filteredTransactions.forEach(t => {
       if (!countryMap.has(t.country)) {
         countryMap.set(t.country, { credits: 0, projects: new Set() });
       }
@@ -290,12 +325,19 @@ export class MemStorage implements IStorage {
     }));
   }
 
-  async getSectorData(): Promise<SectorData[]> {
-    const transactions = Array.from(this.transactions.values());
+  async getSectorData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<SectorData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const sectorMap = new Map<string, number>();
-    const totalCredits = transactions.reduce((sum, t) => sum + t.creditsRetired, 0);
+    const totalCredits = filteredTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
 
-    transactions.forEach(t => {
+    filteredTransactions.forEach(t => {
       sectorMap.set(t.buyerSector, (sectorMap.get(t.buyerSector) || 0) + t.creditsRetired);
     });
 
