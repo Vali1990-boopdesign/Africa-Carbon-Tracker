@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
+import type { Transaction } from "@shared/schema";
 
 interface FiltersBarProps {
   filters: DashboardFilters;
@@ -23,6 +25,16 @@ export function FiltersBar({
   onClearFilters 
 }: FiltersBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search);
+
+  // Fetch all transactions to populate filter options
+  const { data: allTransactions } = useQuery<Transaction[]>({
+    queryKey: ["/api/transactions"],
+  });
+
+  // Extract unique values from authentic data
+  const uniqueCountries = Array.from(new Set(allTransactions?.map(t => t.country) || [])).sort();
+  const uniqueSectors = Array.from(new Set(allTransactions?.map(t => t.buyerSector) || [])).sort();
+  const uniqueProjectTypes = Array.from(new Set(allTransactions?.map(t => t.type) || [])).sort();
 
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
@@ -66,9 +78,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Countries</SelectItem>
-                <SelectItem value="South Africa">South Africa</SelectItem>
-                <SelectItem value="Kenya">Kenya</SelectItem>
-                <SelectItem value="Nigeria">Nigeria</SelectItem>
+                {uniqueCountries.map(country => (
+                  <SelectItem key={country} value={country}>{country}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
             
@@ -81,9 +93,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Sectors</SelectItem>
-                <SelectItem value="Technology">Technology</SelectItem>
-                <SelectItem value="Energy">Energy</SelectItem>
-                <SelectItem value="Manufacturing">Manufacturing</SelectItem>
+                {uniqueSectors.map(sector => (
+                  <SelectItem key={sector} value={sector}>{sector}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
             
@@ -96,9 +108,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Project Types</SelectItem>
-                <SelectItem value="Afforestation">Afforestation</SelectItem>
-                <SelectItem value="Solar">Solar</SelectItem>
-                <SelectItem value="Methane Capture">Methane Capture</SelectItem>
+                {uniqueProjectTypes.map(type => (
+                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                ))}
               </SelectContent>
             </Select>
             
