@@ -107,31 +107,36 @@ export default function Dashboard() {
 
       {/* Main Visualization Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
-          {/* Left Column - Africa Map & Key Insights (30%) */}
-          <div className="lg:col-span-3 space-y-6">
+        {/* Top Row - Wide Time Series Chart */}
+        <div className="mb-6">
+          <TimeSeriesChart
+            timeSeriesData={timeSeriesData}
+            isLoading={isLoading}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+        </div>
+        
+        {/* Bottom Row - Three Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Africa Treemap */}
+          <div className="lg:col-span-1">
             <AfricaTreemap
               data={countryData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
             />
+          </div>
+          
+          {/* Center Column - Key Insights */}
+          <div className="lg:col-span-1">
             <KeyInsights
               isLoading={isLoading}
             />
           </div>
           
-          {/* Center Column - Tabbed Charts (40%) */}
-          <div className="lg:col-span-4">
-            <TimeSeriesChart
-              timeSeriesData={timeSeriesData}
-              isLoading={isLoading}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-            />
-          </div>
-          
-          {/* Right Column - Top Buyers & Sector Breakdown (30%) */}
-          <div className="lg:col-span-3 space-y-6">
+          {/* Right Column - Top Buyers & Sector Breakdown */}
+          <div className="lg:col-span-1 space-y-6">
             <TopBuyers
               topBuyers={topBuyers}
               isLoading={isLoading}
