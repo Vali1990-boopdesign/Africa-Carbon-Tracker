@@ -3,10 +3,21 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Dashboard metrics endpoint
+  // Dashboard metrics endpoint with filters
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
-      const metrics = await storage.getDashboardMetrics();
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const metrics = await storage.getDashboardMetrics(filters);
       res.json(metrics);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch dashboard metrics" });

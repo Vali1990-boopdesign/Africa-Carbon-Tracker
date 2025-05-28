@@ -23,9 +23,27 @@ export function useDashboard() {
 
   const [activeTab, setActiveTab] = useState<string>("trends");
 
-  // Dashboard metrics query
+  // Dashboard metrics query with filters
   const { data: metrics, isLoading: metricsLoading } = useQuery<DashboardMetrics>({
-    queryKey: ["/api/dashboard/metrics"],
+    queryKey: ["/api/dashboard/metrics", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value && value !== "") {
+          params.append(key, value.toString());
+        }
+      });
+      
+      const response = await fetch(`/api/dashboard/metrics?${params.toString()}`, {
+        credentials: "include",
+      });
+      
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    },
   });
 
   // Transactions query with filters

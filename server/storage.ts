@@ -21,7 +21,14 @@ export interface IStorage {
   createBuyerProfile(profile: InsertBuyerProfile): Promise<BuyerProfile>;
   
   // Dashboard analytics
-  getDashboardMetrics(): Promise<DashboardMetrics>;
+  getDashboardMetrics(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<DashboardMetrics>;
   getCountryData(): Promise<CountryData[]>;
   getSectorData(): Promise<SectorData[]>;
   getTimeSeriesData(): Promise<TimeSeriesData[]>;
