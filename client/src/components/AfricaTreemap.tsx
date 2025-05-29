@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 
 interface CountryData {
   country: string;
@@ -21,6 +23,8 @@ export function AfricaTreemap({
   onCountryClick 
 }: AfricaTreemapProps) {
   const [activeTab, setActiveTab] = useState("credits");
+  const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Calculate totals for percentage calculations
   const totalCredits = data.reduce((sum, item) => sum + item.totalCredits, 0);
@@ -166,7 +170,11 @@ export function AfricaTreemap({
                       gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
                       minHeight: '60px'
                     }}
-                    onClick={() => onCountryClick?.(item.country)}
+                    onClick={() => {
+                      setSelectedCountry(item);
+                      setIsModalOpen(true);
+                      onCountryClick?.(item.country);
+                    }}
                     title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                   >
                     <div className="text-center">
@@ -245,5 +253,63 @@ export function AfricaTreemap({
         </Tabs>
       </CardContent>
     </Card>
+
+    {/* Country Details Modal */}
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DialogContent className="glass-effect border-gray-700 text-white max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-bold text-emerald-400">
+            {selectedCountry?.country} Details
+          </DialogTitle>
+        </DialogHeader>
+        
+        {selectedCountry && (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-dark-800/50 p-3 rounded-lg border border-gray-700">
+                <p className="text-sm text-gray-400">Total Carbon Credits</p>
+                <p className="text-lg font-bold text-emerald-400">
+                  {selectedCountry.totalCredits.toLocaleString()}
+                </p>
+              </div>
+              <div className="bg-dark-800/50 p-3 rounded-lg border border-gray-700">
+                <p className="text-sm text-gray-400">Active Projects</p>
+                <p className="text-lg font-bold text-blue-400">
+                  {selectedCountry.activeProjects}
+                </p>
+              </div>
+            </div>
+            
+            <div className="bg-dark-800/50 p-4 rounded-lg border border-gray-700">
+              <h4 className="font-semibold text-emerald-400 mb-2">Key Statistics</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex justify-between">
+                  <span className="text-gray-300">Country:</span>
+                  <span className="text-white font-medium">{selectedCountry.country}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-gray-300">Credits per Project:</span>
+                  <span className="text-white font-medium">
+                    {selectedCountry.activeProjects > 0 
+                      ? Math.round(selectedCountry.totalCredits / selectedCountry.activeProjects).toLocaleString()
+                      : 'N/A'
+                    }
+                  </span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="text-gray-300">Market Share:</span>
+                  <span className="text-white font-medium">
+                    {totalCredits > 0 
+                      ? ((selectedCountry.totalCredits / totalCredits) * 100).toFixed(2)
+                      : '0'
+                    }%
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

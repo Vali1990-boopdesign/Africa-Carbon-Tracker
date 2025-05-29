@@ -48,20 +48,33 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
     return acc;
   }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
 
-  // Sample project type data
-  const projectData = [
-    { type: "Forestry", credits: 450000 },
-    { type: "Renewable Energy", credits: 320000 },
-    { type: "Waste Management", credits: 180000 },
-    { type: "Energy Efficiency", credits: 120000 },
-  ];
+  // Generate project type data from filtered time series data
+  const projectData = trendData.reduce((acc, curr) => {
+    const existing = acc.find(item => item.type === curr.country);
+    if (existing) {
+      existing.credits += curr.credits;
+    } else {
+      acc.push({ type: curr.country, credits: curr.credits });
+    }
+    return acc;
+  }, [] as { type: string; credits: number }[]).slice(0, 6);
 
-  // Sample buyer data for bubble chart
-  const buyerData = [
-    { name: "Microsoft", totalCredits: 324500, transactions: 45, yearsActive: 3 },
-    { name: "Apple", totalCredits: 287300, transactions: 38, yearsActive: 2 },
-    { name: "Shell", totalCredits: 203700, transactions: 52, yearsActive: 4 },
-  ];
+  // Generate buyer data from filtered time series data grouped by country
+  const buyerData = trendData.reduce((acc, curr) => {
+    const existing = acc.find(item => item.name === curr.country);
+    if (existing) {
+      existing.totalCredits += curr.credits;
+      existing.transactions += 1;
+    } else {
+      acc.push({ 
+        name: curr.country, 
+        totalCredits: curr.credits, 
+        transactions: 1, 
+        yearsActive: 1 
+      });
+    }
+    return acc;
+  }, [] as { name: string; totalCredits: number; transactions: number; yearsActive: number }[]).slice(0, 5);
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -120,11 +133,13 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
                     dataKey="year" 
                     stroke="#9CA3AF"
                     fontSize={12}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Line 
@@ -150,11 +165,13 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
                     angle={-45}
                     textAnchor="end"
                     height={80}
+                    label={{ value: 'Countries', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar 
