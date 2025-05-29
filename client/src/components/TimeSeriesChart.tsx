@@ -158,18 +158,19 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               </ResponsiveContainer>
             </TabsContent>
             
-            <TabsContent value="projects" className="h-72 mt-4">
+            <TabsContent value="projects" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={projectData}>
+                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="type" 
                     stroke="#9CA3AF"
-                    fontSize={12}
+                    fontSize={10}
                     angle={-45}
                     textAnchor="end"
-                    height={80}
-                    label={{ value: 'Countries', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={100}
+                    interval={0}
+                    label={{ value: 'Project Sectors', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -187,45 +188,33 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               </ResponsiveContainer>
             </TabsContent>
             
-            <TabsContent value="buyers" className="h-72 mt-4">
+            <TabsContent value="buyers" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <ScatterChart data={buyerData}>
+                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
-                    type="number"
-                    dataKey="totalCredits" 
+                    dataKey="name" 
+                    stroke="#9CA3AF"
+                    fontSize={10}
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    interval={0}
+                    label={{ value: 'Buyer Companies', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                  />
+                  <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
-                  <YAxis 
-                    type="number"
-                    dataKey="transactions" 
-                    stroke="#9CA3AF"
-                    fontSize={12}
-                  />
-                  <Tooltip 
-                    cursor={{ strokeDasharray: '3 3', stroke: '#374151' }}
-                    content={({ active, payload }: any) => {
-                      if (active && payload && payload.length) {
-                        const data = payload[0].payload;
-                        return (
-                          <div className="bg-dark-800 border border-gray-700 rounded-lg p-3 shadow-lg">
-                            <p className="text-gray-300 text-sm font-medium">{data.name}</p>
-                            <p className="text-emerald-400 text-sm">Credits: {data.totalCredits.toLocaleString()}</p>
-                            <p className="text-blue-400 text-sm">Transactions: {data.transactions}</p>
-                            <p className="text-amber-400 text-sm">Years Active: {data.yearsActive}</p>
-                          </div>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                  <Scatter 
-                    dataKey="yearsActive" 
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar 
+                    dataKey="totalCredits" 
                     fill="#F59E0B"
+                    radius={[4, 4, 0, 0]}
                   />
-                </ScatterChart>
+                </BarChart>
               </ResponsiveContainer>
             </TabsContent>
           </Tabs>
