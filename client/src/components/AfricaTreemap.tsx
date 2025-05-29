@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-// import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface CountryData {
   country: string;
@@ -23,18 +21,16 @@ export function AfricaTreemap({
 }: AfricaTreemapProps) {
   const [activeTab, setActiveTab] = useState("credits");
 
-  // Calculate totals for percentage calculations
   const totalCredits = data.reduce((sum, item) => sum + item.totalCredits, 0);
   const totalProjects = data.reduce((sum, item) => sum + item.activeProjects, 0);
 
-  // Sort data by the active metric
   const sortedData = [...data].sort((a, b) => {
     if (activeTab === "credits") {
       return b.totalCredits - a.totalCredits;
     } else {
       return b.activeProjects - a.activeProjects;
     }
-  }).slice(0, 20); // Show top 20 countries
+  }).slice(0, 20);
 
   const getCountrySize = (item: CountryData) => {
     if (activeTab === "credits") {
@@ -46,7 +42,6 @@ export function AfricaTreemap({
     }
   };
 
-  // Color schemes for the treemap
   const colors = [
     { bg: "bg-emerald-600", text: "text-white" },
     { bg: "bg-emerald-500", text: "text-white" },
@@ -79,116 +74,104 @@ export function AfricaTreemap({
   }
 
   return (
-    <>
-      <Card className="glass-effect border-gray-700 h-96">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Africa Carbon Credits</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="credits" className="text-sm">
-                Carbon Credits
-              </TabsTrigger>
-              <TabsTrigger value="projects" className="text-sm">
-                Active Projects
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="credits" className="space-y-2">
-              <div className="text-center mb-3">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Total Carbon Credits by Country
-                </p>
-              </div>
-              <div className="grid grid-cols-4 gap-1 h-80 w-full">
-                {sortedData.map((item, index) => {
-                  const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
-                  const size = getCountrySize(item);
-                  const colorIndex = Math.min(index, colors.length - 1);
-                  
-                  return (
-                    <div
-                      key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
-                      style={{ 
-                        gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                        gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                        minHeight: '60px'
-                      }}
-                      onClick={() => {
-                        setSelectedCountry(item);
-                        setIsModalOpen(true);
-                        onCountryClick?.(item.country);
-                      }}
-                      title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
-                    >
-                      <div className="text-center">
-                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
-                          {item.country}
-                        </div>
-                        <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
-                          {item.totalCredits.toLocaleString()}
-                        </div>
-                        <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
-                          {percentage}%
-                        </div>
+    <Card className="glass-effect border-gray-700 h-96">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-white">Africa Carbon Credits</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="credits" className="text-sm">
+              Carbon Credits
+            </TabsTrigger>
+            <TabsTrigger value="projects" className="text-sm">
+              Active Projects
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="credits" className="space-y-2">
+            <div className="text-center mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Total Carbon Credits by Country
+              </p>
+            </div>
+            <div className="grid grid-cols-4 gap-1 h-80 w-full">
+              {sortedData.map((item, index) => {
+                const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
+                const size = getCountrySize(item);
+                const colorIndex = Math.min(index, colors.length - 1);
+                
+                return (
+                  <div
+                    key={item.country}
+                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                    style={{ 
+                      gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
+                      gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
+                      minHeight: '60px'
+                    }}
+                    onClick={() => onCountryClick?.(item.country)}
+                    title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
+                  >
+                    <div className="text-center">
+                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
+                        {item.country}
+                      </div>
+                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
+                        {item.totalCredits.toLocaleString()}
+                      </div>
+                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
+                        {percentage}%
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="projects" className="space-y-2">
-              <div className="text-center mb-3">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Active Projects by Country
-                </p>
-              </div>
-              <div className="grid grid-cols-4 gap-1 h-80 w-full">
-                {sortedData.map((item, index) => {
-                  const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
-                  const size = getCountrySize(item);
-                  const colorIndex = Math.min(index, colors.length - 1);
-                  
-                  return (
-                    <div
-                      key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg group relative`}
-                      style={{ 
-                        gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                        gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                        minHeight: '60px'
-                      }}
-                      onClick={() => {
-                        setSelectedCountry(item);
-                        setIsModalOpen(true);
-                        onCountryClick?.(item.country);
-                      }}
-                      title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
-                    >
-                      <div className="text-center">
-                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
-                          {item.country}
-                        </div>
-                        <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
-                          {item.activeProjects}
-                        </div>
-                        <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
-                          {percentage}%
-                        </div>
+                  </div>
+                );
+              })}
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="projects" className="space-y-2">
+            <div className="text-center mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Active Projects by Country
+              </p>
+            </div>
+            <div className="grid grid-cols-4 gap-1 h-80 w-full">
+              {sortedData.map((item, index) => {
+                const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
+                const size = getCountrySize(item);
+                const colorIndex = Math.min(index, colors.length - 1);
+                
+                return (
+                  <div
+                    key={item.country}
+                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                    style={{ 
+                      gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
+                      gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
+                      minHeight: '60px'
+                    }}
+                    onClick={() => onCountryClick?.(item.country)}
+                    title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
+                  >
+                    <div className="text-center">
+                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
+                        {item.country}
+                      </div>
+                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
+                        {item.activeProjects}
+                      </div>
+                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
+                        {percentage}%
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
-
-
-    </>
+                  </div>
+                );
+              })}
+            </div>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 }

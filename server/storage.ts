@@ -544,7 +544,14 @@ export class DatabaseStorage implements IStorage {
     }));
   }
 
-  async getSectorData(): Promise<SectorData[]> {
+  async getSectorData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<SectorData[]> {
     const transactionData = await db.select().from(transactions);
     const sectorMap = new Map<string, number>();
     const totalCredits = transactionData.reduce((sum, t) => sum + t.creditsRetired, 0);
