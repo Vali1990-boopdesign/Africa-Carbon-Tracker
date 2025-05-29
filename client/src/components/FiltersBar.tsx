@@ -111,7 +111,7 @@ export function FiltersBar({
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                className="w-full bg-white/95 dark:bg-dark-800 border-gray-300 dark:border-gray-700 pl-10 text-gray-900 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 focus:border-emerald-500"
+                className="w-full bg-gray-800 dark:bg-dark-800 border-gray-600 dark:border-gray-700 pl-10 text-gray-200 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:border-emerald-500"
               />
               
               {/* Search Suggestions Dropdown */}
@@ -121,7 +121,7 @@ export function FiltersBar({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-dark-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+                    className="absolute top-full left-0 right-0 mt-1 bg-gray-800 dark:bg-dark-800 border border-gray-600 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
                   >
                     {searchSuggestions.map((suggestion, index) => (
                       <button
