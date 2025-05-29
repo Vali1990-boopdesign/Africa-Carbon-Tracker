@@ -105,6 +105,13 @@ export default function Dashboard() {
         isLoading={metricsLoading}
       />
 
+      {/* Key Insights - moved below metrics */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+        <KeyInsights
+          isLoading={isLoading}
+        />
+      </div>
+
       {/* Main Visualization Area */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {/* Top Row - Wide Time Series Chart */}
@@ -145,12 +152,7 @@ export default function Dashboard() {
           </div>
         </div>
         
-        {/* Full Width Key Insights Below */}
-        <div className="mb-6">
-          <KeyInsights
-            isLoading={isLoading}
-          />
-        </div>
+
       </div>
 
       {/* Detailed Data Table */}

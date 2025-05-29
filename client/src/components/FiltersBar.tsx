@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -25,6 +25,9 @@ export function FiltersBar({
   onClearFilters 
 }: FiltersBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   // Fetch all transactions to populate filter options
   const { data: allTransactions } = useQuery<Transaction[]>({
@@ -36,12 +39,57 @@ export function FiltersBar({
   const uniqueSectors = Array.from(new Set(allTransactions?.map(t => t.buyerSector) || [])).sort();
   const uniqueProjectTypes = Array.from(new Set(allTransactions?.map(t => t.type) || [])).sort();
 
+  // Generate search suggestions based on input
+  useEffect(() => {
+    if (searchValue.length > 0 && allTransactions) {
+      const suggestions = new Set<string>();
+      const searchLower = searchValue.toLowerCase();
+      
+      allTransactions.forEach(transaction => {
+        // Search in buyer names
+        if (transaction.buyerBrandName.toLowerCase().includes(searchLower)) {
+          suggestions.add(transaction.buyerBrandName);
+        }
+        // Search in countries
+        if (transaction.country.toLowerCase().includes(searchLower)) {
+          suggestions.add(transaction.country);
+        }
+        // Search in project names
+        if (transaction.projectName.toLowerCase().includes(searchLower)) {
+          suggestions.add(transaction.projectName);
+        }
+        // Search in sectors
+        if (transaction.buyerSector.toLowerCase().includes(searchLower)) {
+          suggestions.add(transaction.buyerSector);
+        }
+      });
+      
+      setSearchSuggestions(Array.from(suggestions).slice(0, 8));
+    } else {
+      setSearchSuggestions([]);
+    }
+  }, [searchValue, allTransactions]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
-    // Debounce search
-    setTimeout(() => {
-      onFilterChange("search", value);
-    }, 300);
+    onFilterChange("search", value);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setSearchValue(suggestion);
+    onFilterChange("search", suggestion);
+    setIsSearchFocused(false);
   };
 
   return (
@@ -54,7 +102,7 @@ export function FiltersBar({
       <div className="glass-effect rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-4">
           {/* Global Search */}
-          <div className="flex-1 min-w-64">
+          <div className="flex-1 min-w-64" ref={searchRef}>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
               <Input
@@ -62,8 +110,31 @@ export function FiltersBar({
                 placeholder="Search buyers, countries, or projects..."
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full bg-dark-800 border-gray-700 pl-10 text-gray-200 placeholder-gray-400 focus:border-emerald-500"
+                onFocus={() => setIsSearchFocused(true)}
+                className="w-full bg-white/95 dark:bg-dark-800 border-gray-300 dark:border-gray-700 pl-10 text-gray-900 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 focus:border-emerald-500"
               />
+              
+              {/* Search Suggestions Dropdown */}
+              <AnimatePresence>
+                {isSearchFocused && searchSuggestions.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-dark-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+                  >
+                    {searchSuggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors border-b border-gray-200 dark:border-gray-600 last:border-b-0"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
           
