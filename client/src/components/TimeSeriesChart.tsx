@@ -7,12 +7,30 @@ import type { TimeSeriesData } from "@shared/schema";
 
 interface TimeSeriesChartProps {
   timeSeriesData?: TimeSeriesData[];
+  sectorData?: SectorData[];
+  topBuyers?: TopBuyerData[];
   isLoading: boolean;
   activeTab: string;
   onTabChange: (tab: string) => void;
 }
 
-export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
+interface SectorData {
+  sector: string;
+  totalCredits: number;
+  percentage: number;
+  color: string;
+}
+
+interface TopBuyerData {
+  brandName: string;
+  sector: string;
+  totalCredits: number;
+  percentage: number;
+  initials: string;
+  color: string;
+}
+
+export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
   if (isLoading) {
     return (
       <Card className="glass-effect border-gray-700 h-96">
@@ -48,33 +66,19 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
     return acc;
   }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
 
-  // Generate project type data from filtered time series data
-  const projectData = trendData.reduce((acc, curr) => {
-    const existing = acc.find(item => item.type === curr.country);
-    if (existing) {
-      existing.credits += curr.credits;
-    } else {
-      acc.push({ type: curr.country, credits: curr.credits });
-    }
-    return acc;
-  }, [] as { type: string; credits: number }[]).slice(0, 6);
+  // Use sector data for project types from the actual filtered data
+  const projectData = sectorData?.map(sector => ({
+    type: sector.sector,
+    credits: sector.totalCredits
+  })).slice(0, 6) || [];
 
-  // Generate buyer data from filtered time series data grouped by country
-  const buyerData = trendData.reduce((acc, curr) => {
-    const existing = acc.find(item => item.name === curr.country);
-    if (existing) {
-      existing.totalCredits += curr.credits;
-      existing.transactions += 1;
-    } else {
-      acc.push({ 
-        name: curr.country, 
-        totalCredits: curr.credits, 
-        transactions: 1, 
-        yearsActive: 1 
-      });
-    }
-    return acc;
-  }, [] as { name: string; totalCredits: number; transactions: number; yearsActive: number }[]).slice(0, 5);
+  // Use top buyers data for the buyers chart
+  const buyerData = topBuyers?.map(buyer => ({
+    name: buyer.brandName,
+    totalCredits: buyer.totalCredits,
+    transactions: Math.floor(buyer.totalCredits / 1000), // Estimate transactions
+    yearsActive: buyer.percentage > 10 ? 3 : buyer.percentage > 5 ? 2 : 1 // Estimate years
+  })).slice(0, 5) || [];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {

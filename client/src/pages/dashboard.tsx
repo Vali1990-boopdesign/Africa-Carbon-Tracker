@@ -111,27 +111,22 @@ export default function Dashboard() {
         <div className="mb-6">
           <TimeSeriesChart
             timeSeriesData={timeSeriesData}
+            sectorData={sectorData}
+            topBuyers={topBuyers}
             isLoading={isLoading}
             activeTab={activeTab}
             onTabChange={setActiveTab}
           />
         </div>
         
-        {/* Bottom Row - Three Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Bottom Row - Two Column Layout with proper spacing */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Left Column - Africa Treemap */}
           <div className="lg:col-span-1">
             <AfricaTreemap
               data={countryData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
-            />
-          </div>
-          
-          {/* Center Column - Key Insights */}
-          <div className="lg:col-span-1">
-            <KeyInsights
-              isLoading={isLoading}
             />
           </div>
           
@@ -148,6 +143,13 @@ export default function Dashboard() {
               isLoading={isLoading}
             />
           </div>
+        </div>
+        
+        {/* Full Width Key Insights Below */}
+        <div className="mb-6">
+          <KeyInsights
+            isLoading={isLoading}
+          />
         </div>
       </div>
 

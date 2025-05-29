@@ -92,7 +92,7 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps
             >
               <CardContent>
                 <div className="space-y-3">
-                  {topBuyers.slice(0, 5).map((buyer, index) => (
+                  {topBuyers.slice(0, isExpanded ? 10 : 5).map((buyer, index) => (
                     <motion.div
                       key={buyer.brandName}
                       className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
