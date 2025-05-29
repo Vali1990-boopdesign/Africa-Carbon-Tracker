@@ -95,7 +95,7 @@ export function AfricaTreemap({
                 Total Carbon Credits by Country
               </p>
             </div>
-            <div className="grid grid-cols-4 gap-1 h-[450px] w-full overflow-y-auto">
+            <div className="grid grid-cols-4 gap-1 min-h-[450px] w-full auto-rows-min">
               {sortedData.map((item, index) => {
                 const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
                 const size = getCountrySize(item);
@@ -136,7 +136,7 @@ export function AfricaTreemap({
                 Active Projects by Country
               </p>
             </div>
-            <div className="grid grid-cols-4 gap-1 h-[450px] w-full overflow-y-auto">
+            <div className="grid grid-cols-4 gap-1 min-h-[450px] w-full auto-rows-min">
               {sortedData.map((item, index) => {
                 const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
                 const size = getCountrySize(item);

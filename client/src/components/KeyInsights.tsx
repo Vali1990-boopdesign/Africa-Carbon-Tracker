@@ -67,12 +67,12 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 h-40">
+      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-40">
         <CardHeader>
-          <div className="h-6 bg-gray-700 rounded w-32 animate-pulse"></div>
+          <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-32 animate-pulse"></div>
         </CardHeader>
         <CardContent>
-          <div className="h-20 bg-dark-800/30 rounded-lg animate-pulse"></div>
+          <div className="h-20 bg-gray-200 dark:bg-dark-800/30 rounded-lg animate-pulse"></div>
         </CardContent>
       </Card>
     );
@@ -86,7 +86,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <Card className="glass-effect border-gray-700 h-40 relative overflow-hidden bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" style={{
+      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-40 relative overflow-hidden bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10" style={{
         borderWidth: '2px',
         borderStyle: 'solid',
         borderImage: 'linear-gradient(135deg, #10b981, #3b82f6, #a855f7) 1',
@@ -94,13 +94,13 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       }}>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold text-white">Key Insights</CardTitle>
+            <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Key Insights</CardTitle>
             <div className="flex items-center space-x-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={prevInsight}
-                className="text-gray-400 hover:text-white h-8 w-8"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white h-8 w-8"
               >
                 <ChevronLeft size={16} />
               </Button>
@@ -109,7 +109,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                      index === currentInsight ? 'bg-emerald-500' : 'bg-gray-600'
+                      index === currentInsight ? 'bg-emerald-500' : 'bg-gray-400 dark:bg-gray-600'
                     }`}
                   />
                 ))}
@@ -118,7 +118,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
                 variant="ghost"
                 size="icon"
                 onClick={nextInsight}
-                className="text-gray-400 hover:text-white h-8 w-8"
+                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white h-8 w-8"
               >
                 <ChevronRight size={16} />
               </Button>
@@ -139,8 +139,8 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
                 <currentInsightData.icon className={currentInsightData.color} size={24} />
               </div>
               <div className="flex-1">
-                <h3 className="text-white font-semibold text-base mb-2">{currentInsightData.title}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{currentInsightData.description}</p>
+                <h3 className="text-gray-900 dark:text-white font-semibold text-base mb-2">{currentInsightData.title}</h3>
+                <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{currentInsightData.description}</p>
               </div>
             </motion.div>
           </AnimatePresence>
