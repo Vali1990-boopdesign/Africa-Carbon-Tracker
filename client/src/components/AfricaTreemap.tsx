@@ -65,18 +65,18 @@ export function AfricaTreemap({
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 h-96">
+      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-[600px]">
         <div className="flex items-center justify-center h-80">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
         </div>
       </Card>
     );
   }
 
   return (
-    <Card className="glass-effect border-gray-700 h-96">
+    <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-[600px]">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-white">Africa Carbon Credits</CardTitle>
+        <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Africa Carbon Credits</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

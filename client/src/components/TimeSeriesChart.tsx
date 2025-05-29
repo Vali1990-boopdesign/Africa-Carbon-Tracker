@@ -66,19 +66,19 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
     return acc;
   }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
 
-  // Use sector data for project types from the actual filtered data
+  // Use all sector data for project types - no truncation
   const projectData = sectorData?.map(sector => ({
     type: sector.sector,
     credits: sector.totalCredits
-  })).slice(0, 6) || [];
+  })) || [];
 
-  // Use top buyers data for the buyers chart
+  // Use all top buyers data - no truncation  
   const buyerData = topBuyers?.map(buyer => ({
     name: buyer.brandName,
     totalCredits: buyer.totalCredits,
     transactions: Math.floor(buyer.totalCredits / 1000), // Estimate transactions
     yearsActive: buyer.percentage > 10 ? 3 : buyer.percentage > 5 ? 2 : 1 // Estimate years
-  })).slice(0, 5) || [];
+  })) || [];
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
