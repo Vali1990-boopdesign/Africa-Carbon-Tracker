@@ -280,13 +280,13 @@ export class MemStorage implements IStorage {
 
     return {
       totalCreditsRetired,
-      totalCreditsGrowth: creditsGrowth,
+      totalCreditsGrowth: Math.round(creditsGrowth * 100) / 100,
       activeBuyers: uniqueBuyers,
-      activeBuyersGrowth: buyersGrowth,
+      activeBuyersGrowth: Math.round(buyersGrowth * 100) / 100,
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      averageCreditPrice: filteredTransactions.length > 0 ? totalCreditsRetired / filteredTransactions.length : 0,
-      priceChange: Math.random() * 5 - 2.5 // Small random variation since we don't have price history
+      averageCreditPrice: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 100) / 100 : 0,
+      priceChange: Math.round(Math.random() * 5 - 2.5 * 100) / 100
     };
   }
 
@@ -504,7 +504,7 @@ export class DatabaseStorage implements IStorage {
       activeBuyersGrowth: 0,
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      averageCreditPrice: filteredTransactions.length > 0 ? totalCreditsRetired / filteredTransactions.length : 0,
+      averageCreditPrice: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 10000) / 10000 : 0,
       priceChange: 0
     };
   }

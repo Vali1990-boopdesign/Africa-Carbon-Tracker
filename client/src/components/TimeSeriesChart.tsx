@@ -37,7 +37,7 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
     country: d.country
   })) || [];
 
-  // Group by year for aggregated trends
+  // Group by year for aggregated trends and sort chronologically
   const yearlyData = trendData.reduce((acc, curr) => {
     const existing = acc.find(item => item.year === curr.year);
     if (existing) {
@@ -46,7 +46,7 @@ export function TimeSeriesChart({ timeSeriesData, isLoading, activeTab, onTabCha
       acc.push({ year: curr.year, credits: curr.credits });
     }
     return acc;
-  }, [] as { year: number; credits: number }[]);
+  }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
 
   // Sample project type data
   const projectData = [
