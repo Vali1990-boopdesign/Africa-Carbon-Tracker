@@ -186,12 +186,12 @@ export function useDashboard() {
 
   // Active filters computation
   const activeFilters = useMemo(() => {
-    const active = [];
+    const active: Array<{ key: keyof DashboardFilters; label: string; value: string }> = [];
     if (filters.country) active.push({ key: "country", label: filters.country, value: filters.country });
     if (filters.sector) active.push({ key: "sector", label: `${filters.sector} Sector`, value: filters.sector });
     if (filters.projectType) active.push({ key: "projectType", label: filters.projectType, value: filters.projectType });
     if (filters.startYear !== 2011 || filters.endYear !== 2023) {
-      active.push({ key: "dateRange", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
+      active.push({ key: "startYear", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
     }
     if (filters.search) active.push({ key: "search", label: `Search: ${filters.search}`, value: filters.search });
     return active;
