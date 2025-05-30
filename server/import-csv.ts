@@ -50,7 +50,7 @@ export async function importCSVData() {
     console.log("Starting CSV import...");
     
     // Read the CSV file
-    const csvPath = path.join(process.cwd(), "attached_assets", "Cleaned_Africa_Carbon_Buyers.csv");
+    const csvPath = path.join(process.cwd(), "data", "Cleaned_Africa_Carbon_Buyers.csv");
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());
     
