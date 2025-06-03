@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
+import { DataNote } from "@/components/DataNote";
 import { FiltersBar } from "@/components/FiltersBar";
 import { MetricsCards } from "@/components/MetricsCards";
 import { AfricaTreemap } from "@/components/AfricaTreemap";
@@ -89,6 +90,9 @@ export default function Dashboard() {
         onDateRangeChange={handleDateRangeChange}
         onExport={handleExport}
       />
+
+      {/* Data Note */}
+      <DataNote />
 
       {/* Filters Bar */}
       <FiltersBar
