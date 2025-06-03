@@ -10,6 +10,7 @@ import { TopBuyers } from "@/components/TopBuyers";
 import { SectorBreakdown } from "@/components/SectorBreakdown";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
+import { DataImport } from "@/components/DataImport";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -157,6 +158,11 @@ export default function Dashboard() {
         </div>
         
 
+      </div>
+
+      {/* Data Import Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+        <DataImport />
       </div>
 
       {/* Detailed Data Table */}
