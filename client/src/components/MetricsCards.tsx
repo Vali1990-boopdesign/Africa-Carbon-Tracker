@@ -44,7 +44,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
 
   const cards = [
     {
-      title: "Total Credits Retired",
+      title: "Total Players",
       value: `${(metrics.totalCreditsRetired / 1000).toFixed(1)}M`,
       change: `+${metrics.totalCreditsGrowth}%`,
       changeLabel: "vs last year",
