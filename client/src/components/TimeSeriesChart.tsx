@@ -33,16 +33,16 @@ interface TopBuyerData {
 export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 h-96">
+      <Card className="material-card border-border h-96">
         <CardContent className="p-6">
-          <div className="flex items-center mb-6 border-b border-gray-700">
+          <div className="flex items-center mb-6 border-b border-border">
             {[...Array(3)].map((_, i) => (
               <div key={i} className="px-4 py-2 mr-4">
-                <div className="h-4 bg-gray-700 rounded w-16 animate-pulse"></div>
+                <div className="h-4 bg-muted rounded w-16 animate-pulse"></div>
               </div>
             ))}
           </div>
-          <div className="h-72 bg-dark-800/30 rounded-lg animate-pulse"></div>
+          <div className="h-72 bg-muted/30 rounded-lg animate-pulse"></div>
         </CardContent>
       </Card>
     );
