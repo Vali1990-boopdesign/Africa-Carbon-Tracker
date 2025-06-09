@@ -41,7 +41,7 @@ export function AfricaTreemap({
       const maxProjects = Math.max(...data.map(d => d.activeProjects));
       relativeSize = maxProjects > 0 ? (item.activeProjects / maxProjects) : 0;
     }
-    
+
     // Create size tiers for better grid layout
     if (relativeSize > 0.8) return { rows: 3, cols: 2 }; // Largest
     if (relativeSize > 0.6) return { rows: 2, cols: 2 }; // Large
@@ -96,7 +96,7 @@ export function AfricaTreemap({
               Active Projects
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="credits" className="space-y-2">
             <div className="text-center mb-3">
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -109,11 +109,11 @@ export function AfricaTreemap({
                   const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
                   const size = getCountrySize(item, index);
                   const colorIndex = Math.min(index, colors.length - 1);
-                  
+
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-border rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridRow: `span ${size.rows}`,
                         gridColumn: `span ${size.cols}`,
@@ -140,7 +140,7 @@ export function AfricaTreemap({
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="projects" className="space-y-2">
             <div className="text-center mb-3">
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -153,11 +153,11 @@ export function AfricaTreemap({
                   const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
                   const size = getCountrySize(item, index);
                   const colorIndex = Math.min(index, colors.length - 1);
-                  
+
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-border rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridRow: `span ${size.rows}`,
                         gridColumn: `span ${size.cols}`,

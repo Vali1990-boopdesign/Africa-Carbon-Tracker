@@ -95,12 +95,16 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10">
+            <Card className="material-card glass-effect border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10"
+              style={{
+                background: 'hsl(var(--card))',
+                backdropFilter: 'blur(16px) saturate(180%)'
+              }}>
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
+                    <p className="body-medium text-muted-foreground mb-1">{card.title}</p>
+                    <p className="headline-medium text-foreground font-semibold">{card.value}</p>
                     
                   </div>
                   <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>

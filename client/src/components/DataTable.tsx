@@ -126,7 +126,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
 
   const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
     <TableHead 
-      className="text-gray-300 cursor-pointer hover:text-white transition-colors"
+      className="text-muted-foreground cursor-pointer hover:text-foreground transition-colors label-medium"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center space-x-1">
@@ -142,18 +142,22 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="material-card glass-effect border-border"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-semibold text-white">Transaction Details</CardTitle>
+            <CardTitle className="headline-small text-foreground">Transaction Details</CardTitle>
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-400">
+              <span className="body-medium text-muted-foreground">
                 Showing {startIndex + 1}-{Math.min(endIndex, transactions.length)} of {transactions.length} transactions
               </span>
               <Button
                 onClick={handleExport}
                 disabled={selectedRows.size === 0}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-sm font-medium transition-colors"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 label-medium font-medium transition-colors"
               >
                 <Download className="mr-2" size={16} />
                 Export Selected ({selectedRows.size})
@@ -165,12 +169,12 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-700">
+                <TableRow className="border-border">
                   <TableHead className="w-12">
                     <Checkbox
                       checked={selectedRows.size === currentTransactions.length && currentTransactions.length > 0}
                       onCheckedChange={handleSelectAll}
-                      className="border-gray-600 data-[state=checked]:bg-emerald-600"
+                      className="border-border data-[state=checked]:bg-primary"
                     />
                   </TableHead>
                   <SortableHeader field="buyerBrandName">Buyer</SortableHeader>
@@ -179,14 +183,14 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                   <SortableHeader field="creditsRetired">Credits</SortableHeader>
                   <SortableHeader field="retirementYear">Year</SortableHeader>
                   <SortableHeader field="buyerSector">Sector</SortableHeader>
-                  <TableHead className="text-right text-gray-300">Actions</TableHead>
+                  <TableHead className="text-right text-muted-foreground label-medium">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {currentTransactions.map((transaction, index) => (
                   <motion.tr
                     key={transaction.id}
-                    className="border-gray-800 hover:bg-emerald-500/5 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer"
+                    className="border-border hover:bg-primary/5 hover:border-primary/20 transition-all duration-200 cursor-pointer"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
@@ -195,19 +199,19 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                       <Checkbox
                         checked={selectedRows.has(transaction.id)}
                         onCheckedChange={(checked) => handleSelectRow(transaction.id, checked as boolean)}
-                        className="border-gray-600 data-[state=checked]:bg-emerald-600"
+                        className="border-border data-[state=checked]:bg-primary"
                       />
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="text-sm font-medium text-white">{transaction.buyerBrandName}</p>
-                        <p className="text-xs text-gray-400">{transaction.buyerHQLocation}</p>
+                        <p className="body-medium font-medium text-foreground">{transaction.buyerBrandName}</p>
+                        <p className="body-small text-muted-foreground">{transaction.buyerHQLocation}</p>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
-                        <div className="w-5 h-3 bg-green-500 rounded-sm"></div>
-                        <span className="text-sm text-gray-200">{transaction.country}</span>
+                        <div className="w-5 h-3 bg-primary rounded-sm"></div>
+                        <span className="body-medium text-foreground">{transaction.country}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -216,22 +220,22 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="text-sm font-semibold text-white">
+                      <span className="body-medium font-semibold text-foreground">
                         {transaction.creditsRetired.toLocaleString()}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm text-gray-200">{transaction.retirementYear}</span>
+                      <span className="body-medium text-foreground">{transaction.retirementYear}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm text-gray-200">{transaction.buyerSector}</span>
+                      <span className="body-medium text-foreground">{transaction.buyerSector}</span>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end space-x-2">
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-blue-400 hover:text-blue-300 h-8 w-8"
+                          className="text-primary hover:text-primary/80 h-8 w-8"
                           title="View Details"
                         >
                           <Eye size={14} />
@@ -239,7 +243,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-gray-400 hover:text-white h-8 w-8"
+                          className="text-muted-foreground hover:text-foreground h-8 w-8"
                           title="Export"
                         >
                           <Download size={14} />
@@ -253,17 +257,17 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
           </div>
           
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-700">
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-400">Rows per page:</span>
+              <span className="body-medium text-muted-foreground">Rows per page:</span>
               <Select 
                 value={pageSize.toString()} 
                 onValueChange={(value) => setPageSize(parseInt(value))}
               >
-                <SelectTrigger className="w-20 bg-dark-800 border-gray-700 text-gray-200">
+                <SelectTrigger className="w-20 bg-surface-container border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-surface-container border-border">
                   <SelectItem value="10">10</SelectItem>
                   <SelectItem value="25">25</SelectItem>
                   <SelectItem value="50">50</SelectItem>
@@ -278,7 +282,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                className="bg-surface-container border-border text-muted-foreground hover:text-foreground hover:border-primary"
               >
                 <ChevronLeft size={16} />
               </Button>
@@ -294,8 +298,8 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                       onClick={() => setCurrentPage(page)}
                       className={
                         currentPage === page
-                          ? "bg-emerald-600 border-emerald-600 text-white"
-                          : "bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                          ? "bg-primary border-primary text-primary-foreground"
+                          : "bg-surface-container border-border text-muted-foreground hover:text-foreground hover:border-primary"
                       }
                     >
                       {page}
@@ -304,12 +308,12 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 })}
                 {totalPages > 5 && (
                   <>
-                    <span className="px-2 text-sm text-gray-400">...</span>
+                    <span className="px-2 body-medium text-muted-foreground">...</span>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(totalPages)}
-                      className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                      className="bg-surface-container border-border text-muted-foreground hover:text-foreground hover:border-primary"
                     >
                       {totalPages}
                     </Button>
@@ -322,7 +326,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                className="bg-surface-container border-border text-muted-foreground hover:text-foreground hover:border-primary"
               >
                 <ChevronRight size={16} />
               </Button>

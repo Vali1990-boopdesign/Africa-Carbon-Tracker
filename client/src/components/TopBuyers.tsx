@@ -67,15 +67,19 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="material-card glass-effect border-border"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold text-white">Top Buyers</CardTitle>
+            <CardTitle className="title-large text-foreground">Top Buyers</CardTitle>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-gray-400 hover:text-white"
+              className="text-muted-foreground hover:text-foreground"
             >
               {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             </Button>
@@ -95,7 +99,7 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps
                   {topBuyers.slice(0, isExpanded ? 10 : 5).map((buyer, index) => (
                     <motion.div
                       key={buyer.brandName}
-                      className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
+                      className="flex items-center justify-between p-3 bg-surface-container rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer group border border-border/50"
                       onClick={() => onBuyerClick?.(buyer.brandName)}
                       initial={{ x: 20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
@@ -104,27 +108,27 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps
                     >
                       <div className="flex items-center space-x-3">
                         <div 
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white label-small font-bold"
                           style={{ background: `linear-gradient(135deg, ${buyer.color}, ${buyer.color}dd)` }}
                         >
                           {buyer.initials}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">
+                          <p className="body-medium font-medium text-foreground group-hover:text-primary transition-colors">
                             {buyer.brandName}
                           </p>
-                          <p className="text-xs text-gray-400">{buyer.sector}</p>
+                          <p className="body-small text-muted-foreground">{buyer.sector}</p>
                         </div>
                       </div>
                       <div className="text-right flex items-center space-x-2">
                         <div>
-                          <p className="text-sm font-semibold text-emerald-400">
+                          <p className="body-medium font-semibold text-primary">
                             {(buyer.totalCredits / 1000).toFixed(1)}K
                           </p>
-                          <p className="text-xs text-gray-400">{buyer.percentage}%</p>
+                          <p className="body-small text-muted-foreground">{buyer.percentage}%</p>
                         </div>
                         <Eye 
-                          className="text-gray-400 group-hover:text-blue-400 transition-colors opacity-0 group-hover:opacity-100" 
+                          className="text-muted-foreground group-hover:text-primary transition-colors opacity-0 group-hover:opacity-100" 
                           size={16} 
                         />
                       </div>

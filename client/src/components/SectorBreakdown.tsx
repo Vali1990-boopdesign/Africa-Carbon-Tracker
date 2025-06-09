@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { motion } from "framer-motion";
@@ -12,9 +11,13 @@ interface SectorBreakdownProps {
 export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps) {
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
+      <Card className="material-card glass-effect border-border"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardHeader>
-          <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-32 animate-pulse"></div>
+          <CardTitle className="title-large text-foreground">Sector Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col lg:flex-row lg:items-center lg:space-x-6 space-y-4 lg:space-y-0">
@@ -38,9 +41,13 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
 
   if (!sectorData || sectorData.length === 0) {
     return (
-      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
+      <Card className="material-card glass-effect border-border"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Sector Breakdown</CardTitle>
+          <CardTitle className="title-large text-foreground">Sector Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center text-gray-600 dark:text-gray-400 py-8">
@@ -71,9 +78,13 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
+      <Card className="material-card glass-effect border-border"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Sector Breakdown</CardTitle>
+          <CardTitle className="title-large text-foreground">Sector Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
           {/* Responsive Layout: Vertical on mobile, Horizontal on desktop */}
@@ -99,7 +110,7 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            
+
             {/* Legend and Data Section */}
             <div className="flex-1 space-y-4">
               {/* Sector Legend */}
@@ -127,7 +138,7 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
                   </motion.div>
                 ))}
               </div>
-              
+
               {/* Total Credits Summary */}
               <motion.div 
                 className="pt-4 border-t border-gray-300 dark:border-gray-700"

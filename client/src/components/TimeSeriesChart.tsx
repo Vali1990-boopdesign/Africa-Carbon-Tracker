@@ -83,10 +83,10 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-dark-800 border border-gray-700 rounded-lg p-3 shadow-lg">
-          <p className="text-gray-300 text-sm">{`${label}`}</p>
+        <div className="bg-surface-container border border-border rounded-lg p-3 shadow-lg">
+          <p className="text-foreground body-small">{`${label}`}</p>
           {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-emerald-400 text-sm font-medium">
+            <p key={index} className="text-primary body-small font-medium">
               {`${entry.name}: ${entry.value?.toLocaleString()}`}
             </p>
           ))}
@@ -102,27 +102,31 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700 h-96">
+      <Card className="material-card glass-effect border-border h-96"
+        style={{
+          background: 'hsl(var(--card))',
+          backdropFilter: 'blur(16px) saturate(180%)'
+        }}>
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={onTabChange}>
-            <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700">
+            <TabsList className="grid w-full grid-cols-3 bg-surface-container border border-border">
               <TabsTrigger 
                 value="trends" 
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary label-medium"
               >
                 <TrendingUp className="mr-2" size={16} />
                 Trends
               </TabsTrigger>
               <TabsTrigger 
                 value="projects"
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary label-medium"
               >
                 <BarChart3 className="mr-2" size={16} />
                 Projects
               </TabsTrigger>
               <TabsTrigger 
                 value="buyers"
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary label-medium"
               >
                 <Axis3d className="mr-2" size={16} />
                 Buyers
