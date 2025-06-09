@@ -1,106 +1,115 @@
+
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 import { useTheme } from "./ThemeProvider";
 import { Download, Moon, Sun, Leaf } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface HeaderProps {
-  onDateRangeChange: (startYear: number, endYear: number) => void;
   onExport: () => void;
+  dateRange: string;
+  onDateRangeChange: (range: string) => void;
+  isLoading?: boolean;
 }
 
-export function Header({ onDateRangeChange, onExport }: HeaderProps) {
+export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
   const { theme, setTheme } = useTheme();
-  const [dateRange, setDateRange] = useState("2011-2023");
+
+  const dateRangeOptions = [
+    { key: "2011-2023", label: "2011 - 2023" },
+    { key: "2020-2023", label: "2020 - 2023" },
+    { key: "2021-2023", label: "2021 - 2023" },
+    { key: "2022-2023", label: "2022 - 2023" },
+    { key: "2023", label: "2023" }
+  ];
 
   const handleDateRangeChange = (value: string) => {
-    setDateRange(value);
-    
-    switch (value) {
-      case "2011-2023":
-        onDateRangeChange(2011, 2023);
-        break;
-      case "2020-2023":
-        onDateRangeChange(2020, 2023);
-        break;
-      case "custom":
-        // Handle custom range - could open a date picker
-        break;
-      default:
-        break;
-    }
+    onDateRangeChange(value);
   };
 
   return (
-    <motion.header 
-      className="glass-effect border-b border-gray-800 sticky top-0 z-50"
+    <motion.header
+      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider"
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Title */}
+          {/* Left side - Title and Icon */}
           <motion.div 
-            className="flex items-center space-x-4"
+            className="flex items-center space-x-3"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                <Leaf className="text-white" size={20} />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white">Africa Carbon Credits Analytics</h1>
-                <p className="text-xs text-gray-400">Real-time carbon market insights</p>
-              </div>
+            <div className="flex items-center justify-center w-10 h-10 bg-success/20 rounded-lg">
+              <Leaf className="w-6 h-6 text-success" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">
+                Africa Carbon Dashboard
+              </h1>
+              <p className="text-sm text-default-600">
+                Berkeley Carbon Trading Project Data
+              </p>
             </div>
           </motion.div>
-          
-          {/* Header Controls */}
+
+          {/* Right side - Controls */}
           <motion.div 
-            className="flex items-center space-x-4"
+            className="flex items-center space-x-3"
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {/* Date Range Selector */}
-            <div className="flex items-center space-x-2 bg-dark-800 rounded-lg p-2">
-              <Select value={dateRange} onValueChange={handleDateRangeChange}>
-                <SelectTrigger className="w-32 border-none bg-transparent text-gray-200">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2011-2023">2011 - 2023</SelectItem>
-                  <SelectItem value="2020-2023">2020 - 2023</SelectItem>
-                  <SelectItem value="custom">Custom Range</SelectItem>
-                </SelectContent>
+            <div className="bg-content2 rounded-lg px-3 py-2 h-10 flex items-center">
+              <Select
+                size="sm"
+                value={dateRange}
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0] as string;
+                  handleDateRangeChange(selected);
+                }}
+                className="w-28"
+                classNames={{
+                  trigger: "border-none bg-transparent text-foreground min-h-0 h-auto px-0",
+                  value: "text-foreground",
+                }}
+                aria-label="Select date range"
+              >
+                {dateRangeOptions.map((option) => (
+                  <SelectItem key={option.key} value={option.key}>
+                    {option.label}
+                  </SelectItem>
+                ))}
               </Select>
             </div>
-            
+
             {/* Export Button */}
-            <Button 
+            <Button
+              color="primary"
+              size="sm"
+              startContent={<Download size={16} />}
               onClick={onExport}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm font-medium transition-colors"
+              isLoading={isLoading}
+              className="h-10"
             >
-              <Download className="mr-2" size={16} />
               Export
             </Button>
-            
+
             {/* Dark Mode Toggle */}
             <Button
+              isIconOnly
               variant="ghost"
-              size="icon"
+              size="sm"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 bg-dark-800 hover:bg-dark-700 rounded-lg"
+              className="h-10 w-10"
+              aria-label="Toggle theme"
             >
-              {theme === "dark" ? (
-                <Sun className="h-4 w-4 text-gray-400" />
-              ) : (
-                <Moon className="h-4 w-4 text-gray-400" />
-              )}
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </Button>
           </motion.div>
         </div>

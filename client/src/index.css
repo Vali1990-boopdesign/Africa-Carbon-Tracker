@@ -1,43 +1,81 @@
+@import "@nextui-org/theme/dist/base.css";
+@import "@nextui-org/theme/dist/utilities.css";
+@import "@nextui-org/theme/dist/components.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --primary: 142 76% 36%;
-  --primary-foreground: 355 7% 97%;
-  --secondary: 240 3.7% 15.9%;
-  --secondary-foreground: 0 0% 98%;
-  --accent: 240 3.7% 15.9%;
-  --accent-foreground: 0 0% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --ring: 142 76% 36%;
-  --radius: 0.5rem;
-  --chart-1: 142 76% 36%;
+  /* HeroUI Dark Theme Integration */
+  --nextui-background: 220 13% 9%;
+  --nextui-foreground: 220 13% 91%;
+  --nextui-card: 220 13% 13%;
+  --nextui-card-foreground: 220 13% 91%;
+  --nextui-popover: 220 13% 13%;
+  --nextui-popover-foreground: 220 13% 91%;
+  --nextui-primary: 142 72% 29%;
+  --nextui-primary-foreground: 220 13% 91%;
+  --nextui-secondary: 220 13% 20%;
+  --nextui-secondary-foreground: 220 13% 91%;
+  --nextui-success: 142 72% 29%;
+  --nextui-success-foreground: 220 13% 91%;
+  --nextui-warning: 45 93% 47%;
+  --nextui-warning-foreground: 220 13% 9%;
+  --nextui-danger: 0 72% 51%;
+  --nextui-danger-foreground: 220 13% 91%;
+  --nextui-default: 220 13% 20%;
+  --nextui-default-foreground: 220 13% 91%;
+  --nextui-default-100: 220 13% 17%;
+  --nextui-default-200: 220 13% 20%;
+  --nextui-default-300: 220 9% 46%;
+  --nextui-default-400: 220 9% 46%;
+  --nextui-default-500: 220 13% 20%;
+  --nextui-default-600: 220 13% 17%;
+  --nextui-default-700: 220 13% 13%;
+  --nextui-default-800: 220 13% 9%;
+  --nextui-default-900: 220 13% 9%;
+  --nextui-divider: 220 13% 20%;
+  --nextui-overlay: 0 0% 0%;
+  --nextui-focus: 142 72% 29%;
+  --nextui-content1: 220 13% 13%;
+  --nextui-content2: 220 13% 17%;
+  --nextui-content3: 220 13% 20%;
+  --nextui-content4: 220 9% 46%;
+
+  /* Legacy CSS variables for compatibility */
+  --background: 220 13% 9%;
+  --foreground: 220 13% 91%;
+  --muted: 220 13% 17%;
+  --muted-foreground: 220 9% 46%;
+  --popover: 220 13% 13%;
+  --popover-foreground: 220 13% 91%;
+  --card: 220 13% 13%;
+  --card-foreground: 220 13% 91%;
+  --border: 220 13% 20%;
+  --input: 220 13% 17%;
+  --primary: 142 72% 29%;
+  --primary-foreground: 220 13% 91%;
+  --secondary: 220 13% 20%;
+  --secondary-foreground: 220 13% 91%;
+  --accent: 220 13% 20%;
+  --accent-foreground: 220 13% 91%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 220 13% 91%;
+  --ring: 142 72% 29%;
+  --radius: 0.75rem;
+
+  /* Chart Colors */
+  --chart-1: 142 72% 29%;
   --chart-2: 217 91% 60%;
   --chart-3: 45 93% 47%;
   --chart-4: 271 81% 56%;
   --chart-5: 0 72% 51%;
 
-  /* Custom properties for glass effect */
-  --glass-bg: rgba(26, 26, 26, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  
-  /* Dark color palette */
-  --dark-950: #0f0f0f;
-  --dark-900: #111827;
-  --dark-800: #1f2937;
-  --dark-700: #374151;
+  /* Enhanced color palette */
+  --dark-950: #0f172a;
+  --dark-900: #1e293b;
+  --dark-800: #334155;
+  --dark-700: #475569;
   --emerald-500: #10b981;
   --emerald-600: #059669;
   --amber-500: #f59e0b;
@@ -47,25 +85,62 @@
 }
 
 .light {
+  /* HeroUI Light Theme Integration */
+  --nextui-background: 0 0% 100%;
+  --nextui-foreground: 220 13% 9%;
+  --nextui-card: 0 0% 100%;
+  --nextui-card-foreground: 220 13% 9%;
+  --nextui-popover: 0 0% 100%;
+  --nextui-popover-foreground: 220 13% 9%;
+  --nextui-primary: 142 72% 29%;
+  --nextui-primary-foreground: 0 0% 100%;
+  --nextui-secondary: 220 13% 91%;
+  --nextui-secondary-foreground: 220 13% 9%;
+  --nextui-success: 142 72% 29%;
+  --nextui-success-foreground: 0 0% 100%;
+  --nextui-warning: 45 93% 47%;
+  --nextui-warning-foreground: 220 13% 9%;
+  --nextui-danger: 0 84% 60%;
+  --nextui-danger-foreground: 0 0% 100%;
+  --nextui-default: 220 13% 91%;
+  --nextui-default-foreground: 220 13% 9%;
+  --nextui-default-100: 220 13% 95%;
+  --nextui-default-200: 220 13% 91%;
+  --nextui-default-300: 220 9% 46%;
+  --nextui-default-400: 220 9% 46%;
+  --nextui-default-500: 220 13% 91%;
+  --nextui-default-600: 220 13% 87%;
+  --nextui-default-700: 220 13% 82%;
+  --nextui-default-800: 220 13% 78%;
+  --nextui-default-900: 220 13% 74%;
+  --nextui-divider: 220 13% 87%;
+  --nextui-overlay: 0 0% 0%;
+  --nextui-focus: 142 72% 29%;
+  --nextui-content1: 0 0% 100%;
+  --nextui-content2: 220 13% 96%;
+  --nextui-content3: 220 13% 94%;
+  --nextui-content4: 220 13% 91%;
+
+  /* Legacy variables for light mode */
   --background: 0 0% 100%;
-  --foreground: 20 14.3% 4.1%;
-  --muted: 60 4.8% 95.9%;
-  --muted-foreground: 25 5.3% 44.7%;
+  --foreground: 220 13% 9%;
+  --muted: 220 13% 95%;
+  --muted-foreground: 220 9% 46%;
   --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
+  --popover-foreground: 220 13% 9%;
   --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
-  --primary: 142 76% 36%;
-  --primary-foreground: 355 7% 97%;
-  --secondary: 60 4.8% 95.9%;
-  --secondary-foreground: 24 9.8% 10%;
-  --accent: 60 4.8% 95.9%;
-  --accent-foreground: 24 9.8% 10%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 20 14.3% 4.1%;
+  --card-foreground: 220 13% 9%;
+  --border: 220 13% 87%;
+  --input: 220 13% 91%;
+  --primary: 142 72% 29%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 13% 91%;
+  --secondary-foreground: 220 13% 9%;
+  --accent: 220 13% 91%;
+  --accent-foreground: 220 13% 9%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --ring: 142 72% 29%;
 }
 
 @layer base {
@@ -77,23 +152,39 @@
     @apply font-sans antialiased bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
-  
+
   html {
     scroll-behavior: smooth;
   }
 }
 
 @layer components {
-  .glass-effect {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+  /* Enhanced Card Styling compatible with HeroUI */
+  .material-card {
+    background: hsl(var(--nextui-card));
+    border: 1px solid hsl(var(--nextui-divider));
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.1),
+      0 1px 2px rgba(0, 0, 0, 0.06);
   }
-  
+
+  .light .material-card {
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  /* Glass effect compatible with HeroUI */
+  .glass-effect {
+    background: rgba(var(--nextui-background), 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--nextui-divider));
+  }
+
   .gradient-border {
     position: relative;
   }
-  
+
   .gradient-border::before {
     content: '';
     position: absolute;
@@ -105,12 +196,12 @@
     mask-composite: xor;
     -webkit-mask-composite: xor;
   }
-  
+
   .scrollbar-hidden {
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
-  
+
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
@@ -120,16 +211,16 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   /* Custom animation utilities */
   .animate-fade-in {
     animation: fadeIn 0.5s ease-in-out forwards;
   }
-  
+
   .animate-slide-up {
     animation: slideUp 0.3s ease-out forwards;
   }
-  
+
   .animate-pulse-soft {
     animation: pulseSoft 2s infinite;
   }
@@ -166,34 +257,9 @@
   }
 }
 
-/* Dark color classes for manual use */
-.bg-dark-950 {
-  background-color: var(--dark-950);
-}
-
-.bg-dark-900 {
-  background-color: var(--dark-900);
-}
-
-.bg-dark-800 {
-  background-color: var(--dark-800);
-}
-
-.text-emerald-500 {
-  color: var(--emerald-500);
-}
-
-.text-amber-500 {
-  color: var(--amber-500);
-}
-
-.text-blue-500 {
-  color: var(--blue-500);
-}
-
 /* Custom focus styles for better accessibility */
 .focus-visible:focus-visible {
-  outline: 2px solid var(--emerald-500);
+  outline: 2px solid hsl(var(--nextui-focus));
   outline-offset: 2px;
 }
 

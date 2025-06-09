@@ -1,4 +1,6 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
+import { NextUIProvider } from "@nextui-org/react";
 
 type Theme = "dark" | "light";
 
@@ -32,9 +34,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
-
     root.classList.add(theme);
   }, [theme]);
 
@@ -48,7 +48,11 @@ export function ThemeProvider({
 
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
-      {children}
+      <NextUIProvider>
+        <div className={`${theme} text-foreground bg-background min-h-screen`}>
+          {children}
+        </div>
+      </NextUIProvider>
     </ThemeProviderContext.Provider>
   );
 }
