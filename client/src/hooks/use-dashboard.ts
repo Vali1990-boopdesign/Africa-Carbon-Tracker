@@ -16,8 +16,8 @@ export function useDashboard() {
     country: "",
     sector: "",
     projectType: "",
-    startYear: 2011,
-    endYear: 2023,
+    startYear: 2010,
+    endYear: 2022,
     search: "",
   });
 

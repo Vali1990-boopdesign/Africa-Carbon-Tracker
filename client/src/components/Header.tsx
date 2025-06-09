@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
-import carbonIcon from "../assets/carbon-icon.png";
+import carbonIcon from "@assets/carbon-icon.png";
 
 interface HeaderProps {
   onExport: () => void;
@@ -16,11 +16,11 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
-    { key: "2020-2024", label: "2020 - 2024" },
-    { key: "2021-2024", label: "2021 - 2024" },
-    { key: "2022-2024", label: "2022 - 2024" },
-    { key: "2023-2024", label: "2023 - 2024" },
-    { key: "2024", label: "2024" }
+    { key: "2020-2022", label: "2020 - 2022" },
+    { key: "2021-2022", label: "2021 - 2022" },
+    { key: "2022", label: "2022" },
+    { key: "2019-2022", label: "2019 - 2022" },
+    { key: "2018-2022", label: "2018 - 2022" }
   ];
 
   const handleDateRangeChange = (value: string) => {
@@ -55,7 +55,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
                 Africa Carbon Dashboard
               </h1>
               <p className="text-sm text-default-600">
-                Berkeley Carbon Trading Project Data
+                © The Catalyst Fund
               </p>
             </div>
           </motion.div>

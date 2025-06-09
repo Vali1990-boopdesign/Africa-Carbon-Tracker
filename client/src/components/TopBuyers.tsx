@@ -69,30 +69,12 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps
     >
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-semibold text-white">Top Buyers</CardTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="text-gray-400 hover:text-white"
-            >
-              {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </Button>
-          </div>
+          <CardTitle className="text-lg font-semibold text-white">Top Buyers</CardTitle>
         </CardHeader>
         
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <CardContent>
-                <div className="space-y-3">
-                  {topBuyers.slice(0, isExpanded ? 10 : 5).map((buyer, index) => (
+        <CardContent>
+          <div className="space-y-3">
+            {topBuyers.slice(0, 5).map((buyer, index) => (
                     <motion.div
                       key={buyer.brandName}
                       className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
