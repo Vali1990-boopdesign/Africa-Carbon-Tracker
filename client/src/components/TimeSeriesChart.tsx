@@ -83,10 +83,10 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-dark-800 border border-gray-700 rounded-lg p-3 shadow-lg">
-          <p className="text-gray-300 text-sm">{`${label}`}</p>
+        <div className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg p-3 shadow-xl backdrop-blur-sm">
+          <p className="text-gray-900 dark:text-gray-100 text-sm font-medium">{`${label}`}</p>
           {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-emerald-400 text-sm font-medium">
+            <p key={index} className="text-emerald-600 dark:text-emerald-400 text-sm font-medium">
               {`${entry.name}: ${entry.value?.toLocaleString()}`}
             </p>
           ))}

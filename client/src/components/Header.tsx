@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
-import carbonIcon from "@/assets/carbon-icon.png";
+import carbonIcon from "../assets/carbon-icon.png";
 
 interface HeaderProps {
   onExport: () => void;

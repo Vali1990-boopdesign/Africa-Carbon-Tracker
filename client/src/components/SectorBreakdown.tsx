@@ -63,10 +63,10 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-dark-800 border border-gray-700 rounded-lg p-3 shadow-lg">
-          <p className="text-gray-300 text-sm font-medium">{data.sector}</p>
-          <p className="text-emerald-400 text-sm">Credits: {data.totalCredits.toLocaleString()}</p>
-          <p className="text-blue-400 text-sm">Share: {((data.totalCredits / totalCredits) * 100).toFixed(1)}%</p>
+        <div className="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg p-3 shadow-xl backdrop-blur-sm">
+          <p className="text-gray-900 dark:text-gray-100 text-sm font-medium">{data.sector}</p>
+          <p className="text-emerald-600 dark:text-emerald-400 text-sm">Credits: {data.totalCredits.toLocaleString()}</p>
+          <p className="text-blue-600 dark:text-blue-400 text-sm">Share: {((data.totalCredits / totalCredits) * 100).toFixed(1)}%</p>
         </div>
       );
     }

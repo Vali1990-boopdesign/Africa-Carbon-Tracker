@@ -1,6 +1,5 @@
-
 import { motion } from "framer-motion";
-import catalystLogo from "@/assets/catalyst-fund-logo.png";
+import catalystLogo from "../assets/catalyst-fund-logo.png";
 
 export function Footer() {
   return (

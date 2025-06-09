@@ -91,7 +91,7 @@ export function AfricaTreemap({
               Carbon Credits
             </TabsTrigger>
             <TabsTrigger value="projects" className="text-sm">
-              Active Projects
+              Projects
             </TabsTrigger>
           </TabsList>
           
@@ -142,7 +142,7 @@ export function AfricaTreemap({
           <TabsContent value="projects" className="space-y-2">
             <div className="text-center mb-3">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Active Projects by Country
+                Projects by Country
               </p>
             </div>
             <div className="w-full">

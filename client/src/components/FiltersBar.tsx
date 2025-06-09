@@ -44,7 +44,7 @@ export function FiltersBar({
     if (searchValue.length > 0 && allTransactions) {
       const suggestions = new Set<string>();
       const searchLower = searchValue.toLowerCase();
-      
+
       allTransactions.forEach(transaction => {
         // Search in buyer names
         if (transaction.buyerBrandName.toLowerCase().includes(searchLower)) {
@@ -63,7 +63,7 @@ export function FiltersBar({
           suggestions.add(transaction.buyerSector);
         }
       });
-      
+
       setSearchSuggestions(Array.from(suggestions).slice(0, 8));
     } else {
       setSearchSuggestions([]);
@@ -113,7 +113,7 @@ export function FiltersBar({
                 onFocus={() => setIsSearchFocused(true)}
                 className="w-full bg-gray-800 dark:bg-dark-800 border-gray-600 dark:border-gray-700 pl-10 text-gray-200 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:border-emerald-500"
               />
-              
+
               {/* Search Suggestions Dropdown */}
               <AnimatePresence>
                 {isSearchFocused && searchSuggestions.length > 0 && (
@@ -137,7 +137,7 @@ export function FiltersBar({
               </AnimatePresence>
             </div>
           </div>
-          
+
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
             <Select 
@@ -154,7 +154,7 @@ export function FiltersBar({
                 ))}
               </SelectContent>
             </Select>
-            
+
             <Select 
               value={filters.sector || "all"} 
               onValueChange={(value) => onFilterChange("sector", value === "all" ? "" : value)}
@@ -169,7 +169,7 @@ export function FiltersBar({
                 ))}
               </SelectContent>
             </Select>
-            
+
             <Select 
               value={filters.projectType || "all"} 
               onValueChange={(value) => onFilterChange("projectType", value === "all" ? "" : value)}
@@ -184,7 +184,7 @@ export function FiltersBar({
                 ))}
               </SelectContent>
             </Select>
-            
+
             <Button
               variant="ghost"
               size="icon"
@@ -195,7 +195,7 @@ export function FiltersBar({
             </Button>
           </div>
         </div>
-        
+
         {/* Active Filters Breadcrumb */}
         <AnimatePresence>
           {activeFilters.length > 0 && (
