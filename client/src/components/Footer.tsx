@@ -13,7 +13,7 @@ export function Footer() {
         {/* Catalyst Fund Logo */}
         <div className="flex justify-center mb-6">
           <img
-            src="./catalyst-fund-logo.png"
+            src="/catalyst-fund-logo.png"
             alt="Catalyst Fund"
             className="h-16 object-contain"
           />

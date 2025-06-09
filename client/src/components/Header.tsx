@@ -44,7 +44,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
           >
             <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg p-2">
               <img 
-                src="./carbon-icon.png" 
+                src="/carbon-icon.png" 
                 alt="Carbon footprint icon" 
                 className="w-full h-full object-contain filter brightness-0 invert"
               />
