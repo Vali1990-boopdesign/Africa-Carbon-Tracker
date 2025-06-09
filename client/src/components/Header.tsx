@@ -67,9 +67,9 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {/* Date Range Selector */}
-            <div className="flex items-center space-x-2 bg-dark-800 rounded-lg p-2">
+            <div className="bg-dark-800 rounded-lg px-3 py-2">
               <Select value={dateRange} onValueChange={handleDateRangeChange}>
-                <SelectTrigger className="w-32 border-none bg-transparent text-gray-200">
+                <SelectTrigger className="w-32 border-none bg-transparent text-gray-200 px-0">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
