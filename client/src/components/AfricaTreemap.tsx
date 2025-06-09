@@ -32,14 +32,22 @@ export function AfricaTreemap({
     }
   }).slice(0, 20);
 
-  const getCountrySize = (item: CountryData) => {
+  const getCountrySize = (item: CountryData, index: number) => {
+    let relativeSize;
     if (activeTab === "credits") {
       const maxCredits = Math.max(...data.map(d => d.totalCredits));
-      return maxCredits > 0 ? (item.totalCredits / maxCredits) * 100 : 25;
+      relativeSize = maxCredits > 0 ? (item.totalCredits / maxCredits) : 0;
     } else {
       const maxProjects = Math.max(...data.map(d => d.activeProjects));
-      return maxProjects > 0 ? (item.activeProjects / maxProjects) * 100 : 25;
+      relativeSize = maxProjects > 0 ? (item.activeProjects / maxProjects) : 0;
     }
+    
+    // Create size tiers for better grid layout
+    if (relativeSize > 0.8) return { rows: 3, cols: 2 }; // Largest
+    if (relativeSize > 0.6) return { rows: 2, cols: 2 }; // Large
+    if (relativeSize > 0.4) return { rows: 2, cols: 1 }; // Medium-large
+    if (relativeSize > 0.2) return { rows: 1, cols: 2 }; // Medium
+    return { rows: 1, cols: 1 }; // Small
   };
 
   const colors = [
@@ -96,10 +104,10 @@ export function AfricaTreemap({
               </p>
             </div>
             <div className="p-2">
-              <div className="grid grid-cols-4 gap-1 w-full auto-rows-min">
+              <div className="grid grid-cols-6 gap-1 w-full auto-rows-fr">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
-                  const size = getCountrySize(item);
+                  const size = getCountrySize(item, index);
                   const colorIndex = Math.min(index, colors.length - 1);
                   
                   return (
@@ -107,10 +115,10 @@ export function AfricaTreemap({
                       key={item.country}
                       className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
-                        gridRow: `span ${Math.max(Math.ceil(size / 30), 1)}`,
-                        gridColumn: `span ${Math.max(Math.ceil(size / 30), 1)}`,
-                        minHeight: '50px',
-                        maxHeight: '80px'
+                        gridRow: `span ${size.rows}`,
+                        gridColumn: `span ${size.cols}`,
+                        minHeight: `${40 * size.rows}px`,
+                        minWidth: '100%'
                       }}
                       onClick={() => onCountryClick?.(item.country)}
                       title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
@@ -140,10 +148,10 @@ export function AfricaTreemap({
               </p>
             </div>
             <div className="p-2">
-              <div className="grid grid-cols-4 gap-1 w-full auto-rows-min">
+              <div className="grid grid-cols-6 gap-1 w-full auto-rows-fr">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
-                  const size = getCountrySize(item);
+                  const size = getCountrySize(item, index);
                   const colorIndex = Math.min(index, colors.length - 1);
                   
                   return (
@@ -151,10 +159,10 @@ export function AfricaTreemap({
                       key={item.country}
                       className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
-                        gridRow: `span ${Math.max(Math.ceil(size / 30), 1)}`,
-                        gridColumn: `span ${Math.max(Math.ceil(size / 30), 1)}`,
-                        minHeight: '50px',
-                        maxHeight: '80px'
+                        gridRow: `span ${size.rows}`,
+                        gridColumn: `span ${size.cols}`,
+                        minHeight: `${40 * size.rows}px`,
+                        minWidth: '100%'
                       }}
                       onClick={() => onCountryClick?.(item.country)}
                       title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
