@@ -151,9 +151,8 @@
   --glass-shadow: rgba(0, 0, 0, 0.1);
 }
 
-:root,
-.dark {
-  /* Dark Theme (Default) */
+:root {
+  /* Default theme (dark) */
   --background: 220 13% 9%;
   --foreground: 220 13% 91%;
   --muted: 220 13% 17%;
@@ -174,6 +173,7 @@
   --destructive-foreground: 220 13% 91%;
   --ring: 142 72% 29%;
   --radius: 0.75rem;
+}
   
   /* Material 3 Chart Colors */
   --chart-1: 142 72% 29%;
@@ -207,8 +207,31 @@
   --blue-600: #2563eb;
 }
 
+.dark {
+  /* Dark Theme */
+  --background: 220 13% 9%;
+  --foreground: 220 13% 91%;
+  --muted: 220 13% 17%;
+  --muted-foreground: 220 9% 55%;
+  --popover: 220 13% 15%;
+  --popover-foreground: 220 13% 91%;
+  --card: 220 13% 15%;
+  --card-foreground: 220 13% 91%;
+  --border: 220 13% 25%;
+  --input: 220 13% 17%;
+  --primary: 142 72% 29%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 13% 20%;
+  --secondary-foreground: 220 13% 91%;
+  --accent: 220 13% 20%;
+  --accent-foreground: 220 13% 91%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 220 13% 91%;
+  --ring: 142 72% 29%;
+}
+
 .light {
-  /* Material 3 Light Theme */
+  /* Light Theme */
   --background: 0 0% 98%;
   --foreground: 220 13% 9%;
   --muted: 220 13% 95%;

@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf } from "lucide-react";
 import { motion } from "framer-motion";
@@ -14,15 +15,15 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="bg-background/60 backdrop-blur-md border-divider animate-pulse">
+            <Card key={i} className="bg-card border-border animate-pulse">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-700 rounded w-24 mb-2"></div>
-                    <div className="h-8 bg-gray-700 rounded w-16 mb-2"></div>
-                    <div className="h-4 bg-gray-700 rounded w-32"></div>
+                    <div className="h-4 bg-muted rounded w-24 mb-2"></div>
+                    <div className="h-8 bg-muted rounded w-16 mb-2"></div>
+                    <div className="h-4 bg-muted rounded w-32"></div>
                   </div>
-                  <div className="w-12 h-12 bg-gray-700 rounded-lg"></div>
+                  <div className="w-12 h-12 bg-muted rounded-lg"></div>
                 </div>
               </CardContent>
             </Card>
@@ -35,7 +36,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   if (!metrics) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div className="text-center text-gray-400">
+        <div className="text-center text-muted-foreground">
           <p>Unable to load metrics data</p>
         </div>
       </div>
@@ -95,7 +96,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="bg-card border border-border rounded-xl shadow-sm">
+            <Card className="bg-card border-border rounded-xl shadow-sm transition-colors">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">

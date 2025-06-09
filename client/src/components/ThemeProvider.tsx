@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light";
@@ -32,10 +33,15 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-
+    
+    // Remove all theme classes first
     root.classList.remove("light", "dark");
-
+    
+    // Add the current theme class
     root.classList.add(theme);
+    
+    // Force a style recalculation
+    root.style.colorScheme = theme;
   }, [theme]);
 
   const value = {
