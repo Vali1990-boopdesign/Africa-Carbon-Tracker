@@ -95,38 +95,41 @@ export function AfricaTreemap({
                 Total Carbon Credits by Country
               </p>
             </div>
-            <div className="grid grid-cols-4 gap-1 min-h-[450px] w-full auto-rows-min">
-              {sortedData.map((item, index) => {
-                const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
-                const size = getCountrySize(item);
-                const colorIndex = Math.min(index, colors.length - 1);
-                
-                return (
-                  <div
-                    key={item.country}
-                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
-                    style={{ 
-                      gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                      gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                      minHeight: '60px'
-                    }}
-                    onClick={() => onCountryClick?.(item.country)}
-                    title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
-                  >
-                    <div className="text-center">
-                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
-                        {item.country}
-                      </div>
-                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
-                        {item.totalCredits.toLocaleString()}
-                      </div>
-                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
-                        {percentage}%
+            <div className="p-2 max-h-[400px] overflow-hidden">
+              <div className="grid grid-cols-4 gap-1 h-full w-full auto-rows-min">
+                {sortedData.map((item, index) => {
+                  const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
+                  const size = getCountrySize(item);
+                  const colorIndex = Math.min(index, colors.length - 1);
+                  
+                  return (
+                    <div
+                      key={item.country}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      style={{ 
+                        gridRow: `span ${Math.max(Math.ceil(size / 30), 1)}`,
+                        gridColumn: `span ${Math.max(Math.ceil(size / 30), 1)}`,
+                        minHeight: '50px',
+                        maxHeight: '80px'
+                      }}
+                      onClick={() => onCountryClick?.(item.country)}
+                      title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
+                    >
+                      <div className="text-center">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
+                          {item.country}
+                        </div>
+                        <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
+                          {item.totalCredits.toLocaleString()}
+                        </div>
+                        <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
+                          {percentage}%
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </TabsContent>
           
@@ -136,38 +139,41 @@ export function AfricaTreemap({
                 Active Projects by Country
               </p>
             </div>
-            <div className="grid grid-cols-4 gap-1 min-h-[450px] w-full auto-rows-min">
-              {sortedData.map((item, index) => {
-                const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
-                const size = getCountrySize(item);
-                const colorIndex = Math.min(index, colors.length - 1);
-                
-                return (
-                  <div
-                    key={item.country}
-                    className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
-                    style={{ 
-                      gridRow: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                      gridColumn: `span ${Math.max(Math.ceil(size / 25), 1)}`,
-                      minHeight: '60px'
-                    }}
-                    onClick={() => onCountryClick?.(item.country)}
-                    title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
-                  >
-                    <div className="text-center">
-                      <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
-                        {item.country}
-                      </div>
-                      <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
-                        {item.activeProjects}
-                      </div>
-                      <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
-                        {percentage}%
+            <div className="p-2 max-h-[400px] overflow-hidden">
+              <div className="grid grid-cols-4 gap-1 h-full w-full auto-rows-min">
+                {sortedData.map((item, index) => {
+                  const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
+                  const size = getCountrySize(item);
+                  const colorIndex = Math.min(index, colors.length - 1);
+                  
+                  return (
+                    <div
+                      key={item.country}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      style={{ 
+                        gridRow: `span ${Math.max(Math.ceil(size / 30), 1)}`,
+                        gridColumn: `span ${Math.max(Math.ceil(size / 30), 1)}`,
+                        minHeight: '50px',
+                        maxHeight: '80px'
+                      }}
+                      onClick={() => onCountryClick?.(item.country)}
+                      title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
+                    >
+                      <div className="text-center">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1`}>
+                          {item.country}
+                        </div>
+                        <div className={`text-xs font-bold ${colors[colorIndex].text}`}>
+                          {item.activeProjects}
+                        </div>
+                        <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
+                          {percentage}%
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </TabsContent>
         </Tabs>
