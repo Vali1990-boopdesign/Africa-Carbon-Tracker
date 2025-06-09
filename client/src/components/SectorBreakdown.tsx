@@ -92,7 +92,7 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
             </div>
           ) : (
             <div className="flex flex-col lg:flex-row items-start gap-6">
-              {/* Pie Chart - Left side on desktop */}
+              {/* Donut Chart - Left side on desktop */}
               <div className="w-full lg:flex-1 flex justify-center">
                 <ResponsiveContainer width="100%" height={350}>
                   <PieChart>
@@ -100,16 +100,17 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
                       data={sectorData}
                       cx="50%"
                       cy="50%"
+                      innerRadius={60}
                       outerRadius={120}
                       fill="#8884d8"
                       dataKey="totalCredits"
-                      label={({ sector, percent }) => `${sector}: ${(percent * 100).toFixed(1)}%`}
+                      stroke="none"
                     >
                       {sectorData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number) => [formatNumber(value), 'Credits']} />
+                    <Tooltip content={<CustomTooltip />} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>

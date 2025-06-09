@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
-import carbonIcon from "/carbon-icon.png";
+import carbonIcon from "@/assets/carbon-icon.png";
 
 interface HeaderProps {
   onExport: () => void;
@@ -77,7 +77,9 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
                 defaultValue="all"
               >
                 <SelectTrigger className="w-32 border-none bg-transparent text-white min-h-0 h-auto px-0">
-                  <SelectValue placeholder="All Years" />
+                  <SelectValue placeholder="All Years">
+                    {dateRangeOptions.find(option => option.key === (dateRange || "all"))?.label || "All Years"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {dateRangeOptions.map((option) => (
