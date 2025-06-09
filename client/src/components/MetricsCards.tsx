@@ -44,7 +44,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
 
   const cards = [
     {
-      title: "Total Players",
+      title: "Total Credits",
       value: `${(metrics.totalCreditsRetired / 1000).toFixed(1)}M`,
       change: `+${metrics.totalCreditsGrowth}%`,
       changeLabel: "vs last year",
@@ -54,7 +54,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-emerald-500",
     },
     {
-      title: "Active Buyers",
+      title: "Buyers",
       value: metrics.activeBuyers.toLocaleString(),
       change: `+${metrics.activeBuyersGrowth}`,
       changeLabel: "this month",
