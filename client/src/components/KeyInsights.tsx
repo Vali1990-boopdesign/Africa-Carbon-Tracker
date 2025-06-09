@@ -1,6 +1,6 @@
 
-import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, TrendingUp, MapPin, Factory, Users } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
@@ -70,11 +70,11 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
     return (
       <Card className="h-40">
         <CardHeader>
-          <div className="h-6 bg-default-200 rounded w-32 animate-pulse"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32 animate-pulse"></div>
         </CardHeader>
-        <CardBody>
-          <div className="h-20 bg-default-100 rounded-lg animate-pulse"></div>
-        </CardBody>
+        <CardContent>
+          <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+        </CardContent>
       </Card>
     );
   }
@@ -93,11 +93,10 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
             <h3 className="text-lg font-semibold">Key Insights</h3>
             <div className="flex items-center space-x-2">
               <Button
-                isIconOnly
                 variant="ghost"
                 size="sm"
                 onClick={prevInsight}
-                className="h-8 w-8"
+                className="h-8 w-8 p-0"
               >
                 <ChevronLeft size={16} />
               </Button>
@@ -112,11 +111,10 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
                 ))}
               </div>
               <Button
-                isIconOnly
                 variant="ghost"
                 size="sm"
                 onClick={nextInsight}
-                className="h-8 w-8"
+                className="h-8 w-8 p-0"
               >
                 <ChevronRight size={16} />
               </Button>
