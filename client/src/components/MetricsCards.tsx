@@ -101,21 +101,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.title}</p>
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
-                    <div className="flex items-center mt-2">
-                      {card.isPositive ? (
-                        <TrendingUp className="text-emerald-500 mr-1" size={14} />
-                      ) : (
-                        <TrendingDown className="text-red-400 mr-1" size={14} />
-                      )}
-                      <span 
-                        className={`text-sm font-medium mr-1 ${
-                          card.isPositive ? "text-emerald-500" : "text-red-400"
-                        }`}
-                      >
-                        {card.change}
-                      </span>
-                      <span className="text-gray-500 dark:text-gray-400 text-sm">{card.changeLabel}</span>
-                    </div>
+
                   </div>
                   <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
                     <card.icon className={card.iconColor} size={24} />
