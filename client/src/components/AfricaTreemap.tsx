@@ -65,7 +65,7 @@ export function AfricaTreemap({
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-[600px]">
+      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
         <div className="flex items-center justify-center h-80">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
         </div>
@@ -74,7 +74,7 @@ export function AfricaTreemap({
   }
 
   return (
-    <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-[600px]">
+    <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Africa Carbon Credits</CardTitle>
       </CardHeader>
@@ -95,8 +95,8 @@ export function AfricaTreemap({
                 Total Carbon Credits by Country
               </p>
             </div>
-            <div className="p-2 max-h-[400px] overflow-hidden">
-              <div className="grid grid-cols-4 gap-1 h-full w-full auto-rows-min">
+            <div className="p-2">
+              <div className="grid grid-cols-4 gap-1 w-full auto-rows-min">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
                   const size = getCountrySize(item);
@@ -139,8 +139,8 @@ export function AfricaTreemap({
                 Active Projects by Country
               </p>
             </div>
-            <div className="p-2 max-h-[400px] overflow-hidden">
-              <div className="grid grid-cols-4 gap-1 h-full w-full auto-rows-min">
+            <div className="p-2">
+              <div className="grid grid-cols-4 gap-1 w-full auto-rows-min">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
                   const size = getCountrySize(item);
