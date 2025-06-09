@@ -16,11 +16,11 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
-    { key: "2010-2014", label: "2010 - 2014" },
-    { key: "2011-2017", label: "2011 - 2017" },
-    { key: "2015-2019", label: "2015 - 2019" },
-    { key: "2018-2022", label: "2018 - 2022" },
-    { key: "2020-2022", label: "2020 - 2022" }
+    { key: "2010-2012", label: "2010 - 2012" },
+    { key: "2013-2015", label: "2013 - 2015" },
+    { key: "2016-2018", label: "2016 - 2018" },
+    { key: "2019-2021", label: "2019 - 2021" },
+    { key: "2022-2023", label: "2022 - 2023" }
   ];
 
   const handleDateRangeChange = (value: string) => {

@@ -1,19 +1,22 @@
 import { motion } from "framer-motion";
-// Using gradient logo instead of PNG import
 
 export function Footer() {
   return (
     <motion.footer
-      className="mt-16 border-t border-gray-700 bg-dark-950/80 backdrop-blur-md"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      className="mt-auto bg-gradient-to-t from-gray-900/50 to-transparent border-t border-gray-800"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Catalyst Fund Logo */}
+        {/* Catalyst Fund Logo Card */}
         <div className="flex justify-center mb-6">
-          <div className="h-16 w-48 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-xl tracking-wide">The Catalyst Fund</span>
+          <div className="bg-white rounded-lg p-4 shadow-lg">
+            <img
+              src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
+              alt="Catalyst Fund"
+              className="h-16 object-contain"
+            />
           </div>
         </div>
 

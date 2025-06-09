@@ -17,7 +17,7 @@ export function useDashboard() {
     sector: "",
     projectType: "",
     startYear: 2010,
-    endYear: 2022,
+    endYear: 2023,
     search: "",
   });
 
@@ -190,7 +190,7 @@ export function useDashboard() {
     if (filters.country) active.push({ key: "country", label: filters.country, value: filters.country });
     if (filters.sector) active.push({ key: "sector", label: `${filters.sector} Sector`, value: filters.sector });
     if (filters.projectType) active.push({ key: "projectType", label: filters.projectType, value: filters.projectType });
-    if (filters.startYear !== 2011 || filters.endYear !== 2023) {
+    if (filters.startYear !== 2010 || filters.endYear !== 2023) {
       active.push({ key: "startYear", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
     }
     if (filters.search) active.push({ key: "search", label: `Search: ${filters.search}`, value: filters.search });
