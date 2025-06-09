@@ -17,11 +17,12 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
   const { theme, setTheme } = useTheme();
 
   const dateRangeOptions = [
-    { key: "2011-2023", label: "2011 - 2023" },
-    { key: "2020-2023", label: "2020 - 2023" },
-    { key: "2021-2023", label: "2021 - 2023" },
-    { key: "2022-2023", label: "2022 - 2023" },
-    { key: "2023", label: "2023" }
+    { key: "all", label: "All Years" },
+    { key: "2020-2024", label: "2020 - 2024" },
+    { key: "2021-2024", label: "2021 - 2024" },
+    { key: "2022-2024", label: "2022 - 2024" },
+    { key: "2023-2024", label: "2023 - 2024" },
+    { key: "2024", label: "2024" }
   ];
 
   const handleDateRangeChange = (value: string) => {

@@ -10,7 +10,7 @@ import { TopBuyers } from "@/components/TopBuyers";
 import { SectorBreakdown } from "@/components/SectorBreakdown";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
-import { DataImport } from "@/components/DataImport";
+
 import { useDashboard } from "@/hooks/use-dashboard";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -57,9 +57,18 @@ export default function Dashboard() {
     },
   });
 
-  const handleDateRangeChange = (startYear: number, endYear: number) => {
-    updateFilter("startYear", startYear);
-    updateFilter("endYear", endYear);
+  const handleDateRangeChange = (range: string) => {
+    if (range === "all") {
+      updateFilter("startYear", undefined);
+      updateFilter("endYear", undefined);
+    } else if (range === "2024") {
+      updateFilter("startYear", 2024);
+      updateFilter("endYear", 2024);
+    } else {
+      const [startYear, endYear] = range.split("-").map(Number);
+      updateFilter("startYear", startYear);
+      updateFilter("endYear", endYear);
+    }
   };
 
   const handleExport = () => {
@@ -88,8 +97,10 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
       <Header 
+        dateRange={filters.startYear && filters.endYear ? `${filters.startYear}-${filters.endYear}` : "all"}
         onDateRangeChange={handleDateRangeChange}
         onExport={handleExport}
+        isLoading={isLoading}
       />
 
       {/* Data Note */}
@@ -160,10 +171,7 @@ export default function Dashboard() {
 
       </div>
 
-      {/* Data Import Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <DataImport />
-      </div>
+      
 
       {/* Detailed Data Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
