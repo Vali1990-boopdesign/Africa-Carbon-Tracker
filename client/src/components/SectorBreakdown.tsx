@@ -73,48 +73,51 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
           <CardTitle className="text-lg font-semibold text-white">Sector Breakdown</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Donut Chart */}
-          <div className="h-40 mb-4">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={sectorData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={30}
-                  outerRadius={70}
-                  paddingAngle={2}
-                  dataKey="totalCredits"
+          {/* Responsive Layout: Horizontal on lg+ screens, vertical on smaller screens */}
+          <div className="flex flex-col lg:flex-row lg:items-start lg:space-x-6 space-y-4 lg:space-y-0">
+            {/* Donut Chart */}
+            <div className="h-40 lg:w-48 lg:flex-shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={sectorData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={30}
+                    outerRadius={70}
+                    paddingAngle={2}
+                    dataKey="totalCredits"
+                  >
+                    {sectorData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                    ))}
+                  </Pie>
+                  <Tooltip content={<CustomTooltip />} />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {/* Sector Legend */}
+            <div className="flex-1 space-y-2">
+              {sectorData.map((sector, index) => (
+                <motion.div
+                  key={sector.sector}
+                  className="flex items-center justify-between"
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  {sectorData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          
-          {/* Sector Legend */}
-          <div className="space-y-2">
-            {sectorData.map((sector, index) => (
-              <motion.div
-                key={sector.sector}
-                className="flex items-center justify-between"
-                initial={{ x: 20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <div className="flex items-center space-x-2">
-                  <div 
-                    className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: sector.color }}
-                  ></div>
-                  <span className="text-sm text-gray-300">{sector.sector}</span>
-                </div>
-                <span className="text-sm font-medium text-white">{sector.percentage}%</span>
-              </motion.div>
-            ))}
+                  <div className="flex items-center space-x-2">
+                    <div 
+                      className="w-3 h-3 rounded-full" 
+                      style={{ backgroundColor: sector.color }}
+                    ></div>
+                    <span className="text-sm text-gray-300">{sector.sector}</span>
+                  </div>
+                  <span className="text-sm font-medium text-white">{sector.percentage}%</span>
+                </motion.div>
+              ))}
+            </div>
           </div>
           
           {/* Total Credits Summary */}

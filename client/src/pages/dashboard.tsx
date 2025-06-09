@@ -104,7 +104,9 @@ export default function Dashboard() {
       />
 
       {/* Data Note */}
-      <DataNote />
+      <div className="pt-6">
+        <DataNote />
+      </div>
 
       {/* Filters Bar */}
       <FiltersBar

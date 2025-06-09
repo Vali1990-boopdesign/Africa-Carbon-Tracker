@@ -74,7 +74,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
                 }}
               >
                 <SelectTrigger className="w-28 border-none bg-transparent text-white min-h-0 h-auto px-0">
-                  <SelectValue />
+                  <SelectValue placeholder="All Years" />
                 </SelectTrigger>
                 <SelectContent>
                   {dateRangeOptions.map((option) => (
