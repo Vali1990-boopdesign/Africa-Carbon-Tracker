@@ -86,12 +86,14 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <Card className="glass-effect bg-white/95 dark:bg-gray-900/95 h-40 relative overflow-hidden rounded-lg border-2" 
+      <Card className="glass-effect bg-white/95 dark:bg-gray-900/95 h-40 relative overflow-hidden rounded-lg border-2 border-transparent" 
         style={{
           background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1))',
-          borderImage: 'linear-gradient(135deg, #10b981, #3b82f6, #a855f7) 1',
-          borderRadius: '0.5rem' // Explicitly set border-radius to match rounded-lg
+          backgroundClip: 'padding-box'
         }}>
+        <div className="absolute inset-0 rounded-lg p-[2px] bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 -z-10">
+          <div className="w-full h-full bg-white/95 dark:bg-gray-900/95 rounded-lg"></div>
+        </div>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Key Insights</CardTitle>
