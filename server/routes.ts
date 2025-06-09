@@ -146,6 +146,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Chatbot endpoint
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { question } = req.body;
+      
+      if (!question) {
+        return res.status(400).json({ error: "Question is required" });
+      }
+
+      const OpenAI = require("openai");
+      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+      const carbonTerminology = `
+      Carbon Credit Terminology:
+      
+      1. Additionality: The concept that carbon credits are issued only for projects that wouldn't occur without the financial support from credit sales. E.g., a cookstove project reducing deforestation is considered additional, unlike a profitable solar project without carbon credits.
+
+      2. Co-benefits: Social/environmental benefits of a project, such as biodiversity conservation or local community development, in addition to carbon sequestration.
+
+      3. Credits: Units representing one metric ton of CO2 equivalent (tCO2e) reduced/removed by a project. These credits are bought, sold, and retired in carbon markets.
+
+      4. End User/End Buyer: Entities purchasing and retiring carbon credits to offset their emissions.
+
+      5. Methodology: Technical guidelines for quantifying greenhouse gas reductions/removals by projects, essential for credit issuance.
+
+      6. Registry: A database tracking issued, retired, or transferred carbon credits.
+
+      7. Removal Credits: Credits from activities like planting trees that physically remove CO2 from the atmosphere.
+
+      8. Retirement: When a credit is permanently removed from the market, enabling the buyer to claim emission offsets.
+
+      9. Standard: Certification criteria for verifying project design, monitoring, and reporting to issue credible carbon credits.
+
+      10. Vintage: The year when a project's carbon reductions/removals occurred, not necessarily the year credits were issued.
+      `;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+        messages: [
+          {
+            role: "system",
+            content: `You are a helpful assistant specializing in carbon credits and environmental finance, specifically focused on African carbon markets. Use the following terminology guide to answer questions accurately:
+
+            ${carbonTerminology}
+
+            You have access to data about African carbon credit transactions including countries like Uganda, Ghana, Kenya, and others. You can discuss sectors like forestry, energy, transportation, and manufacturing. When users ask about data, refer to the African carbon credit market context.
+
+            Keep responses concise, educational, and professional. If asked about specific data points, explain that you can provide general insights about African carbon markets but recommend checking the dashboard for current statistics.`
+          },
+          {
+            role: "user", 
+            content: question
+          }
+        ],
+        max_tokens: 500,
+        temperature: 0.7
+      });
+
+      res.json({ 
+        response: response.choices[0].message.content,
+        success: true 
+      });
+
+    } catch (error) {
+      console.error("Chat API error:", error);
+      res.status(500).json({ 
+        error: "Failed to process chat request",
+        response: "I'm sorry, I'm having trouble responding right now. Please try again later."
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

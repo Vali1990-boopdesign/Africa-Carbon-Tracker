@@ -11,6 +11,7 @@ import { SectorBreakdown } from "@/components/SectorBreakdown";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
+import { CarbonChatbot } from "@/components/CarbonChatbot";
 
 import { useDashboard } from "@/hooks/use-dashboard";
 import { exportFilteredData } from "@/utils/csvExport";
@@ -186,6 +187,9 @@ export default function Dashboard() {
 
       {/* Footer */}
       <Footer />
+
+      {/* AI Chatbot */}
+      <CarbonChatbot />
 
       {/* Loading Overlay - Removed since using direct CSV export */}
       {false && (
