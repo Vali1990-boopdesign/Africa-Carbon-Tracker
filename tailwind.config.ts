@@ -1,8 +1,13 @@
 import type { Config } from "tailwindcss";
+import { heroui } from "@heroui/react";
 
 export default {
   darkMode: ["class"],
-  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./client/index.html", 
+    "./client/src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}"
+  ],
   theme: {
     extend: {
       borderRadius: {
@@ -61,6 +66,33 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Carbon dashboard custom colors
+        "dark": {
+          50: "#0f172a",
+          100: "#1e293b", 
+          200: "#334155",
+          300: "#475569",
+          400: "#64748b",
+          500: "#94a3b8",
+          600: "#cbd5e1",
+          700: "#e2e8f0",
+          800: "#f1f5f9",
+          900: "#f8fafc",
+          950: "#ffffff"
+        },
+        "emerald": {
+          50: "#ecfdf5",
+          100: "#d1fae5", 
+          200: "#a7f3d0",
+          300: "#6ee7b7",
+          400: "#34d399",
+          500: "#10b981",
+          600: "#059669",
+          700: "#047857",
+          800: "#065f46",
+          900: "#064e3b",
+          950: "#022c22"
+        }
       },
       keyframes: {
         "accordion-down": {
@@ -86,5 +118,80 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    require("tailwindcss-animate"), 
+    require("@tailwindcss/typography"),
+    heroui({
+      themes: {
+        light: {
+          colors: {
+            background: "#ffffff",
+            foreground: "#11181C",
+            primary: {
+              50: "#ecfdf5",
+              100: "#d1fae5",
+              200: "#a7f3d0",
+              300: "#6ee7b7",
+              400: "#34d399",
+              500: "#10b981",
+              600: "#059669",
+              700: "#047857",
+              800: "#065f46",
+              900: "#064e3b",
+              DEFAULT: "#10b981",
+              foreground: "#ffffff",
+            },
+            secondary: {
+              50: "#f8fafc",
+              100: "#f1f5f9",
+              200: "#e2e8f0",
+              300: "#cbd5e1",
+              400: "#94a3b8",
+              500: "#64748b",
+              600: "#475569",
+              700: "#334155",
+              800: "#1e293b",
+              900: "#0f172a",
+              DEFAULT: "#64748b",
+              foreground: "#ffffff",
+            }
+          }
+        },
+        dark: {
+          colors: {
+            background: "#0f172a",
+            foreground: "#f8fafc",
+            primary: {
+              50: "#ecfdf5",
+              100: "#d1fae5",
+              200: "#a7f3d0",
+              300: "#6ee7b7",
+              400: "#34d399",
+              500: "#10b981",
+              600: "#059669",
+              700: "#047857",
+              800: "#065f46",
+              900: "#064e3b",
+              DEFAULT: "#10b981",
+              foreground: "#ffffff",
+            },
+            secondary: {
+              50: "#0f172a",
+              100: "#1e293b",
+              200: "#334155",
+              300: "#475569",
+              400: "#64748b",
+              500: "#94a3b8",
+              600: "#cbd5e1",
+              700: "#e2e8f0",
+              800: "#f1f5f9",
+              900: "#f8fafc",
+              DEFAULT: "#475569",
+              foreground: "#f8fafc",
+            }
+          }
+        }
+      }
+    })
+  ],
 } satisfies Config;
