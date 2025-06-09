@@ -105,7 +105,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
                   <div
                     key={index}
                     className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                      index === currentInsight ? 'bg-primary' : 'bg-default-300'
+                      index === currentInsight ? 'bg-primary' : 'bg-gray-300'
                     }`}
                   />
                 ))}
@@ -121,7 +121,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="pt-0">
+        <CardContent className="pt-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentInsight}
@@ -136,11 +136,11 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
               </div>
               <div className="flex-1">
                 <h4 className="font-medium text-foreground mb-2">{currentInsightData.title}</h4>
-                <p className="text-sm text-default-600 leading-relaxed">{currentInsightData.description}</p>
+                <p className="text-sm text-gray-400 leading-relaxed">{currentInsightData.description}</p>
               </div>
             </motion.div>
           </AnimatePresence>
-        </CardBody>
+        </CardContent>
       </Card>
     </motion.div>
   );
