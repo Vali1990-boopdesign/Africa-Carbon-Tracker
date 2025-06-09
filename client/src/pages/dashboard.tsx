@@ -13,6 +13,7 @@ import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
 
 import { useDashboard } from "@/hooks/use-dashboard";
+import { exportFilteredData } from "@/utils/csvExport";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
@@ -38,25 +39,15 @@ export default function Dashboard() {
     transactionsLoading,
   } = useDashboard();
 
-  const exportMutation = useMutation({
-    mutationFn: async (data: { format: string; filters?: any; selectedIds?: number[] }) => {
-      const response = await apiRequest("POST", "/api/export", data);
-      return response.json();
-    },
-    onSuccess: (data) => {
+  const handleExport = () => {
+    if (transactions) {
+      exportFilteredData(transactions, filters);
       toast({
         title: "Export Success",
-        description: data.message,
+        description: "Data exported successfully as CSV",
       });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Export Failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
+    }
+  };
 
   const handleDateRangeChange = (range: string) => {
     if (range === "all") {
@@ -91,10 +82,14 @@ export default function Dashboard() {
   };
 
   const handleTableExport = (selectedIds: number[]) => {
-    exportMutation.mutate({
-      format: "csv",
-      selectedIds,
-    });
+    if (transactions) {
+      const selectedTransactions = transactions.filter(t => selectedIds.includes(t.id));
+      exportFilteredData(selectedTransactions, filters);
+      toast({
+        title: "Export Success",
+        description: `Exported ${selectedTransactions.length} selected records`,
+      });
+    }
   };
 
   const handleCountryClick = (country: string) => {
