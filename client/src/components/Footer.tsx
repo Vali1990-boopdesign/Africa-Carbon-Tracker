@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import catalystLogo from "../assets/catalyst-fund-logo.png";
+// Using gradient logo instead of PNG import
 
 export function Footer() {
   return (
@@ -12,11 +12,9 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Catalyst Fund Logo */}
         <div className="flex justify-center mb-6">
-          <img
-            src={catalystLogo}
-            alt="The Catalyst Fund"
-            className="h-16 object-contain"
-          />
+          <div className="h-16 w-48 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg">
+            <span className="text-white font-bold text-xl tracking-wide">The Catalyst Fund</span>
+          </div>
         </div>
 
         {/* Legal Disclaimer */}

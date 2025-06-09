@@ -147,6 +147,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
           <CardContent className="p-0 flex flex-col h-[436px]">
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div className="space-y-4" style={{ maxHeight: '300px', overflowY: 'auto' }}>
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -155,7 +156,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                   className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3 text-sm ${
+                    className={`max-w-[80%] rounded-lg p-3 text-sm whitespace-pre-line ${
                       message.isUser
                         ? 'bg-emerald-500 text-white'
                         : 'bg-gray-700 text-gray-100'
@@ -165,6 +166,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                   </div>
                 </motion.div>
               ))}
+            </div>
               
               {chatMutation.isPending && (
                 <motion.div

@@ -158,38 +158,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const carbonTerminology = {
         "additionality": "The concept that carbon credits are issued only for projects that wouldn't occur without the financial support from credit sales. For example, a cookstove project reducing deforestation is considered additional, unlike a profitable solar project without carbon credits.",
         "co-benefits": "Social/environmental benefits of a project, such as biodiversity conservation or local community development, in addition to carbon sequestration.",
+        "co-benefit": "Social/environmental benefits of a project, such as biodiversity conservation or local community development, in addition to carbon sequestration.",
         "credits": "Units representing one metric ton of CO2 equivalent (tCO2e) reduced/removed by a project. These credits are bought, sold, and retired in carbon markets.",
+        "credit": "Units representing one metric ton of CO2 equivalent (tCO2e) reduced/removed by a project. These credits are bought, sold, and retired in carbon markets.",
         "end user": "Entities purchasing and retiring carbon credits to offset their emissions.",
         "end buyer": "Entities purchasing and retiring carbon credits to offset their emissions.",
+        "buyer": "Entities purchasing and retiring carbon credits to offset their emissions.",
         "methodology": "Technical guidelines for quantifying greenhouse gas reductions/removals by projects, essential for credit issuance.",
         "registry": "A database tracking issued, retired, or transferred carbon credits.",
         "removal credits": "Credits from activities like planting trees that physically remove CO2 from the atmosphere.",
+        "removal": "Credits from activities like planting trees that physically remove CO2 from the atmosphere.",
         "retirement": "When a credit is permanently removed from the market, enabling the buyer to claim emission offsets.",
+        "retire": "When a credit is permanently removed from the market, enabling the buyer to claim emission offsets.",
         "standard": "Certification criteria for verifying project design, monitoring, and reporting to issue credible carbon credits.",
-        "vintage": "The year when a project's carbon reductions/removals occurred, not necessarily the year credits were issued."
+        "vintage": "The year when a project's carbon reductions/removals occurred, not necessarily the year credits were issued.",
+        "offset": "A reduction in emissions of carbon dioxide or other greenhouse gases made in order to compensate for emissions made elsewhere.",
+        "verification": "Independent assessment of project performance and emission reductions by qualified third parties.",
+        "validation": "Independent evaluation of a project design against relevant standards before implementation."
       };
 
-      const questionLower = question.toLowerCase();
+      const questionLower = question.toLowerCase().trim();
       let response = "";
 
-      // Check for direct terminology matches
-      for (const [term, definition] of Object.entries(carbonTerminology)) {
+      // Check for direct terminology matches (prioritize longer matches)
+      const sortedTerms = Object.entries(carbonTerminology).sort((a, b) => b[0].length - a[0].length);
+      
+      for (const [term, definition] of sortedTerms) {
         if (questionLower.includes(term)) {
           response = `**${term.charAt(0).toUpperCase() + term.slice(1)}**: ${definition}`;
           break;
         }
       }
 
-      // General responses for other questions
+      // Enhanced question patterns
       if (!response) {
-        if (questionLower.includes("africa") || questionLower.includes("african")) {
-          response = "This dashboard focuses on African carbon credit markets, including transactions from countries like Uganda, Ghana, Kenya, and others. The data shows enterprise-level carbon credit retirements across various sectors including forestry, energy, and manufacturing.";
-        } else if (questionLower.includes("data") || questionLower.includes("dashboard")) {
-          response = "The dashboard displays carbon credit transaction data from African countries, showing metrics like total credits retired, active buyers, and sector breakdowns. You can filter by country, sector, and date ranges to explore specific market segments.";
-        } else if (questionLower.includes("carbon credit") || questionLower.includes("carbon market")) {
+        if (questionLower.includes("how many") || questionLower.includes("total") || questionLower.includes("count")) {
+          response = "The dashboard shows over 33 million carbon credits retired across African countries. You can see detailed breakdowns by country, sector, and time period in the charts above. Uganda leads with the highest volume of credits retired.";
+        } else if (questionLower.includes("which country") || questionLower.includes("top country")) {
+          response = "Uganda is the leading African country for carbon credit retirements, followed by Ghana and Kenya. The country breakdown chart shows the distribution across different African nations.";
+        } else if (questionLower.includes("sector") || questionLower.includes("industry")) {
+          response = "The main sectors include Healthcare/Pharmaceuticals, Non-profit/Charity/Government/NGO, Technology/Telecommunications, and Energy/Mining/Utilities. The sector breakdown chart shows the percentage distribution.";
+        } else if (questionLower.includes("year") || questionLower.includes("when") || questionLower.includes("time")) {
+          response = "The data spans from 2010 to 2022, with the highest activity in recent years 2020-2022. You can filter by different time periods using the date range selector.";
+        } else if (questionLower.includes("africa") || questionLower.includes("african")) {
+          response = "This dashboard focuses on African carbon credit markets, showing transaction data from countries like Uganda, Ghana, Kenya, and others. The data reveals enterprise-level carbon credit retirements across various sectors.";
+        } else if (questionLower.includes("data") || questionLower.includes("dashboard") || questionLower.includes("chart")) {
+          response = "The dashboard displays verified carbon credit transaction data from African countries. You can explore metrics like total credits retired, active buyers, sector breakdowns, and filter by country, sector, and date ranges.";
+        } else if (questionLower.includes("carbon") || questionLower.includes("emission") || questionLower.includes("climate")) {
           response = "Carbon credits represent verified reductions or removals of greenhouse gas emissions. They're traded in voluntary and compliance markets to help organizations offset their carbon footprint. Each credit typically represents one metric ton of CO2 equivalent.";
         } else {
-          response = "I can help explain carbon credit terminology and provide insights about African carbon markets. Try asking about specific terms like 'additionality', 'retirement', 'co-benefits', or questions about the dashboard data.";
+          const helpTopics = [
+            "Ask about carbon credit terminology (additionality, retirement, co-benefits)",
+            "Inquire about African market data (countries, sectors, volumes)",
+            "Learn about dashboard features (filters, charts, export)",
+            "Get insights on specific time periods or trends"
+          ];
+          response = `I can help explain carbon credit concepts and provide insights about African carbon markets. Here are some things you can ask about:\n\n${helpTopics.map(topic => `• ${topic}`).join('\n')}`;
         }
       }
 
