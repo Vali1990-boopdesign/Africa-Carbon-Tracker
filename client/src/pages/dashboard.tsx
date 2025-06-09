@@ -46,13 +46,16 @@ export default function Dashboard() {
     if (range === "all") {
       updateFilter("startYear", 0);
       updateFilter("endYear", 0);
-    } else if (range === "2024") {
-      updateFilter("startYear", 2024);
-      updateFilter("endYear", 2024);
     } else {
       const [startYear, endYear] = range.split("-").map(Number);
-      updateFilter("startYear", startYear);
-      updateFilter("endYear", endYear);
+      if (endYear) {
+        updateFilter("startYear", startYear);
+        updateFilter("endYear", endYear);
+      } else {
+        // Handle single year case
+        updateFilter("startYear", startYear);
+        updateFilter("endYear", startYear);
+      }
     }
   };
 

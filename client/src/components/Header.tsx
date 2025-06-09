@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
-// import carbonIcon from "@assets/carbon-icon.png";
+import carbonIcon from "../assets/carbon-icon.png";
 
 interface HeaderProps {
   onExport: () => void;
@@ -17,10 +17,10 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
     { key: "2020-2022", label: "2020 - 2022" },
-    { key: "2021-2022", label: "2021 - 2022" },
-    { key: "2022", label: "2022" },
-    { key: "2019-2022", label: "2019 - 2022" },
-    { key: "2018-2022", label: "2018 - 2022" }
+    { key: "2018-2022", label: "2018 - 2022" },
+    { key: "2015-2019", label: "2015 - 2019" },
+    { key: "2011-2017", label: "2011 - 2017" },
+    { key: "2010-2014", label: "2010 - 2014" }
   ];
 
   const handleDateRangeChange = (value: string) => {
@@ -44,7 +44,11 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg p-2">
-              <div className="w-full h-full bg-emerald-500 rounded-sm"></div>
+              <img 
+                src={carbonIcon} 
+                alt="Carbon footprint icon" 
+                className="w-full h-full object-contain filter brightness-0 invert"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">

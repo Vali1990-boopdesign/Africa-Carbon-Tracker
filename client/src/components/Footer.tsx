@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-// import catalystLogo from "../assets/catalyst-fund-logo.png";
+import catalystLogo from "../assets/catalyst-fund-logo.png";
 
 export function Footer() {
   return (
@@ -12,9 +12,11 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Catalyst Fund Logo */}
         <div className="flex justify-center mb-6">
-          <div className="h-16 w-32 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-            <span className="text-emerald-400 font-bold text-lg">The Catalyst Fund</span>
-          </div>
+          <img
+            src={catalystLogo}
+            alt="The Catalyst Fund"
+            className="h-16 object-contain"
+          />
         </div>
 
         {/* Legal Disclaimer */}
