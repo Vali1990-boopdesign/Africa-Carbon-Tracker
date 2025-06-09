@@ -2,6 +2,9 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seed";
+import { db } from "./db";
+import { transactions } from "@shared/schema";
+import { count } from "drizzle-orm";
 
 const app = express();
 app.use(express.json());
@@ -38,9 +41,15 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Seed the database with initial data
-  await seedDatabase();
-  
+  // Check if database has data, if not seed it
+  const transactionCount = await db.select({ count: count() }).from(transactions);
+  if (transactionCount[0].count === 0) {
+    await seedDatabase();
+    log("Database seeded with sample data");
+  } else {
+    log(`Database already has ${transactionCount[0].count} transactions`);
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
