@@ -146,8 +146,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI Chatbot endpoint
-  app.post("/api/chat", async (req, res) => {
+  // Carbon Credits Assistant endpoint - Local terminology database
+  app.post("/api/chat", (req, res) => {
     try {
       const { question } = req.body;
       
@@ -155,57 +155,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Question is required" });
       }
 
-      const { default: OpenAI } = await import("openai");
-      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+      const carbonTerminology = {
+        "additionality": "The concept that carbon credits are issued only for projects that wouldn't occur without the financial support from credit sales. For example, a cookstove project reducing deforestation is considered additional, unlike a profitable solar project without carbon credits.",
+        "co-benefits": "Social/environmental benefits of a project, such as biodiversity conservation or local community development, in addition to carbon sequestration.",
+        "credits": "Units representing one metric ton of CO2 equivalent (tCO2e) reduced/removed by a project. These credits are bought, sold, and retired in carbon markets.",
+        "end user": "Entities purchasing and retiring carbon credits to offset their emissions.",
+        "end buyer": "Entities purchasing and retiring carbon credits to offset their emissions.",
+        "methodology": "Technical guidelines for quantifying greenhouse gas reductions/removals by projects, essential for credit issuance.",
+        "registry": "A database tracking issued, retired, or transferred carbon credits.",
+        "removal credits": "Credits from activities like planting trees that physically remove CO2 from the atmosphere.",
+        "retirement": "When a credit is permanently removed from the market, enabling the buyer to claim emission offsets.",
+        "standard": "Certification criteria for verifying project design, monitoring, and reporting to issue credible carbon credits.",
+        "vintage": "The year when a project's carbon reductions/removals occurred, not necessarily the year credits were issued."
+      };
 
-      const carbonTerminology = `
-      Carbon Credit Terminology:
-      
-      1. Additionality: The concept that carbon credits are issued only for projects that wouldn't occur without the financial support from credit sales. E.g., a cookstove project reducing deforestation is considered additional, unlike a profitable solar project without carbon credits.
+      const questionLower = question.toLowerCase();
+      let response = "";
 
-      2. Co-benefits: Social/environmental benefits of a project, such as biodiversity conservation or local community development, in addition to carbon sequestration.
+      // Check for direct terminology matches
+      for (const [term, definition] of Object.entries(carbonTerminology)) {
+        if (questionLower.includes(term)) {
+          response = `**${term.charAt(0).toUpperCase() + term.slice(1)}**: ${definition}`;
+          break;
+        }
+      }
 
-      3. Credits: Units representing one metric ton of CO2 equivalent (tCO2e) reduced/removed by a project. These credits are bought, sold, and retired in carbon markets.
-
-      4. End User/End Buyer: Entities purchasing and retiring carbon credits to offset their emissions.
-
-      5. Methodology: Technical guidelines for quantifying greenhouse gas reductions/removals by projects, essential for credit issuance.
-
-      6. Registry: A database tracking issued, retired, or transferred carbon credits.
-
-      7. Removal Credits: Credits from activities like planting trees that physically remove CO2 from the atmosphere.
-
-      8. Retirement: When a credit is permanently removed from the market, enabling the buyer to claim emission offsets.
-
-      9. Standard: Certification criteria for verifying project design, monitoring, and reporting to issue credible carbon credits.
-
-      10. Vintage: The year when a project's carbon reductions/removals occurred, not necessarily the year credits were issued.
-      `;
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-        messages: [
-          {
-            role: "system",
-            content: `You are a helpful assistant specializing in carbon credits and environmental finance, specifically focused on African carbon markets. Use the following terminology guide to answer questions accurately:
-
-            ${carbonTerminology}
-
-            You have access to data about African carbon credit transactions including countries like Uganda, Ghana, Kenya, and others. You can discuss sectors like forestry, energy, transportation, and manufacturing. When users ask about data, refer to the African carbon credit market context.
-
-            Keep responses concise, educational, and professional. If asked about specific data points, explain that you can provide general insights about African carbon markets but recommend checking the dashboard for current statistics.`
-          },
-          {
-            role: "user", 
-            content: question
-          }
-        ],
-        max_tokens: 500,
-        temperature: 0.7
-      });
+      // General responses for other questions
+      if (!response) {
+        if (questionLower.includes("africa") || questionLower.includes("african")) {
+          response = "This dashboard focuses on African carbon credit markets, including transactions from countries like Uganda, Ghana, Kenya, and others. The data shows enterprise-level carbon credit retirements across various sectors including forestry, energy, and manufacturing.";
+        } else if (questionLower.includes("data") || questionLower.includes("dashboard")) {
+          response = "The dashboard displays carbon credit transaction data from African countries, showing metrics like total credits retired, active buyers, and sector breakdowns. You can filter by country, sector, and date ranges to explore specific market segments.";
+        } else if (questionLower.includes("carbon credit") || questionLower.includes("carbon market")) {
+          response = "Carbon credits represent verified reductions or removals of greenhouse gas emissions. They're traded in voluntary and compliance markets to help organizations offset their carbon footprint. Each credit typically represents one metric ton of CO2 equivalent.";
+        } else {
+          response = "I can help explain carbon credit terminology and provide insights about African carbon markets. Try asking about specific terms like 'additionality', 'retirement', 'co-benefits', or questions about the dashboard data.";
+        }
+      }
 
       res.json({ 
-        response: response.choices[0].message.content,
+        response: response,
         success: true 
       });
 
@@ -213,7 +202,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Chat API error:", error);
       res.status(500).json({ 
         error: "Failed to process chat request",
-        response: "I'm sorry, I'm having trouble responding right now. Please try again later."
+        response: "I'm having trouble responding right now. Please try again later."
       });
     }
   });
