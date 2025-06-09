@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Router, Route, Switch } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -19,15 +19,13 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="carbon-dashboard-theme">
       <QueryClientProvider client={queryClient}>
-        <Router>
-          <div className="min-h-screen bg-background text-foreground transition-colors">
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Toaster />
-          </div>
-        </Router>
+        <div className="min-h-screen bg-background text-foreground transition-colors">
+          <Switch>
+            <Route path="/" component={Dashboard} />
+            <Route component={NotFound} />
+          </Switch>
+          <Toaster />
+        </div>
       </QueryClientProvider>
     </ThemeProvider>
   );
