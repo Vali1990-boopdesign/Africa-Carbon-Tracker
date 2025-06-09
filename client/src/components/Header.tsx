@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "./ThemeProvider";
-import { Download, Moon, Sun, Leaf } from "lucide-react";
+import { Download, Moon, Sun } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface HeaderProps {
@@ -46,7 +46,11 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="flex items-center justify-center w-10 h-10 bg-success/20 rounded-lg">
-              <Leaf className="w-6 h-6 text-success" />
+              <img 
+                src="/carbon-icon.png" 
+                alt="Carbon footprint icon" 
+                className="w-6 h-6 object-contain"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">
