@@ -35,11 +35,7 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
 
   return (
     <motion.header 
-      className="glass-effect border-b border-border sticky top-0 z-50"
-      style={{
-        background: 'hsl(var(--surface-container))',
-        backdropFilter: 'blur(16px) saturate(180%)'
-      }}
+      className="bg-surface-container border-b border-border sticky top-0 z-50 backdrop-blur-xl"
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -77,10 +73,10 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
                 <SelectTrigger className="w-28 border-none bg-transparent text-foreground px-0 h-auto label-medium">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-surface-container border-border">
-                  <SelectItem value="2011-2023">2011 - 2023</SelectItem>
-                  <SelectItem value="2020-2023">2020 - 2023</SelectItem>
-                  <SelectItem value="custom">Custom Range</SelectItem>
+                <SelectContent className="bg-surface-container border-border text-foreground">
+                  <SelectItem value="2011-2023" className="text-foreground hover:bg-surface-container-high">2011 - 2023</SelectItem>
+                  <SelectItem value="2020-2023" className="text-foreground hover:bg-surface-container-high">2020 - 2023</SelectItem>
+                  <SelectItem value="custom" className="text-foreground hover:bg-surface-container-high">Custom Range</SelectItem>
                 </SelectContent>
               </Select>
             </div>

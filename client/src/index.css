@@ -157,15 +157,15 @@
   --background: 220 13% 9%;
   --foreground: 220 13% 91%;
   --muted: 220 13% 17%;
-  --muted-foreground: 220 9% 46%;
-  --popover: 220 13% 13%;
+  --muted-foreground: 220 9% 55%;
+  --popover: 220 13% 15%;
   --popover-foreground: 220 13% 91%;
-  --card: 220 13% 13%;
+  --card: 220 13% 15%;
   --card-foreground: 220 13% 91%;
-  --border: 220 13% 20%;
+  --border: 220 13% 25%;
   --input: 220 13% 17%;
   --primary: 142 72% 29%;
-  --primary-foreground: 220 13% 91%;
+  --primary-foreground: 0 0% 100%;
   --secondary: 220 13% 20%;
   --secondary-foreground: 220 13% 91%;
   --accent: 220 13% 20%;
@@ -187,7 +187,7 @@
   --surface-variant: 220 13% 17%;
   --surface-container: 220 13% 13%;
   --surface-container-high: 220 13% 17%;
-  --surface-container-highest: 220 13% 20%;
+  --surface-container-highest: 220 13% 22%;
   
   /* Custom properties for enhanced glass effect */
   --glass-bg: rgba(30, 41, 59, 0.85);
@@ -212,7 +212,7 @@
   --background: 0 0% 98%;
   --foreground: 220 13% 9%;
   --muted: 220 13% 95%;
-  --muted-foreground: 220 9% 46%;
+  --muted-foreground: 220 9% 40%;
   --popover: 0 0% 100%;
   --popover-foreground: 220 13% 9%;
   --card: 0 0% 100%;
@@ -220,7 +220,7 @@
   --border: 220 13% 87%;
   --input: 220 13% 91%;
   --primary: 142 72% 29%;
-  --primary-foreground: 0 0% 98%;
+  --primary-foreground: 0 0% 100%;
   --secondary: 220 13% 91%;
   --secondary-foreground: 220 13% 9%;
   --accent: 220 13% 91%;
@@ -277,6 +277,18 @@
   
   .surface-container-highest {
     background: hsl(var(--surface-container-highest));
+  }
+  
+  .bg-surface-container {
+    background-color: hsl(var(--surface-container));
+  }
+  
+  .bg-surface-container-high {
+    background-color: hsl(var(--surface-container-high));
+  }
+  
+  .bg-surface-container-highest {
+    background-color: hsl(var(--surface-container-highest));
   }
   
   /* Enhanced Card Styling */

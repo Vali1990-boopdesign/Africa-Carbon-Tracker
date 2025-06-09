@@ -86,14 +86,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <Card className="material-card glass-effect h-40 relative overflow-hidden rounded-xl border border-border/50" 
-        style={{
-          background: 'hsl(var(--card))',
-          backdropFilter: 'blur(16px) saturate(180%)'
-        }}>
-        <div className="absolute inset-0 rounded-xl p-[1px] bg-gradient-to-r from-primary/20 via-blue-500/20 to-purple-500/20 -z-10">
-          <div className="w-full h-full bg-card rounded-xl"></div>
-        </div>
+      <Card className="bg-card border border-border h-40 relative overflow-hidden rounded-xl shadow-sm">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="title-large text-foreground">Key Insights</CardTitle>

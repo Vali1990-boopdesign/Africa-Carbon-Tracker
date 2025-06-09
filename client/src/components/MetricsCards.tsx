@@ -95,7 +95,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="material-card glass-effect border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/10">
+            <Card className="bg-card border border-border rounded-xl shadow-sm">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
