@@ -94,12 +94,13 @@ export function FiltersBar({
 
   return (
     <motion.div 
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
+      className="glass-effect border-b border-gray-800"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="glass-effect rounded-xl p-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="py-4">
         <div className="flex flex-wrap items-center gap-4">
           {/* Global Search */}
           <div className="flex-1 min-w-64" ref={searchRef}>
@@ -140,56 +141,62 @@ export function FiltersBar({
           
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
-            <Select 
-              value={filters.country || "all"} 
-              onValueChange={(value) => onFilterChange("country", value === "all" ? "" : value)}
-            >
-              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                <SelectValue placeholder="All Countries" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Countries</SelectItem>
-                {uniqueCountries.map(country => (
-                  <SelectItem key={country} value={country}>{country}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="bg-dark-800 rounded-lg p-2">
+              <Select 
+                value={filters.country || "all"} 
+                onValueChange={(value) => onFilterChange("country", value === "all" ? "" : value)}
+              >
+                <SelectTrigger className="w-36 border-none bg-transparent text-gray-200">
+                  <SelectValue placeholder="All Countries" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Countries</SelectItem>
+                  {uniqueCountries.map(country => (
+                    <SelectItem key={country} value={country}>{country}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             
-            <Select 
-              value={filters.sector || "all"} 
-              onValueChange={(value) => onFilterChange("sector", value === "all" ? "" : value)}
-            >
-              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                <SelectValue placeholder="All Sectors" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Sectors</SelectItem>
-                {uniqueSectors.map(sector => (
-                  <SelectItem key={sector} value={sector}>{sector}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="bg-dark-800 rounded-lg p-2">
+              <Select 
+                value={filters.sector || "all"} 
+                onValueChange={(value) => onFilterChange("sector", value === "all" ? "" : value)}
+              >
+                <SelectTrigger className="w-36 border-none bg-transparent text-gray-200">
+                  <SelectValue placeholder="All Sectors" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Sectors</SelectItem>
+                  {uniqueSectors.map(sector => (
+                    <SelectItem key={sector} value={sector}>{sector}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             
-            <Select 
-              value={filters.projectType || "all"} 
-              onValueChange={(value) => onFilterChange("projectType", value === "all" ? "" : value)}
-            >
-              <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
-                <SelectValue placeholder="All Project Types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Project Types</SelectItem>
-                {uniqueProjectTypes.map(type => (
-                  <SelectItem key={type} value={type}>{type}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="bg-dark-800 rounded-lg p-2">
+              <Select 
+                value={filters.projectType || "all"} 
+                onValueChange={(value) => onFilterChange("projectType", value === "all" ? "" : value)}
+              >
+                <SelectTrigger className="w-44 border-none bg-transparent text-gray-200">
+                  <SelectValue placeholder="All Project Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Project Types</SelectItem>
+                  {uniqueProjectTypes.map(type => (
+                    <SelectItem key={type} value={type}>{type}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             
             <Button
               variant="ghost"
               size="icon"
               onClick={onClearFilters}
-              className="text-gray-400 hover:text-white"
+              className="w-10 h-10 bg-dark-800 hover:bg-dark-700 rounded-lg text-gray-400 hover:text-white"
             >
               <X size={16} />
             </Button>
@@ -229,6 +236,7 @@ export function FiltersBar({
             </motion.div>
           )}
         </AnimatePresence>
+        </div>
       </div>
     </motion.div>
   );
