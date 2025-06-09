@@ -39,15 +39,7 @@ export default function Dashboard() {
     transactionsLoading,
   } = useDashboard();
 
-  const handleExport = () => {
-    if (transactions) {
-      exportFilteredData(transactions, filters);
-      toast({
-        title: "Export Success",
-        description: "Data exported successfully as CSV",
-      });
-    }
-  };
+
 
   const handleDateRangeChange = (range: string) => {
     if (range === "all") {
@@ -74,11 +66,14 @@ export default function Dashboard() {
     }
   };
 
-  const handleExport = () => {
-    exportMutation.mutate({
-      format: "csv",
-      filters,
-    });
+  const handleHeaderExport = () => {
+    if (transactions) {
+      exportFilteredData(transactions, filters);
+      toast({
+        title: "Export Success",
+        description: "Data exported successfully as CSV",
+      });
+    }
   };
 
   const handleTableExport = (selectedIds: number[]) => {
@@ -106,7 +101,7 @@ export default function Dashboard() {
       <Header 
         dateRange={getCurrentDateRange()}
         onDateRangeChange={handleDateRangeChange}
-        onExport={handleExport}
+        onExport={handleHeaderExport}
         isLoading={isLoading}
       />
 
@@ -192,8 +187,8 @@ export default function Dashboard() {
       {/* Footer */}
       <Footer />
 
-      {/* Loading Overlay */}
-      {exportMutation.isPending && (
+      {/* Loading Overlay - Removed since using direct CSV export */}
+      {false && (
         <motion.div 
           className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50"
           initial={{ opacity: 0 }}

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
-import carbonIcon from "@assets/carbon-icon.png";
+// import carbonIcon from "@assets/carbon-icon.png";
 
 interface HeaderProps {
   onExport: () => void;
@@ -44,11 +44,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg p-2">
-              <img 
-                src={carbonIcon} 
-                alt="Carbon footprint icon" 
-                className="w-full h-full object-contain filter brightness-0 invert"
-              />
+              <div className="w-full h-full bg-emerald-500 rounded-sm"></div>
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">
