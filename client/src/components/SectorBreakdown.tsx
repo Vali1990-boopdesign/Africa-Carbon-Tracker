@@ -8,6 +8,14 @@ interface SectorBreakdownProps {
   isLoading: boolean;
 }
 
+// Color palette for the pie chart
+const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#84cc16", "#f97316"];
+
+// Format number with commas
+const formatNumber = (num: number): string => {
+  return num.toLocaleString();
+};
+
 export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps) {
   if (isLoading) {
     return (
@@ -48,6 +56,9 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
     );
   }
 
+  // Calculate total credits from sector data
+  const totalCredits = sectorData?.reduce((sum, sector) => sum + sector.totalCredits, 0) || 0;
+
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -55,7 +66,7 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
         <div className="bg-dark-800 border border-gray-700 rounded-lg p-3 shadow-lg">
           <p className="text-gray-300 text-sm font-medium">{data.sector}</p>
           <p className="text-emerald-400 text-sm">Credits: {data.totalCredits.toLocaleString()}</p>
-          <p className="text-blue-400 text-sm">Share: {data.percentage}%</p>
+          <p className="text-blue-400 text-sm">Share: {((data.totalCredits / totalCredits) * 100).toFixed(1)}%</p>
         </div>
       );
     }
@@ -91,8 +102,8 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
                       cy="50%"
                       outerRadius={120}
                       fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                      dataKey="totalCredits"
+                      label={({ sector, percent }) => `${sector}: ${(percent * 100).toFixed(1)}%`}
                     >
                       {sectorData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
