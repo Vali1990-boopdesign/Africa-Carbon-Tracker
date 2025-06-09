@@ -14,7 +14,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="glass-effect border-gray-700 animate-pulse">
+            <Card key={i} className="bg-background/60 backdrop-blur-md border-divider animate-pulse">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
