@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { Button } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "./ThemeProvider";
 import { Download, Moon, Sun, Leaf } from "lucide-react";
 import { motion } from "framer-motion";
@@ -65,44 +65,40 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {/* Date Range Selector */}
-            <div className="bg-content2 rounded-lg px-3 py-2 h-10 flex items-center">
+            <div className="bg-gray-800 rounded-lg px-3 py-2 h-10 flex items-center">
               <Select
-                size="sm"
                 value={dateRange}
-                onSelectionChange={(keys) => {
-                  const selected = Array.from(keys)[0] as string;
-                  handleDateRangeChange(selected);
+                onValueChange={(value: string) => {
+                  handleDateRangeChange(value);
                 }}
-                className="w-28"
-                classNames={{
-                  trigger: "border-none bg-transparent text-foreground min-h-0 h-auto px-0",
-                  value: "text-foreground",
-                }}
-                aria-label="Select date range"
               >
-                {dateRangeOptions.map((option) => (
-                  <SelectItem key={option.key} value={option.key}>
-                    {option.label}
-                  </SelectItem>
-                ))}
+                <SelectTrigger className="w-28 border-none bg-transparent text-white min-h-0 h-auto px-0">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {dateRangeOptions.map((option) => (
+                    <SelectItem key={option.key} value={option.key}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
 
             {/* Export Button */}
             <Button
-              color="primary"
+              variant="default"
               size="sm"
-              startContent={<Download size={16} />}
               onClick={onExport}
-              isLoading={isLoading}
+              disabled={isLoading}
               className="h-10"
             >
+              <Download size={16} className="mr-2" />
               Export
             </Button>
 
             {/* Dark Mode Toggle */}
             <Button
-              isIconOnly
               variant="ghost"
               size="sm"
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

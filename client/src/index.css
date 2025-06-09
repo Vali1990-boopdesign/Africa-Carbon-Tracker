@@ -1,23 +1,20 @@
-@import "@nextui-org/theme/dist/base.css";
-@import "@nextui-org/theme/dist/utilities.css";
-@import "@nextui-org/theme/dist/components.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* HeroUI Dark Theme Integration */
-  --nextui-background: 220 13% 9%;
-  --nextui-foreground: 220 13% 91%;
-  --nextui-card: 220 13% 13%;
-  --nextui-card-foreground: 220 13% 91%;
-  --nextui-popover: 220 13% 13%;
-  --nextui-popover-foreground: 220 13% 91%;
-  --nextui-primary: 142 72% 29%;
-  --nextui-primary-foreground: 220 13% 91%;
-  --nextui-secondary: 220 13% 20%;
-  --nextui-secondary-foreground: 220 13% 91%;
-  --nextui-success: 142 72% 29%;
+  /* Carbon Credits Dashboard Theme */
+  --background: 220 13% 9%;
+  --foreground: 220 13% 91%;
+  --card: 220 13% 13%;
+  --card-foreground: 220 13% 91%;
+  --popover: 220 13% 13%;
+  --popover-foreground: 220 13% 91%;
+  --primary: 142 72% 29%;
+  --primary-foreground: 220 13% 91%;
+  --secondary: 220 13% 20%;
+  --secondary-foreground: 220 13% 91%;
+  --success: 142 72% 29%;
   --nextui-success-foreground: 220 13% 91%;
   --nextui-warning: 45 93% 47%;
   --nextui-warning-foreground: 220 13% 9%;
