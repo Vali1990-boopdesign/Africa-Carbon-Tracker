@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "./ThemeProvider";
 import { Download, Moon, Sun, Leaf } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 import { motion } from "framer-motion";
 
 interface HeaderProps {
@@ -93,19 +94,8 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
               Export
             </Button>
             
-            {/* Dark Mode Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="w-10 h-10 bg-surface-container-high hover:bg-surface-container-highest rounded-lg border border-border"
-            >
-              {theme === "dark" ? (
-                <Sun className="h-4 w-4 text-muted-foreground" />
-              ) : (
-                <Moon className="h-4 w-4 text-muted-foreground" />
-              )}
-            </Button>
+            {/* Theme Toggle */}
+            <ThemeToggle />
           </motion.div>
         </div>
       </div>
