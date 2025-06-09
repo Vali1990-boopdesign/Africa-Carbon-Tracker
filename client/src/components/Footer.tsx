@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import catalystLogo from "/catalyst-fund-logo.png";
 
 export function Footer() {
   return (
@@ -13,7 +14,7 @@ export function Footer() {
         {/* Catalyst Fund Logo */}
         <div className="flex justify-center mb-6">
           <img
-            src="/catalyst-fund-logo.png"
+            src={catalystLogo}
             alt="Catalyst Fund"
             className="h-16 object-contain"
           />
