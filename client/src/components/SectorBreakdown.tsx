@@ -64,76 +64,82 @@ export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps)
 
   return (
     <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Sector Breakdown</CardTitle>
+          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">
+            Sector Breakdown
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Responsive Layout: Horizontal on lg+ screens, vertical on smaller screens */}
-          <div className="flex flex-col lg:flex-row lg:items-start lg:space-x-6 space-y-4 lg:space-y-0">
-            {/* Donut Chart */}
-            <div className="h-40 lg:w-48 lg:flex-shrink-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={sectorData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={30}
-                    outerRadius={70}
-                    paddingAngle={2}
-                    dataKey="totalCredits"
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+            </div>
+          ) : (
+            <div className="flex flex-col lg:flex-row items-start gap-6">
+              {/* Pie Chart - Left side on desktop */}
+              <div className="w-full lg:flex-1 flex justify-center">
+                <ResponsiveContainer width="100%" height={350}>
+                  <PieChart>
+                    <Pie
+                      data={sectorData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={120}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                    >
+                      {sectorData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(value: number) => [formatNumber(value), 'Credits']} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              {/* Data List - Right side on desktop */}
+              <div className="w-full lg:flex-1 space-y-3">
+                {sectorData.map((sector, index) => (
+                  <div
+                    key={sector.sector}
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
                   >
-                    {sectorData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            
-            {/* Sector Legend */}
-            <div className="flex-1 space-y-2">
-              {sectorData.map((sector, index) => (
-                <motion.div
-                  key={sector.sector}
-                  className="flex items-center justify-between"
-                  initial={{ x: 20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
-                      style={{ backgroundColor: sector.color }}
-                    ></div>
-                    <span className="text-sm text-gray-300">{sector.sector}</span>
+                    <div className="flex items-center space-x-3">
+                      <div
+                        className={`w-4 h-4 rounded-full`}
+                        style={{ backgroundColor: colors[index % colors.length] }}
+                      ></div>
+                      <span className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                        {sector.sector}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                        {((sector.totalCredits / totalCredits) * 100).toFixed(0)}%
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-sm font-medium text-white">{sector.percentage}%</span>
-                </motion.div>
-              ))}
+                ))}
+
+                <div className="mt-4 p-3 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border border-emerald-200 dark:border-emerald-700">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-emerald-800 dark:text-emerald-300">
+                      Total Credits
+                    </span>
+                    <span className="text-lg font-bold text-emerald-900 dark:text-emerald-200">
+                      {formatNumber(totalCredits)}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          {/* Total Credits Summary */}
-          <motion.div 
-            className="mt-4 pt-4 border-t border-gray-700"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-400">Total Credits</span>
-              <span className="text-sm font-semibold text-white">
-                {sectorData.reduce((sum, sector) => sum + sector.totalCredits, 0).toLocaleString()}
-              </span>
-            </div>
-          </motion.div>
+          )}
         </CardContent>
       </Card>
     </motion.div>

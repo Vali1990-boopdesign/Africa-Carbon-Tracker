@@ -10,6 +10,7 @@ import { TopBuyers } from "@/components/TopBuyers";
 import { SectorBreakdown } from "@/components/SectorBreakdown";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
+import { Footer } from "@/components/Footer";
 
 import { useDashboard } from "@/hooks/use-dashboard";
 import { apiRequest } from "@/lib/queryClient";
@@ -71,6 +72,17 @@ export default function Dashboard() {
     }
   };
 
+  // Get current date range for display
+  const getCurrentDateRange = () => {
+    if (filters.startYear === 0 && filters.endYear === 0) {
+      return "all";
+    } else if (filters.startYear === filters.endYear) {
+      return filters.startYear.toString();
+    } else {
+      return `${filters.startYear}-${filters.endYear}`;
+    }
+  };
+
   const handleExport = () => {
     exportMutation.mutate({
       format: "csv",
@@ -97,7 +109,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
       <Header 
-        dateRange={filters.startYear > 0 && filters.endYear > 0 ? `${filters.startYear}-${filters.endYear}` : "all"}
+        dateRange={getCurrentDateRange()}
         onDateRangeChange={handleDateRangeChange}
         onExport={handleExport}
         isLoading={isLoading}
@@ -183,6 +195,9 @@ export default function Dashboard() {
           onExport={handleTableExport}
         />
       </div>
+
+      {/* Footer */}
+      <Footer />
 
       {/* Loading Overlay */}
       {exportMutation.isPending && (
