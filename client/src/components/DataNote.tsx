@@ -2,7 +2,7 @@ import { Info } from "lucide-react";
 
 export function DataNote() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 pt-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
       <div className="glass-effect rounded-xl p-4 border border-gray-700/50">
         <div className="flex items-start gap-3">
           <div className="flex-shrink-0 mt-0.5">

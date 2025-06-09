@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf } from "lucide-react";
 import { motion } from "framer-motion";
@@ -15,15 +14,15 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="bg-card border-border animate-pulse">
+            <Card key={i} className="glass-effect border-gray-700 animate-pulse">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="h-4 bg-muted rounded w-24 mb-2"></div>
-                    <div className="h-8 bg-muted rounded w-16 mb-2"></div>
-                    <div className="h-4 bg-muted rounded w-32"></div>
+                    <div className="h-4 bg-gray-700 rounded w-24 mb-2"></div>
+                    <div className="h-8 bg-gray-700 rounded w-16 mb-2"></div>
+                    <div className="h-4 bg-gray-700 rounded w-32"></div>
                   </div>
-                  <div className="w-12 h-12 bg-muted rounded-lg"></div>
+                  <div className="w-12 h-12 bg-gray-700 rounded-lg"></div>
                 </div>
               </CardContent>
             </Card>
@@ -36,7 +35,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   if (!metrics) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div className="text-center text-muted-foreground">
+        <div className="text-center text-gray-400">
           <p>Unable to load metrics data</p>
         </div>
       </div>
@@ -45,7 +44,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
 
   const cards = [
     {
-      title: "Total Credits",
+      title: "Total Players",
       value: `${(metrics.totalCreditsRetired / 1000).toFixed(1)}M`,
       change: `+${metrics.totalCreditsGrowth}%`,
       changeLabel: "vs last year",
@@ -55,7 +54,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-emerald-500",
     },
     {
-      title: "Buyers",
+      title: "Active Buyers",
       value: metrics.activeBuyers.toLocaleString(),
       change: `+${metrics.activeBuyersGrowth}`,
       changeLabel: "this month",
@@ -96,25 +95,29 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="bg-card border-border rounded-xl shadow-sm transition-colors">
+            <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="body-medium text-muted-foreground mb-1">{card.title}</p>
-                    <p className="headline-medium text-foreground font-semibold mb-2">{card.value}</p>
-                    <div className="flex items-center gap-2">
-                      <div className={`flex items-center gap-1 text-sm ${card.isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
-                        {card.isPositive ? (
-                          <TrendingUp className="h-4 w-4" />
-                        ) : (
-                          <TrendingDown className="h-4 w-4" />
-                        )}
-                        <span className="label-medium font-medium">{card.change}</span>
-                      </div>
-                      <span className="body-small text-muted-foreground">{card.changeLabel}</span>
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.title}</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
+                    <div className="flex items-center mt-2">
+                      {card.isPositive ? (
+                        <TrendingUp className="text-emerald-500 mr-1" size={14} />
+                      ) : (
+                        <TrendingDown className="text-red-400 mr-1" size={14} />
+                      )}
+                      <span 
+                        className={`text-sm font-medium mr-1 ${
+                          card.isPositive ? "text-emerald-500" : "text-red-400"
+                        }`}
+                      >
+                        {card.change}
+                      </span>
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">{card.changeLabel}</span>
                     </div>
                   </div>
-                  <div className={`w-12 h-12 ${card.iconBg} rounded-xl flex items-center justify-center`}>
+                  <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
                     <card.icon className={card.iconColor} size={24} />
                   </div>
                 </div>

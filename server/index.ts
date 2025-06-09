@@ -2,9 +2,6 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seed";
-import { db } from "./db";
-import { transactions } from "@shared/schema";
-import { count } from "drizzle-orm";
 
 const app = express();
 app.use(express.json());
@@ -41,15 +38,9 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Check if database has data, if not seed it
-  const transactionCount = await db.select({ count: count() }).from(transactions);
-  if (transactionCount[0].count === 0) {
-    await seedDatabase();
-    log("Database seeded with sample data");
-  } else {
-    log(`Database already has ${transactionCount[0].count} transactions`);
-  }
-
+  // Seed the database with initial data
+  await seedDatabase();
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -72,8 +63,12 @@ app.use((req, res, next) => {
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
-  const port = Number(process.env.PORT) || 5000;
-  server.listen(port, () => {
+  const port = 5000;
+  server.listen({
+    port,
+    host: "0.0.0.0",
+    reusePort: true,
+  }, () => {
     log(`serving on port ${port}`);
   });
 })();

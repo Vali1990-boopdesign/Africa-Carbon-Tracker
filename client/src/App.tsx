@@ -1,33 +1,33 @@
-
-import { Router, Route, Switch } from "wouter";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Switch, Route } from "wouter";
+import { queryClient } from "./lib/queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Dashboard from "@/pages/dashboard";
+import ChoroplethTest from "@/pages/choropleth-test";
 import NotFound from "@/pages/not-found";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      retry: 1,
-    },
-  },
-});
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Dashboard} />
+      <Route path="/choropleth-test" component={ChoroplethTest} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="carbon-dashboard-theme">
-      <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-background text-foreground transition-colors">
-          <Switch>
-            <Route path="/" component={Dashboard} />
-            <Route component={NotFound} />
-          </Switch>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="dark" storageKey="carbon-dashboard-theme">
+        <TooltipProvider>
           <Toaster />
-        </div>
-      </QueryClientProvider>
-    </ThemeProvider>
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

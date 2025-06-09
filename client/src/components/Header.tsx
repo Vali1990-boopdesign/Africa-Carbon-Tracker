@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "./ThemeProvider";
 import { Download, Moon, Sun, Leaf } from "lucide-react";
-import { ThemeToggle } from "./ThemeToggle";
 import { motion } from "framer-motion";
 
 interface HeaderProps {
@@ -35,7 +34,7 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
 
   return (
     <motion.header 
-      className="bg-surface-container border-b border-border sticky top-0 z-50 backdrop-blur-xl"
+      className="glass-effect border-b border-gray-800 sticky top-0 z-50"
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -50,12 +49,12 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center">
-                <Leaf className="text-primary-foreground" size={20} />
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                <Leaf className="text-white" size={20} />
               </div>
               <div>
-                <h1 className="headline-small text-foreground">Africa Carbon Credits Analytics</h1>
-                <p className="body-small text-muted-foreground">Real-time carbon market insights</p>
+                <h1 className="text-xl font-bold text-white">Africa Carbon Credits Analytics</h1>
+                <p className="text-xs text-gray-400">Real-time carbon market insights</p>
               </div>
             </div>
           </motion.div>
@@ -68,15 +67,15 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {/* Date Range Selector */}
-            <div className="bg-surface-container-high rounded-lg px-3 py-2 h-10 flex items-center border border-border">
+            <div className="flex items-center space-x-2 bg-dark-800 rounded-lg p-2">
               <Select value={dateRange} onValueChange={handleDateRangeChange}>
-                <SelectTrigger className="w-28 border-none bg-transparent text-foreground px-0 h-auto label-medium">
+                <SelectTrigger className="w-32 border-none bg-transparent text-gray-200">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-surface-container border-border text-foreground">
-                  <SelectItem value="2011-2023" className="text-foreground hover:bg-surface-container-high">2011 - 2023</SelectItem>
-                  <SelectItem value="2020-2023" className="text-foreground hover:bg-surface-container-high">2020 - 2023</SelectItem>
-                  <SelectItem value="custom" className="text-foreground hover:bg-surface-container-high">Custom Range</SelectItem>
+                <SelectContent>
+                  <SelectItem value="2011-2023">2011 - 2023</SelectItem>
+                  <SelectItem value="2020-2023">2020 - 2023</SelectItem>
+                  <SelectItem value="custom">Custom Range</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -84,14 +83,25 @@ export function Header({ onDateRangeChange, onExport }: HeaderProps) {
             {/* Export Button */}
             <Button 
               onClick={onExport}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 label-medium font-medium transition-colors h-10"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm font-medium transition-colors"
             >
               <Download className="mr-2" size={16} />
               Export
             </Button>
             
-            {/* Theme Toggle */}
-            <ThemeToggle />
+            {/* Dark Mode Toggle */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="w-10 h-10 bg-dark-800 hover:bg-dark-700 rounded-lg"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4 text-gray-400" />
+              ) : (
+                <Moon className="h-4 w-4 text-gray-400" />
+              )}
+            </Button>
           </motion.div>
         </div>
       </div>

@@ -99,11 +99,7 @@ export function FiltersBar({
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="glass-effect rounded-xl p-4 border border-border"
-        style={{
-          background: 'hsl(var(--card))',
-          backdropFilter: 'blur(16px) saturate(180%)'
-        }}>
+      <div className="glass-effect rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-4">
           {/* Global Search */}
           <div className="flex-1 min-w-64" ref={searchRef}>
@@ -115,7 +111,7 @@ export function FiltersBar({
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                className="w-full bg-surface-container border-border pl-10 text-foreground placeholder-muted-foreground focus:border-primary body-medium"
+                className="w-full bg-gray-800 dark:bg-dark-800 border-gray-600 dark:border-gray-700 pl-10 text-gray-200 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:border-emerald-500"
               />
               
               {/* Search Suggestions Dropdown */}
@@ -125,13 +121,13 @@ export function FiltersBar({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 right-0 mt-1 bg-surface-container border border-border rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+                    className="absolute top-full left-0 right-0 mt-1 bg-gray-800 dark:bg-dark-800 border border-gray-600 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
                   >
                     {searchSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="w-full text-left px-4 py-2 hover:bg-surface-container-high text-foreground transition-colors border-b border-border last:border-b-0 body-medium"
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors border-b border-gray-200 dark:border-gray-600 last:border-b-0"
                       >
                         {suggestion}
                       </button>
@@ -148,10 +144,10 @@ export function FiltersBar({
               value={filters.country || "all"} 
               onValueChange={(value) => onFilterChange("country", value === "all" ? "" : value)}
             >
-              <SelectTrigger className="w-40 bg-surface-container border-border text-foreground label-medium">
+              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Countries" />
               </SelectTrigger>
-              <SelectContent className="bg-surface-container border-border">
+              <SelectContent>
                 <SelectItem value="all">All Countries</SelectItem>
                 {uniqueCountries.map(country => (
                   <SelectItem key={country} value={country}>{country}</SelectItem>
@@ -163,10 +159,10 @@ export function FiltersBar({
               value={filters.sector || "all"} 
               onValueChange={(value) => onFilterChange("sector", value === "all" ? "" : value)}
             >
-              <SelectTrigger className="w-40 bg-surface-container border-border text-foreground label-medium">
+              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Sectors" />
               </SelectTrigger>
-              <SelectContent className="bg-surface-container border-border">
+              <SelectContent>
                 <SelectItem value="all">All Sectors</SelectItem>
                 {uniqueSectors.map(sector => (
                   <SelectItem key={sector} value={sector}>{sector}</SelectItem>
@@ -178,10 +174,10 @@ export function FiltersBar({
               value={filters.projectType || "all"} 
               onValueChange={(value) => onFilterChange("projectType", value === "all" ? "" : value)}
             >
-              <SelectTrigger className="w-48 bg-surface-container border-border text-foreground label-medium">
+              <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Project Types" />
               </SelectTrigger>
-              <SelectContent className="bg-surface-container border-border">
+              <SelectContent>
                 <SelectItem value="all">All Project Types</SelectItem>
                 {uniqueProjectTypes.map(type => (
                   <SelectItem key={type} value={type}>{type}</SelectItem>
@@ -193,7 +189,7 @@ export function FiltersBar({
               variant="ghost"
               size="icon"
               onClick={onClearFilters}
-              className="text-muted-foreground hover:text-foreground"
+              className="text-gray-400 hover:text-white"
             >
               <X size={16} />
             </Button>
@@ -209,7 +205,7 @@ export function FiltersBar({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
             >
-              <span className="label-small text-muted-foreground">Active filters:</span>
+              <span className="text-xs text-gray-400">Active filters:</span>
               <div className="flex items-center space-x-2 flex-wrap">
                 {activeFilters.map((filter, index) => (
                   <motion.div
@@ -221,7 +217,7 @@ export function FiltersBar({
                   >
                     <Badge 
                       variant="secondary" 
-                      className="bg-primary/20 text-primary hover:bg-primary/30 cursor-pointer label-small"
+                      className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
                       onClick={() => onRemoveFilter(filter.key)}
                     >
                       {filter.label}
