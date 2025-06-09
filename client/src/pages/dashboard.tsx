@@ -59,8 +59,8 @@ export default function Dashboard() {
 
   const handleDateRangeChange = (range: string) => {
     if (range === "all") {
-      updateFilter("startYear", undefined);
-      updateFilter("endYear", undefined);
+      updateFilter("startYear", 0);
+      updateFilter("endYear", 0);
     } else if (range === "2024") {
       updateFilter("startYear", 2024);
       updateFilter("endYear", 2024);
@@ -97,7 +97,7 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
       <Header 
-        dateRange={filters.startYear && filters.endYear ? `${filters.startYear}-${filters.endYear}` : "all"}
+        dateRange={filters.startYear > 0 && filters.endYear > 0 ? `${filters.startYear}-${filters.endYear}` : "all"}
         onDateRangeChange={handleDateRangeChange}
         onExport={handleExport}
         isLoading={isLoading}

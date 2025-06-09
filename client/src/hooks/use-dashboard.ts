@@ -29,19 +29,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/dashboard/metrics?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -52,19 +52,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/transactions?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -75,19 +75,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/dashboard/countries?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -98,19 +98,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/dashboard/sectors?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -121,19 +121,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/dashboard/timeseries?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -144,19 +144,19 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && value !== "") {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
-      
+
       const response = await fetch(`/api/dashboard/top-buyers?${params.toString()}`, {
         credentials: "include",
       });
-      
+
       if (!response.ok) {
         throw new Error(`${response.status}: ${response.statusText}`);
       }
-      
+
       return response.json();
     },
   });
@@ -208,18 +208,18 @@ export function useDashboard() {
     sectorData,
     timeSeriesData,
     topBuyers,
-    
+
     // State
     filters,
     activeFilters,
     activeTab,
-    
+
     // Actions
     updateFilter,
     clearFilters,
     removeFilter,
     setActiveTab,
-    
+
     // Loading
     isLoading,
     metricsLoading,

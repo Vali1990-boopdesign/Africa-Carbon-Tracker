@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useTheme } from "./ThemeProvider";
-import { Download, Moon, Sun } from "lucide-react";
+import { Download } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface HeaderProps {
@@ -14,7 +13,6 @@ interface HeaderProps {
 }
 
 export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
-  const { theme, setTheme } = useTheme();
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
@@ -45,11 +43,11 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <div className="flex items-center justify-center w-10 h-10 bg-success/20 rounded-lg">
+            <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg p-2">
               <img 
                 src="/carbon-icon.png" 
                 alt="Carbon footprint icon" 
-                className="w-6 h-6 object-contain"
+                className="w-full h-full object-contain filter brightness-0 invert"
               />
             </div>
             <div>
@@ -72,12 +70,13 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             {/* Date Range Selector */}
             <div className="bg-gray-800 rounded-lg px-3 py-2 h-10 flex items-center">
               <Select
-                value={dateRange}
+                value={dateRange || "all"}
                 onValueChange={(value: string) => {
                   handleDateRangeChange(value);
                 }}
+                defaultValue="all"
               >
-                <SelectTrigger className="w-28 border-none bg-transparent text-white min-h-0 h-auto px-0">
+                <SelectTrigger className="w-32 border-none bg-transparent text-white min-h-0 h-auto px-0">
                   <SelectValue placeholder="All Years" />
                 </SelectTrigger>
                 <SelectContent>
@@ -100,17 +99,6 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             >
               <Download size={16} className="mr-2" />
               Export
-            </Button>
-
-            {/* Dark Mode Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="h-10 w-10"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </Button>
           </motion.div>
         </div>
