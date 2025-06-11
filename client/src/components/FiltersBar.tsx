@@ -117,22 +117,38 @@ export function FiltersBar({
               {/* Search Suggestions Dropdown */}
               <AnimatePresence>
                 {isSearchFocused && searchSuggestions.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full left-0 right-0 mt-1 bg-gray-800 dark:bg-dark-800 border border-gray-600 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
-                  >
-                    {searchSuggestions.map((suggestion, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleSuggestionClick(suggestion)}
-                        className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors border-b border-gray-200 dark:border-gray-600 last:border-b-0"
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
-                  </motion.div>
+                  <>
+                    {/* Backdrop overlay */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998]"
+                      onClick={() => setIsSearchFocused(false)}
+                    />
+
+                    {/* Dropdown */}
+                    <motion.div
+                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg z-[9999] max-h-64 overflow-y-auto shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] dark:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.3),0_10px_10px_-5px_rgba(0,0,0,0.2)]"
+                      style={{ 
+                        filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.25))',
+                        backdropFilter: 'blur(8px)'
+                      }}
+                    >
+                      {searchSuggestions.map((suggestion, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleSuggestionClick(suggestion)}
+                          className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-all duration-200 border-b border-gray-100 dark:border-gray-600 last:border-b-0 first:rounded-t-lg last:rounded-b-lg"
+                        >
+                          {suggestion}
+                        </button>
+                      ))}
+                    </motion.div>
+                  </>
                 )}
               </AnimatePresence>
             </div>
