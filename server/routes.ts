@@ -1,13 +1,17 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { db } from "./db";
+import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema";
+import { desc, sql, eq, and, gte, lte, inArray } from "drizzle-orm";
+import type { DashboardMetrics, CountryData, SectorData, TimeSeriesData, TopBuyerData } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Dashboard metrics endpoint with filters
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -28,7 +32,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/transactions", async (req, res) => {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -49,7 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/dashboard/countries", async (req, res) => {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -70,7 +74,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/dashboard/sectors", async (req, res) => {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -91,7 +95,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -113,7 +117,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { country, sector, projectType, startYear, endYear, search } = req.query;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-      
+
       const filters = {
         country: country as string,
         sector: sector as string,
@@ -134,7 +138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/export", async (req, res) => {
     try {
       const { format, filters } = req.body;
-      
+
       // For now, just return success - implement actual export logic later
       res.json({ 
         success: true, 
@@ -150,7 +154,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/chat", (req, res) => {
     try {
       const { question } = req.body;
-      
+
       if (!question) {
         return res.status(400).json({ error: "Question is required" });
       }
@@ -182,7 +186,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check for direct terminology matches (prioritize longer matches)
       const sortedTerms = Object.entries(carbonTerminology).sort((a, b) => b[0].length - a[0].length);
-      
+
       for (const [term, definition] of sortedTerms) {
         if (questionLower.includes(term)) {
           response = `**${term.charAt(0).toUpperCase() + term.slice(1)}**: ${definition}`;
@@ -228,6 +232,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: "Failed to process chat request",
         response: "I'm having trouble responding right now. Please try again later."
       });
+    }
+  });
+
+  // Bilateral agreements endpoints
+  app.get("/api/bilateral-agreements", async (req, res) => {
+    try {
+      const agreements = await db.select().from(bilateralAgreements).orderBy(desc(bilateralAgreements.signingYear));
+      res.json(agreements);
+    } catch (error) {
+      console.error("Database error:", error);
+      res.status(500).json({ error: "Failed to fetch bilateral agreements" });
+    }
+  });
+
+  app.get("/api/bilateral-agreements/summary", async (req, res) => {
+    try {
+      const [totalAgreements] = await db.select({
+        total: sql<number>`count(*)`.mapWith(Number)
+      }).from(bilateralAgreements);
+
+      const [activeAgreements] = await db.select({
+        active: sql<number>`count(*) filter (where status = 'Active')`.mapWith(Number)
+      }).from(bilateralAgreements);
+
+      const [countryCount] = await db.select({
+        countries: sql<number>`count(distinct country)`.mapWith(Number)
+      }).from(bilateralAgreements);
+
+      const [partnerCount] = await db.select({
+        partners: sql<number>`count(distinct partner)`.mapWith(Number)
+      }).from(bilateralAgreements);
+
+      res.json({
+        totalAgreements: totalAgreements.total,
+        activeAgreements: activeAgreements.active,
+        uniqueCountries: countryCount.countries,
+        uniquePartners: partnerCount.partners,
+      });
+    } catch (error) {
+      console.error("Database error:", error);
+      res.status(500).json({ error: "Failed to fetch bilateral agreements summary" });
+    }
+  });
+
+  // Export transactions
+  app.get("/api/export/transactions", async (req, res) => {
+    try {
+      const allTransactions = await db.select().from(transactions);
+
+      // Convert to CSV format
+      const csvContent = convertToCSV(allTransactions);
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="africa_carbon_transactions.csv"');
+      res.send(csvContent);
+    } catch (error) {
+      console.error("Export error:", error);
+      res.status(500).json({ error: "Failed to export data" });
     }
   });
 

@@ -12,6 +12,7 @@ import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
 import { CarbonChatbot } from "@/components/CarbonChatbot";
+import { BilateralAgreements } from "@/components/BilateralAgreements";
 
 import { useDashboard } from "@/hooks/use-dashboard";
 import { exportFilteredData } from "@/utils/csvExport";
@@ -110,7 +111,7 @@ export default function Dashboard() {
       />
 
       {/* Data Note */}
-      
+
 
       {/* Filters Bar */}
       <div className="mb-8">
@@ -175,6 +176,8 @@ export default function Dashboard() {
             />
           </div>
         </div>
+{/* Bilateral Agreements */}
+          <BilateralAgreements />
 
 
       </div>

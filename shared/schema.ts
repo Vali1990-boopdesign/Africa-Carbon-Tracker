@@ -36,7 +36,22 @@ export const insertTransactionSchema = createInsertSchema(transactions).omit({
   id: true,
 });
 
+export const bilateralAgreements = pgTable("bilateral_agreements", {
+  id: serial("id").primaryKey(),
+  agreementName: text("agreement_name").notNull(),
+  country: text("country").notNull(),
+  partner: text("partner").notNull(),
+  signingYear: integer("signing_year"),
+  status: text("status").notNull(),
+  agreementType: text("agreement_type").notNull(),
+  description: text("description"),
+});
+
 export const insertBuyerProfileSchema = createInsertSchema(buyerProfiles).omit({
+  id: true,
+});
+
+export const insertBilateralAgreementSchema = createInsertSchema(bilateralAgreements).omit({
   id: true,
 });
 
@@ -44,6 +59,8 @@ export type Transaction = typeof transactions.$inferSelect;
 export type InsertTransaction = z.infer<typeof insertTransactionSchema>;
 export type BuyerProfile = typeof buyerProfiles.$inferSelect;
 export type InsertBuyerProfile = z.infer<typeof insertBuyerProfileSchema>;
+export type BilateralAgreement = typeof bilateralAgreements.$inferSelect;
+export type InsertBilateralAgreement = z.infer<typeof insertBilateralAgreementSchema>;
 
 // Additional types for dashboard
 export interface DashboardMetrics {

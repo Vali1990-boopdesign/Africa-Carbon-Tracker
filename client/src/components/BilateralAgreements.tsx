@@ -1,0 +1,251 @@
+
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { motion } from "framer-motion";
+import type { BilateralAgreement } from "@shared/schema";
+
+interface BilateralAgreementsSummary {
+  totalAgreements: number;
+  activeAgreements: number;
+  uniqueCountries: number;
+  uniquePartners: number;
+}
+
+export function BilateralAgreements() {
+  const [agreements, setAgreements] = useState<BilateralAgreement[]>([]);
+  const [summary, setSummary] = useState<BilateralAgreementsSummary | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [agreementsRes, summaryRes] = await Promise.all([
+          fetch("/api/bilateral-agreements"),
+          fetch("/api/bilateral-agreements/summary")
+        ]);
+        
+        const agreementsData = await agreementsRes.json();
+        const summaryData = await summaryRes.json();
+        
+        setAgreements(agreementsData);
+        setSummary(summaryData);
+      } catch (error) {
+        console.error("Failed to fetch bilateral agreements data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getStatusIcon = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return <CheckCircle className="w-4 h-4 text-green-500" />;
+      case 'pending':
+        return <Clock className="w-4 h-4 text-yellow-500" />;
+      case 'inactive':
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
+      default:
+        return <FileText className="w-4 h-4 text-gray-500" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'active':
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
+      case 'pending':
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300";
+      case 'inactive':
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
+    }
+  };
+
+  const displayedAgreements = showAll ? agreements : agreements.slice(0, 6);
+
+  if (isLoading) {
+    return (
+      <Card className="glass-effect border-gray-700">
+        <CardHeader>
+          <div className="h-6 bg-gray-700 rounded w-48 animate-pulse"></div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="text-center">
+                  <div className="h-8 bg-gray-700 rounded w-16 mx-auto mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-gray-700 rounded w-24 mx-auto animate-pulse"></div>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className="h-16 bg-dark-800/50 rounded animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="glass-effect border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+            <FileText className="w-6 h-6 text-emerald-500" />
+            Africa's Bilateral Agreements
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Summary Stats */}
+          {summary && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <motion.div
+                className="text-center p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <FileText className="w-6 h-6 text-emerald-400" />
+                </div>
+                <div className="text-2xl font-bold text-white">{summary.totalAgreements}</div>
+                <div className="text-sm text-gray-400">Total Agreements</div>
+              </motion.div>
+
+              <motion.div
+                className="text-center p-4 bg-green-500/10 rounded-lg border border-green-500/20"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <CheckCircle className="w-6 h-6 text-green-400" />
+                </div>
+                <div className="text-2xl font-bold text-white">{summary.activeAgreements}</div>
+                <div className="text-sm text-gray-400">Active</div>
+              </motion.div>
+
+              <motion.div
+                className="text-center p-4 bg-blue-500/10 rounded-lg border border-blue-500/20"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <Globe className="w-6 h-6 text-blue-400" />
+                </div>
+                <div className="text-2xl font-bold text-white">{summary.uniqueCountries}</div>
+                <div className="text-sm text-gray-400">Countries</div>
+              </motion.div>
+
+              <motion.div
+                className="text-center p-4 bg-purple-500/10 rounded-lg border border-purple-500/20"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <Users className="w-6 h-6 text-purple-400" />
+                </div>
+                <div className="text-2xl font-bold text-white">{summary.uniquePartners}</div>
+                <div className="text-sm text-gray-400">Partners</div>
+              </motion.div>
+            </div>
+          )}
+
+          {/* Agreements List */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-white">Recent Agreements</h3>
+              {agreements.length > 6 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAll(!showAll)}
+                  className="bg-dark-800 border-gray-700 text-gray-300 hover:bg-dark-700 hover:text-white"
+                >
+                  {showAll ? 'Show Less' : `Show All (${agreements.length})`}
+                </Button>
+              )}
+            </div>
+
+            <ScrollArea className={showAll ? "h-96" : ""}>
+              <div className="space-y-3">
+                {displayedAgreements.map((agreement, index) => (
+                  <motion.div
+                    key={agreement.id}
+                    className="p-4 bg-dark-800/50 rounded-lg border border-gray-700 hover:border-emerald-500/30 transition-all duration-200"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-medium text-white line-clamp-1">
+                            {agreement.agreementName}
+                          </h4>
+                          <Badge className={getStatusColor(agreement.status)}>
+                            <div className="flex items-center gap-1">
+                              {getStatusIcon(agreement.status)}
+                              {agreement.status}
+                            </div>
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-400">
+                          <div>
+                            <span className="font-medium">Country:</span> {agreement.country}
+                          </div>
+                          <div>
+                            <span className="font-medium">Partner:</span> {agreement.partner}
+                          </div>
+                          {agreement.signingYear && (
+                            <div>
+                              <span className="font-medium">Year:</span> {agreement.signingYear}
+                            </div>
+                          )}
+                        </div>
+                        {agreement.agreementType && (
+                          <div className="mt-2">
+                            <Badge variant="outline" className="border-gray-600 text-gray-300">
+                              {agreement.agreementType}
+                            </Badge>
+                          </div>
+                        )}
+                        {agreement.description && (
+                          <p className="mt-2 text-sm text-gray-400 line-clamp-2">
+                            {agreement.description}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+
+          {agreements.length === 0 && (
+            <div className="text-center text-gray-400 py-8">
+              <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p>No bilateral agreements data available</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}

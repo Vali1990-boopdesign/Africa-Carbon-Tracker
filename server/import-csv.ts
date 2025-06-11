@@ -1,6 +1,6 @@
 
 import { db } from "./db";
-import { transactions, buyerProfiles } from "@shared/schema";
+import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -84,6 +84,7 @@ export async function importCSVData() {
     // Clear existing data
     await db.delete(transactions);
     await db.delete(buyerProfiles);
+    await db.delete(bilateralAgreements);
     console.log("Cleared existing data");
     
     // Import buyer profiles first
@@ -190,11 +191,53 @@ export async function importCSVData() {
       }
     }
     
-    console.log(`✅ CSV import completed! Imported ${importedTransactionsCount} transactions and ${buyerProfilesArray.length} buyer profiles`);
+    // Import bilateral agreements
+    const bilateralAgreementsPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa's Bi-Lateral Agreements_1749477252806.csv");
+    const bilateralAgreementsContent = fs.readFileSync(bilateralAgreementsPath, "utf-8");
+    const bilateralAgreementsLines = bilateralAgreementsContent.split("\n").filter(line => line.trim());
+    
+    const bilateralAgreementsHeaders = parseCSVLine(bilateralAgreementsLines[0]);
+    console.log("Bilateral Agreements Headers:", bilateralAgreementsHeaders);
+    
+    const bilateralAgreementsArray: any[] = [];
+    
+    for (let i = 1; i < bilateralAgreementsLines.length; i++) {
+      const line = bilateralAgreementsLines[i];
+      if (!line.trim()) continue;
+      
+      const values = parseCSVLine(line);
+      if (values.length !== bilateralAgreementsHeaders.length) continue;
+      
+      const row: Record<string, string> = {};
+      bilateralAgreementsHeaders.forEach((header, index) => {
+        row[header] = values[index] || "";
+      });
+      
+      if (row["Agreement Name"] && row["Country"]) {
+        bilateralAgreementsArray.push({
+          agreementName: row["Agreement Name"] || "",
+          country: row["Country"] || "",
+          partner: row["Partner"] || "",
+          signingYear: parseNumber(row["Signing Year"]) || null,
+          status: row["Status"] || "",
+          agreementType: row["Agreement Type"] || "",
+          description: row["Description"] || "",
+        });
+      }
+    }
+    
+    // Insert bilateral agreements
+    if (bilateralAgreementsArray.length > 0) {
+      await db.insert(bilateralAgreements).values(bilateralAgreementsArray);
+      console.log(`Imported ${bilateralAgreementsArray.length} bilateral agreements`);
+    }
+    
+    console.log(`✅ CSV import completed! Imported ${importedTransactionsCount} transactions, ${buyerProfilesArray.length} buyer profiles, and ${bilateralAgreementsArray.length} bilateral agreements`);
     
     return {
       transactions: importedTransactionsCount,
       buyerProfiles: buyerProfilesArray.length,
+      bilateralAgreements: bilateralAgreementsArray.length,
     };
   } catch (error) {
     console.error("❌ CSV import failed:", error);
