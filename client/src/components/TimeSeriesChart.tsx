@@ -33,7 +33,7 @@ interface TopBuyerData {
 export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 h-[28rem]">
+      <Card className="glass-effect border-gray-700 h-96">
         <CardContent className="p-6">
           <div className="flex items-center mb-6 border-b border-gray-700">
             {[...Array(3)].map((_, i) => (
@@ -102,7 +102,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700 h-[28rem]">
+      <Card className="glass-effect border-gray-700 h-96">
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={onTabChange}>
             <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700">
@@ -128,7 +128,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                 Buyers
               </TabsTrigger>
             </TabsList>
-
+            
             <TabsContent value="trends" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={yearlyData}>
@@ -157,7 +157,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                 </LineChart>
               </ResponsiveContainer>
             </TabsContent>
-
+            
             <TabsContent value="projects" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={projectData} margin={{ top: 20, right: 30, left: 60, bottom: 120 }}>
@@ -192,7 +192,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                 </BarChart>
               </ResponsiveContainer>
             </TabsContent>
-
+            
             <TabsContent value="buyers" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 60, bottom: 120 }}>
