@@ -20,17 +20,20 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     const connectionCounts = new Map<string, number>();
     
     agreements.forEach(agreement => {
-      const key = `${agreement.country}-${agreement.partner}`;
-      connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
+      // Ensure we have valid country and partner data
+      if (agreement.country && agreement.partner) {
+        const key = `${agreement.country}→${agreement.partner}`;
+        connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
+      }
     });
 
     // Convert to Sankey data format
     const sankeyData = [["From", "To", "Weight"]];
     
     connectionCounts.forEach((count, key) => {
-      const [country, partner] = key.split('-');
-      if (country && partner) {
-        sankeyData.push([country, partner, count]);
+      const [country, partner] = key.split('→');
+      if (country && partner && count > 0) {
+        sankeyData.push([country.trim(), partner.trim(), count]);
       }
     });
 
