@@ -160,7 +160,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
 
             <TabsContent value="projects" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
+                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 20, bottom: 140 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="type" 
@@ -168,9 +168,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                     fontSize={10}
                     angle={-45}
                     textAnchor="end"
-                    height={120}
+                    height={100}
                     interval={0}
-                    label={{ value: 'Project Sectors', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    tick={{ dy: 10 }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -184,13 +184,24 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                     fill="#3B82F6"
                     radius={[4, 4, 0, 0]}
                   />
+                  {/* Separate axis label positioned below the rotated labels */}
+                  <text 
+                    x="50%" 
+                    y="95%" 
+                    textAnchor="middle" 
+                    fill="#9CA3AF" 
+                    fontSize="12"
+                    dy="10"
+                  >
+                    Project Sectors
+                  </text>
                 </BarChart>
               </ResponsiveContainer>
             </TabsContent>
 
             <TabsContent value="buyers" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
+                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 20, bottom: 140 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="name" 
@@ -198,9 +209,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                     fontSize={10}
                     angle={-45}
                     textAnchor="end"
-                    height={120}
+                    height={100}
                     interval={0}
-                    label={{ value: 'Buyer Companies', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    tick={{ dy: 10 }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -214,6 +225,17 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
                     fill="#F59E0B"
                     radius={[4, 4, 0, 0]}
                   />
+                  {/* Separate axis label positioned below the rotated labels */}
+                  <text 
+                    x="50%" 
+                    y="95%" 
+                    textAnchor="middle" 
+                    fill="#9CA3AF" 
+                    fontSize="12"
+                    dy="10"
+                  >
+                    Buyer Companies
+                  </text>
                 </BarChart>
               </ResponsiveContainer>
             </TabsContent>
