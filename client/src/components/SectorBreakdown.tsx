@@ -94,17 +94,17 @@ const formatNumber = (num: number): string => {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
             </div>
           ) : (
-            <div className="flex flex-col lg:flex-row items-start gap-6">
-              {/* Donut Chart - Left side on desktop */}
-              <div className="w-full lg:flex-1 flex justify-center">
-                <ResponsiveContainer width="100%" height={350}>
+            <div className="flex flex-col items-center gap-6">
+              {/* Donut Chart - Top */}
+              <div className="w-full flex justify-center">
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
                       data={sectorData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={120}
+                      innerRadius={50}
+                      outerRadius={100}
                       fill="#8884d8"
                       dataKey="totalCredits"
                       stroke="none"
@@ -118,8 +118,8 @@ const formatNumber = (num: number): string => {
                 </ResponsiveContainer>
               </div>
 
-              {/* Data List - Right side on desktop */}
-              <div className="w-full lg:flex-1 space-y-3">
+              {/* Data List - Bottom */}
+              <div className="w-full space-y-3">
                 {sectorData.map((sector, index) => (
                   <div
                     key={sector.sector}
