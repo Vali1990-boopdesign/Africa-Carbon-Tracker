@@ -1,7 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, X } from "lucide-react";
@@ -11,18 +17,22 @@ import type { Transaction } from "@shared/schema";
 
 interface FiltersBarProps {
   filters: DashboardFilters;
-  activeFilters: Array<{ key: keyof DashboardFilters; label: string; value: string }>;
+  activeFilters: Array<{
+    key: keyof DashboardFilters;
+    label: string;
+    value: string;
+  }>;
   onFilterChange: (key: keyof DashboardFilters, value: string | number) => void;
   onRemoveFilter: (key: keyof DashboardFilters) => void;
   onClearFilters: () => void;
 }
 
-export function FiltersBar({ 
-  filters, 
-  activeFilters, 
-  onFilterChange, 
-  onRemoveFilter, 
-  onClearFilters 
+export function FiltersBar({
+  filters,
+  activeFilters,
+  onFilterChange,
+  onRemoveFilter,
+  onClearFilters,
 }: FiltersBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -35,9 +45,15 @@ export function FiltersBar({
   });
 
   // Extract unique values from authentic data
-  const uniqueCountries = Array.from(new Set(allTransactions?.map(t => t.country) || [])).sort();
-  const uniqueSectors = Array.from(new Set(allTransactions?.map(t => t.buyerSector) || [])).sort();
-  const uniqueProjectTypes = Array.from(new Set(allTransactions?.map(t => t.type) || [])).sort();
+  const uniqueCountries = Array.from(
+    new Set(allTransactions?.map((t) => t.country) || []),
+  ).sort();
+  const uniqueSectors = Array.from(
+    new Set(allTransactions?.map((t) => t.buyerSector) || []),
+  ).sort();
+  const uniqueProjectTypes = Array.from(
+    new Set(allTransactions?.map((t) => t.type) || []),
+  ).sort();
 
   // Generate search suggestions based on input
   useEffect(() => {
@@ -45,7 +61,7 @@ export function FiltersBar({
       const suggestions = new Set<string>();
       const searchLower = searchValue.toLowerCase();
 
-      allTransactions.forEach(transaction => {
+      allTransactions.forEach((transaction) => {
         // Search in buyer names
         if (transaction.buyerBrandName.toLowerCase().includes(searchLower)) {
           suggestions.add(transaction.buyerBrandName);
@@ -73,12 +89,15 @@ export function FiltersBar({
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsSearchFocused(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSearchChange = (value: string) => {
@@ -93,7 +112,7 @@ export function FiltersBar({
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
       initial={{ y: 20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -104,7 +123,10 @@ export function FiltersBar({
           {/* Global Search */}
           <div className="flex-1 min-w-64" ref={searchRef}>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+              <Search
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={16}
+              />
               <Input
                 type="text"
                 placeholder="Search buyers, countries, or projects..."
@@ -123,7 +145,7 @@ export function FiltersBar({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[9998]"
+                      className="fixed inset-0 bg-black/30  z-[9998]"
                       onClick={() => setIsSearchFocused(false)}
                     />
 
@@ -132,10 +154,10 @@ export function FiltersBar({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg z-[9999] max-h-64 overflow-y-auto shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] dark:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.3),0_10px_10px_-5px_rgba(0,0,0,0.2)]"
-                      style={{ 
-                        filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.25))',
-                        backdropFilter: 'blur(8px)'
+                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg dark:z-[9999] max-h-64 overflow-y-auto shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] dark:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.3),0_10px_10px_-5px_rgba(0,0,0,0.2)] "
+                      style={{
+                        filter: "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.25))",
+                        backdropFilter: "blur(8px)",
                       }}
                     >
                       {searchSuggestions.map((suggestion, index) => (
@@ -156,47 +178,59 @@ export function FiltersBar({
 
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
-            <Select 
-              value={filters.country || "all"} 
-              onValueChange={(value) => onFilterChange("country", value === "all" ? "" : value)}
+            <Select
+              value={filters.country || "all"}
+              onValueChange={(value) =>
+                onFilterChange("country", value === "all" ? "" : value)
+              }
             >
               <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Countries" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Countries</SelectItem>
-                {uniqueCountries.map(country => (
-                  <SelectItem key={country} value={country}>{country}</SelectItem>
+                {uniqueCountries.map((country) => (
+                  <SelectItem key={country} value={country}>
+                    {country}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select 
-              value={filters.sector || "all"} 
-              onValueChange={(value) => onFilterChange("sector", value === "all" ? "" : value)}
+            <Select
+              value={filters.sector || "all"}
+              onValueChange={(value) =>
+                onFilterChange("sector", value === "all" ? "" : value)
+              }
             >
               <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Sectors" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Sectors</SelectItem>
-                {uniqueSectors.map(sector => (
-                  <SelectItem key={sector} value={sector}>{sector}</SelectItem>
+                {uniqueSectors.map((sector) => (
+                  <SelectItem key={sector} value={sector}>
+                    {sector}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
 
-            <Select 
-              value={filters.projectType || "all"} 
-              onValueChange={(value) => onFilterChange("projectType", value === "all" ? "" : value)}
+            <Select
+              value={filters.projectType || "all"}
+              onValueChange={(value) =>
+                onFilterChange("projectType", value === "all" ? "" : value)
+              }
             >
               <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
                 <SelectValue placeholder="All Project Types" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Project Types</SelectItem>
-                {uniqueProjectTypes.map(type => (
-                  <SelectItem key={type} value={type}>{type}</SelectItem>
+                {uniqueProjectTypes.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -215,7 +249,7 @@ export function FiltersBar({
         {/* Active Filters Breadcrumb */}
         <AnimatePresence>
           {activeFilters.length > 0 && (
-            <motion.div 
+            <motion.div
               className="mt-3 flex items-center space-x-2"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
@@ -231,8 +265,8 @@ export function FiltersBar({
                     exit={{ opacity: 0, scale: 0.8 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <Badge 
-                      variant="secondary" 
+                    <Badge
+                      variant="secondary"
                       className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
                       onClick={() => onRemoveFilter(filter.key)}
                     >

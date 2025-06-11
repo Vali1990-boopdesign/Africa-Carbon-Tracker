@@ -78,7 +78,6 @@ body {
 
 /* Glass effect utility */
 .glass-effect {
-  backdrop-filter: blur(20px);
   background: rgba(31, 41, 55, 0.8);
   border: 1px solid rgba(75, 85, 99, 0.3);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
