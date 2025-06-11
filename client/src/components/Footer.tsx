@@ -23,7 +23,7 @@ export function Footer() {
           {/* FSD Africa Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
             <img
-              src="https://www.fsdafrica.org/wp-content/uploads/2023/05/FSD-Africa-logo.png"
+              src="/fsd-africa-logo.png"
               alt="FSD Africa"
               className="h-8 object-contain"
             />
