@@ -32,10 +32,18 @@ export function BilateralAgreements() {
         const agreementsData = await agreementsRes.json();
         const summaryData = await summaryRes.json();
         
-        setAgreements(agreementsData);
+        // Ensure agreementsData is an array
+        if (Array.isArray(agreementsData)) {
+          setAgreements(agreementsData);
+        } else {
+          console.error("Agreements data is not an array:", agreementsData);
+          setAgreements([]);
+        }
+        
         setSummary(summaryData);
       } catch (error) {
         console.error("Failed to fetch bilateral agreements data:", error);
+        setAgreements([]);
       } finally {
         setIsLoading(false);
       }

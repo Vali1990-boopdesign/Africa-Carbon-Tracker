@@ -1,5 +1,6 @@
 import { db } from "./db";
-import { transactions, buyerProfiles } from "@shared/schema";
+import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema";
+import { importBilateralAgreements } from "./import-bilateral";
 
 export async function seedDatabase() {
   try {
@@ -7,6 +8,13 @@ export async function seedDatabase() {
     const existingTransactions = await db.select().from(transactions).limit(1);
     if (existingTransactions.length > 0) {
       console.log("Database already seeded");
+      
+      // Check if bilateral agreements exist, if not import them
+      const existingAgreements = await db.select().from(bilateralAgreements).limit(1);
+      if (existingAgreements.length === 0) {
+        console.log("Importing bilateral agreements...");
+        await importBilateralAgreements();
+      }
       return;
     }
 
@@ -359,6 +367,10 @@ export async function seedDatabase() {
     // Insert sample data
     await db.insert(transactions).values(sampleTransactions);
     await db.insert(buyerProfiles).values(sampleBuyers);
+
+    // Import bilateral agreements from CSV
+    console.log("Importing bilateral agreements...");
+    await importBilateralAgreements();
 
     console.log("Database seeded successfully!");
   } catch (error) {
