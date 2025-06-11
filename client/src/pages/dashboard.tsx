@@ -113,13 +113,15 @@ export default function Dashboard() {
       
 
       {/* Filters Bar */}
-      <FiltersBar
-        filters={filters}
-        activeFilters={activeFilters}
-        onFilterChange={updateFilter}
-        onRemoveFilter={removeFilter}
-        onClearFilters={clearFilters}
-      />
+      <div className="mb-8">
+        <FiltersBar
+          filters={filters}
+          activeFilters={activeFilters}
+          onFilterChange={updateFilter}
+          onRemoveFilter={removeFilter}
+          onClearFilters={clearFilters}
+        />
+      </div>
 
       {/* Metrics Cards */}
       <MetricsCards

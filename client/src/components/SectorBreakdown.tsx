@@ -8,6 +8,9 @@ interface SectorBreakdownProps {
   isLoading: boolean;
 }
 
+export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps) {
+  const [selectedSector, setSelectedSector] = React.useState<string | null>(null);
+
 // Color palette for the pie chart
 const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#84cc16", "#f97316"];
 
@@ -16,7 +19,6 @@ const formatNumber = (num: number): string => {
   return num.toLocaleString();
 };
 
-export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps) {
   if (isLoading) {
     return (
       <Card className="glass-effect border-gray-700">

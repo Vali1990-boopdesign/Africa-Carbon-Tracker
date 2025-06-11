@@ -44,6 +44,17 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, botMessage]);
+      
+      // Add follow-up message with quick questions
+      setTimeout(() => {
+        const followUpMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          content: "Would you like clarity on anything else? Here are some quick questions:",
+          isUser: false,
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, followUpMessage]);
+      }, 1000);
     },
     onError: (error) => {
       const errorMessage: Message = {
@@ -186,9 +197,8 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
             </div>
 
             {/* Quick Questions */}
-            {messages.length === 1 && (
+            {(messages.length === 1 || messages[messages.length - 1]?.content.includes("Would you like clarity on anything else?")) && (
               <div className="p-4 border-t border-gray-700">
-                <p className="text-xs text-gray-400 mb-2">Quick questions:</p>
                 <div className="flex flex-wrap gap-1">
                   {quickQuestions.map((question, index) => (
                     <Button
@@ -197,7 +207,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                       size="sm"
                       onClick={() => {
                         setInputValue(question);
-                        handleSendMessage();
+                        setTimeout(() => handleSendMessage(), 100);
                       }}
                       className="text-xs h-auto py-1 px-2 border-gray-600 text-gray-300 hover:text-white hover:bg-gray-700"
                       disabled={chatMutation.isPending}
