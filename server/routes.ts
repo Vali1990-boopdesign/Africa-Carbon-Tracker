@@ -239,10 +239,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/bilateral-agreements", async (req, res) => {
     try {
       const agreements = await db.select().from(bilateralAgreements).orderBy(desc(bilateralAgreements.signingYear));
-      res.json(agreements);
+      res.json(agreements || []);
     } catch (error) {
       console.error("Database error:", error);
-      res.status(500).json({ error: "Failed to fetch bilateral agreements" });
+      res.status(500).json([]);
     }
   });
 

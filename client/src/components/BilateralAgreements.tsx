@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import type { BilateralAgreement } from "@shared/schema";
 
 interface BilateralAgreementsSummary {
@@ -51,8 +52,6 @@ export function BilateralAgreements() {
           console.error("Failed to fetch summary:", summaryRes.status);
           setSummary(null);
         }
-        
-        setSummary(summaryData);
       } catch (error) {
         console.error("Failed to fetch bilateral agreements data:", error);
         setAgreements([]);
@@ -184,6 +183,11 @@ export function BilateralAgreements() {
                 <div className="text-sm text-gray-400">Partners</div>
               </motion.div>
             </div>
+          )}
+
+          {/* Sankey Diagram */}
+          {agreements.length > 0 && (
+            <BilateralSankeyDiagram agreements={agreements} />
           )}
 
           {/* Agreements List */}
