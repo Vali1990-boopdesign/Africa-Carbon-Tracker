@@ -158,30 +158,25 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               </ResponsiveContainer>
             </TabsContent>
             
-            <TabsContent value="projects" className="h-72 mt-4">
+            <TabsContent value="projects" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 60, bottom: 120 }}>
+                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="type" 
                     stroke="#9CA3AF"
-                    fontSize={9}
+                    fontSize={10}
                     angle={-45}
                     textAnchor="end"
-                    height={120}
+                    height={100}
                     interval={0}
-                    tick={{ fontSize: 9 }}
-                    tickFormatter={(value) => {
-                      // Truncate long sector names
-                      return value.length > 15 ? value.substring(0, 15) + '...' : value;
-                    }}
+                    label={{ value: 'Project Sectors', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
-                    fontSize={10}
-                    width={50}
+                    fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                    label={{ value: 'Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF', fontSize: '10px' } }}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar 
@@ -193,30 +188,25 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               </ResponsiveContainer>
             </TabsContent>
             
-            <TabsContent value="buyers" className="h-72 mt-4">
+            <TabsContent value="buyers" className="h-96 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 60, bottom: 120 }}>
+                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 20, bottom: 100 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="name" 
                     stroke="#9CA3AF"
-                    fontSize={9}
+                    fontSize={10}
                     angle={-45}
                     textAnchor="end"
-                    height={120}
+                    height={100}
                     interval={0}
-                    tick={{ fontSize: 9 }}
-                    tickFormatter={(value) => {
-                      // Truncate long company names
-                      return value.length > 12 ? value.substring(0, 12) + '...' : value;
-                    }}
+                    label={{ value: 'Buyer Companies', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
-                    fontSize={10}
-                    width={50}
+                    fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                    label={{ value: 'Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF', fontSize: '10px' } }}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar 
