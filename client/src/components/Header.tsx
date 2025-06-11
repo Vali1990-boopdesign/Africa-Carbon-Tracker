@@ -65,7 +65,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
                 Africa Carbon Dashboard
               </h1>
               <p className="text-sm text-default-600">
-                © The Catalyst Fund
+                © The Catalyst Fund & FSD Africa
               </p>
             </div>
           </motion.div>
