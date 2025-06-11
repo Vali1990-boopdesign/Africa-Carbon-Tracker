@@ -15,36 +15,36 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
   const insights = [
     {
       icon: MapPin,
-      title: "Geographic Concentration",
-      description: "Zimbabwe and Kenya dominate with 23.8M credits (48% of total)",
+      title: "Market Concentration",
+      description: "Three countries—Zimbabwe, Kenya, and Uganda—control 64.3% of Africa's carbon credit supply, creating significant geographic concentration risk and untapped potential in underrepresented markets.",
       color: "text-emerald-500",
       bgColor: "bg-emerald-500/20"
     },
     {
-      icon: Factory,
-      title: "Sector Leaders",
-      description: "Energy/Mining/Utilities sector leads with 16.4M credits",
+      icon: Users,
+      title: "European Demand Dominance",
+      description: "European buyers account for 69.6% of all African carbon credit purchases (59.8M credits) with 2,908 active buyers, significantly outpacing North America's 13.7% market share.",
       color: "text-blue-500",
       bgColor: "bg-blue-500/20"
     },
     {
+      icon: Factory,
+      title: "Nature-Based Solutions Leadership",
+      description: "REDD+ forest protection projects generate 42.2% of all credits (36.3M), followed by cookstove initiatives at 24.4%, demonstrating strong market preference for nature-based and community-impact solutions.",
+      color: "text-green-500",
+      bgColor: "bg-green-500/20"
+    },
+    {
       icon: TrendingUp,
-      title: "Growth Trajectory",
-      description: "Peaked in 2021-2022 at ~11M credits/year, declined 38% in 2023",
+      title: "Post-2021 Market Decline",
+      description: "African carbon credit retirements declined 36.7% from 2022 to 2024, dropping from 16.5M to 10.4M credits.",
       color: "text-amber-500",
       bgColor: "bg-amber-500/20"
     },
     {
       icon: Factory,
-      title: "Project Types",
-      description: "REDD+ (forest conservation) dominates with 25.6M credits, followed by cookstoves at 12.4M",
-      color: "text-green-500",
-      bgColor: "bg-green-500/20"
-    },
-    {
-      icon: Users,
-      title: "Buyer Diversity",
-      description: "3,149 unique buyers across 19 sectors from global HQs",
+      title: "Sector Diversification Opportunity",
+      description: "Energy and utilities lead corporate purchasing at 23.2% of market share, while apparel and fashion rank second at 11.1%, highlighting diverse sectoral adoption beyond traditional heavy industries.",
       color: "text-purple-500",
       bgColor: "bg-purple-500/20"
     }
