@@ -81,16 +81,16 @@ export async function importBilateralAgreements() {
         row[header] = values[index] || "";
       });
       
-      // Map CSV columns to database fields
-      if (row["Agreement Name"] && row["Country"]) {
+      // Map CSV columns to database fields based on actual headers
+      if (row["African Country"] && row["Bi-lateral Partner Countries"]) {
         agreementsArray.push({
-          agreementName: row["Agreement Name"] || "",
-          country: row["Country"] || "",
-          partner: row["Partner"] || "",
-          signingYear: parseNumber(row["Signing Year"]) || null,
-          status: row["Status"] || "Unknown",
-          agreementType: row["Agreement Type"] || "",
-          description: row["Description"] || "",
+          agreementName: `${row["African Country"]} - ${row["Bi-lateral Partner Countries"]} Agreement`,
+          country: row["African Country"] || "",
+          partner: row["Bi-lateral Partner Countries"] || "",
+          signingYear: null, // No signing year in current CSV
+          status: "Active", // Default status
+          agreementType: "Bilateral Partnership",
+          description: `Partnership agreement between ${row["African Country"]} and ${row["Bi-lateral Partner Countries"]}. Sources: ${row["Source 1"] || ""} ${row["Source 2"] || ""}`.trim(),
         });
       }
     }

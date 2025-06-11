@@ -29,15 +29,27 @@ export function BilateralAgreements() {
           fetch("/api/bilateral-agreements/summary")
         ]);
         
-        const agreementsData = await agreementsRes.json();
-        const summaryData = await summaryRes.json();
-        
-        // Ensure agreementsData is an array
-        if (Array.isArray(agreementsData)) {
-          setAgreements(agreementsData);
+        // Handle agreements response
+        if (agreementsRes.ok) {
+          const agreementsData = await agreementsRes.json();
+          if (Array.isArray(agreementsData)) {
+            setAgreements(agreementsData);
+          } else {
+            console.error("Agreements data is not an array:", agreementsData);
+            setAgreements([]);
+          }
         } else {
-          console.error("Agreements data is not an array:", agreementsData);
+          console.error("Failed to fetch agreements:", agreementsRes.status);
           setAgreements([]);
+        }
+
+        // Handle summary response
+        if (summaryRes.ok) {
+          const summaryData = await summaryRes.json();
+          setSummary(summaryData);
+        } else {
+          console.error("Failed to fetch summary:", summaryRes.status);
+          setSummary(null);
         }
         
         setSummary(summaryData);
