@@ -117,34 +117,22 @@ export function FiltersBar({
               {/* Search Suggestions Dropdown */}
               <AnimatePresence>
                 {isSearchFocused && searchSuggestions.length > 0 && (
-                  <>
-                    {/* Backdrop overlay */}
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-                      onClick={() => setIsSearchFocused(false)}
-                    />
-                    
-                    {/* Dropdown */}
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute top-full left-0 right-0 mt-1 bg-gray-800 dark:bg-dark-800 border border-gray-600 dark:border-gray-700 rounded-lg shadow-2xl z-50 max-h-64 overflow-y-auto"
-                    >
-                      {searchSuggestions.map((suggestion, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleSuggestionClick(suggestion)}
-                          className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors border-b border-gray-200 dark:border-gray-600 last:border-b-0"
-                        >
-                          {suggestion}
-                        </button>
-                      ))}
-                    </motion.div>
-                  </>
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute top-full left-0 right-0 mt-1 bg-gray-800 dark:bg-dark-800 border border-gray-600 dark:border-gray-700 rounded-lg shadow-lg z-50 max-h-64 overflow-y-auto"
+                  >
+                    {searchSuggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion)}
+                        className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-colors border-b border-gray-200 dark:border-gray-600 last:border-b-0"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
