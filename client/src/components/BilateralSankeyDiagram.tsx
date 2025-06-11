@@ -16,14 +16,21 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       return [["From", "To", "Weight"]];
     }
 
-    // Count agreements by country-partner pairs
+    // Count agreements by individual country-partner pairs
     const connectionCounts = new Map<string, number>();
     
     agreements.forEach(agreement => {
       // Ensure we have valid country and partner data
       if (agreement.country && agreement.partner) {
-        const key = `${agreement.country}→${agreement.partner}`;
-        connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
+        // Split partners if they contain commas (multiple partners in one field)
+        const partners = agreement.partner.split(',').map(p => p.trim());
+        
+        partners.forEach(partner => {
+          if (partner) {
+            const key = `${agreement.country.trim()}→${partner}`;
+            connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
+          }
+        });
       }
     });
 
@@ -33,7 +40,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     connectionCounts.forEach((count, key) => {
       const [country, partner] = key.split('→');
       if (country && partner && count > 0) {
-        sankeyData.push([country.trim(), partner.trim(), count]);
+        sankeyData.push([country, partner, count]);
       }
     });
 
