@@ -4,10 +4,12 @@ import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Network } from "lucide-react";
 import type { BilateralAgreement } from "@shared/schema";
+import { Tooltip } from "recharts";
 
 interface BilateralSankeyDiagramProps {
   agreements: BilateralAgreement[];
 }
+
 
 export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramProps) {
   // Transform bilateral agreements data into Sankey format
@@ -57,8 +59,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
           color: '#ffffff',
           bold: true
         },
-        nodePadding: 80,
-        width: 4
+        width: 4,
       },
       link: {
         colorMode: 'gradient',
@@ -66,13 +67,14 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       }
     },
     backgroundColor: 'transparent',
-    tooltip: {
-      textStyle: {
-        color: '#ffffff',
-        fontSize: 12
-      },
-      showColorCode: true
-    }
+    tooltip : {textStyle: {color: '#000000'}, showColorCode: true}
+    // tooltip: {
+    //   textStyle: {
+    //     color: '#ffffff',
+    //     fontSize: 12
+    //   },
+    //   showColorCode: true
+    // }
   };
 
   const data = generateSankeyData();
