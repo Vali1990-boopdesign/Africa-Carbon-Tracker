@@ -62,30 +62,22 @@ export function BilateralAgreements() {
     fetchData();
   }, []);
 
-  const getStatusIcon = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'pending':
-        return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'inactive':
-        return <AlertCircle className="w-4 h-4 text-red-500" />;
-      default:
-        return <FileText className="w-4 h-4 text-gray-500" />;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'active':
-        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
-      case 'pending':
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300";
-      case 'inactive':
-        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300";
-      default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300";
-    }
+  // URL mapping for bilateral agreement sources
+  const getAgreementUrl = (country: string, partner: string) => {
+    const key = `${country.toLowerCase()}-${partner.toLowerCase()}`;
+    const urlMap: Record<string, string> = {
+      'benin-norway': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'ethiopia-japan': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'gabon-south korea': 'https://www.orfonline.org/research/potential-or-peril-carbon-trading-in-africa?utm_source=chatgpt.com',
+      'ghana-switzerland, singapore, sweden': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'kenya-japan, singapore, switzerland': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'rwanda-singapore, sweden, kuwait': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'senegal-singapore': 'https://www.orfonline.org/research/potential-or-peril-carbon-trading-in-africa?utm_source=chatgpt.com',
+      'zambia-norway, sweden, singapore': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
+      'zimbabwe-united arab emirates (via blue carbon)': 'https://www.goldstandard.org/carbon-market-regulations-tracker'
+    };
+    
+    return urlMap[key] || 'https://www.goldstandard.org/carbon-market-regulations-tracker';
   };
 
   const displayedAgreements = showAll ? agreements : agreements.slice(0, 6);
@@ -221,12 +213,6 @@ export function BilateralAgreements() {
                           <h4 className="font-medium text-white line-clamp-1">
                             {agreement.agreementName}
                           </h4>
-                          <Badge className={getStatusColor(agreement.status)}>
-                            <div className="flex items-center gap-1">
-                              {getStatusIcon(agreement.status)}
-                              {agreement.status}
-                            </div>
-                          </Badge>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-400">
                           <div>
@@ -250,7 +236,15 @@ export function BilateralAgreements() {
                         )}
                         {agreement.description && (
                           <p className="mt-2 text-sm text-gray-400 line-clamp-2">
-                            {agreement.description}
+                            {agreement.description.replace(' Link', '')} 
+                            <a 
+                              href={getAgreementUrl(agreement.country, agreement.partner)}
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-emerald-400 hover:text-emerald-300 underline ml-1"
+                            >
+                              Link
+                            </a>
                           </p>
                         )}
                       </div>
