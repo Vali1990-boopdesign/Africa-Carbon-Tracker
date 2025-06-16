@@ -182,6 +182,7 @@ export default function Dashboard() {
             <Intermediaries
               transactions={transactions}
               isLoading={isLoading}
+              onRegistryClick={handleRegistryClick}
             />
           </div>
 
@@ -197,6 +198,7 @@ export default function Dashboard() {
             <SectorBreakdown
               sectorData={sectorData}
               isLoading={isLoading}
+              onSectorClick={handleSectorClick}
             />
           </div>
         </div>
