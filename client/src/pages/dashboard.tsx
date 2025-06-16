@@ -169,6 +169,7 @@ export default function Dashboard() {
               topBuyers={topBuyers}
               isLoading={isLoading}
               onBuyerClick={handleBuyerClick}
+              transactions={transactions}
             />
 
             <SectorBreakdown
