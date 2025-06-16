@@ -102,6 +102,21 @@ export default function Dashboard() {
     updateFilter("search", buyer);
   };
 
+  const handleRegistryClick = (registry: string) => {
+    // Map registry names to filter values
+    if (registry === "Verra Standard") {
+      updateFilter("search", "VCS");
+    } else if (registry === "Gold Standard") {
+      updateFilter("search", "GS");
+    } else {
+      updateFilter("search", registry);
+    }
+  };
+
+  const handleSectorClick = (sector: string) => {
+    updateFilter("sector", sector);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}

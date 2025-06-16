@@ -8,9 +8,10 @@ import type { SectorData } from "@shared/schema";
 interface SectorBreakdownProps {
   sectorData?: SectorData[];
   isLoading: boolean;
+  onSectorClick?: (sector: string) => void;
 }
 
-export function SectorBreakdown({ sectorData, isLoading }: SectorBreakdownProps) {
+export function SectorBreakdown({ sectorData, isLoading, onSectorClick }: SectorBreakdownProps) {
   const [selectedSector, setSelectedSector] = React.useState<string | null>(null);
 
 // Color palette for the pie chart
@@ -128,7 +129,8 @@ const formatNumber = (num: number): string => {
                 {sortedSectorData.map((sector, index) => (
                   <div
                     key={sector.sector}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                    onClick={() => onSectorClick?.(sector.sector)}
                   >
                     <div className="flex items-center space-x-3">
                       <div
