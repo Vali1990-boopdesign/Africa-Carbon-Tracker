@@ -75,10 +75,10 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     },
     {
       title: "Avg Credits per Transaction",
-      value: `${metrics.averageCreditsPerTransaction.toLocaleString()}`,
-      change: `${metrics.transactionChange}%`,
+      value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
+      change: `${metrics.transactionChange || 0}%`,
       changeLabel: "vs last month",
-      isPositive: metrics.transactionChange > 0,
+      isPositive: (metrics.transactionChange || 0) > 0,
       icon: Leaf,
       iconBg: "bg-green-500/20",
       iconColor: "text-green-500",

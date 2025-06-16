@@ -93,3 +93,14 @@ Preferred communication style: Simple, everyday language.
 - **Development**: Live reload and error overlay integration
 
 The application is designed for scalability with a clear separation between client and server concerns, efficient data caching strategies, and optimized build processes for both development and production environments.
+
+## Recent Changes
+
+### December 16, 2024
+- **Metrics System Update**: Replaced misleading "Avg Credit Price" metric with "Average Credits per Transaction"
+  - Updated `DashboardMetrics` interface to use `averageCreditsPerTransaction` and `transactionChange`
+  - Modified both MemStorage and DatabaseStorage implementations
+  - Updated frontend MetricsCards component to display meaningful transaction data
+  - Changed icon from DollarSign to Leaf to better represent carbon credits
+- **Partner Logos**: Added FSD Africa logo alongside Catalyst Fund logo in footer with matching styling
+- **Data Integrity**: Ensured all metrics reflect actual data from CSV imports rather than calculated pricing information
