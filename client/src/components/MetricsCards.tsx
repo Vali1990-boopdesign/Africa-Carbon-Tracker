@@ -46,9 +46,9 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       title: "Total Credit Transactions",
       value: metrics.totalCreditsRetired.toLocaleString(),
-      change: `+${metrics.totalCreditsGrowth}%`,
-      changeLabel: "vs last year",
-      isPositive: metrics.totalCreditsGrowth > 0,
+      change: `${metrics.totalCreditsYoYChange > 0 ? '+' : ''}${metrics.totalCreditsYoYChange}%`,
+      changeLabel: "vs YE2023",
+      isPositive: metrics.totalCreditsYoYChange > 0,
       icon: Leaf,
       iconBg: "bg-emerald-500/20",
       iconColor: "text-emerald-500",
@@ -56,9 +56,9 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       title: "Total Unique Buyers",
       value: metrics.activeBuyers.toLocaleString(),
-      change: `+${metrics.activeBuyersGrowth}`,
-      changeLabel: "this month",
-      isPositive: true,
+      change: `${metrics.activeBuyersYoYChange > 0 ? '+' : ''}${metrics.activeBuyersYoYChange}%`,
+      changeLabel: "vs YE2023",
+      isPositive: metrics.activeBuyersYoYChange >= 0,
       icon: Users,
       iconBg: "bg-blue-500/20",
       iconColor: "text-blue-500",
@@ -66,9 +66,9 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       title: "African Countries",
       value: metrics.africanCountries.toString(),
-      change: `${metrics.newCountriesThisQuarter} new`,
-      changeLabel: "this quarter",
-      isPositive: true,
+      change: `${metrics.africanCountriesYoYChange > 0 ? '+' : ''}${metrics.africanCountriesYoYChange}%`,
+      changeLabel: "vs YE2023",
+      isPositive: metrics.africanCountriesYoYChange >= 0,
       icon: Globe,
       iconBg: "bg-amber-500/20",
       iconColor: "text-amber-500",
@@ -76,9 +76,9 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       title: "Avg Credits per Transaction",
       value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
-      change: `${metrics.transactionChange || 0}%`,
-      changeLabel: "vs last month",
-      isPositive: (metrics.transactionChange || 0) > 0,
+      change: `${metrics.avgCreditsYoYChange > 0 ? '+' : ''}${metrics.avgCreditsYoYChange}%`,
+      changeLabel: "vs YE2023",
+      isPositive: metrics.avgCreditsYoYChange >= 0,
       icon: CreditCard,
       iconBg: "bg-purple-500/20",
       iconColor: "text-purple-500",
@@ -101,7 +101,21 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                   <div>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.title}</p>
                     <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
-
+                    <div className="flex items-center gap-1 mt-1">
+                      {card.isPositive ? (
+                        <TrendingUp className="w-3 h-3 text-emerald-500" />
+                      ) : (
+                        <TrendingDown className="w-3 h-3 text-red-500" />
+                      )}
+                      <span className={`text-xs font-medium ${
+                        card.isPositive ? 'text-emerald-500' : 'text-red-500'
+                      }`}>
+                        {card.change}
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {card.changeLabel}
+                      </span>
+                    </div>
                   </div>
                   <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
                     <card.icon className={card.iconColor} size={24} />
