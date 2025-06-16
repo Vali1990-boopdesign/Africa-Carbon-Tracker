@@ -155,12 +155,17 @@ export default function Dashboard() {
 
         {/* Bottom Row - Two Column Layout with proper spacing */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Left Column - Africa Treemap */}
-          <div className="lg:col-span-1">
+          {/* Left Column - Africa Treemap and Intermediaries */}
+          <div className="lg:col-span-1 space-y-6">
             <AfricaTreemap
               data={countryData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
+            />
+            
+            <Intermediaries
+              transactions={transactions}
+              isLoading={isLoading}
             />
           </div>
 
@@ -178,14 +183,6 @@ export default function Dashboard() {
               isLoading={isLoading}
             />
           </div>
-        </div>
-
-        {/* Intermediaries Section */}
-        <div className="mb-6">
-          <Intermediaries
-            transactions={transactions}
-            isLoading={isLoading}
-          />
         </div>
 
 {/* Bilateral Agreements */}
