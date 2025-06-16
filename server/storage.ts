@@ -285,8 +285,8 @@ export class MemStorage implements IStorage {
       activeBuyersGrowth: Math.round(buyersGrowth * 100) / 100,
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      averageCreditPrice: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 100) / 100 : 0,
-      priceChange: Math.round(Math.random() * 5 - 2.5 * 100) / 100
+      averageCreditsPerTransaction: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 100) / 100 : 0,
+      transactionChange: Math.round(Math.random() * 5 - 2.5 * 100) / 100
     };
   }
 
@@ -504,8 +504,8 @@ export class DatabaseStorage implements IStorage {
       activeBuyersGrowth: 0,
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      averageCreditPrice: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 10000) / 10000 : 0,
-      priceChange: 0
+      averageCreditsPerTransaction: filteredTransactions.length > 0 ? Math.round((totalCreditsRetired / filteredTransactions.length) * 100) / 100 : 0,
+      transactionChange: 0
     };
   }
 

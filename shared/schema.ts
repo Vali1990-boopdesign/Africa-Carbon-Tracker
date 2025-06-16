@@ -70,8 +70,8 @@ export interface DashboardMetrics {
   activeBuyersGrowth: number;
   africanCountries: number;
   newCountriesThisQuarter: number;
-  averageCreditPrice: number;
-  priceChange: number;
+  averageCreditsPerTransaction: number;
+  transactionChange: number;
 }
 
 export interface CountryData {
