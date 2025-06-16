@@ -117,3 +117,8 @@ The application is designed for scalability with a clear separation between clie
   - Added 15+ carbon credit definitions (retirement, additionality, verification, MRV, etc.)
   - Enhanced all major components: metrics cards, data table headers, chart titles, and map sections
   - Implemented floating Carbon Glossary with search functionality for comprehensive term reference
+- **Dashboard Section Restructuring**: Improved supply and demand visualization organization
+  - Renamed "Africa Carbon Credits" to "Supply: Africa Carbon Credits" for clearer categorization
+  - Renamed "Top Buyers" to "Demand: Top Buyers" with enhanced functionality
+  - Added scope toggle in Demand section showing Scope 1/2/3 carbon emission breakdowns
+  - Implemented tabbed interface for buyers vs scope analysis with authentic percentage distributions
