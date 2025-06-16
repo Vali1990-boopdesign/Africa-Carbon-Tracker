@@ -108,10 +108,10 @@ The application is designed for scalability with a clear separation between clie
   - Changed "Total Credits" header to "Total Credit Transactions" with proper number formatting
 - **Partner Logos**: Added FSD Africa logo alongside Catalyst Fund logo in footer with matching styling
 - **Data Integrity**: Ensured all metrics reflect authentic data from complete CSV dataset (2010-2024)
-- **Year-over-Year Metrics**: Added YoY change indicators comparing current data against YE2023 baseline
-  - Updated DashboardMetrics interface with totalCreditsYoYChange, activeBuyersYoYChange, africanCountriesYoYChange, avgCreditsYoYChange
-  - Enhanced metrics cards with trending icons and "vs YE2023" comparison labels
-  - Implemented proper percentage calculations using 2023 as baseline year for growth metrics
+- **Metrics Display Cleanup**: Removed year-over-year percentage changes from top metrics boxes
+  - Removed static YE2023 baseline comparisons that conflicted with dynamic dashboard filtering
+  - Simplified metrics cards to show clean title and value without confusing percentage changes
+  - Updated DashboardMetrics interface and storage implementations for cleaner data flow
 - **Interactive Tooltip System**: Comprehensive carbon credit terminology explanations throughout dashboard
   - Created TermTooltip component with dotted underlines and help icons for immediate context
   - Added 15+ carbon credit definitions (retirement, additionality, verification, MRV, etc.)
