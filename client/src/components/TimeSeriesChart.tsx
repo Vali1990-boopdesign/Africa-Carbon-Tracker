@@ -4,12 +4,13 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, BarChart3, Axis3d } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
-import type { TimeSeriesData } from "@shared/schema";
+import type { TimeSeriesData, Transaction } from "@shared/schema";
 
 interface TimeSeriesChartProps {
   timeSeriesData?: TimeSeriesData[];
   sectorData?: SectorData[];
   topBuyers?: TopBuyerData[];
+  transactions?: Transaction[];
   isLoading: boolean;
   activeTab: string;
   onTabChange: (tab: string) => void;
@@ -31,7 +32,7 @@ interface TopBuyerData {
   color: string;
 }
 
-export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
+export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transactions, isLoading, activeTab, onTabChange }: TimeSeriesChartProps) {
   if (isLoading) {
     return (
       <Card className="glass-effect border-gray-700 min-h-[28rem]">
@@ -66,6 +67,44 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
     }
     return acc;
   }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
+
+  // Process transactions to get unique projects per year
+  const projectsPerYear = transactions ? transactions.reduce((acc, transaction) => {
+    if (!transaction.retirementYear || !transaction.projectName) return acc;
+    
+    const year = transaction.retirementYear;
+    if (!acc[year]) {
+      acc[year] = new Set();
+    }
+    acc[year].add(transaction.projectName);
+    return acc;
+  }, {} as Record<number, Set<string>>) : {};
+
+  const projectYearlyData = Object.entries(projectsPerYear)
+    .map(([year, projectSet]) => ({
+      year: parseInt(year),
+      projects: projectSet.size
+    }))
+    .sort((a, b) => a.year - b.year);
+
+  // Process transactions to get unique buyers per year
+  const buyersPerYear = transactions ? transactions.reduce((acc, transaction) => {
+    if (!transaction.retirementYear || !transaction.buyerBrandName) return acc;
+    
+    const year = transaction.retirementYear;
+    if (!acc[year]) {
+      acc[year] = new Set();
+    }
+    acc[year].add(transaction.buyerBrandName);
+    return acc;
+  }, {} as Record<number, Set<string>>) : {};
+
+  const buyerYearlyData = Object.entries(buyersPerYear)
+    .map(([year, buyerSet]) => ({
+      year: parseInt(year),
+      buyers: buyerSet.size
+    }))
+    .sort((a, b) => a.year - b.year);
 
   // Use all sector data for project types - no truncation
   const projectData = sectorData?.map(sector => ({
@@ -162,85 +201,63 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               </ResponsiveContainer>
             </TabsContent>
 
-            <TabsContent value="projects" className="h-96 mt-4">
+            <TabsContent value="projects" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={projectData} margin={{ top: 20, right: 30, left: 20, bottom: 140 }}>
+                <LineChart data={projectYearlyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
-                    dataKey="type" 
+                    dataKey="year" 
                     stroke="#9CA3AF"
-                    fontSize={10}
-                    angle={-45}
-                    textAnchor="end"
-                    height={100}
-                    interval={0}
-                    tick={{ dy: 10 }}
+                    fontSize={12}
+                    tickFormatter={(value) => value.toString()}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
-                    tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    tickFormatter={(value) => value.toString()}
+                    label={{ value: 'Unique Projects', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar 
-                    dataKey="credits" 
-                    fill="#3B82F6"
-                    radius={[4, 4, 0, 0]}
+                  <Line 
+                    type="monotone" 
+                    dataKey="projects" 
+                    stroke="#3B82F6" 
+                    strokeWidth={3}
+                    dot={{ fill: "#3B82F6", strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#3B82F6", strokeWidth: 2 }}
                   />
-                  {/* Separate axis label positioned below the rotated labels */}
-                  <text 
-                    x="50%" 
-                    y="95%" 
-                    textAnchor="middle" 
-                    fill="#9CA3AF" 
-                    fontSize="12"
-                    dy="10"
-                  >
-                    Project Sectors
-                  </text>
-                </BarChart>
+                </LineChart>
               </ResponsiveContainer>
             </TabsContent>
 
-            <TabsContent value="buyers" className="h-96 mt-4">
+            <TabsContent value="buyers" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={buyerData} margin={{ top: 20, right: 30, left: 20, bottom: 140 }}>
+                <LineChart data={buyerYearlyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
-                    dataKey="name" 
+                    dataKey="year" 
                     stroke="#9CA3AF"
-                    fontSize={10}
-                    angle={-45}
-                    textAnchor="end"
-                    height={100}
-                    interval={0}
-                    tick={{ dy: 10 }}
+                    fontSize={12}
+                    tickFormatter={(value) => value.toString()}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
-                    tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    tickFormatter={(value) => value.toString()}
+                    label={{ value: 'Unique Buyers', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar 
-                    dataKey="totalCredits" 
-                    fill="#F59E0B"
-                    radius={[4, 4, 0, 0]}
+                  <Line 
+                    type="monotone" 
+                    dataKey="buyers" 
+                    stroke="#F59E0B" 
+                    strokeWidth={3}
+                    dot={{ fill: "#F59E0B", strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6, stroke: "#F59E0B", strokeWidth: 2 }}
                   />
-                  {/* Separate axis label positioned below the rotated labels */}
-                  <text 
-                    x="50%" 
-                    y="95%" 
-                    textAnchor="middle" 
-                    fill="#9CA3AF" 
-                    fontSize="12"
-                    dy="10"
-                  >
-                    Buyer Companies
-                  </text>
-                </BarChart>
+                </LineChart>
               </ResponsiveContainer>
             </TabsContent>
           </Tabs>

@@ -147,6 +147,7 @@ export default function Dashboard() {
             timeSeriesData={timeSeriesData}
             sectorData={sectorData}
             topBuyers={topBuyers}
+            transactions={transactions}
             isLoading={isLoading}
             activeTab={activeTab}
             onTabChange={setActiveTab}
