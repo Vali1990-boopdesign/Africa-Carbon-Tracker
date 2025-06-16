@@ -138,7 +138,7 @@ export async function importNewCSVData() {
     // Insert buyer profiles
     const buyerProfilesArray = Array.from(buyerProfilesMap.values());
     if (buyerProfilesArray.length > 0) {
-      await db.insert(buyerProfiles).values(buyerProfilesArray);
+      await db.insert(buyerProfiles).values(buyerProfilesArray).onConflictDoNothing();
       console.log(`Imported ${buyerProfilesArray.length} buyer profiles`);
     }
     
