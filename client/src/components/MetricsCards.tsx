@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf, CreditCard } from "lucide-react";
+import { Users, Globe, Leaf, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { DashboardMetrics } from "@shared/schema";
@@ -48,9 +48,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "credit-transactions",
       titleComponent: <TermTooltip term="Credit Transactions" explanation="Individual purchases where carbon credits are permanently retired, representing verified emission reductions that cannot be reused" />,
       value: metrics.totalCreditsRetired.toLocaleString(),
-      change: `${metrics.totalCreditsYoYChange > 0 ? '+' : ''}${metrics.totalCreditsYoYChange}%`,
-      changeLabel: "vs YE2023",
-      isPositive: metrics.totalCreditsYoYChange > 0,
       icon: Leaf,
       iconBg: "bg-emerald-500/20",
       iconColor: "text-emerald-500",
@@ -59,9 +56,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "unique-buyers",
       titleComponent: <TermTooltip term="Unique Buyers" explanation="Distinct organizations that have purchased and retired carbon credits, representing the diversity of market participants committed to climate action" />,
       value: metrics.activeBuyers.toLocaleString(),
-      change: `${metrics.activeBuyersYoYChange > 0 ? '+' : ''}${metrics.activeBuyersYoYChange}%`,
-      changeLabel: "vs YE2023",
-      isPositive: metrics.activeBuyersYoYChange >= 0,
       icon: Users,
       iconBg: "bg-blue-500/20",
       iconColor: "text-blue-500",
@@ -70,9 +64,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "african-countries",
       titleComponent: <TermTooltip term="African Countries" explanation="Number of African nations with active carbon credit projects, showcasing the continent's contribution to global climate mitigation efforts" />,
       value: metrics.africanCountries.toString(),
-      change: `${metrics.africanCountriesYoYChange > 0 ? '+' : ''}${metrics.africanCountriesYoYChange}%`,
-      changeLabel: "vs YE2023",
-      isPositive: metrics.africanCountriesYoYChange >= 0,
       icon: Globe,
       iconBg: "bg-amber-500/20",
       iconColor: "text-amber-500",
@@ -81,9 +72,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "avg-credits",
       titleComponent: <TermTooltip term="Avg Credits per Transaction" explanation="Average number of carbon credits purchased in each transaction, indicating typical buying patterns and market participation scale" />,
       value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
-      change: `${metrics.avgCreditsYoYChange > 0 ? '+' : ''}${metrics.avgCreditsYoYChange}%`,
-      changeLabel: "vs YE2023",
-      isPositive: metrics.avgCreditsYoYChange >= 0,
       icon: CreditCard,
       iconBg: "bg-purple-500/20",
       iconColor: "text-purple-500",
@@ -106,21 +94,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                   <div>
                     <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.titleComponent}</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</div>
-                    <div className="flex items-center gap-1 mt-1">
-                      {card.isPositive ? (
-                        <TrendingUp className="w-3 h-3 text-emerald-500" />
-                      ) : (
-                        <TrendingDown className="w-3 h-3 text-red-500" />
-                      )}
-                      <span className={`text-xs font-medium ${
-                        card.isPositive ? 'text-emerald-500' : 'text-red-500'
-                      }`}>
-                        {card.change}
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {card.changeLabel}
-                      </span>
-                    </div>
                   </div>
                   <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
                     <card.icon className={card.iconColor} size={24} />

@@ -281,16 +281,12 @@ export class MemStorage implements IStorage {
     return {
       totalCreditsRetired,
       totalCreditsGrowth: Math.round(creditsGrowth * 100) / 100,
-      totalCreditsYoYChange: 0, // Would need historical data
       activeBuyers: uniqueBuyers,
       activeBuyersGrowth: Math.round(buyersGrowth * 100) / 100,
-      activeBuyersYoYChange: 0, // Would need historical data
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      africanCountriesYoYChange: 0, // Would need historical data
       averageCreditsPerTransaction: filteredTransactions.length > 0 ? Math.round(totalCreditsRetired / filteredTransactions.length) : 0,
       transactionChange: Math.round(Math.random() * 5 - 2.5 * 100) / 100,
-      avgCreditsYoYChange: 0 // Would need historical data
     };
   }
 
@@ -501,39 +497,18 @@ export class DatabaseStorage implements IStorage {
     const uniqueBuyers = new Set(filteredTransactions.map(t => t.buyerBrandName)).size;
     const uniqueCountries = new Set(filteredTransactions.map(t => t.country)).size;
 
-    // Get 2023 baseline data for year-over-year comparisons
-    const transactions2023 = await this.getTransactionsByFilters({ 
-      ...filters, 
-      startYear: 2023, 
-      endYear: 2023 
-    });
-    const credits2023 = transactions2023.reduce((sum, t) => sum + t.creditsRetired, 0);
-    const buyers2023 = new Set(transactions2023.map(t => t.buyerBrandName)).size;
-    const countries2023 = new Set(transactions2023.map(t => t.country)).size;
-    const avgCredits2023 = transactions2023.length > 0 ? credits2023 / transactions2023.length : 0;
-
     // Calculate current averages
     const avgCreditsPerTransaction = filteredTransactions.length > 0 ? totalCreditsRetired / filteredTransactions.length : 0;
-
-    // Calculate year-over-year percentage changes
-    const totalCreditsYoYChange = credits2023 > 0 ? Math.round(((totalCreditsRetired - credits2023) / credits2023) * 100) : 0;
-    const activeBuyersYoYChange = buyers2023 > 0 ? Math.round(((uniqueBuyers - buyers2023) / buyers2023) * 100) : 0;
-    const africanCountriesYoYChange = countries2023 > 0 ? Math.round(((uniqueCountries - countries2023) / countries2023) * 100) : 0;
-    const avgCreditsYoYChange = avgCredits2023 > 0 ? Math.round(((avgCreditsPerTransaction - avgCredits2023) / avgCredits2023) * 100) : 0;
 
     return {
       totalCreditsRetired,
       totalCreditsGrowth: 0,
-      totalCreditsYoYChange,
       activeBuyers: uniqueBuyers,
       activeBuyersGrowth: 0,
-      activeBuyersYoYChange,
       africanCountries: uniqueCountries,
       newCountriesThisQuarter: Math.max(uniqueCountries - 3, 0),
-      africanCountriesYoYChange,
       averageCreditsPerTransaction: Math.round(avgCreditsPerTransaction),
       transactionChange: 0,
-      avgCreditsYoYChange
     };
   }
 

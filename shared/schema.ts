@@ -66,16 +66,12 @@ export type InsertBilateralAgreement = z.infer<typeof insertBilateralAgreementSc
 export interface DashboardMetrics {
   totalCreditsRetired: number;
   totalCreditsGrowth: number;
-  totalCreditsYoYChange: number;
   activeBuyers: number;
   activeBuyersGrowth: number;
-  activeBuyersYoYChange: number;
   africanCountries: number;
   newCountriesThisQuarter: number;
-  africanCountriesYoYChange: number;
   averageCreditsPerTransaction: number;
   transactionChange: number;
-  avgCreditsYoYChange: number;
 }
 
 export interface CountryData {
