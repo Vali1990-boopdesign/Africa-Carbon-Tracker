@@ -54,7 +54,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-emerald-500",
     },
     {
-      title: "Total Buyers",
+      title: "Total Unique Buyers",
       value: metrics.activeBuyers.toLocaleString(),
       change: `+${metrics.activeBuyersGrowth}`,
       changeLabel: "this month",
