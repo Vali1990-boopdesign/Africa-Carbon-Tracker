@@ -68,7 +68,7 @@ export function AfricaTreemap({
     return (
       <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Africa Carbon Credits</CardTitle>
+          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Supply: Africa Carbon Credits</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-80">
@@ -82,7 +82,7 @@ export function AfricaTreemap({
   return (
     <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-fit">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Africa Carbon Credits</CardTitle>
+        <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Supply: Africa Carbon Credits</CardTitle>
       </CardHeader>
       <CardContent className="p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

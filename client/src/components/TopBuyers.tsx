@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import type { TopBuyerData } from "@shared/schema";
 
 interface TopBuyersProps {
@@ -10,11 +12,12 @@ interface TopBuyersProps {
 }
 
 export function TopBuyers({ topBuyers, isLoading, onBuyerClick }: TopBuyersProps) {
+  const [activeTab, setActiveTab] = useState("buyers");
   if (isLoading) {
     return (
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Top Buyers</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">Demand: Top Buyers</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
