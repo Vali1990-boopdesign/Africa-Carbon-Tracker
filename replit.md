@@ -123,3 +123,4 @@ The application is designed for scalability with a clear separation between clie
   - Added scope toggle in Demand section showing authentic project scope breakdowns from transaction data
   - Implemented tabbed interface for buyers vs project scope analysis (Agriculture, Forestry, Renewable Energy, etc.)
   - Real-time aggregation of carbon credit purchases by project type with accurate percentage distributions
+  - Updated Sector Breakdown to display categories ordered from largest to smallest market share for clearer hierarchy

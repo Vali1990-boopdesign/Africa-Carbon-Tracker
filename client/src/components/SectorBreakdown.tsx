@@ -60,8 +60,9 @@ const formatNumber = (num: number): string => {
     );
   }
 
-  // Calculate total credits from sector data
-  const totalCredits = sectorData?.reduce((sum, sector) => sum + sector.totalCredits, 0) || 0;
+  // Sort sector data by total credits (largest to smallest) and calculate total
+  const sortedSectorData = sectorData ? [...sectorData].sort((a, b) => b.totalCredits - a.totalCredits) : [];
+  const totalCredits = sortedSectorData.reduce((sum, sector) => sum + sector.totalCredits, 0);
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -104,7 +105,7 @@ const formatNumber = (num: number): string => {
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
-                      data={sectorData}
+                      data={sortedSectorData}
                       cx="50%"
                       cy="50%"
                       innerRadius={50}
@@ -113,7 +114,7 @@ const formatNumber = (num: number): string => {
                       dataKey="totalCredits"
                       stroke="none"
                     >
-                      {sectorData.map((entry, index) => (
+                      {sortedSectorData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                       ))}
                     </Pie>
@@ -124,7 +125,7 @@ const formatNumber = (num: number): string => {
 
               {/* Data List - Bottom */}
               <div className="w-full space-y-3">
-                {sectorData.map((sector, index) => (
+                {sortedSectorData.map((sector, index) => (
                   <div
                     key={sector.sector}
                     className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
