@@ -157,18 +157,18 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               <TabsTrigger 
                 value="projects"
                 className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
-                title="Carbon credit distribution by project sectors"
+                title="Unique carbon credit projects per year"
               >
                 <BarChart3 className="mr-2" size={16} />
-                <TermTooltip term="Projects" explanation="Breakdown of carbon credits by project type, showing which sectors generate the most verified emission reductions" />
+                <TermTooltip term="Projects" explanation="Year-over-year count of unique carbon credit projects from which credits were retired, showing project diversity and market development over time" />
               </TabsTrigger>
               <TabsTrigger 
                 value="buyers"
                 className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
-                title="Top carbon credit purchasing organizations"
+                title="Unique carbon credit buyers per year"
               >
                 <Axis3d className="mr-2" size={16} />
-                <TermTooltip term="Buyers" explanation="Leading organizations purchasing African carbon credits, demonstrating corporate climate commitments and market participation" />
+                <TermTooltip term="Buyers" explanation="Annual count of unique organizations purchasing African carbon credits, indicating market participation growth and buyer diversity trends" />
               </TabsTrigger>
             </TabsList>
 
