@@ -112,3 +112,8 @@ The application is designed for scalability with a clear separation between clie
   - Updated DashboardMetrics interface with totalCreditsYoYChange, activeBuyersYoYChange, africanCountriesYoYChange, avgCreditsYoYChange
   - Enhanced metrics cards with trending icons and "vs YE2023" comparison labels
   - Implemented proper percentage calculations using 2023 as baseline year for growth metrics
+- **Interactive Tooltip System**: Comprehensive carbon credit terminology explanations throughout dashboard
+  - Created TermTooltip component with dotted underlines and help icons for immediate context
+  - Added 15+ carbon credit definitions (retirement, additionality, verification, MRV, etc.)
+  - Enhanced all major components: metrics cards, data table headers, chart titles, and map sections
+  - Implemented floating Carbon Glossary with search functionality for comprehensive term reference

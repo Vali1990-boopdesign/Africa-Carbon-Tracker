@@ -12,6 +12,7 @@ import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
 import { CarbonChatbot } from "@/components/CarbonChatbot";
+import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 
 import { useDashboard } from "@/hooks/use-dashboard";
@@ -198,6 +199,9 @@ export default function Dashboard() {
 
       {/* AI Chatbot */}
       <CarbonChatbot />
+
+      {/* Carbon Credit Glossary */}
+      <CarbonGlossary />
 
       {/* Loading Overlay - Removed since using direct CSV export */}
       {false && (

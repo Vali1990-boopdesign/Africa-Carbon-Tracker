@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import * as d3 from "d3";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 import type { CountryData } from "@shared/schema";
 
 interface AfricaMapProps {
@@ -479,7 +480,12 @@ export function AfricaMap({ countryData, isLoading, onCountryClick }: AfricaMapP
     >
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Geographic Distribution</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">
+            <TermTooltip 
+              term="Geographic Distribution" 
+              explanation="Interactive map showing carbon credit activity across African countries, with darker shades indicating higher volumes of retired credits" 
+            />
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="h-96 relative" style={{ backgroundColor: "transparent" }}>
