@@ -14,6 +14,7 @@ import { Footer } from "@/components/Footer";
 import { CarbonChatbot } from "@/components/CarbonChatbot";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
+import { Intermediaries } from "@/components/Intermediaries";
 
 import { useDashboard } from "@/hooks/use-dashboard";
 import { exportFilteredData } from "@/utils/csvExport";
@@ -178,6 +179,15 @@ export default function Dashboard() {
             />
           </div>
         </div>
+
+        {/* Intermediaries Section */}
+        <div className="mb-6">
+          <Intermediaries
+            transactions={transactions}
+            isLoading={isLoading}
+          />
+        </div>
+
 {/* Bilateral Agreements */}
           <BilateralAgreements />
 

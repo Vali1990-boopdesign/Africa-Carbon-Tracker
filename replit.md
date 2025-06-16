@@ -124,3 +124,5 @@ The application is designed for scalability with a clear separation between clie
   - Implemented tabbed interface for buyers vs project scope analysis (Agriculture, Forestry, Renewable Energy, etc.)
   - Real-time aggregation of carbon credit purchases by project type with accurate percentage distributions
   - Updated Sector Breakdown to display categories ordered from largest to smallest market share for clearer hierarchy
+  - Created "Intermediaries" section with registry analysis (Verra Standard vs Gold Standard) and carbon marketplace rankings
+  - Added authentic data aggregation for carbon marketplaces by buyer classification with transaction counts and credit volumes
