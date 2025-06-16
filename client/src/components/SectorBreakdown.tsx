@@ -2,6 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 import type { SectorData } from "@shared/schema";
 
 interface SectorBreakdownProps {
@@ -85,7 +86,10 @@ const formatNumber = (num: number): string => {
       <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
         <CardHeader>
           <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">
-            Sector Breakdown
+            <TermTooltip 
+              term="Sector Breakdown" 
+              explanation="Distribution of carbon credit purchases by buyer industry sectors, showing which economic sectors are most active in voluntary carbon markets" 
+            />
           </CardTitle>
         </CardHeader>
         <CardContent>

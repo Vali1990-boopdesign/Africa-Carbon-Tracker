@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 // Using web-based CO2 icon instead of PNG import
 
 interface HeaderProps {
@@ -62,7 +63,10 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">
-                Africa Carbon Dashboard
+                <TermTooltip 
+                  term="Africa Carbon Dashboard" 
+                  explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024" 
+                />
               </h1>
               <p className="text-sm text-default-600">
                 © The Catalyst Fund & FSD Africa

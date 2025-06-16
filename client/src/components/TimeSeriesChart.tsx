@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, ScatterChart, Scatter } from "recharts";
 import { TrendingUp, BarChart3, Axis3d } from "lucide-react";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 import type { TimeSeriesData } from "@shared/schema";
 
 interface TimeSeriesChartProps {
@@ -109,23 +110,26 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, isLoadi
               <TabsTrigger 
                 value="trends" 
                 className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                title="Historical carbon credit retirement trends over time"
               >
                 <TrendingUp className="mr-2" size={16} />
-                Trends
+                <TermTooltip term="Trends" explanation="Year-over-year carbon credit retirement patterns showing market growth and adoption across African projects" />
               </TabsTrigger>
               <TabsTrigger 
                 value="projects"
                 className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                title="Carbon credit distribution by project sectors"
               >
                 <BarChart3 className="mr-2" size={16} />
-                Projects
+                <TermTooltip term="Projects" explanation="Breakdown of carbon credits by project type, showing which sectors generate the most verified emission reductions" />
               </TabsTrigger>
               <TabsTrigger 
                 value="buyers"
                 className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                title="Top carbon credit purchasing organizations"
               >
                 <Axis3d className="mr-2" size={16} />
-                Buyers
+                <TermTooltip term="Buyers" explanation="Leading organizations purchasing African carbon credits, demonstrating corporate climate commitments and market participation" />
               </TabsTrigger>
             </TabsList>
 
