@@ -120,5 +120,6 @@ The application is designed for scalability with a clear separation between clie
 - **Dashboard Section Restructuring**: Improved supply and demand visualization organization
   - Renamed "Africa Carbon Credits" to "Supply: Africa Carbon Credits" for clearer categorization
   - Renamed "Top Buyers" to "Demand: Top Buyers" with enhanced functionality
-  - Added scope toggle in Demand section showing Scope 1/2/3 carbon emission breakdowns
-  - Implemented tabbed interface for buyers vs scope analysis with authentic percentage distributions
+  - Added scope toggle in Demand section showing authentic project scope breakdowns from transaction data
+  - Implemented tabbed interface for buyers vs project scope analysis (Agriculture, Forestry, Renewable Energy, etc.)
+  - Real-time aggregation of carbon credit purchases by project type with accurate percentage distributions
