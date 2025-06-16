@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf } from "lucide-react";
+import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import type { DashboardMetrics } from "@shared/schema";
 
@@ -79,9 +79,9 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       change: `${metrics.transactionChange || 0}%`,
       changeLabel: "vs last month",
       isPositive: (metrics.transactionChange || 0) > 0,
-      icon: Leaf,
-      iconBg: "bg-green-500/20",
-      iconColor: "text-green-500",
+      icon: CreditCard,
+      iconBg: "bg-purple-500/20",
+      iconColor: "text-purple-500",
     },
   ];
 
