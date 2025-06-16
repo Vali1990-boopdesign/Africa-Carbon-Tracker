@@ -45,7 +45,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   const cards = [
     {
       title: "Total Credit Transactions",
-      value: `${Math.round(metrics.totalCreditsRetired / 1000)}M`,
+      value: metrics.totalCreditsRetired.toLocaleString(),
       change: `+${metrics.totalCreditsGrowth}%`,
       changeLabel: "vs last year",
       isPositive: metrics.totalCreditsGrowth > 0,
