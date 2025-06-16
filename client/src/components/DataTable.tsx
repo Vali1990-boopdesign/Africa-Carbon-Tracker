@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 import type { Transaction } from "@shared/schema";
 
 interface DataTableProps {
@@ -176,8 +177,12 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                   <SortableHeader field="buyerBrandName">Buyer</SortableHeader>
                   <SortableHeader field="country">Country</SortableHeader>
                   <SortableHeader field="type">Project Type</SortableHeader>
-                  <SortableHeader field="creditsRetired">Credits</SortableHeader>
-                  <SortableHeader field="retirementYear">Year</SortableHeader>
+                  <SortableHeader field="creditsRetired">
+                    <TermTooltip term="Credits" explanation="Number of carbon credits retired in this transaction, each representing one metric ton of CO2 equivalent emissions reduced or removed" />
+                  </SortableHeader>
+                  <SortableHeader field="retirementYear">
+                    <TermTooltip term="Retirement Year" explanation="The year when these carbon credits were permanently cancelled, ensuring the environmental benefit cannot be claimed again" />
+                  </SortableHeader>
                   <SortableHeader field="buyerSector">Sector</SortableHeader>
                   <TableHead className="text-right text-gray-300">Actions</TableHead>
                 </TableRow>

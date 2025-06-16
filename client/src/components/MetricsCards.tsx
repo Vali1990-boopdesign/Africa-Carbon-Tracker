@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Users, Globe, DollarSign, Leaf, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
+import { TermTooltip } from "./TermTooltip";
 import type { DashboardMetrics } from "@shared/schema";
 
 interface MetricsCardsProps {
@@ -44,7 +45,8 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
 
   const cards = [
     {
-      title: "Total Credit Transactions",
+      key: "credit-transactions",
+      titleComponent: <TermTooltip term="Credit Transactions" explanation="Individual purchases where carbon credits are permanently retired, representing verified emission reductions that cannot be reused" />,
       value: metrics.totalCreditsRetired.toLocaleString(),
       change: `${metrics.totalCreditsYoYChange > 0 ? '+' : ''}${metrics.totalCreditsYoYChange}%`,
       changeLabel: "vs YE2023",
@@ -54,7 +56,8 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-emerald-500",
     },
     {
-      title: "Total Unique Buyers",
+      key: "unique-buyers",
+      titleComponent: <TermTooltip term="Unique Buyers" explanation="Distinct organizations that have purchased and retired carbon credits, representing the diversity of market participants committed to climate action" />,
       value: metrics.activeBuyers.toLocaleString(),
       change: `${metrics.activeBuyersYoYChange > 0 ? '+' : ''}${metrics.activeBuyersYoYChange}%`,
       changeLabel: "vs YE2023",
@@ -64,7 +67,8 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-blue-500",
     },
     {
-      title: "African Countries",
+      key: "african-countries",
+      titleComponent: <TermTooltip term="African Countries" explanation="Number of African nations with active carbon credit projects, showcasing the continent's contribution to global climate mitigation efforts" />,
       value: metrics.africanCountries.toString(),
       change: `${metrics.africanCountriesYoYChange > 0 ? '+' : ''}${metrics.africanCountriesYoYChange}%`,
       changeLabel: "vs YE2023",
@@ -74,7 +78,8 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       iconColor: "text-amber-500",
     },
     {
-      title: "Avg Credits per Transaction",
+      key: "avg-credits",
+      titleComponent: <TermTooltip term="Avg Credits per Transaction" explanation="Average number of carbon credits purchased in each transaction, indicating typical buying patterns and market participation scale" />,
       value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
       change: `${metrics.avgCreditsYoYChange > 0 ? '+' : ''}${metrics.avgCreditsYoYChange}%`,
       changeLabel: "vs YE2023",
@@ -90,7 +95,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
         {cards.map((card, index) => (
           <motion.div
-            key={card.title}
+            key={card.key}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -99,8 +104,8 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</p>
+                    <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{card.titleComponent}</div>
+                    <div className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</div>
                     <div className="flex items-center gap-1 mt-1">
                       {card.isPositive ? (
                         <TrendingUp className="w-3 h-3 text-emerald-500" />
