@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
+import { TermTooltip } from "./TermTooltip";
 import type { BilateralAgreement } from "@shared/schema";
 
 interface BilateralAgreementsSummary {
@@ -119,7 +120,10 @@ export function BilateralAgreements() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
             <FileText className="w-6 h-6 text-emerald-500" />
-            Africa's Bilateral Agreements
+            <TermTooltip 
+              term="Africa's Bilateral Agreements"
+              explanation="Bilateral Agreements are partnerships between two countries that establish a framework for trading carbon credits and achieving emission reduction goals under Article 6.2 of the Paris Agreement"
+            />
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
