@@ -42,16 +42,17 @@ export async function importBilateralAgreements() {
   try {
     console.log("Starting bilateral agreements import...");
     
+    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa's Bi-Lateral Agreements_1749477252806.csv");
+    
+    // Check if file exists before proceeding
+    if (!fs.existsSync(csvPath)) {
+      console.warn("Bilateral agreements CSV file not found, skipping import");
+      return { success: false, message: "CSV file not found" };
+    }
+    
     // Clear existing bilateral agreements
     await db.delete(bilateralAgreements);
     console.log("Cleared existing bilateral agreements data");
-    
-    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa's Bi-Lateral Agreements_1749477252806.csv");
-    
-    if (!fs.existsSync(csvPath)) {
-      console.error("CSV file not found:", csvPath);
-      return;
-    }
     
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());

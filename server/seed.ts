@@ -4,19 +4,29 @@ import { importBilateralAgreements } from "./import-bilateral";
 
 export async function seedDatabase() {
   try {
+    console.log("Checking database seeding status...");
+    
     // Check if data already exists
     const existingTransactions = await db.select().from(transactions).limit(1);
     if (existingTransactions.length > 0) {
-      console.log("Database already seeded");
+      console.log("Database already seeded with transaction data");
       
       // Check if bilateral agreements exist, if not import them
-      const existingAgreements = await db.select().from(bilateralAgreements).limit(1);
-      if (existingAgreements.length === 0) {
-        console.log("Importing bilateral agreements...");
-        await importBilateralAgreements();
+      try {
+        const existingAgreements = await db.select().from(bilateralAgreements).limit(1);
+        if (existingAgreements.length === 0) {
+          console.log("Importing bilateral agreements...");
+          await importBilateralAgreements();
+        } else {
+          console.log("Bilateral agreements already imported");
+        }
+      } catch (error) {
+        console.warn("Could not check/import bilateral agreements:", error instanceof Error ? error.message : String(error));
       }
       return;
     }
+
+    console.log("Starting database seeding...");
 
     // Sample transactions data
     const sampleTransactions = [

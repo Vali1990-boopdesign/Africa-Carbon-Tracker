@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { seedDatabase } from "./seed";
 import { runMigrations } from "./migrate";
 import { setupVite, serveStatic, log } from "./vite";
+import { testDatabaseConnection } from "./db";
 
 const app = express();
 app.use(express.json());
@@ -39,11 +40,23 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Run migrations first
-  await runMigrations();
+  // Test database connection first
+  console.log("Testing database connection...");
+  const dbConnected = await testDatabaseConnection();
+  
+  if (dbConnected) {
+    try {
+      // Run migrations first
+      await runMigrations();
 
-  // Seed the database with initial data
-  await seedDatabase();
+      // Seed the database with initial data
+      await seedDatabase();
+    } catch (error) {
+      console.error("Database setup failed, but continuing with server startup:", error);
+    }
+  } else {
+    console.warn("Database connection failed, server will start but database features may not work");
+  }
 
   const server = await registerRoutes(app);
 
