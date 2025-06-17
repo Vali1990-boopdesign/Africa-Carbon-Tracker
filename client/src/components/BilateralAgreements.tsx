@@ -160,10 +160,10 @@ export function BilateralAgreements() {
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex items-center justify-center mb-2">
-                  <Globe className="w-6 h-6 text-blue-400" />
+                  <Users className="w-6 h-6 text-blue-400" />
                 </div>
                 <div className="text-2xl font-bold text-white">{summary.uniqueCountries}</div>
-                <div className="text-sm text-gray-400">Countries</div>
+                <div className="text-sm text-gray-400">Buyers from Partner Countries</div>
               </motion.div>
 
               <motion.div

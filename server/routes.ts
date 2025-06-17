@@ -248,27 +248,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/bilateral-agreements/summary", async (req, res) => {
     try {
-      const [totalAgreements] = await db.select({
-        total: sql<number>`count(*)`.mapWith(Number)
-      }).from(bilateralAgreements);
+      // Count total connections (each partner country creates a separate connection)
+      const totalConnectionsResult = await db.execute(sql`
+        SELECT SUM(array_length(string_to_array(partner, ','), 1)) as total
+        FROM bilateral_agreements
+        WHERE partner IS NOT NULL AND partner != ''
+      `);
 
       const [activeAgreements] = await db.select({
         active: sql<number>`count(*) filter (where status = 'Active')`.mapWith(Number)
       }).from(bilateralAgreements);
 
-      const [countryCount] = await db.select({
-        countries: sql<number>`count(distinct country)`.mapWith(Number)
-      }).from(bilateralAgreements);
+      // Count buyers from partner countries
+      const buyersResult = await db.execute(sql`
+        WITH partner_countries AS (
+          SELECT DISTINCT TRIM(unnest(string_to_array(partner, ','))) as partner_country
+          FROM bilateral_agreements
+          WHERE partner IS NOT NULL AND partner != ''
+        ),
+        partner_country_mapping AS (
+          SELECT 
+            CASE 
+              WHEN partner_country = 'United Arab Emirates (via Blue Carbon)' THEN 'United Arab Emirates'
+              ELSE partner_country
+            END as clean_partner_country
+          FROM partner_countries
+        )
+        SELECT COUNT(DISTINCT buyer_brand_name) as buyers
+        FROM transactions t
+        JOIN partner_country_mapping p ON t.buyer_hq_location LIKE '%' || p.clean_partner_country || '%'
+      `);
 
-      const [partnerCount] = await db.select({
-        partners: sql<number>`count(distinct partner)`.mapWith(Number)
-      }).from(bilateralAgreements);
+      // Fixed partner count to 8 as requested
+      const uniquePartners = 8;
 
       res.json({
-        totalAgreements: totalAgreements.total,
+        totalAgreements: totalConnectionsResult.rows[0]?.total || 0,
         activeAgreements: activeAgreements.active,
-        uniqueCountries: countryCount.countries,
-        uniquePartners: partnerCount.partners,
+        uniqueCountries: buyersResult.rows[0]?.buyers || 0,
+        uniquePartners: uniquePartners,
       });
     } catch (error) {
       console.error("Database error:", error);
