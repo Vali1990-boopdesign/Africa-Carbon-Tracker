@@ -148,10 +148,10 @@ export function BilateralAgreements() {
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex items-center justify-center mb-2">
-                  <CheckCircle className="w-6 h-6 text-green-400" />
+                  <Clock className="w-6 h-6 text-green-400" />
                 </div>
                 <div className="text-2xl font-bold text-white">{summary.activeAgreements}</div>
-                <div className="text-sm text-gray-400">Active</div>
+                <div className="text-sm text-gray-400">Buyers in past 5 years</div>
               </motion.div>
 
               <motion.div

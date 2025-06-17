@@ -255,9 +255,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         WHERE partner IS NOT NULL AND partner != ''
       `);
 
-      const [activeAgreements] = await db.select({
-        active: sql<number>`count(*) filter (where status = 'Active')`.mapWith(Number)
-      }).from(bilateralAgreements);
+      // Count buyers from partner countries with transactions in last 5 years (2019-2024)
+      const buyersLast5YearsResult = await db.execute(sql`
+        WITH partner_countries AS (
+          SELECT DISTINCT TRIM(unnest(string_to_array(partner, ','))) as partner_country
+          FROM bilateral_agreements
+          WHERE partner IS NOT NULL AND partner != ''
+        ),
+        partner_country_mapping AS (
+          SELECT 
+            CASE 
+              WHEN partner_country = 'United Arab Emirates (via Blue Carbon)' THEN 'United Arab Emirates'
+              ELSE partner_country
+            END as clean_partner_country
+          FROM partner_countries
+        )
+        SELECT COUNT(DISTINCT buyer_brand_name) as buyers_last_5_years
+        FROM transactions t
+        JOIN partner_country_mapping p ON t.buyer_hq_location LIKE '%' || p.clean_partner_country || '%'
+        WHERE t.retirement_year >= 2019 AND t.retirement_year <= 2024
+      `);
 
       // Count buyers from partner countries
       const buyersResult = await db.execute(sql`
@@ -284,7 +301,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({
         totalAgreements: totalConnectionsResult.rows[0]?.total || 0,
-        activeAgreements: activeAgreements.active,
+        activeAgreements: buyersLast5YearsResult.rows[0]?.buyers_last_5_years || 0,
         uniqueCountries: buyersResult.rows[0]?.buyers || 0,
         uniquePartners: uniquePartners,
       });

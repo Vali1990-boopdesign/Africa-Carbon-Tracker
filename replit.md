@@ -117,6 +117,7 @@ The application is designed for scalability with a clear separation between clie
   - Added 15+ carbon credit definitions (retirement, additionality, verification, MRV, etc.)
   - Enhanced all major components: metrics cards, data table headers, chart titles, and map sections
   - Implemented floating Carbon Glossary with search functionality for comprehensive term reference
+  - Added bilateral agreements tooltip explaining Article 6.2 partnerships framework
 - **Dashboard Section Restructuring**: Improved supply and demand visualization organization
   - Renamed "Africa Carbon Credits" to "Supply: Africa Carbon Credits" for clearer categorization
   - Renamed "Top Buyers" to "Demand: Top Buyers" with enhanced functionality
@@ -126,3 +127,9 @@ The application is designed for scalability with a clear separation between clie
   - Updated Sector Breakdown to display categories ordered from largest to smallest market share for clearer hierarchy
   - Created "Intermediaries" section with registry analysis (Verra Standard vs Gold Standard) and carbon marketplace rankings
   - Added authentic data aggregation for carbon marketplaces by buyer classification with transaction counts and credit volumes
+- **Bilateral Agreements Enhancement**: Updated metrics calculations for accurate partnership representation
+  - Modified "Total Agreements" to count individual connections between African countries and partner nations (17 total)
+  - Set "Partners" to fixed count of 8 unique partner countries (Japan, Kuwait, Norway, Singapore, South Korea, Sweden, Switzerland, UAE)
+  - Renamed "Countries" to "Buyers from Partner Countries" showing 444 buyers from the 8 partner nations
+  - Updated "Active" to "Buyers in past 5 years" counting 389 buyers from partner countries with 2019-2024 transactions
+  - Added interactive tooltip explaining bilateral agreements under Article 6.2 of Paris Agreement framework
