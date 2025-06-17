@@ -131,6 +131,18 @@ export function BilateralAgreements() {
           {summary && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <motion.div
+                className="text-center p-4 bg-purple-500/10 rounded-lg border border-purple-500/20"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <Users className="w-6 h-6 text-purple-400" />
+                </div>
+                <div className="text-2xl font-bold text-white">{summary.uniquePartners}</div>
+                <div className="text-sm text-gray-400">Partners</div>
+              </motion.div>
+
+              <motion.div
                 className="text-center p-4 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
@@ -140,18 +152,6 @@ export function BilateralAgreements() {
                 </div>
                 <div className="text-2xl font-bold text-white">{summary.totalAgreements}</div>
                 <div className="text-sm text-gray-400">Total Agreements</div>
-              </motion.div>
-
-              <motion.div
-                className="text-center p-4 bg-green-500/10 rounded-lg border border-green-500/20"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="flex items-center justify-center mb-2">
-                  <Clock className="w-6 h-6 text-green-400" />
-                </div>
-                <div className="text-2xl font-bold text-white">{summary.activeAgreements}</div>
-                <div className="text-sm text-gray-400">Buyers in past 5 years</div>
               </motion.div>
 
               <motion.div
@@ -167,15 +167,15 @@ export function BilateralAgreements() {
               </motion.div>
 
               <motion.div
-                className="text-center p-4 bg-purple-500/10 rounded-lg border border-purple-500/20"
+                className="text-center p-4 bg-green-500/10 rounded-lg border border-green-500/20"
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex items-center justify-center mb-2">
-                  <Users className="w-6 h-6 text-purple-400" />
+                  <Clock className="w-6 h-6 text-green-400" />
                 </div>
-                <div className="text-2xl font-bold text-white">{summary.uniquePartners}</div>
-                <div className="text-sm text-gray-400">Partners</div>
+                <div className="text-2xl font-bold text-white">{summary.activeAgreements}</div>
+                <div className="text-sm text-gray-400">Buyers in past 5 years</div>
               </motion.div>
             </div>
           )}
