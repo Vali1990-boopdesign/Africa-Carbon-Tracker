@@ -19,7 +19,6 @@ interface CarbonChatbotProps {
 }
 
 export function CarbonChatbot({ className }: CarbonChatbotProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -97,25 +96,6 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
     "Tell me about removal credits"
   ];
 
-  if (!isOpen) {
-    return (
-      <motion.div
-        className={`fixed bottom-6 right-6 z-50 ${className}`}
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
-      >
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="h-14 w-14 rounded-full bg-emerald-500 hover:bg-emerald-600 shadow-lg hover:shadow-xl transition-all duration-300"
-          size="icon"
-        >
-          <MessageCircle size={24} className="text-white" />
-        </Button>
-      </motion.div>
-    );
-  }
-
   return (
     <motion.div
       className={`fixed bottom-6 right-6 z-50 ${className}`}
@@ -142,14 +122,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
               >
                 {isMinimized ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="h-8 w-8 text-gray-400 hover:text-white"
-              >
-                <X size={14} />
-              </Button>
+              
             </div>
           </div>
         </CardHeader>
