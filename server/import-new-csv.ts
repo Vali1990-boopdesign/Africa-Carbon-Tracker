@@ -165,7 +165,7 @@ export async function importNewCSVData() {
         const retirementYear = parseNumber(row["Retirement Year"]);
         
         // Skip invalid years (like 1900 which appears to be a placeholder)
-        if (creditsRetired > 0 && retirementYear > 2000 && retirementYear <= 2024) {
+        if (creditsRetired > 0 && retirementYear >= 2000 && retirementYear <= 2024) {
           transactionBatch.push({
             registryId: row["Registry ID"],
             projectName: row["Project Name"],
