@@ -11,7 +11,6 @@ import { SectorBreakdown } from "@/components/SectorBreakdown";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
-import { CarbonChatbot } from "@/components/CarbonChatbot";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
@@ -222,9 +221,6 @@ export default function Dashboard() {
 
       {/* Footer */}
       <Footer />
-
-      {/* AI Chatbot */}
-      <CarbonChatbot />
 
       {/* Carbon Credit Glossary */}
       <CarbonGlossary />
