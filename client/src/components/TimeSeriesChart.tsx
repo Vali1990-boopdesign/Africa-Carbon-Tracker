@@ -57,7 +57,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
     country: d.country
   })) || [];
 
-  // Group by year for aggregated trends and sort chronologically
+  // Group by year for aggregated trends and sort chronologically (include 2024)
   const yearlyData = trendData.reduce((acc, curr) => {
     const existing = acc.find(item => item.year === curr.year);
     if (existing) {
@@ -66,7 +66,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       acc.push({ year: curr.year, credits: curr.credits });
     }
     return acc;
-  }, [] as { year: number; credits: number }[]).sort((a, b) => a.year - b.year);
+  }, [] as { year: number; credits: number }[])
+    .filter(item => item.year >= 2010 && item.year <= 2024) // Ensure we include up to 2024
+    .sort((a, b) => a.year - b.year);
 
   // Process transactions to get unique projects per year
   const projectsPerYear = transactions ? transactions.reduce((acc, transaction) => {
@@ -85,6 +87,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       year: parseInt(year),
       projects: projectSet.size
     }))
+    .filter(item => item.year >= 2010 && item.year <= 2024) // Include up to 2024
     .sort((a, b) => a.year - b.year);
 
   // Process transactions to get unique buyers per year
@@ -104,6 +107,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       year: parseInt(year),
       buyers: buyerSet.size
     }))
+    .filter(item => item.year >= 2010 && item.year <= 2024) // Include up to 2024
     .sort((a, b) => a.year - b.year);
 
   // Use all sector data for project types - no truncation
