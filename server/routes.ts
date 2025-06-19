@@ -5,6 +5,7 @@ import { db } from "./db";
 import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema";
 import { desc, sql, eq, and, gte, lte, inArray } from "drizzle-orm";
 import type { DashboardMetrics, CountryData, SectorData, TimeSeriesData, TopBuyerData } from "@shared/schema";
+import { validateNewCSVData } from "./validate-new-csv";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Dashboard metrics endpoint with filters
@@ -327,6 +328,111 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to export data" });
     }
   });
+
+  // Validation endpoint
+  app.get("/api/validate", async (req, res) => {
+    try {
+      const results = await validateNewCSVData();
+      res.json(results);
+    } catch (error) {
+      console.error("Validation error:", error);
+      res.status(500).json({ error: "Validation failed" });
+    }
+  });
+
+  // HTML validation report endpoint
+  app.get("/api/validate/report", async (req, res) => {
+    try {
+      const results = await validateNewCSVData();
+
+    let html = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Validation Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .summary { background: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .entity { margin-bottom: 30px; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
+        .entity h2 { color: #333; margin-top: 0; }
+        .counts { display: flex; gap: 20px; margin: 15px 0; }
+        .count-box { background: #f0f0f0; padding: 10px; border-radius: 5px; flex: 1; text-align: center; }
+        .discrepancy { background: #ffebee; padding: 10px; margin: 10px 0; border-left: 4px solid #f44336; }
+        .success { background: #e8f5e8; padding: 10px; margin: 10px 0; border-left: 4px solid #4caf50; }
+        .mismatch { background: #fff3e0; padding: 8px; margin: 5px 0; border-radius: 3px; font-size: 0.9em; }
+        .code { font-family: monospace; background: #f5f5f5; padding: 2px 4px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Data Validation Report</h1>
+            <p>Comparison between Database and New CSV Files</p>
+            <p><em>Generated on ${new Date().toLocaleString()}</em></p>
+        </div>
+`;
+
+    let totalDiscrepancies = 0;
+    results.forEach(result => totalDiscrepancies += result.discrepancies.length);
+
+    html += `
+        <div class="summary">
+            ${totalDiscrepancies === 0 ? 
+              '<h3 style="color: green;">✅ All Validation Checks Passed!</h3><p>Your database is perfectly synchronized with the new CSV files.</p>' :
+              `<h3 style="color: orange;">⚠️ ${totalDiscrepancies} Total Discrepancies Found</h3><p>Please review the details below to understand the differences.</p>`
+            }
+        </div>
+`;
+
+    results.forEach(result => {
+      html += `
+        <div class="entity">
+            <h2>${result.entity}</h2>
+            <div class="counts">
+                <div class="count-box">
+                    <strong>New CSV Count</strong><br>
+                    ${result.csvCount.toLocaleString()}
+                </div>
+                <div class="count-box">
+                    <strong>Database Count</strong><br>
+                    ${result.dbCount.toLocaleString()}
+                </div>
+            </div>
+`;
+
+      if (result.discrepancies.length === 0) {
+        html += '<div class="success">✅ No discrepancies found - Data matches perfectly!</div>';
+      } else {
+        html += `<h3>❌ ${result.discrepancies.length} Discrepancies Found:</h3>`;
+        result.discrepancies.forEach((disc, i) => {
+          html += `<div class="discrepancy"><strong>${i + 1}.</strong> ${disc}</div>`;
+        });
+
+        if (result.sampleMismatches.length > 0) {
+          html += `<h4>📝 Sample Mismatches (showing first ${result.sampleMismatches.length}):</h4>`;
+          result.sampleMismatches.forEach((mismatch, i) => {
+            html += `<div class="mismatch"><strong>${i + 1}.</strong> <span class="code">${JSON.stringify(mismatch, null, 2)}</span></div>`;
+          });
+        }
+      }
+
+      html += '</div>';
+    });
+
+    html += `
+        </div>
+    </body>
+</html>`;
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(html);
+  } catch (error) {
+    console.error("Validation error:", error);
+    res.status(500).send(`<h1>Validation Error</h1><p>${error.message}</p>`);
+  }
+});
 
   const httpServer = createServer(app);
   return httpServer;
