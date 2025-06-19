@@ -6,6 +6,7 @@ import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema
 import { desc, sql, eq, and, gte, lte, inArray } from "drizzle-orm";
 import type { DashboardMetrics, CountryData, SectorData, TimeSeriesData, TopBuyerData } from "@shared/schema";
 import { validateNewCSVData } from "./validate-new-csv";
+import { importLatestCSVData } from "./import-latest-csv";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Dashboard metrics endpoint with filters
@@ -433,6 +434,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(500).send(`<h1>Validation Error</h1><p>${error.message}</p>`);
   }
 });
+
+  // Import latest CSV data endpoint
+  app.post("/api/import-latest", async (req, res) => {
+    try {
+      console.log("🔄 Starting manual import of latest CSV data...");
+      const result = await importLatestCSVData();
+      res.json({ 
+        success: true, 
+        message: "Latest CSV data imported successfully",
+        result 
+      });
+    } catch (error) {
+      console.error("❌ Import failed:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Import failed", 
+        error: error.message 
+      });
+    }
+  });
 
   const httpServer = createServer(app);
   return httpServer;
