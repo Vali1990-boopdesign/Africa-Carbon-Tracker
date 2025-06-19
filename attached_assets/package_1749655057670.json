@@ -1,0 +1,14 @@
+{
+  "name": "@d3/color-schemes",
+  "main": "c7e2ddcdd503d595@321.js",
+  "version": "321.0.0",
+  "homepage": "https://observablehq.com/@d3/color-schemes",
+  "author": {
+    "name": "D3",
+    "url": "https://observablehq.com/@d3"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

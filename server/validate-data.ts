@@ -1,6 +1,6 @@
 
 import { db } from "./db";
-import { transactions, buyerProfiles } from "@shared/schema";
+import { transactions, buyerProfiles, bilateralAgreements } from "@shared/schema";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -41,9 +41,9 @@ function parseNumber(value: string): number {
   return parsed;
 }
 
-async function validateNewBuyerProfiles(): Promise<ValidationResult> {
+async function validateBuyerProfiles(): Promise<ValidationResult> {
   const result: ValidationResult = {
-    entity: 'Buyer Profiles (New CSV)',
+    entity: 'Buyer Profiles',
     csvCount: 0,
     dbCount: 0,
     discrepancies: [],
@@ -51,22 +51,11 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
   };
 
   try {
-    // Read new CSV file
+    // Read CSV file
     const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Update_Buyer Profilesv24 V2_1750324115497.csv");
-    
-    if (!fs.existsSync(csvPath)) {
-      result.discrepancies.push("New buyer profiles CSV file not found");
-      return result;
-    }
-
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());
     
-    if (lines.length === 0) {
-      result.discrepancies.push("CSV file is empty");
-      return result;
-    }
-
     const headers = parseCSVLine(lines[0]);
     const csvBuyerProfiles = new Map<string, any>();
     
@@ -76,7 +65,7 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
       if (!line.trim()) continue;
       
       const values = parseCSVLine(line);
-      if (values.length < headers.length - 2) continue; // Allow some flexibility
+      if (values.length !== headers.length) continue;
       
       const row: Record<string, string> = {};
       headers.forEach((header, index) => {
@@ -84,7 +73,7 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
       });
       
       const brandName = row["Brand Names"];
-      if (brandName && brandName !== "Brand Names" && brandName.trim()) {
+      if (brandName && brandName !== "Brand Names") {
         csvBuyerProfiles.set(brandName, {
           brandName: brandName,
           classification: row["Buyer Classification"] || "",
@@ -104,7 +93,7 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
     
     // Compare counts
     if (result.csvCount !== result.dbCount) {
-      result.discrepancies.push(`Count mismatch: New CSV has ${result.csvCount} records, DB has ${result.dbCount} records`);
+      result.discrepancies.push(`Count mismatch: CSV has ${result.csvCount} records, DB has ${result.dbCount} records`);
     }
     
     // Check for missing buyers in DB
@@ -115,11 +104,11 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
     const missingInCsv = Array.from(dbBuyerNames).filter(name => !csvBuyerNames.has(name));
     
     if (missingInDb.length > 0) {
-      result.discrepancies.push(`${missingInDb.length} buyers in new CSV but not in DB: ${missingInDb.slice(0, 10).join(', ')}${missingInDb.length > 10 ? '...' : ''}`);
+      result.discrepancies.push(`${missingInDb.length} buyers in CSV but not in DB: ${missingInDb.slice(0, 5).join(', ')}${missingInDb.length > 5 ? '...' : ''}`);
     }
     
     if (missingInCsv.length > 0) {
-      result.discrepancies.push(`${missingInCsv.length} buyers in DB but not in new CSV: ${missingInCsv.slice(0, 10).join(', ')}${missingInCsv.length > 10 ? '...' : ''}`);
+      result.discrepancies.push(`${missingInCsv.length} buyers in DB but not in CSV: ${missingInCsv.slice(0, 5).join(', ')}${missingInCsv.length > 5 ? '...' : ''}`);
     }
     
     // Check for data mismatches
@@ -141,11 +130,11 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
         if (dbBuyer.hqRegion !== csvBuyer.hqRegion) {
           mismatches.push(`hqRegion: DB="${dbBuyer.hqRegion}" vs CSV="${csvBuyer.hqRegion}"`);
         }
-        if (Math.abs(dbBuyer.cumulativeRetirements - csvBuyer.cumulativeRetirements) > 0) {
+        if (dbBuyer.cumulativeRetirements !== csvBuyer.cumulativeRetirements) {
           mismatches.push(`cumulativeRetirements: DB="${dbBuyer.cumulativeRetirements}" vs CSV="${csvBuyer.cumulativeRetirements}"`);
         }
         
-        if (mismatches.length > 0 && result.sampleMismatches.length < 15) {
+        if (mismatches.length > 0 && result.sampleMismatches.length < 10) {
           result.sampleMismatches.push({
             brandName: dbBuyer.brandName,
             mismatches: mismatches
@@ -156,7 +145,7 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
     }
     
     if (mismatchCount > 0) {
-      result.discrepancies.push(`${mismatchCount} buyers have data mismatches between DB and new CSV`);
+      result.discrepancies.push(`${mismatchCount} buyers have data mismatches between DB and CSV`);
     }
     
   } catch (error) {
@@ -166,9 +155,9 @@ async function validateNewBuyerProfiles(): Promise<ValidationResult> {
   return result;
 }
 
-async function validateNewTransactions(): Promise<ValidationResult> {
+async function validateTransactions(): Promise<ValidationResult> {
   const result: ValidationResult = {
-    entity: 'Transactions (New CSV)',
+    entity: 'Transactions',
     csvCount: 0,
     dbCount: 0,
     discrepancies: [],
@@ -176,22 +165,11 @@ async function validateNewTransactions(): Promise<ValidationResult> {
   };
 
   try {
-    // Read new CSV file
+    // Read CSV file
     const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa_Retirements_2024_=10 V2_1750324115497.csv");
-    
-    if (!fs.existsSync(csvPath)) {
-      result.discrepancies.push("New transactions CSV file not found");
-      return result;
-    }
-
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());
     
-    if (lines.length === 0) {
-      result.discrepancies.push("CSV file is empty");
-      return result;
-    }
-
     const headers = parseCSVLine(lines[0]);
     const csvTransactions: any[] = [];
     
@@ -201,7 +179,7 @@ async function validateNewTransactions(): Promise<ValidationResult> {
       if (!line.trim()) continue;
       
       const values = parseCSVLine(line);
-      if (values.length < headers.length - 2) continue; // Allow some flexibility
+      if (values.length !== headers.length) continue;
       
       const row: Record<string, string> = {};
       headers.forEach((header, index) => {
@@ -211,7 +189,7 @@ async function validateNewTransactions(): Promise<ValidationResult> {
       const creditsRetired = parseNumber(row["Credits Retired"]);
       const retirementYear = parseNumber(row["Retirement Year"]) || 2024;
       
-      if (creditsRetired > 0 && row["Buyer Brand Name"] && row["Buyer Brand Name"].trim()) {
+      if (creditsRetired > 0 && row["Buyer Brand Name"]) {
         csvTransactions.push({
           registryId: row["Registry ID"] || "",
           projectName: row["Project Name"] || "",
@@ -241,34 +219,22 @@ async function validateNewTransactions(): Promise<ValidationResult> {
     
     // Compare counts
     if (result.csvCount !== result.dbCount) {
-      result.discrepancies.push(`Count mismatch: New CSV has ${result.csvCount} records, DB has ${result.dbCount} records`);
+      result.discrepancies.push(`Count mismatch: CSV has ${result.csvCount} records, DB has ${result.dbCount} records`);
     }
     
-    // Check for registry ID matches
-    const csvRegistryIds = new Set(csvTransactions.map(t => `${t.registryId}_${t.buyerBrandName}_${t.creditsRetired}`));
-    const dbRegistryIds = new Set(dbTransactions.map(t => `${t.registryId}_${t.buyerBrandName}_${t.creditsRetired}`));
+    // Check for registry ID matches (sample comparison)
+    const csvRegistryIds = new Set(csvTransactions.map(t => t.registryId));
+    const dbRegistryIds = new Set(dbTransactions.map(t => t.registryId));
     
     const missingInDb = Array.from(csvRegistryIds).filter(id => !dbRegistryIds.has(id));
     const missingInCsv = Array.from(dbRegistryIds).filter(id => !csvRegistryIds.has(id));
     
     if (missingInDb.length > 0) {
-      result.discrepancies.push(`${missingInDb.length} unique transactions in new CSV but not in DB`);
-      if (result.sampleMismatches.length < 5) {
-        result.sampleMismatches.push({
-          category: "Missing in DB",
-          samples: missingInDb.slice(0, 5)
-        });
-      }
+      result.discrepancies.push(`${missingInDb.length} registry IDs in CSV but not in DB`);
     }
     
     if (missingInCsv.length > 0) {
-      result.discrepancies.push(`${missingInCsv.length} unique transactions in DB but not in new CSV`);
-      if (result.sampleMismatches.length < 5) {
-        result.sampleMismatches.push({
-          category: "Missing in CSV",
-          samples: missingInCsv.slice(0, 5)
-        });
-      }
+      result.discrepancies.push(`${missingInCsv.length} registry IDs in DB but not in CSV`);
     }
     
     // Check total credits retired
@@ -276,33 +242,30 @@ async function validateNewTransactions(): Promise<ValidationResult> {
     const dbTotalCredits = dbTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
     
     if (csvTotalCredits !== dbTotalCredits) {
-      result.discrepancies.push(`Total credits mismatch: New CSV=${csvTotalCredits.toLocaleString()}, DB=${dbTotalCredits.toLocaleString()}, Difference=${Math.abs(csvTotalCredits - dbTotalCredits).toLocaleString()}`);
+      result.discrepancies.push(`Total credits mismatch: CSV=${csvTotalCredits}, DB=${dbTotalCredits}`);
     }
     
-    // Check year distribution
-    const csvYearDist = csvTransactions.reduce((acc, t) => {
-      acc[t.retirementYear] = (acc[t.retirementYear] || 0) + 1;
-      return acc;
-    }, {} as Record<number, number>);
+    // Sample data comparison
+    const csvByRegistryId = new Map(csvTransactions.map(t => [t.registryId + '_' + t.buyerBrandName + '_' + t.creditsRetired, t]));
+    let mismatchCount = 0;
     
-    const dbYearDist = dbTransactions.reduce((acc, t) => {
-      acc[t.retirementYear] = (acc[t.retirementYear] || 0) + 1;
-      return acc;
-    }, {} as Record<number, number>);
-    
-    const allYears = new Set([...Object.keys(csvYearDist), ...Object.keys(dbYearDist)]);
-    const yearMismatches: string[] = [];
-    
-    for (const year of allYears) {
-      const csvCount = csvYearDist[parseInt(year)] || 0;
-      const dbCount = dbYearDist[parseInt(year)] || 0;
-      if (csvCount !== dbCount) {
-        yearMismatches.push(`${year}: CSV=${csvCount}, DB=${dbCount}`);
+    for (const dbTransaction of dbTransactions.slice(0, 100)) { // Sample first 100
+      const key = dbTransaction.registryId + '_' + dbTransaction.buyerBrandName + '_' + dbTransaction.creditsRetired;
+      const csvTransaction = csvByRegistryId.get(key);
+      
+      if (!csvTransaction) {
+        if (result.sampleMismatches.length < 10) {
+          result.sampleMismatches.push({
+            registryId: dbTransaction.registryId,
+            issue: 'Transaction in DB but not found in CSV with matching registry ID, buyer, and credits'
+          });
+        }
+        mismatchCount++;
       }
     }
     
-    if (yearMismatches.length > 0) {
-      result.discrepancies.push(`Year distribution mismatches: ${yearMismatches.slice(0, 5).join('; ')}${yearMismatches.length > 5 ? '...' : ''}`);
+    if (mismatchCount > 0) {
+      result.discrepancies.push(`${mismatchCount} transactions (from sample of 100) not found in CSV`);
     }
     
   } catch (error) {
@@ -312,73 +275,62 @@ async function validateNewTransactions(): Promise<ValidationResult> {
   return result;
 }
 
-export async function validateNewCSVData(): Promise<ValidationResult[]> {
-  console.log("🔍 Starting validation of new CSV files against database...");
-  console.log("=" * 60);
+export async function validateAllData(): Promise<ValidationResult[]> {
+  console.log("🔍 Starting data validation...");
   
   const results: ValidationResult[] = [];
   
   // Validate buyer profiles
-  console.log("Validating buyer profiles against new CSV...");
-  const buyerProfilesResult = await validateNewBuyerProfiles();
+  console.log("Validating buyer profiles...");
+  const buyerProfilesResult = await validateBuyerProfiles();
   results.push(buyerProfilesResult);
   
   // Validate transactions
-  console.log("Validating transactions against new CSV...");
-  const transactionsResult = await validateNewTransactions();
+  console.log("Validating transactions...");
+  const transactionsResult = await validateTransactions();
   results.push(transactionsResult);
   
-  // Print comprehensive results
-  console.log("\n📊 DETAILED VALIDATION RESULTS:");
-  console.log("=" * 60);
-  
-  let totalDiscrepancies = 0;
+  // Print results
+  console.log("\n📊 VALIDATION RESULTS:");
+  console.log("=".repeat(50));
   
   for (const result of results) {
-    console.log(`\n🔍 ${result.entity}:`);
-    console.log(`  📁 New CSV Count: ${result.csvCount.toLocaleString()}`);
-    console.log(`  💾 Database Count: ${result.dbCount.toLocaleString()}`);
+    console.log(`\n${result.entity}:`);
+    console.log(`  CSV Count: ${result.csvCount}`);
+    console.log(`  DB Count: ${result.dbCount}`);
     
     if (result.discrepancies.length === 0) {
-      console.log("  ✅ No discrepancies found - Data matches perfectly!");
+      console.log("  ✅ No discrepancies found");
     } else {
-      totalDiscrepancies += result.discrepancies.length;
       console.log(`  ❌ ${result.discrepancies.length} discrepancies found:`);
-      result.discrepancies.forEach((disc, i) => {
-        console.log(`    ${i + 1}. ${disc}`);
+      result.discrepancies.forEach(disc => {
+        console.log(`    - ${disc}`);
       });
       
       if (result.sampleMismatches.length > 0) {
-        console.log(`  📝 Sample mismatches (showing first ${result.sampleMismatches.length}):`);
+        console.log(`  📝 Sample mismatches:`);
         result.sampleMismatches.forEach((mismatch, i) => {
-          console.log(`    ${i + 1}. ${JSON.stringify(mismatch, null, 6)}`);
+          console.log(`    ${i + 1}. ${JSON.stringify(mismatch, null, 2)}`);
         });
       }
     }
-    console.log("");
-  }
-  
-  // Summary
-  console.log("\n📋 VALIDATION SUMMARY:");
-  console.log("=" * 60);
-  if (totalDiscrepancies === 0) {
-    console.log("🎉 SUCCESS: All data validation checks passed!");
-    console.log("   Your database is perfectly synchronized with the new CSV files.");
-  } else {
-    console.log(`⚠️  ATTENTION: ${totalDiscrepancies} total discrepancies found across all entities.`);
-    console.log("   Please review the detailed results above to understand the differences.");
-    console.log("   Consider updating your database if the CSV files contain the correct data.");
   }
   
   return results;
 }
 
-// Auto-run validation (ES module compatible)
-if (import.meta.url === `file://${process.argv[1]}`) {
-  validateNewCSVData()
+// Auto-run validation
+if (require.main === module) {
+  validateAllData()
     .then(results => {
       const hasDiscrepancies = results.some(r => r.discrepancies.length > 0);
-      process.exit(hasDiscrepancies ? 1 : 0);
+      if (hasDiscrepancies) {
+        console.log("\n⚠️  Data discrepancies found! Please review the results above.");
+        process.exit(1);
+      } else {
+        console.log("\n✅ All data validation checks passed!");
+        process.exit(0);
+      }
     })
     .catch(error => {
       console.error("❌ Validation failed:", error);

@@ -4,7 +4,7 @@ import { Header } from "@/components/Header";
 import { DataNote } from "@/components/DataNote";
 import { FiltersBar } from "@/components/FiltersBar";
 import { MetricsCards } from "@/components/MetricsCards";
-import { AfricaMap } from "@/components/AfricaMap";
+import { AfricaTreemap } from "@/components/AfricaTreemap";
 import { TimeSeriesChart } from "@/components/TimeSeriesChart";
 import { TopBuyers } from "@/components/TopBuyers";
 import { SectorBreakdown } from "@/components/SectorBreakdown";
@@ -173,8 +173,8 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Left Column - Africa Treemap and Intermediaries */}
           <div className="lg:col-span-1 space-y-6">
-            <AfricaMap
-              countryData={countryData}
+            <AfricaTreemap
+              data={countryData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
             />
