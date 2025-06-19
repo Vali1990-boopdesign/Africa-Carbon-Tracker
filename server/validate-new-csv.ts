@@ -373,8 +373,8 @@ export async function validateNewCSVData(): Promise<ValidationResult[]> {
   return results;
 }
 
-// Auto-run validation
-if (require.main === module) {
+// Auto-run validation (ES module compatible)
+if (import.meta.url === `file://${process.argv[1]}`) {
   validateNewCSVData()
     .then(results => {
       const hasDiscrepancies = results.some(r => r.discrepancies.length > 0);
