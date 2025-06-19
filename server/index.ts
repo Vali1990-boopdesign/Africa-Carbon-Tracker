@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   // Test database connection first
   console.log("Testing database connection...");
   const dbConnected = await testDatabaseConnection();
-  
+
   if (dbConnected) {
     try {
       // Run migrations first

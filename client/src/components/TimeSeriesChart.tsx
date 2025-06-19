@@ -77,7 +77,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
   // Process transactions to get unique projects per year
   const projectsPerYear = transactions ? transactions.reduce((acc, transaction) => {
     if (!transaction.retirementYear || !transaction.projectName) return acc;
-    
+
     const year = transaction.retirementYear;
     if (!acc[year]) {
       acc[year] = new Set();
@@ -99,7 +99,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
   // Process transactions to get unique buyers per year
   const buyersPerYear = transactions ? transactions.reduce((acc, transaction) => {
     if (!transaction.retirementYear || !transaction.buyerBrandName) return acc;
-    
+
     const year = transaction.retirementYear;
     if (!acc[year]) {
       acc[year] = new Set();
