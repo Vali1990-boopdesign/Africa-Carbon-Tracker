@@ -186,12 +186,16 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="trends" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={yearlyData}>
+                <LineChart data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
                     stroke="#9CA3AF"
                     fontSize={12}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
                     label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
@@ -215,14 +219,18 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="projects" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={projectYearlyData}>
+                <LineChart data={projectYearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => value.toString()}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -245,14 +253,18 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="buyers" className="h-72 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={buyerYearlyData}>
+                <LineChart data={buyerYearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => value.toString()}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={60}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
