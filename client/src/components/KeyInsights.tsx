@@ -88,7 +88,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <div className="p-[2px] rounded-xl bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500">
-        <Card className="h-40 relative overflow-hidden bg-background">
+        <Card className="min-h-48 relative overflow-hidden bg-background">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between w-full">
             <h3 className="text-lg font-semibold">Key Insights</h3>
@@ -122,7 +122,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 pb-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentInsight}
