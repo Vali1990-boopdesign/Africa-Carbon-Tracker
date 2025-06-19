@@ -14,12 +14,12 @@ export interface IStorage {
     search?: string;
   }): Promise<Transaction[]>;
   createTransaction(transaction: InsertTransaction): Promise<Transaction>;
-  
+
   // Buyer profile operations
   getBuyerProfiles(): Promise<BuyerProfile[]>;
   getBuyerProfile(brandName: string): Promise<BuyerProfile | undefined>;
   createBuyerProfile(profile: InsertBuyerProfile): Promise<BuyerProfile>;
-  
+
   // Dashboard analytics
   getDashboardMetrics(filters?: {
     country?: string;
@@ -74,7 +74,7 @@ export class MemStorage implements IStorage {
     this.buyerProfiles = new Map();
     this.currentTransactionId = 1;
     this.currentBuyerProfileId = 1;
-    
+
     // Initialize with sample data
     this.initializeSampleData();
   }
@@ -266,7 +266,7 @@ export class MemStorage implements IStorage {
     // Apply filters to get filtered transactions
     const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const allTransactions = Array.from(this.transactions.values());
-    
+
     const totalCreditsRetired = filteredTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
     const uniqueBuyers = new Set(filteredTransactions.map(t => t.buyerBrandName)).size;
     const uniqueCountries = new Set(filteredTransactions.map(t => t.country)).size;
@@ -274,7 +274,7 @@ export class MemStorage implements IStorage {
     // Calculate growth vs unfiltered data for comparison
     const allCredits = allTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
     const allBuyers = new Set(allTransactions.map(t => t.buyerBrandName)).size;
-    
+
     const creditsGrowth = allCredits > 0 ? ((totalCreditsRetired / allCredits - 1) * 100) : 0;
     const buyersGrowth = allBuyers > 0 ? ((uniqueBuyers / allBuyers - 1) * 100) : 0;
 
@@ -342,7 +342,7 @@ export class MemStorage implements IStorage {
     });
 
     const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6"];
-    
+
     return Array.from(sectorMap.entries()).map(([sector, credits], index) => ({
       sector,
       totalCredits: credits,
@@ -378,7 +378,7 @@ export class MemStorage implements IStorage {
     // Use filtered transactions to calculate top buyers for the filtered dataset
     const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const buyerMap = new Map<string, { credits: number; sector: string }>();
-    
+
     filteredTransactions.forEach(t => {
       if (!buyerMap.has(t.buyerBrandName)) {
         buyerMap.set(t.buyerBrandName, { credits: 0, sector: t.buyerSector });
@@ -388,7 +388,7 @@ export class MemStorage implements IStorage {
 
     const totalCredits = Array.from(buyerMap.values()).reduce((sum, b) => sum + b.credits, 0);
     const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444"];
-    
+
     return Array.from(buyerMap.entries())
       .sort((a, b) => b[1].credits - a[1].credits)
       .slice(0, limit)
@@ -564,7 +564,7 @@ export class DatabaseStorage implements IStorage {
     });
 
     const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6"];
-    
+
     return Array.from(sectorMap.entries()).map(([sector, credits], index) => ({
       sector,
       totalCredits: credits,
@@ -599,7 +599,7 @@ export class DatabaseStorage implements IStorage {
   }): Promise<TopBuyerData[]> {
     const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const buyerMap = new Map<string, { credits: number; sector: string }>();
-    
+
     filteredTransactions.forEach(t => {
       if (!buyerMap.has(t.buyerBrandName)) {
         buyerMap.set(t.buyerBrandName, { credits: 0, sector: t.buyerSector });
@@ -609,7 +609,7 @@ export class DatabaseStorage implements IStorage {
 
     const totalCredits = Array.from(buyerMap.values()).reduce((sum, b) => sum + b.credits, 0);
     const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444"];
-    
+
     return Array.from(buyerMap.entries())
       .sort((a, b) => b[1].credits - a[1].credits)
       .slice(0, limit)
