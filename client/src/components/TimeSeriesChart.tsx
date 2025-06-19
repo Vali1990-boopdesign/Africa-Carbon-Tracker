@@ -58,17 +58,21 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
   })) || [];
 
   // Group by year for aggregated trends and sort chronologically (include 2024)
-  const yearlyData = trendData.reduce((acc, curr) => {
-    const existing = acc.find(item => item.year === curr.year);
-    if (existing) {
-      existing.credits += curr.credits;
-    } else {
-      acc.push({ year: curr.year, credits: curr.credits });
+  const yearlyDataMap = trendData.reduce((acc, curr) => {
+    if (curr.year >= 2010 && curr.year <= 2024) {
+      acc[curr.year] = (acc[curr.year] || 0) + curr.credits;
     }
     return acc;
-  }, [] as { year: number; credits: number }[])
-    .filter(item => item.year >= 2010 && item.year <= 2024) // Ensure we include up to 2024
-    .sort((a, b) => a.year - b.year);
+  }, {} as Record<number, number>);
+
+  // Ensure all years from 2010 to 2024 are represented, even with 0 credits
+  const yearlyData = [];
+  for (let year = 2010; year <= 2024; year++) {
+    yearlyData.push({
+      year,
+      credits: yearlyDataMap[year] || 0
+    });
+  }
 
   // Process transactions to get unique projects per year
   const projectsPerYear = transactions ? transactions.reduce((acc, transaction) => {
@@ -82,13 +86,15 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
     return acc;
   }, {} as Record<number, Set<string>>) : {};
 
-  const projectYearlyData = Object.entries(projectsPerYear)
-    .map(([year, projectSet]) => ({
-      year: parseInt(year),
-      projects: projectSet.size
-    }))
-    .filter(item => item.year >= 2010 && item.year <= 2024) // Include up to 2024
-    .sort((a, b) => a.year - b.year);
+  // Ensure all years from 2010 to 2024 are represented for projects
+  const projectYearlyData = [];
+  for (let year = 2010; year <= 2024; year++) {
+    const projectSet = projectsPerYear[year];
+    projectYearlyData.push({
+      year,
+      projects: projectSet ? projectSet.size : 0
+    });
+  }
 
   // Process transactions to get unique buyers per year
   const buyersPerYear = transactions ? transactions.reduce((acc, transaction) => {
@@ -102,13 +108,15 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
     return acc;
   }, {} as Record<number, Set<string>>) : {};
 
-  const buyerYearlyData = Object.entries(buyersPerYear)
-    .map(([year, buyerSet]) => ({
-      year: parseInt(year),
-      buyers: buyerSet.size
-    }))
-    .filter(item => item.year >= 2010 && item.year <= 2024) // Include up to 2024
-    .sort((a, b) => a.year - b.year);
+  // Ensure all years from 2010 to 2024 are represented for buyers
+  const buyerYearlyData = [];
+  for (let year = 2010; year <= 2024; year++) {
+    const buyerSet = buyersPerYear[year];
+    buyerYearlyData.push({
+      year,
+      buyers: buyerSet ? buyerSet.size : 0
+    });
+  }
 
   // Use all sector data for project types - no truncation
   const projectData = sectorData?.map(sector => ({
