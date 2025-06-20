@@ -1,6 +1,6 @@
 import { transactions, buyerProfiles, type Transaction, type InsertTransaction, type BuyerProfile, type InsertBuyerProfile, type DashboardMetrics, type CountryData, type SectorData, type TimeSeriesData, type TopBuyerData } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, gte, lte, like, or, sql } from "drizzle-orm";
+import { eq, and, gte, lte, like, or, sql, type SQL } from "drizzle-orm";
 
 export interface IStorage {
   // Transaction operations
@@ -61,6 +61,15 @@ export interface IStorage {
     endYear?: number;
     search?: string;
   }): Promise<TopBuyerData[]>;
+}
+
+export interface DashboardFilters {
+  country?: string;
+  sector?: string;
+  projectType?: string;
+  startYear?: number;
+  endYear?: number;
+  search?: string;
 }
 
 export class MemStorage implements IStorage {
@@ -483,15 +492,46 @@ export class DatabaseStorage implements IStorage {
     return newProfile;
   }
 
-  async getDashboardMetrics(filters?: {
-    country?: string;
-    sector?: string;
-    projectType?: string;
-    startYear?: number;
-    endYear?: number;
-    search?: string;
-  }): Promise<DashboardMetrics> {
-    // Use the existing filter method to get filtered transactions
+  private async executeWithRetry<T>(operation: () => Promise<T>, maxRetries: number = 2): Promise<T> {
+    let lastError: Error;
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation();
+      } catch (error) {
+        lastError = error as Error;
+
+        // Check if it's a connection error
+        if (error.code === '57P01' || error.message?.includes('terminating connection')) {
+          console.log(`Database connection lost, retrying... (${attempt + 1}/${maxRetries + 1})`);
+
+          if (attempt < maxRetries) {
+            // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            continue;
+          }
+        }
+
+        // If it's not a connection error or we've exhausted retries, throw
+        throw error;
+      }
+    }
+
+    throw lastError;
+  }
+
+  async getDashboardMetrics(filters: DashboardFilters = {}): Promise<DashboardMetrics> {
+    try {
+      const whereConditions = this.buildWhereConditions(filters);
+
+      // Get total credits retired with retry logic
+      const totalCreditsResult = await this.executeWithRetry(() =>
+        db
+          .select({ total: sql<number>`COALESCE(SUM(${transactions.creditsRetired}), 0)` })
+          .from(transactions)
+          .where(whereConditions.length > 0 ? and(...whereConditions) : undefined)
+      );
+
     const filteredTransactions = await this.getTransactionsByFilters(filters || {});
     const totalCreditsRetired = filteredTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
     const uniqueBuyers = new Set(filteredTransactions.map(t => t.buyerBrandName)).size;
@@ -510,6 +550,46 @@ export class DatabaseStorage implements IStorage {
       averageCreditsPerTransaction: Math.round(avgCreditsPerTransaction),
       transactionChange: 0,
     };
+  } catch (error) {
+      console.error("Error in getDashboardMetrics:", error);
+      throw error;
+    }
+  }
+
+  private buildWhereConditions(filters: DashboardFilters): SQL[] {
+    const conditions: SQL[] = [];
+
+    if (filters.country) {
+      conditions.push(eq(transactions.country, filters.country));
+    }
+
+    if (filters.sector) {
+      conditions.push(eq(transactions.buyerSector, filters.sector));
+    }
+
+    if (filters.projectType) {
+      conditions.push(eq(transactions.type, filters.projectType));
+    }
+
+    if (filters.startYear) {
+      conditions.push(gte(transactions.retirementYear, filters.startYear));
+    }
+
+    if (filters.endYear) {
+      conditions.push(lte(transactions.retirementYear, filters.endYear));
+    }
+
+    if (filters.search) {
+      conditions.push(
+        or(
+          like(transactions.buyerBrandName, `%${filters.search}%`),
+          like(transactions.country, `%${filters.search}%`),
+          like(transactions.projectName, `%${filters.search}%`)
+        )
+      );
+    }
+
+    return conditions;
   }
 
   async getCountryData(filters?: {

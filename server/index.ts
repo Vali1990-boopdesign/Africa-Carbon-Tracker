@@ -53,9 +53,15 @@ app.use((req, res, next) => {
       await seedDatabase();
     } catch (error) {
       console.error("Database setup failed, but continuing with server startup:", error);
+      
+      // If it's a connection termination error, suggest restart
+      if (error.code === '57P01' || error.message?.includes('terminating connection')) {
+        console.log("💡 Try restarting the application to re-establish database connection");
+      }
     }
   } else {
     console.warn("Database connection failed, server will start but database features may not work");
+    console.log("💡 This might be due to Neon database sleeping. Try restarting the application.");
   }
 
   const server = await registerRoutes(app);

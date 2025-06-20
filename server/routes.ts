@@ -26,7 +26,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const metrics = await storage.getDashboardMetrics(filters);
       res.json(metrics);
     } catch (error) {
-      res.status(500).json({ error: "Failed to fetch dashboard metrics" });
+      console.error("Dashboard metrics error:", error);
+      
+      // Check if it's a database connection error
+      if (error.code === '57P01' || error.message?.includes('terminating connection')) {
+        res.status(503).json({ error: "Database temporarily unavailable. Please try again." });
+      } else {
+        res.status(500).json({ error: "Failed to fetch dashboard metrics" });
+      }
     }
   });
 

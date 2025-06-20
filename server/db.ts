@@ -2,6 +2,7 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import * as schema from "@shared/schema";
+import { sql } from 'drizzle-orm';
 
 // Configure Neon for WebSocket connections
 neonConfig.webSocketConstructor = ws;
@@ -24,15 +25,25 @@ export const pool = new Pool({
 export const db = drizzle({ client: pool, schema });
 
 // Test database connection
-export async function testDatabaseConnection() {
-  try {
-    const client = await pool.connect();
-    await client.query('SELECT 1');
-    client.release();
-    console.log('✅ Database connection successful');
-    return true;
-  } catch (error) {
-    console.error('❌ Database connection failed:', error);
-    return false;
+export async function testDatabaseConnection(): Promise<boolean> {
+  let retries = 3;
+
+  while (retries > 0) {
+    try {
+      await db.execute(sql`SELECT 1`);
+      console.log("✅ Database connection successful");
+      return true;
+    } catch (error) {
+      retries--;
+      console.error(`❌ Database connection failed (${3 - retries}/3):`, error.message);
+
+      if (retries > 0) {
+        console.log("⏳ Retrying database connection in 2 seconds...");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
   }
+
+  console.error("❌ Database connection failed after 3 attempts");
+  return false;
 }
