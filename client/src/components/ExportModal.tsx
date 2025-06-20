@@ -135,7 +135,7 @@ export function ExportModal({ isOpen, onClose, onExport, exportType, selectedCou
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
-                className="bg-dark-800 border-gray-600 text-white mt-1"
+                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
                 placeholder="Enter your full name"
               />
             </div>
@@ -149,7 +149,7 @@ export function ExportModal({ isOpen, onClose, onExport, exportType, selectedCou
                 type="text"
                 value={formData.organisation}
                 onChange={(e) => handleInputChange("organisation", e.target.value)}
-                className="bg-dark-800 border-gray-600 text-white mt-1"
+                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
                 placeholder="Enter your organisation (optional)"
               />
             </div>
@@ -163,7 +163,7 @@ export function ExportModal({ isOpen, onClose, onExport, exportType, selectedCou
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className="bg-dark-800 border-gray-600 text-white mt-1"
+                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
                 placeholder="Enter your email address"
               />
             </div>
