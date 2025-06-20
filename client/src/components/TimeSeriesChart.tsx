@@ -77,7 +77,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
   // Process transactions to get unique projects per year
   const projectsPerYear = transactions ? transactions.reduce((acc, transaction) => {
     if (!transaction.retirementYear || !transaction.projectName) return acc;
-    
+
     const year = transaction.retirementYear;
     if (!acc[year]) {
       acc[year] = new Set();
@@ -99,7 +99,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
   // Process transactions to get unique buyers per year
   const buyersPerYear = transactions ? transactions.reduce((acc, transaction) => {
     if (!transaction.retirementYear || !transaction.buyerBrandName) return acc;
-    
+
     const year = transaction.retirementYear;
     if (!acc[year]) {
       acc[year] = new Set();
@@ -195,7 +195,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={60}
+                    height={40}
                     label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
@@ -229,7 +229,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={60}
+                    height={40}
                     label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
@@ -263,7 +263,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={60}
+                    height={40}
                     label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
