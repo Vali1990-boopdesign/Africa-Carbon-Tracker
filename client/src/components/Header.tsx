@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
+import { ExportModal } from "./ExportModal";
 // Using web-based CO2 icon instead of PNG import
 
 interface HeaderProps {
@@ -14,6 +15,7 @@ interface HeaderProps {
 }
 
 export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
@@ -109,7 +111,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             <Button
               variant="default"
               size="sm"
-              onClick={onExport}
+              onClick={() => setIsExportModalOpen(true)}
               disabled={isLoading}
               className="h-10"
             >
@@ -119,6 +121,14 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
           </motion.div>
         </div>
       </div>
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        onExport={onExport}
+        exportType="all"
+      />
     </motion.header>
   );
 }

@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
+import { ExportModal } from "./ExportModal";
 import type { Transaction } from "@shared/schema";
 
 interface DataTableProps {
@@ -25,6 +26,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
   const [pageSize, setPageSize] = useState(10);
   const [sortField, setSortField] = useState<SortField>("retirementYear");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -152,7 +154,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 Showing {startIndex + 1}-{Math.min(endIndex, transactions.length)} of {transactions.length} transactions
               </span>
               <Button
-                onClick={handleExport}
+                onClick={() => setIsExportModalOpen(true)}
                 disabled={selectedRows.size === 0}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-sm font-medium transition-colors"
               >
@@ -335,6 +337,15 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
           </div>
         </CardContent>
       </Card>
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        onExport={handleExport}
+        exportType="selected"
+        selectedCount={selectedRows.size}
+      />
     </motion.div>
   );
 }
