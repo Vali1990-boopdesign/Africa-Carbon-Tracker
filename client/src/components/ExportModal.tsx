@@ -100,7 +100,7 @@ export function ExportModal({ isOpen, onClose, onExport, exportType, selectedCou
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-dark-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-white flex items-center">
             <Download className="mr-2" size={20} />
