@@ -58,7 +58,7 @@ export function ExportModal({ isOpen, onClose, onExport, exportType, selectedCou
       };
 
       // Send to Google Sheets via webhook/API
-      await fetch("https://script.google.com/macros/s/AKfycbx9sr9fjELpII41DvELUQjkag5S4HsPOK3x9zEhnlbS7kewrAP1BDtLXbl5YMWq4-LEKw/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbwtWXxlA3pIGZTEvVmNAOcN337IWU59KfP0ebfJqU4pYrCYej9EF7q0QQtmd6Xlt6fTIg/exec", {
         method: "POST",
         mode: "no-cors",
         headers: {
