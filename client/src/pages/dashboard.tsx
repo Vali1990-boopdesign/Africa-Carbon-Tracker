@@ -30,6 +30,7 @@ export default function Dashboard() {
     sectorData,
     timeSeriesData,
     topBuyers,
+    scopeData,
     filters,
     activeFilters,
     activeTab,
@@ -95,6 +96,10 @@ export default function Dashboard() {
 
   const handleCountryClick = (country: string) => {
     updateFilter("country", country);
+  };
+
+  const handleScopeClick = (scope: string) => {
+    updateFilter("projectType", scope);
   };
 
   const handleBuyerClick = (buyer: string) => {
@@ -174,8 +179,10 @@ export default function Dashboard() {
           <div className="lg:col-span-1 space-y-6">
             <AfricaTreemap
               data={countryData}
+              scopeData={scopeData}
               isLoading={isLoading}
               onCountryClick={handleCountryClick}
+              onScopeClick={handleScopeClick}
             />
             
             <Intermediaries

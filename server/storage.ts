@@ -1,4 +1,4 @@
-import { transactions, buyerProfiles, type Transaction, type InsertTransaction, type BuyerProfile, type InsertBuyerProfile, type DashboardMetrics, type CountryData, type SectorData, type TimeSeriesData, type TopBuyerData } from "@shared/schema";
+import { transactions, buyerProfiles, type Transaction, type InsertTransaction, type BuyerProfile, type InsertBuyerProfile, type DashboardMetrics, type CountryData, type SectorData, type TimeSeriesData, type TopBuyerData, type ScopeData } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, gte, lte, like, or, sql, type SQL } from "drizzle-orm";
 
@@ -61,6 +61,14 @@ export interface IStorage {
     endYear?: number;
     search?: string;
   }): Promise<TopBuyerData[]>;
+  getScopeData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<ScopeData[]>;
 }
 
 export interface DashboardFilters {
@@ -410,6 +418,32 @@ export class MemStorage implements IStorage {
         color: colors[index % colors.length]
       }));
   }
+
+  async getScopeData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<ScopeData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
+    const scopeMap = new Map<string, number>();
+    const totalCredits = filteredTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
+
+    filteredTransactions.forEach(t => {
+      scopeMap.set(t.scope, (scopeMap.get(t.scope) || 0) + t.creditsRetired);
+    });
+
+    const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#84cc16"];
+
+    return Array.from(scopeMap.entries()).map(([scope, credits], index) => ({
+      scope,
+      totalCredits: credits,
+      percentage: totalCredits > 0 ? Math.round((credits / totalCredits) * 100) : 0,
+      color: colors[index % colors.length]
+    })).sort((a, b) => b.totalCredits - a.totalCredits);
+  }
 }
 
 export class DatabaseStorage implements IStorage {
@@ -701,6 +735,32 @@ export class DatabaseStorage implements IStorage {
         initials: brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
         color: colors[index % colors.length]
       }));
+  }
+
+  async getScopeData(filters?: {
+    country?: string;
+    sector?: string;
+    projectType?: string;
+    startYear?: number;
+    endYear?: number;
+    search?: string;
+  }): Promise<ScopeData[]> {
+    const filteredTransactions = await this.getTransactionsByFilters(filters || {});
+    const scopeMap = new Map<string, number>();
+    const totalCredits = filteredTransactions.reduce((sum, t) => sum + t.creditsRetired, 0);
+
+    filteredTransactions.forEach(t => {
+      scopeMap.set(t.scope, (scopeMap.get(t.scope) || 0) + t.creditsRetired);
+    });
+
+    const colors = ["#10b981", "#3b82f6", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#84cc16"];
+
+    return Array.from(scopeMap.entries()).map(([scope, credits], index) => ({
+      scope,
+      totalCredits: credits,
+      percentage: totalCredits > 0 ? Math.round((credits / totalCredits) * 100) : 0,
+      color: colors[index % colors.length]
+    })).sort((a, b) => b.totalCredits - a.totalCredits);
   }
 }
 

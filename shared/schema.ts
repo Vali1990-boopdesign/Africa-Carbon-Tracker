@@ -102,3 +102,10 @@ export interface TopBuyerData {
   initials: string;
   color: string;
 }
+
+export interface ScopeData {
+  scope: string;
+  totalCredits: number;
+  percentage: number;
+  color: string;
+}

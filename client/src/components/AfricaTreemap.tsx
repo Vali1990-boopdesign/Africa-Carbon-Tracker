@@ -9,21 +9,33 @@ interface CountryData {
   activeProjects: number;
 }
 
+interface ScopeData {
+  scope: string;
+  totalCredits: number;
+  percentage: number;
+  color: string;
+}
+
 interface AfricaTreemapProps {
   data?: CountryData[];
+  scopeData?: ScopeData[];
   isLoading: boolean;
   onCountryClick?: (country: string) => void;
+  onScopeClick?: (scope: string) => void;
 }
 
 export function AfricaTreemap({ 
   data = [], 
+  scopeData = [],
   isLoading, 
-  onCountryClick 
+  onCountryClick,
+  onScopeClick
 }: AfricaTreemapProps) {
   const [activeTab, setActiveTab] = useState("credits");
 
   const totalCredits = data.reduce((sum, item) => sum + item.totalCredits, 0);
   const totalProjects = data.reduce((sum, item) => sum + item.activeProjects, 0);
+  const totalScopeCredits = scopeData.reduce((sum, item) => sum + item.totalCredits, 0);
 
   const sortedData = [...data].sort((a, b) => {
     if (activeTab === "credits") {
@@ -86,12 +98,15 @@ export function AfricaTreemap({
       </CardHeader>
       <CardContent className="p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="credits" className="text-sm">
               Carbon Credits
             </TabsTrigger>
             <TabsTrigger value="projects" className="text-sm">
               Projects
+            </TabsTrigger>
+            <TabsTrigger value="scope" className="text-sm">
+              Scope Area
             </TabsTrigger>
           </TabsList>
           
@@ -171,6 +186,50 @@ export function AfricaTreemap({
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
                           {item.activeProjects}
+                        </div>
+                        <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
+                          {percentage}%
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </TabsContent>
+          
+          <TabsContent value="scope" className="space-y-2">
+            <div className="text-center mb-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Carbon Credits by Scope Area
+              </p>
+            </div>
+            <div className="w-full">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 w-full">
+                {scopeData.map((item, index) => {
+                  const percentage = item.percentage;
+                  const colorIndex = Math.min(index, colors.length - 1);
+                  const size = Math.max(25, Math.min(percentage * 2, 100));
+                  const gridSpan = Math.max(Math.min(Math.ceil(size / 25), 2), 1);
+                  
+                  return (
+                    <div
+                      key={item.scope}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-3 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      style={{ 
+                        gridColumn: `span ${gridSpan}`,
+                        minHeight: `${Math.max(80 + (size / 5), 80)}px`,
+                        maxHeight: '140px'
+                      }}
+                      onClick={() => onScopeClick?.(item.scope)}
+                      title={`${item.scope}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
+                    >
+                      <div className="text-center overflow-hidden w-full">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 truncate`}>
+                          {item.scope}
+                        </div>
+                        <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
+                          {item.totalCredits.toLocaleString()}
                         </div>
                         <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
                           {percentage}%

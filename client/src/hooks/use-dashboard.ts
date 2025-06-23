@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { DashboardMetrics, Transaction, CountryData, SectorData, TimeSeriesData, TopBuyerData } from "@shared/schema";
+import type { DashboardMetrics, Transaction, CountryData, SectorData, TimeSeriesData, TopBuyerData, ScopeData } from "@shared/schema";
 
 export interface DashboardFilters {
   country: string;
@@ -161,6 +161,29 @@ export function useDashboard() {
     },
   });
 
+  // Scope data query with filters
+  const { data: scopeData, isLoading: scopeLoading } = useQuery<ScopeData[]>({
+    queryKey: ["/api/dashboard/scopes", filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      Object.entries(filters).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+          params.append(key, value.toString());
+        }
+      });
+
+      const response = await fetch(`/api/dashboard/scopes?${params.toString()}`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      return response.json();
+    },
+  });
+
   // Filter management
   const updateFilter = (key: keyof DashboardFilters, value: string | number) => {
     setFilters(prev => ({ ...prev, [key]: value }));
@@ -198,7 +221,7 @@ export function useDashboard() {
   }, [filters]);
 
   // Loading states
-  const isLoading = metricsLoading || transactionsLoading || countryLoading || sectorLoading || timeSeriesLoading || topBuyersLoading;
+  const isLoading = metricsLoading || transactionsLoading || countryLoading || sectorLoading || timeSeriesLoading || topBuyersLoading || scopeLoading;
 
   return {
     // Data
@@ -208,6 +231,7 @@ export function useDashboard() {
     sectorData,
     timeSeriesData,
     topBuyers,
+    scopeData,
 
     // State
     filters,

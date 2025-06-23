@@ -100,6 +100,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Scope data for scope breakdown with filters
+  app.get("/api/dashboard/scopes", async (req, res) => {
+    try {
+      const { country, sector, projectType, startYear, endYear, search } = req.query;
+
+      const filters = {
+        country: country as string,
+        sector: sector as string,
+        projectType: projectType as string,
+        startYear: startYear ? parseInt(startYear as string) : undefined,
+        endYear: endYear ? parseInt(endYear as string) : undefined,
+        search: search as string,
+      };
+
+      const scopeData = await storage.getScopeData(filters);
+      res.json(scopeData);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch scope data" });
+    }
+  });
+
   // Time series data for charts with filters
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
