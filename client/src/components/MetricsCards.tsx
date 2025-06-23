@@ -46,7 +46,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   const cards = [
     {
       key: "credit-transactions",
-      titleComponent: <TermTooltip term="Credit Transactions" explanation="Individual purchases where carbon credits are permanently retired, representing verified emission reductions that cannot be reused" />,
+      titleComponent: <TermTooltip term="Credits Transacted" explanation="Total cumulative carbon credits of tCO2e transacted (retired, purchased, etc.) in time period. Pre-purchases are not captured here." />,
       value: metrics.totalCreditsRetired.toLocaleString(),
       icon: Leaf,
       iconBg: "bg-emerald-500/20",
