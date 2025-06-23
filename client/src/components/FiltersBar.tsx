@@ -205,10 +205,10 @@ export function FiltersBar({
               }
             >
               <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                <SelectValue placeholder="All Sectors" />
+                <SelectValue placeholder="All Buyer Sectors" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Sectors</SelectItem>
+                <SelectItem value="all">All Buyer Sectors</SelectItem>
                 {uniqueSectors.map((sector) => (
                   <SelectItem key={sector} value={sector}>
                     {sector}
