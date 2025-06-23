@@ -12,12 +12,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Dashboard metrics endpoint with filters
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -40,12 +41,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Transactions endpoint with filtering
   app.get("/api/transactions", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -61,12 +63,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Country data for map with filters
   app.get("/api/dashboard/countries", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -82,12 +85,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Sector data for pie chart with filters
   app.get("/api/dashboard/sectors", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -103,12 +107,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Scope data for scope breakdown with filters
   app.get("/api/dashboard/scopes", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -124,12 +129,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Time series data for charts with filters
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,
@@ -145,13 +151,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Top buyers data with filters
   app.get("/api/dashboard/top-buyers", async (req, res) => {
     try {
-      const { country, sector, projectType, startYear, endYear, search } = req.query;
+      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
       const filters = {
         country: country as string,
         sector: sector as string,
         projectType: projectType as string,
+        scope: scope as string,
         startYear: startYear ? parseInt(startYear as string) : undefined,
         endYear: endYear ? parseInt(endYear as string) : undefined,
         search: search as string,

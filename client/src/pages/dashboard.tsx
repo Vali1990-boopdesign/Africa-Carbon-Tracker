@@ -99,7 +99,7 @@ export default function Dashboard() {
   };
 
   const handleScopeClick = (scope: string) => {
-    updateFilter("projectType", scope);
+    updateFilter("scope", scope);
   };
 
   const handleBuyerClick = (buyer: string) => {

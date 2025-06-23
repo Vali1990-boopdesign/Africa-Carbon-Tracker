@@ -6,6 +6,7 @@ export interface DashboardFilters {
   country: string;
   sector: string;
   projectType: string;
+  scope: string;
   startYear: number;
   endYear: number;
   search: string;
@@ -16,6 +17,7 @@ export function useDashboard() {
     country: "",
     sector: "",
     projectType: "",
+    scope: "",
     startYear: 2010,
     endYear: 2024,
     search: "",
@@ -194,6 +196,7 @@ export function useDashboard() {
       country: "",
       sector: "",
       projectType: "",
+      scope: "",
       startYear: 2011,
       endYear: 2023,
       search: "",
@@ -203,7 +206,7 @@ export function useDashboard() {
   const removeFilter = (key: keyof DashboardFilters) => {
     setFilters(prev => ({ 
       ...prev, 
-      [key]: key === "startYear" ? 2011 : key === "endYear" ? 2023 : "" 
+      [key]: key === "startYear" ? 2010 : key === "endYear" ? 2024 : "" 
     }));
   };
 
@@ -213,6 +216,7 @@ export function useDashboard() {
     if (filters.country) active.push({ key: "country", label: filters.country, value: filters.country });
     if (filters.sector) active.push({ key: "sector", label: `${filters.sector} Sector`, value: filters.sector });
     if (filters.projectType) active.push({ key: "projectType", label: filters.projectType, value: filters.projectType });
+    if (filters.scope) active.push({ key: "scope", label: `${filters.scope} Scope`, value: filters.scope });
     if (filters.startYear !== 2010 || filters.endYear !== 2024) {
       active.push({ key: "startYear", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
     }

@@ -9,6 +9,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -25,6 +26,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -33,6 +35,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -41,6 +44,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -49,6 +53,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -57,6 +62,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -65,6 +71,7 @@ export interface IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -208,6 +215,7 @@ export class MemStorage implements IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -220,6 +228,10 @@ export class MemStorage implements IStorage {
 
     if (filters.sector) {
       transactions = transactions.filter(t => t.buyerSector === filters.sector);
+    }
+
+    if (filters.scope) {
+      transactions = transactions.filter(t => t.scope === filters.scope);
     }
 
     if (filters.projectType) {
@@ -455,6 +467,7 @@ export class DatabaseStorage implements IStorage {
     country?: string;
     sector?: string;
     projectType?: string;
+    scope?: string;
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -471,6 +484,10 @@ export class DatabaseStorage implements IStorage {
 
     if (filters.projectType) {
       conditions.push(eq(transactions.type, filters.projectType));
+    }
+
+    if (filters.scope) {
+      conditions.push(eq(transactions.scope, filters.scope));
     }
 
     if (filters.startYear) {
