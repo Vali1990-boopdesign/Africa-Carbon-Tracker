@@ -42,7 +42,7 @@ export function Footer() {
             Given Africa's dynamic carbon market landscape, users are advised to interpret insights with appropriate caution.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
-            <p>&copy; 2024 The Catalyst Fund. All rights reserved.</p>
+            <p>&copy; 2024 The Catalyst Fund & FSD Africa. All rights reserved.</p>
           </div>
         </div>
       </div>
