@@ -1,7 +1,5 @@
-import React from "react";
 
-// Test page is no longer needed since we removed the choropleth components
-// This can be used for other testing purposes if needed
+import React from "react";
 
 export default function ChoroplethTest() {
   return (
