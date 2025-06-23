@@ -121,6 +121,10 @@ export default function Dashboard() {
     updateFilter("sector", sector);
   };
 
+  const handleBuyerCountryClick = (country: string) => {
+    updateFilter("search", country);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
@@ -198,6 +202,8 @@ export default function Dashboard() {
               topBuyers={topBuyers}
               isLoading={isLoading}
               onBuyerClick={handleBuyerClick}
+              onCountryClick={handleBuyerCountryClick}
+              onSectorClick={handleSectorClick}
               transactions={transactions}
             />
 

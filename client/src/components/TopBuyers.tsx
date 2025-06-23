@@ -9,10 +9,12 @@ interface TopBuyersProps {
   topBuyers?: TopBuyerData[];
   isLoading: boolean;
   onBuyerClick?: (buyer: string) => void;
-  transactions?: any[]; // Add transactions to get scope data
+  onCountryClick?: (country: string) => void;
+  onSectorClick?: (sector: string) => void;
+  transactions?: any[]; // Add transactions to get country and sector data
 }
 
-export function TopBuyers({ topBuyers, isLoading, onBuyerClick, transactions }: TopBuyersProps) {
+export function TopBuyers({ topBuyers, isLoading, onBuyerClick, onCountryClick, onSectorClick, transactions }: TopBuyersProps) {
   const [activeTab, setActiveTab] = useState("buyers");
   if (isLoading) {
     return (
@@ -73,9 +75,10 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick, transactions }: 
         
         <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="buyers">Buyers</TabsTrigger>
-              <TabsTrigger value="scope">Scope</TabsTrigger>
+              <TabsTrigger value="countries">Buyer Countries</TabsTrigger>
+              <TabsTrigger value="sectors">Buyer Sectors</TabsTrigger>
             </TabsList>
 
             <TabsContent value="buyers" className="space-y-3">
@@ -116,60 +119,54 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick, transactions }: 
               ))}
             </TabsContent>
 
-            <TabsContent value="scope" className="space-y-3">
+            <TabsContent value="countries" className="space-y-3">
               {(() => {
-                // Create scope aggregation from transactions if available
+                // Create country aggregation from transactions if available
                 if (!transactions || !Array.isArray(transactions)) {
                   return (
                     <div className="text-center py-8">
-                      <p className="text-gray-400">No scope data available</p>
+                      <p className="text-gray-400">No country data available</p>
                     </div>
                   );
                 }
 
-                // Aggregate credits by project scope
-                const scopeMap = new Map();
+                // Aggregate credits by buyer country
+                const countryMap = new Map();
                 transactions.forEach(transaction => {
-                  const scope = transaction.scope || 'Unknown';
+                  const country = transaction.buyerCountry || 'Unknown';
                   const credits = transaction.creditsRetired || 0;
                   
-                  if (scopeMap.has(scope)) {
-                    scopeMap.set(scope, scopeMap.get(scope) + credits);
+                  if (countryMap.has(country)) {
+                    countryMap.set(country, countryMap.get(country) + credits);
                   } else {
-                    scopeMap.set(scope, credits);
+                    countryMap.set(country, credits);
                   }
                 });
 
                 // Convert to array and sort by credits
-                const scopeArray = Array.from(scopeMap.entries())
-                  .map(([scope, credits]) => ({ scope, credits }))
+                const countryArray = Array.from(countryMap.entries())
+                  .map(([country, credits]) => ({ country, credits }))
                   .sort((a, b) => b.credits - a.credits);
 
-                const totalCredits = scopeArray.reduce((sum, item) => sum + item.credits, 0);
+                const totalCredits = countryArray.reduce((sum, item) => sum + item.credits, 0);
 
-                // Color mapping for different scope areas
-                const scopeColors: Record<string, string> = {
-                  'Agriculture': '#10B981',
-                  'Chemical Processes': '#F59E0B', 
-                  'Forestry & Land Use': '#059669',
-                  'Household & Community': '#8B5CF6',
-                  'Industrial & Commercial': '#3B82F6',
-                  'Renewable Energy': '#06B6D4',
-                  'Waste Management': '#EF4444'
-                };
+                // Color mapping for different countries
+                const countryColors = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4', '#84CC16', '#F97316'];
 
-                return scopeArray.slice(0, 5).map((scope, index) => {
-                  const percentage = totalCredits > 0 ? (scope.credits / totalCredits) * 100 : 0;
-                  const color = scopeColors[scope.scope] || '#6B7280';
-                  const initials = scope.scope.split(' ').map((word: string) => word.charAt(0)).join('').slice(0, 2);
+                return countryArray.slice(0, 5).map((country, index) => {
+                  const percentage = totalCredits > 0 ? (country.credits / totalCredits) * 100 : 0;
+                  const color = countryColors[index % countryColors.length];
+                  const initials = country.country.split(' ').map((word: string) => word.charAt(0)).join('').slice(0, 2);
 
                   return (
                     <motion.div
-                      key={scope.scope}
-                      className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg"
+                      key={country.country}
+                      className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
+                      onClick={() => onCountryClick?.(country.country)}
                       initial={{ x: 20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
                     >
                       <div className="flex items-center space-x-3">
                         <div 
@@ -179,15 +176,94 @@ export function TopBuyers({ topBuyers, isLoading, onBuyerClick, transactions }: 
                           {initials}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-white">{scope.scope}</p>
-                          <p className="text-xs text-gray-400">Project Type</p>
+                          <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{country.country}</p>
+                          <p className="text-xs text-gray-400">Buyer Country</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-emerald-400">
-                          {scope.credits.toLocaleString()}
-                        </p>
-                        <p className="text-xs text-gray-400">{percentage.toFixed(1)}%</p>
+                      <div className="text-right flex items-center space-x-2">
+                        <div>
+                          <p className="text-sm font-medium text-emerald-400">
+                            {country.credits.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-gray-400">{percentage.toFixed(1)}%</p>
+                        </div>
+                        <ChevronRight size={14} className="text-gray-400 group-hover:text-emerald-400 transition-colors" />
+                      </div>
+                    </motion.div>
+                  );
+                });
+              })()}
+            </TabsContent>
+
+            <TabsContent value="sectors" className="space-y-3">
+              {(() => {
+                // Create sector aggregation from transactions if available
+                if (!transactions || !Array.isArray(transactions)) {
+                  return (
+                    <div className="text-center py-8">
+                      <p className="text-gray-400">No sector data available</p>
+                    </div>
+                  );
+                }
+
+                // Aggregate credits by buyer sector
+                const sectorMap = new Map();
+                transactions.forEach(transaction => {
+                  const sector = transaction.buyerSector || 'Unknown';
+                  const credits = transaction.creditsRetired || 0;
+                  
+                  if (sectorMap.has(sector)) {
+                    sectorMap.set(sector, sectorMap.get(sector) + credits);
+                  } else {
+                    sectorMap.set(sector, credits);
+                  }
+                });
+
+                // Convert to array and sort by credits
+                const sectorArray = Array.from(sectorMap.entries())
+                  .map(([sector, credits]) => ({ sector, credits }))
+                  .sort((a, b) => b.credits - a.credits);
+
+                const totalCredits = sectorArray.reduce((sum, item) => sum + item.credits, 0);
+
+                // Color mapping for different sectors
+                const sectorColors = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444', '#06B6D4', '#84CC16', '#F97316'];
+
+                return sectorArray.slice(0, 5).map((sector, index) => {
+                  const percentage = totalCredits > 0 ? (sector.credits / totalCredits) * 100 : 0;
+                  const color = sectorColors[index % sectorColors.length];
+                  const initials = sector.sector.split(' ').map((word: string) => word.charAt(0)).join('').slice(0, 2);
+
+                  return (
+                    <motion.div
+                      key={sector.sector}
+                      className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
+                      onClick={() => onSectorClick?.(sector.sector)}
+                      initial={{ x: 20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div 
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                          style={{ backgroundColor: color }}
+                        >
+                          {initials}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">{sector.sector}</p>
+                          <p className="text-xs text-gray-400">Buyer Sector</p>
+                        </div>
+                      </div>
+                      <div className="text-right flex items-center space-x-2">
+                        <div>
+                          <p className="text-sm font-medium text-emerald-400">
+                            {sector.credits.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-gray-400">{percentage.toFixed(1)}%</p>
+                        </div>
+                        <ChevronRight size={14} className="text-gray-400 group-hover:text-emerald-400 transition-colors" />
                       </div>
                     </motion.div>
                   );
