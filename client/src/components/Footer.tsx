@@ -36,10 +36,11 @@ export function Footer() {
             Legal Disclaimer
           </p>
           <p className="leading-relaxed">
-            This dashboard analyzes carbon credit retirements from African countries, focusing on enterprise-level transactions. 
-            The analysis excludes micro-transactions and maps buyer data to parent companies for consistency. While "retirements" and "purchases" 
+            This dashboard analyzes carbon credit retirements from African countries, focusing on enterprise-level transactions (ignoring credits retired on behalf of individuals). 
+            The analysis excludes micro-transactions (of 10 or more credits) and maps buyer data to parent companies for consistency. While "retirements" and "purchases" 
             are used interchangeably for simplicity, not all retirements represent direct purchases — some may reflect compliance programs. 
-            Given Africa's dynamic carbon market landscape, users are advised to interpret insights with appropriate caution.
+            Given Africa's dynamic carbon market landscape, users are advised to interpret insights with appropriate caution. For instance, 
+            pre-purchases of carbon credits yet to be issued (and retired) will not be reflected here.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
             <p>&copy; 2024 The Catalyst Fund & FSD Africa. All rights reserved.</p>
