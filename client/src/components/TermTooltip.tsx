@@ -17,9 +17,9 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <span className={`inline-flex items-center gap-1 cursor-help border-b border-dotted border-gray-400 dark:border-gray-500 ${className}`}>
-            {term}
-            <HelpCircle className="w-3 h-3 text-gray-400 dark:text-gray-500" />
+          <span className={`inline-flex items-center gap-1 cursor-help ${className}`}>
+            <span className="border-b border-dotted border-gray-400 dark:border-gray-500">{term}</span>
+            <HelpCircle className="w-3 h-3 text-gray-400 dark:text-gray-500 flex-shrink-0" />
           </span>
         </TooltipTrigger>
         <TooltipContent className="max-w-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
