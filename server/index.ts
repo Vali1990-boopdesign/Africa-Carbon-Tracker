@@ -71,8 +71,10 @@ async function initializeDatabase() {
         // Run migrations first
         await runMigrations();
         
-        // Seed the database with initial data
-        await seedDatabase();
+        // Only seed if in development or explicitly requested
+        if (process.env.NODE_ENV === 'development') {
+          await seedDatabase();
+        }
         console.log("✅ Database initialization completed");
       } catch (error: any) {
         console.error("❌ Database setup failed, but server will continue:", error.message);
