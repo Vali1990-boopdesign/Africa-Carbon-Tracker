@@ -425,7 +425,7 @@ export class MemStorage implements IStorage {
         brandName,
         sector: data.sector,
         totalCredits: data.credits,
-        percentage: totalCredits > 0 ? Math.round((data.credits / totalCredits) * 100) : 0,
+        percentage: totalCredits > 0 ? (data.credits / totalCredits) * 100 : 0,
         initials: brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
         color: colors[index % colors.length]
       }));
@@ -452,7 +452,7 @@ export class MemStorage implements IStorage {
     return Array.from(scopeMap.entries()).map(([scope, credits], index) => ({
       scope,
       totalCredits: credits,
-      percentage: totalCredits > 0 ? Math.round((credits / totalCredits) * 100) : 0,
+      percentage: totalCredits > 0 ? (credits / totalCredits) * 100 : 0,
       color: colors[index % colors.length]
     })).sort((a, b) => b.totalCredits - a.totalCredits);
   }
@@ -699,9 +699,9 @@ export class DatabaseStorage implements IStorage {
     return Array.from(sectorMap.entries()).map(([sector, credits], index) => ({
       sector,
       totalCredits: credits,
-      percentage: Math.round((credits / totalCredits) * 100),
+      percentage: totalCredits > 0 ? (credits / totalCredits) * 100 : 0,
       color: colors[index % colors.length]
-    }));
+    })).sort((a, b) => b.totalCredits - a.totalCredits);
   }
 
   async getTimeSeriesData(filters?: {
@@ -748,7 +748,7 @@ export class DatabaseStorage implements IStorage {
         brandName,
         sector: data.sector,
         totalCredits: data.credits,
-        percentage: totalCredits > 0 ? Math.round((data.credits / totalCredits) * 100) : 0,
+        percentage: totalCredits > 0 ? (data.credits / totalCredits) * 100 : 0,
         initials: brandName.split(' ').map(w => w[0]).join('').substring(0, 2),
         color: colors[index % colors.length]
       }));
@@ -775,7 +775,7 @@ export class DatabaseStorage implements IStorage {
     return Array.from(scopeMap.entries()).map(([scope, credits], index) => ({
       scope,
       totalCredits: credits,
-      percentage: totalCredits > 0 ? Math.round((credits / totalCredits) * 100) : 0,
+      percentage: totalCredits > 0 ? (credits / totalCredits) * 100 : 0,
       color: colors[index % colors.length]
     })).sort((a, b) => b.totalCredits - a.totalCredits);
   }

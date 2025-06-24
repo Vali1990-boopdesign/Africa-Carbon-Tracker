@@ -104,6 +104,10 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
 
   const countryData = getCountryData();
 
+  // Sort topBuyers and sectorData by total credits (highest to lowest)
+  const sortedTopBuyers = topBuyers ? [...topBuyers].sort((a, b) => b.totalCredits - a.totalCredits) : [];
+  const sortedSectorData = sectorData ? [...sectorData].sort((a, b) => b.totalCredits - a.totalCredits) : [];
+
   const renderItemRow = (item: any, index: number, onClick: any, type: 'buyer' | 'country' | 'sector') => {
     const initials = type === 'buyer' ? item.initials : 
                     type === 'country' ? item.country.split(' ').map((word: string) => word.charAt(0)).join('').slice(0, 2) :
@@ -180,10 +184,10 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
             </TabsList>
 
             <TabsContent value="buyers" className="space-y-3">
-              {topBuyers.slice(0, buyersShowCount).map((buyer, index) => 
+              {sortedTopBuyers.slice(0, buyersShowCount).map((buyer, index) => 
                 renderItemRow(buyer, index, onBuyerClick, 'buyer')
               )}
-              {topBuyers.length > buyersShowCount && (
+              {sortedTopBuyers.length > buyersShowCount && (
                 <Button 
                   variant="outline" 
                   className="w-full mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
@@ -218,16 +222,16 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
             </TabsContent>
 
             <TabsContent value="sectors" className="space-y-3">
-              {!sectorData || sectorData.length === 0 ? (
+              {!sortedSectorData || sortedSectorData.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-400">No sector data available</p>
                 </div>
               ) : (
                 <>
-                  {sectorData.slice(0, sectorsShowCount).map((sector, index) => 
+                  {sortedSectorData.slice(0, sectorsShowCount).map((sector, index) => 
                     renderItemRow(sector, index, onSectorClick, 'sector')
                   )}
-                  {sectorData.length > sectorsShowCount && (
+                  {sortedSectorData.length > sectorsShowCount && (
                     <Button 
                       variant="outline" 
                       className="w-full mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
