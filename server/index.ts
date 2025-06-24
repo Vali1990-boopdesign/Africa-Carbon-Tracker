@@ -9,6 +9,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Health check endpoint that always returns 200 OK
+app.get('/health', (_req, res) => {
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -39,59 +44,120 @@ app.use((req, res, next) => {
   next();
 });
 
-(async () => {
-  // Test database connection first
-  console.log("Testing database connection...");
-  const dbConnected = await testDatabaseConnection();
-  
-  if (dbConnected) {
-    try {
-      // Run migrations first
-      await runMigrations();
-
-      // Seed the database with initial data
-      await seedDatabase();
-    } catch (error) {
-      console.error("Database setup failed, but continuing with server startup:", error);
+// Non-blocking database initialization function
+async function initializeDatabase() {
+  try {
+    console.log("Testing database connection...");
+    const dbConnected = await testDatabaseConnection();
+    
+    if (dbConnected) {
+      console.log("✅ Database connection successful");
       
-      // If it's a connection termination error, suggest restart
-      if (error.code === '57P01' || error.message?.includes('terminating connection')) {
-        console.log("💡 Try restarting the application to re-establish database connection");
+      try {
+        // Run migrations first
+        await runMigrations();
+        
+        // Seed the database with initial data
+        await seedDatabase();
+        console.log("✅ Database initialization completed");
+      } catch (error: any) {
+        console.error("❌ Database setup failed, but server will continue:", error.message);
+        
+        // If it's a connection termination error, suggest restart
+        if (error.code === '57P01' || error.message?.includes('terminating connection')) {
+          console.log("💡 Try restarting the application to re-establish database connection");
+        }
       }
+    } else {
+      console.warn("⚠️ Database connection failed, server will start but database features may not work");
+      console.log("💡 This might be due to Neon database sleeping. Try restarting the application.");
     }
-  } else {
-    console.warn("Database connection failed, server will start but database features may not work");
-    console.log("💡 This might be due to Neon database sleeping. Try restarting the application.");
+  } catch (error: any) {
+    console.error("❌ Database initialization error:", error.message);
+    console.log("🚀 Server will continue without database features");
   }
+}
 
-  const server = await registerRoutes(app);
+// Start server function with proper error handling
+async function startServer() {
+  try {
+    const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    // Error handling middleware
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
+      
+      console.error(`Server error: ${status} - ${message}`);
+      res.status(status).json({ message });
+      // Don't throw the error, just log it
+    });
 
-    res.status(status).json({ message });
-    throw err;
-  });
+    // Setup Vite or static serving
+    if (app.get("env") === "development") {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    // ALWAYS serve the app on port 5000
+    const port = 5000;
+    
+    return new Promise<void>((resolve, reject) => {
+      server.listen({
+        port,
+        host: "0.0.0.0",
+        reusePort: true,
+      }, (error?: Error) => {
+        if (error) {
+          console.error("❌ Failed to start server:", error);
+          reject(error);
+        } else {
+          log(`🚀 Server serving on port ${port}`);
+          resolve();
+        }
+      });
+    });
+  } catch (error: any) {
+    console.error("❌ Server startup failed:", error);
+    throw error;
   }
+}
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
-})();
+// Main startup function
+async function main() {
+  try {
+    console.log("🚀 Starting Africa Carbon Credits Dashboard...");
+    
+    // Start server first (non-blocking)
+    await startServer();
+    
+    // Initialize database in background (non-blocking)
+    setImmediate(() => {
+      initializeDatabase().catch(error => {
+        console.error("Background database initialization failed:", error.message);
+      });
+    });
+    
+  } catch (error: any) {
+    console.error("❌ Application startup failed:", error);
+    process.exit(1);
+  }
+}
+
+// Handle uncaught exceptions and rejections
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Don't exit, just log the error
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit, just log the error
+});
+
+// Start the application
+main().catch((error) => {
+  console.error("Failed to start application:", error);
+  process.exit(1);
+});
