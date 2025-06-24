@@ -160,15 +160,15 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
             <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="trends" className="text-sm" title="Historical carbon credit retirement trends over time">
                 <TrendingUp className="mr-2" size={16} />
-                <TermTooltip term="Trends" explanation="Year-over-year carbon credit retirement patterns showing market growth and adoption across African projects. This view displays the cumulative volume of carbon credits retired from African projects over time, revealing trends in market participation and climate action commitment." />
+                <TermTooltip term="Trends" explanation="Historical volume of carbon credits retired from African projects, showing market growth trends over time." />
               </TabsTrigger>
               <TabsTrigger value="projects" className="text-sm" title="Unique carbon credit projects per year">
                 <BarChart3 className="mr-2" size={16} />
-                <TermTooltip term="Projects" explanation="Annual count of unique carbon credit projects from which credits were retired, showing project diversity and market development over time. This metric indicates the breadth of African climate projects contributing to global carbon markets and their year-over-year expansion." />
+                <TermTooltip term="Projects" explanation="Annual count of unique African carbon credit projects that had credits retired, indicating project diversity growth." />
               </TabsTrigger>
               <TabsTrigger value="buyers" className="text-sm" title="Unique carbon credit buyers per year">
                 <Axis3d className="mr-2" size={16} />
-                <TermTooltip term="Buyers" explanation="Annual count of unique organizations purchasing African carbon credits, indicating market participation growth and buyer diversity trends. This shows the expanding base of companies and institutions investing in African climate solutions through carbon credit purchases." />
+                <TermTooltip term="Buyers" explanation="Annual count of unique organizations purchasing African carbon credits, showing market participation growth." />
               </TabsTrigger>
             </TabsList>
 
