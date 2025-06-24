@@ -7,7 +7,7 @@ import { MetricsCards } from "@/components/MetricsCards";
 import { AfricaTreemap } from "@/components/AfricaTreemap";
 import { TimeSeriesChart } from "@/components/TimeSeriesChart";
 import { TopBuyers } from "@/components/TopBuyers";
-import { SectorBreakdown } from "@/components/SectorBreakdown";
+
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
@@ -196,21 +196,16 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Right Column - Top Buyers & Sector Breakdown */}
+          {/* Right Column - Top Buyers */}
           <div className="lg:col-span-1 space-y-6">
             <TopBuyers
               topBuyers={topBuyers}
+              sectorData={sectorData}
               isLoading={isLoading}
               onBuyerClick={handleBuyerClick}
               onCountryClick={handleBuyerCountryClick}
               onSectorClick={handleSectorClick}
               transactions={transactions}
-            />
-
-            <SectorBreakdown
-              sectorData={sectorData}
-              isLoading={isLoading}
-              onSectorClick={handleSectorClick}
             />
           </div>
         </div>
