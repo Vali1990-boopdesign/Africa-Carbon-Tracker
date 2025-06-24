@@ -1,4 +1,3 @@
-
 import { HelpCircle } from "lucide-react";
 import {
   Tooltip,
@@ -19,7 +18,7 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
       <Tooltip>
         <TooltipTrigger asChild>
           <span className={`inline-flex items-center gap-1 cursor-help ${className}`}>
-            <span className="border-b border-dotted border-gray-400 dark:border-gray-500">{term}</span>
+            {term.charAt(0).toUpperCase() + term.slice(1)}
             <HelpCircle className="w-3 h-3 text-gray-400 dark:text-gray-500 flex-shrink-0" />
           </span>
         </TooltipTrigger>
