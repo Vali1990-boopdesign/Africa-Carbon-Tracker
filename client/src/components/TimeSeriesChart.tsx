@@ -160,17 +160,14 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
             <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="trends" className="text-sm">
                 <TrendingUp className="mr-2" size={16} />
-                Trends
                 <TermTooltip term="trends" explanation="Market patterns over time" />
               </TabsTrigger>
               <TabsTrigger value="projects" className="text-sm">
                 <BarChart3 className="mr-2" size={16} />
-                Projects
                 <TermTooltip term="projects" explanation="Emission reduction initiatives" />
               </TabsTrigger>
               <TabsTrigger value="buyers" className="text-sm">
                 <Axis3d className="mr-2" size={16} />
-                Buyers
                 <TermTooltip term="buyers" explanation="Companies purchasing carbon credits" />
               </TabsTrigger>
             </TabsList>
