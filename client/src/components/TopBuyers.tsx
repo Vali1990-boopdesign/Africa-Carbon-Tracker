@@ -80,17 +80,20 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
       const region = transaction.buyerHQRegion || '';
       const credits = transaction.creditsRetired || 0;
 
-      const displayName = region && region !== country ? `${country} / ${region}` : country;
+      const key = `${country}|${region}`;
 
-      if (countryMap.has(displayName)) {
-        countryMap.set(displayName, countryMap.get(displayName) + credits);
+      if (countryMap.has(key)) {
+        countryMap.get(key).credits += credits;
       } else {
-        countryMap.set(displayName, credits);
+        countryMap.set(key, { 
+          country: country,
+          region: region || 'Unknown Region',
+          credits: credits 
+        });
       }
     });
 
-    const countryArray = Array.from(countryMap.entries())
-      .map(([country, credits]) => ({ country, credits }))
+    const countryArray = Array.from(countryMap.values())
       .sort((a, b) => b.credits - a.credits);
 
     const totalCredits = countryArray.reduce((sum, item) => sum + item.credits, 0);
@@ -118,7 +121,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                 item.sector;
 
     const subtitle = type === 'buyer' ? item.sector : 
-                    type === 'country' ? 'Buyer Country' : 
+                    type === 'country' ? item.region : 
                     'Buyer Sector';
 
     const credits = type === 'buyer' ? item.totalCredits : 

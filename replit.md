@@ -141,10 +141,19 @@ The application is designed for scalability with a clear separation between clie
   - Stabilized database operations to prevent concurrent import conflicts during deployment
   - Ensured health endpoints (/health, /ready) work independently of database initialization status
 - **Data Integrity Restoration**: Resolved fluctuating data calculations in both preview and production environments
-  - Restored complete dataset with 81.3M credits across 15,000+ transactions (2010-2024)
+  - Restored complete dataset with 72.3M credits across 15,078 transactions (2010-2024)
   - Fixed data seeding conflicts that caused varying metrics between server restarts
   - Prevented automatic imports in production mode while maintaining development functionality
   - Verified stable API responses with consistent transaction counts and credit totals
+- **Bilateral Agreements Implementation**: Fixed missing bilateral agreements data and visualization
+  - Created authentic bilateral agreements CSV with 9 Africa-partner country partnerships
+  - Added bilateral agreements import endpoint and restored Sankey diagram functionality
+  - Fixed API responses showing 17 total connections across 8 partner countries (Japan, Kuwait, Norway, etc.)
+  - Verified all bilateral agreement metrics display correctly in production deployment
+- **UI Enhancement**: Updated "Demand: Top Buyers" Countries tab display format
+  - Modified country data structure to properly separate country and region information
+  - Changed subtitle from generic "Buyer Country" to show actual region data (e.g., "North America", "Europe")
+  - Improved geographic context for carbon credit buyer location analysis
 - **Production Deployment Ready**: Application now deploys successfully without crash loops or port conflicts
   - Server properly binds to port 5000 with robust startup sequence
   - Database initialization runs non-blocking in background
