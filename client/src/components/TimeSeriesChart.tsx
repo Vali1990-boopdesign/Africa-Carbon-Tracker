@@ -158,17 +158,17 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
         <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={onTabChange}>
             <TabsList className="grid w-full grid-cols-3 mb-4">
-              <TabsTrigger value="trends" className="text-sm" title="Historical carbon credit retirement trends over time">
+              <TabsTrigger value="trends" className="text-sm">
                 <TrendingUp className="mr-2" size={16} />
-                <TermTooltip term="Trends" explanation="Historical volume of carbon credits\nretired from African projects,\nshowing market growth trends\nover time." />
+                <TermTooltip term="trends" explanation="Market patterns over time" />
               </TabsTrigger>
-              <TabsTrigger value="projects" className="text-sm" title="Unique carbon credit projects per year">
+              <TabsTrigger value="projects" className="text-sm">
                 <BarChart3 className="mr-2" size={16} />
-                <TermTooltip term="Projects" explanation="Annual count of unique African\ncarbon credit projects that had\ncredits retired, indicating\nproject diversity growth." />
+                <TermTooltip term="projects" explanation="Emission reduction initiatives" />
               </TabsTrigger>
-              <TabsTrigger value="buyers" className="text-sm" title="Unique carbon credit buyers per year">
+              <TabsTrigger value="buyers" className="text-sm">
                 <Axis3d className="mr-2" size={16} />
-                <TermTooltip term="Buyers" explanation="Annual count of unique\norganizations purchasing\nAfrican carbon credits,\nshowing market participation\ngrowth." />
+                <TermTooltip term="buyers" explanation="Companies purchasing carbon credits" />
               </TabsTrigger>
             </TabsList>
 
