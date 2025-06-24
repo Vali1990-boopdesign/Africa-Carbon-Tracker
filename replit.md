@@ -133,3 +133,20 @@ The application is designed for scalability with a clear separation between clie
   - Renamed "Countries" to "Buyers from Partner Countries" showing 444 buyers from the 8 partner nations
   - Updated "Active" to "Buyers in past 5 years" counting 389 buyers from partner countries with 2019-2024 transactions
   - Added interactive tooltip explaining bilateral agreements under Article 6.2 of Paris Agreement framework
+
+### June 24, 2025
+- **Deployment Crash Resolution**: Fixed critical deployment issues causing server failures and data inconsistencies
+  - Removed auto-executing CSV validation and import processes that interfered with server startup
+  - Enhanced error handling with production fallback mechanisms and graceful degradation
+  - Stabilized database operations to prevent concurrent import conflicts during deployment
+  - Ensured health endpoints (/health, /ready) work independently of database initialization status
+- **Data Integrity Restoration**: Resolved fluctuating data calculations in both preview and production environments
+  - Restored complete dataset with 81.3M credits across 15,000+ transactions (2010-2024)
+  - Fixed data seeding conflicts that caused varying metrics between server restarts
+  - Prevented automatic imports in production mode while maintaining development functionality
+  - Verified stable API responses with consistent transaction counts and credit totals
+- **Production Deployment Ready**: Application now deploys successfully without crash loops or port conflicts
+  - Server properly binds to port 5000 with robust startup sequence
+  - Database initialization runs non-blocking in background
+  - Production build artifacts optimized at 74.1kb bundle size
+  - All API endpoints return correct data matching development environment
