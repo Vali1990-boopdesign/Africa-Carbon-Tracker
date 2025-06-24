@@ -148,10 +148,6 @@ export default function Dashboard() {
 
       {/* Data Note */}
 
-
-      {/* Filters Bar */}
-
-
       {/* Metrics Cards */}
       <MetricsCards
         metrics={metrics}

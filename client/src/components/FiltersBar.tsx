@@ -34,7 +34,7 @@ export function FiltersBar({
   onRemoveFilter,
   onClearFilters,
 }: FiltersBarProps) {
-  const [searchValue, setSearchValue] = useState(filters.search);
+  const [searchValue, setSearchValue] = useState(filters?.search || "");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -175,7 +175,7 @@ export function FiltersBar({
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
             <Select
-              value={filters.country || "all"}
+              value={filters?.country || "all"}
               onValueChange={(value) =>
                 onFilterChange("country", value === "all" ? "" : value)
               }
@@ -194,7 +194,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters.sector || "all"}
+              value={filters?.sector || "all"}
               onValueChange={(value) =>
                 onFilterChange("sector", value === "all" ? "" : value)
               }
@@ -213,7 +213,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters.projectType || "all"}
+              value={filters?.projectType || "all"}
               onValueChange={(value) =>
                 onFilterChange("projectType", value === "all" ? "" : value)
               }
