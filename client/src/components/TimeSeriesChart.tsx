@@ -195,8 +195,8 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={50}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={60}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -229,8 +229,8 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={50}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={60}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
@@ -263,8 +263,8 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={50}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={60}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
