@@ -155,7 +155,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       transition={{ duration: 0.5 }}
     >
       <Card className="glass-effect border-gray-700">
-        <CardContent className="p-6">
+        <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={onTabChange}>
             <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700 p-1">
               <TabsTrigger 
