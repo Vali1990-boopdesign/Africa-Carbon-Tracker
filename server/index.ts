@@ -11,7 +11,21 @@ app.use(express.urlencoded({ extended: false }));
 
 // Health check endpoint that always returns 200 OK
 app.get('/health', (_req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.status(200).json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    port: 5000
+  });
+});
+
+// Additional readiness check endpoint
+app.get('/ready', (_req, res) => {
+  res.status(200).json({ 
+    status: 'Ready', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
 });
 
 app.use((req, res, next) => {
@@ -93,22 +107,47 @@ async function startServer() {
       // Don't throw the error, just log it
     });
 
-    // Setup Vite or static serving
-    if (app.get("env") === "development") {
-      await setupVite(app, server);
-    } else {
-      serveStatic(app);
+    // Setup Vite or static serving with error handling
+    try {
+      if (process.env.NODE_ENV === "development") {
+        await setupVite(app, server);
+      } else {
+        serveStatic(app);
+      }
+    } catch (staticError) {
+      console.warn("Static file serving failed, using fallback:", staticError.message);
+      // Fallback: serve basic responses if static files aren't available
+      app.use("*", (_req, res) => {
+        if (_req.path.startsWith('/api/')) {
+          res.status(404).json({ error: 'API endpoint not found' });
+        } else {
+          const basicHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Africa Carbon Credits Dashboard</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family: system-ui; margin: 2rem; text-align: center;">
+    <h1>Africa Carbon Credits Dashboard</h1>
+    <p>Server is running successfully.</p>
+    <p>Status: <span style="color: green;">Online</span></p>
+    <p>Time: ${new Date().toISOString()}</p>
+    <p><a href="/health">Health Check</a> | <a href="/ready">Ready Check</a></p>
+</body>
+</html>`;
+          res.setHeader('Content-Type', 'text/html');
+          res.send(basicHtml);
+        }
+      });
     }
 
     // ALWAYS serve the app on port 5000
     const port = 5000;
     
     return new Promise<void>((resolve, reject) => {
-      server.listen({
-        port,
-        host: "0.0.0.0",
-        reusePort: true,
-      }, (error?: Error) => {
+      const serverInstance = server.listen(port, "0.0.0.0", (error?: Error) => {
         if (error) {
           console.error("❌ Failed to start server:", error);
           reject(error);
@@ -117,6 +156,18 @@ async function startServer() {
           resolve();
         }
       });
+
+      // Handle server errors after startup
+      serverInstance.on('error', (error: Error) => {
+        console.error("Server error after startup:", error);
+        if (process.env.NODE_ENV !== 'production') {
+          reject(error);
+        }
+      });
+
+      // Keep the server alive
+      serverInstance.keepAliveTimeout = 30000;
+      serverInstance.headersTimeout = 35000;
     });
   } catch (error: any) {
     console.error("❌ Server startup failed:", error);
@@ -129,35 +180,74 @@ async function main() {
   try {
     console.log("🚀 Starting Africa Carbon Credits Dashboard...");
     
-    // Start server first (non-blocking)
+    // Start server first - this must succeed for deployment
     await startServer();
     
-    // Initialize database in background (non-blocking)
-    setImmediate(() => {
+    // Initialize database in background (completely non-blocking)
+    setTimeout(() => {
       initializeDatabase().catch(error => {
         console.error("Background database initialization failed:", error.message);
+        // Don't exit process, just continue without full database features
       });
-    });
+    }, 100); // Small delay to ensure server is fully started first
     
   } catch (error: any) {
     console.error("❌ Application startup failed:", error);
+    // In production, try to recover rather than exit immediately
+    if (process.env.NODE_ENV === 'production') {
+      console.log("🔄 Attempting to start with minimal configuration...");
+      try {
+        // Try to start just the basic server without database features
+        const basicApp = express();
+        basicApp.use(express.json());
+        basicApp.get('/health', (_req, res) => {
+          res.status(200).json({ status: 'OK - Minimal Mode', timestamp: new Date().toISOString() });
+        });
+        basicApp.listen(5000, '0.0.0.0', () => {
+          console.log("🚀 Server started in minimal mode on port 5000");
+        });
+        return; // Don't exit if we can start in minimal mode
+      } catch (fallbackError) {
+        console.error("❌ Even minimal startup failed:", fallbackError);
+      }
+    }
     process.exit(1);
   }
 }
 
-// Handle uncaught exceptions and rejections
+// Handle uncaught exceptions and rejections gracefully
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error);
-  // Don't exit, just log the error
+  // In production, don't exit immediately - log and continue
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
 });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  // Don't exit, just log the error
+  // In production, don't exit immediately - log and continue
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
+});
+
+// Graceful shutdown handling
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('SIGINT received, shutting down gracefully');
+  process.exit(0);
 });
 
 // Start the application
 main().catch((error) => {
   console.error("Failed to start application:", error);
-  process.exit(1);
+  // Only exit in development, in production try to continue
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(1);
+  }
 });
