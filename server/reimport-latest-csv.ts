@@ -193,15 +193,5 @@ export async function reimportLatestCSVData() {
   }
 }
 
-// Auto-run reimport
-if (import.meta.url === `file://${process.argv[1]}`) {
-  reimportLatestCSVData()
-    .then(result => {
-      console.log("✅ Reimport successful:", result);
-      process.exit(0);
-    })
-    .catch(error => {
-      console.error("❌ Reimport failed:", error);
-      process.exit(1);
-    });
-}
+// CSV reimport can be triggered manually via API endpoints  
+// Removed auto-execution to prevent deployment issues

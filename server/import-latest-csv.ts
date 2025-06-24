@@ -184,15 +184,5 @@ export async function importLatestCSVData() {
   }
 }
 
-// Auto-run import
-if (import.meta.url === `file://${process.argv[1]}`) {
-  importLatestCSVData()
-    .then(result => {
-      console.log("✅ Latest CSV import successful:", result);
-      process.exit(0);
-    })
-    .catch(error => {
-      console.error("❌ Latest CSV import failed:", error);
-      process.exit(1);
-    });
-}
+// CSV import can be triggered manually via API endpoints
+// Removed auto-execution to prevent deployment issues
