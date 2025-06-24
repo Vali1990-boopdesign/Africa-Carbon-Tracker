@@ -5,6 +5,8 @@ import { Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ExportModal } from "./ExportModal";
+import { FiltersBar } from "./FiltersBar";
+import type { DashboardFilters } from "@/hooks/use-dashboard";
 // Using web-based CO2 icon instead of PNG import
 
 interface HeaderProps {
@@ -12,9 +14,28 @@ interface HeaderProps {
   dateRange: string;
   onDateRangeChange: (range: string) => void;
   isLoading?: boolean;
+  filters: DashboardFilters;
+  activeFilters: Array<{
+    key: keyof DashboardFilters;
+    label: string;
+    value: string;
+  }>;
+  onFilterChange: (key: keyof DashboardFilters, value: string | number) => void;
+  onRemoveFilter: (key: keyof DashboardFilters) => void;
+  onClearFilters: () => void;
 }
 
-export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
+export function Header({ 
+  onExport, 
+  dateRange, 
+  onDateRangeChange, 
+  isLoading,
+  filters,
+  activeFilters,
+  onFilterChange,
+  onRemoveFilter,
+  onClearFilters
+}: HeaderProps) {
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   const dateRangeOptions = [
@@ -37,6 +58,7 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
+      {/* Main Header Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left side - Title and Icon */}
@@ -120,6 +142,17 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
             </Button>
           </motion.div>
         </div>
+      </div>
+
+      {/* Filters Bar */}
+      <div className="border-t border-divider/50">
+        <FiltersBar
+          filters={filters}
+          activeFilters={activeFilters}
+          onFilterChange={onFilterChange}
+          onRemoveFilter={onRemoveFilter}
+          onClearFilters={onClearFilters}
+        />
       </div>
 
       {/* Export Modal */}

@@ -112,13 +112,8 @@ export function FiltersBar({
   };
 
   return (
-    <motion.div
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="glass-effect rounded-xl p-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+      <div className="p-3">
         <div className="flex flex-wrap items-center gap-4">
           {/* Global Search */}
           <div className="flex-1 min-w-64" ref={searchRef}>
@@ -281,6 +276,6 @@ export function FiltersBar({
           )}
         </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 }
