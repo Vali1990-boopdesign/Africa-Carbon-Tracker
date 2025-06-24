@@ -154,13 +154,13 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700 min-h-[28rem]">
+      <Card className="glass-effect border-gray-700">
         <CardContent className="p-6">
           <Tabs value={activeTab} onValueChange={onTabChange}>
-            <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700">
+            <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700 p-1">
               <TabsTrigger 
                 value="trends" 
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
                 title="Historical carbon credit retirement trends over time"
               >
                 <TrendingUp className="mr-2" size={16} />
@@ -168,7 +168,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               </TabsTrigger>
               <TabsTrigger 
                 value="projects"
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
                 title="Unique carbon credit projects per year"
               >
                 <BarChart3 className="mr-2" size={16} />
@@ -176,7 +176,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               </TabsTrigger>
               <TabsTrigger 
                 value="buyers"
-                className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400"
+                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
                 title="Unique carbon credit buyers per year"
               >
                 <Axis3d className="mr-2" size={16} />
@@ -184,9 +184,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="trends" className="h-72 mt-4">
+            <TabsContent value="trends" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={yearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
+                <LineChart data={yearlyData} margin={{ top: 20, right: 30, left: 60, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
@@ -195,14 +195,14 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={40}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={50}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
-                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    label={{ value: 'Carbon Credits', angle: -90, position: 'insideLeft', offset: 10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Line 
@@ -217,9 +217,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               </ResponsiveContainer>
             </TabsContent>
 
-            <TabsContent value="projects" className="h-72 mt-4">
+            <TabsContent value="projects" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={projectYearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
+                <LineChart data={projectYearlyData} margin={{ top: 20, right: 30, left: 60, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
@@ -229,14 +229,14 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={40}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={50}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => value.toString()}
-                    label={{ value: 'Unique Projects', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    label={{ value: 'Unique Projects', angle: -90, position: 'insideLeft', offset: 10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Line 
@@ -251,9 +251,9 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
               </ResponsiveContainer>
             </TabsContent>
 
-            <TabsContent value="buyers" className="h-72 mt-4">
+            <TabsContent value="buyers" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={buyerYearlyData} margin={{ top: 5, right: 30, left: 20, bottom: 35 }}>
+                <LineChart data={buyerYearlyData} margin={{ top: 20, right: 30, left: 60, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
@@ -263,14 +263,14 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     interval={0}
                     angle={-45}
                     textAnchor="end"
-                    height={40}
-                    label={{ value: 'Year', position: 'insideBottom', offset: -5, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    height={50}
+                    label={{ value: 'Year', position: 'insideBottom', offset: -10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <YAxis 
                     stroke="#9CA3AF"
                     fontSize={12}
                     tickFormatter={(value) => value.toString()}
-                    label={{ value: 'Unique Buyers', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
+                    label={{ value: 'Unique Buyers', angle: -90, position: 'insideLeft', offset: 10, style: { textAnchor: 'middle', fill: '#9CA3AF' } }}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Line 

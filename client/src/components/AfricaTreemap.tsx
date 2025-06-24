@@ -117,12 +117,12 @@ export function AfricaTreemap({
               </p>
             </div>
             <div className="w-full">
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2 w-full">
+              <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-1 w-full">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
                   const size = getCountrySize(item);
                   const colorIndex = Math.min(index, colors.length - 1);
-                  const gridSpan = Math.max(Math.min(Math.ceil(size / 20), 2), 1);
+                  const gridSpan = 1;
                   
                   return (
                     <div
@@ -161,12 +161,12 @@ export function AfricaTreemap({
               </p>
             </div>
             <div className="w-full">
-              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2 w-full">
+              <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-1 w-full">
                 {sortedData.map((item, index) => {
                   const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
                   const size = getCountrySize(item);
                   const colorIndex = Math.min(index, colors.length - 1);
-                  const gridSpan = Math.max(Math.min(Math.ceil(size / 20), 2), 1);
+                  const gridSpan = 1;
                   
                   return (
                     <div
@@ -205,12 +205,12 @@ export function AfricaTreemap({
               </p>
             </div>
             <div className="w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 w-full">
+              <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-1 w-full">
                 {scopeData.map((item, index) => {
                   const percentage = item.percentage;
                   const colorIndex = Math.min(index, colors.length - 1);
                   const size = Math.max(25, Math.min(percentage * 2, 100));
-                  const gridSpan = Math.max(Math.min(Math.ceil(size / 25), 2), 1);
+                  const gridSpan = 1;
                   
                   return (
                     <div
