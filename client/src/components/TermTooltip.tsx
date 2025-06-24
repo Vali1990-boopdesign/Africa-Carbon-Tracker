@@ -23,8 +23,10 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
           </span>
         </TooltipTrigger>
         <TooltipContent className="max-w-xs sm:max-w-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg z-50" side="top" align="center" sideOffset={8}>
-          <div className="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
-            {explanation}
+          <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+            {explanation.split('\n').map((line, index) => (
+              <div key={index}>{line}</div>
+            ))}
           </div>
         </TooltipContent>
       </Tooltip>
