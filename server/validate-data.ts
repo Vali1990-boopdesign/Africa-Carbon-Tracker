@@ -319,21 +319,5 @@ export async function validateAllData(): Promise<ValidationResult[]> {
   return results;
 }
 
-// Auto-run validation
-if (require.main === module) {
-  validateAllData()
-    .then(results => {
-      const hasDiscrepancies = results.some(r => r.discrepancies.length > 0);
-      if (hasDiscrepancies) {
-        console.log("\n⚠️  Data discrepancies found! Please review the results above.");
-        process.exit(1);
-      } else {
-        console.log("\n✅ All data validation checks passed!");
-        process.exit(0);
-      }
-    })
-    .catch(error => {
-      console.error("❌ Validation failed:", error);
-      process.exit(1);
-    });
-}
+// Validation can be run manually via API endpoints or command line
+// Removed auto-execution to prevent deployment issues

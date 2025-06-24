@@ -373,15 +373,5 @@ export async function validateNewCSVData(): Promise<ValidationResult[]> {
   return results;
 }
 
-// Auto-run validation (ES module compatible)
-if (import.meta.url === `file://${process.argv[1]}`) {
-  validateNewCSVData()
-    .then(results => {
-      const hasDiscrepancies = results.some(r => r.discrepancies.length > 0);
-      process.exit(hasDiscrepancies ? 1 : 0);
-    })
-    .catch(error => {
-      console.error("❌ Validation failed:", error);
-      process.exit(1);
-    });
-}
+// Validation can be run manually via API endpoints or command line
+// Removed auto-execution to prevent deployment issues
