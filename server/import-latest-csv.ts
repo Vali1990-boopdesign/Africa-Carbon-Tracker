@@ -42,7 +42,7 @@ export async function importLatestCSVData() {
     console.log("✅ Cleared existing data");
 
     // Import transactions from the latest specific CSV file
-    const transactionsPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa_Retirements_2024_=10_1750337694537.csv");
+    const transactionsPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa_Retirements_2024_=10 V2_1750324115497.csv");
 
     if (!fs.existsSync(transactionsPath)) {
       console.error("❌ Latest transactions CSV file not found at:", transactionsPath);
@@ -148,8 +148,8 @@ export async function importLatestCSVData() {
       cumulativeRetirements: buyerTotals.get(profile.brandName) || 0
     }));
 
-    // Import buyer profiles from the latest specific CSV file
-    const buyerProfilesPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Update_Buyer Profilesv24_1750342470632.csv");
+    // Import buyer profiles from the latest specific CSV file  
+    const buyerProfilesPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Update_Buyer Profilesv24 V2_1750324115497.csv");
 
     // Insert buyer profiles
     if (buyerProfilesArray.length > 0) {
