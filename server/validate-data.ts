@@ -51,8 +51,8 @@ async function validateBuyerProfiles(): Promise<ValidationResult> {
   };
 
   try {
-    // Read CSV file
-    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Update_Buyer Profilesv24 V2_1750324115497.csv");
+    // Read CSV file - using latest buyer profiles
+    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Update_Buyer Profilesv24_1750342470632.csv");
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());
     
@@ -165,8 +165,8 @@ async function validateTransactions(): Promise<ValidationResult> {
   };
 
   try {
-    // Read CSV file
-    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa_Retirements_2024_=10 V2_1750324115497.csv");
+    // Read CSV file - using latest transactions
+    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa_Retirements_2024_=10_1750337694537.csv");
     const csvContent = fs.readFileSync(csvPath, "utf-8");
     const lines = csvContent.split("\n").filter(line => line.trim());
     
