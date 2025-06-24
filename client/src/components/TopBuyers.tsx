@@ -173,7 +173,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
 
         <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-4">
+            <TabsList className="grid w-full grid-cols-3 mb-4">
               <TabsTrigger value="buyers">Buyers</TabsTrigger>
               <TabsTrigger value="countries">Countries</TabsTrigger>
               <TabsTrigger value="sectors">Sectors</TabsTrigger>
