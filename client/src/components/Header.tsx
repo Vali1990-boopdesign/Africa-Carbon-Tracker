@@ -5,8 +5,6 @@ import { Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ExportModal } from "./ExportModal";
-import { FiltersBar } from "./FiltersBar";
-import type { DashboardFilters } from "@/hooks/use-dashboard";
 // Using web-based CO2 icon instead of PNG import
 
 interface HeaderProps {
@@ -14,124 +12,122 @@ interface HeaderProps {
   dateRange: string;
   onDateRangeChange: (range: string) => void;
   isLoading?: boolean;
-  filters: DashboardFilters;
-  activeFilters: Array<{
-    key: keyof DashboardFilters;
-    label: string;
-    value: string;
-  }>;
-  onFilterChange: (key: keyof DashboardFilters, value: string | number) => void;
-  onRemoveFilter: (key: keyof DashboardFilters) => void;
-  onClearFilters: () => void;
 }
 
-export function Header({
-  onExport,
-  dateRange,
-  onDateRangeChange,
-  isLoading,
-  filters,
-  activeFilters,
-  onFilterChange,
-  onRemoveFilter,
-  onClearFilters,
-}: HeaderProps) {
-  const [showExportModal, setShowExportModal] = useState(false);
+export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
-  const handleExportClick = () => {
-    setShowExportModal(true);
+  const dateRangeOptions = [
+    { key: "all", label: "All Years" },
+    { key: "2010-2012", label: "2010 - 2012" },
+    { key: "2013-2015", label: "2013 - 2015" },
+    { key: "2016-2018", label: "2016 - 2018" },
+    { key: "2019-2021", label: "2019 - 2021" },
+    { key: "2022-2024", label: "2022 - 2024" }
+  ];
+
+  const handleDateRangeChange = (value: string) => {
+    onDateRangeChange(value);
   };
 
   return (
     <motion.header
-      className="bg-dark-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-50"
-      initial={{ y: -100, opacity: 0 }}
+      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider"
+      initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo and Title */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
-                <svg
-                  className="w-5 h-5 text-white"
-                  viewBox="0 0 24 24"
+          {/* Left side - Title and Icon */}
+          <motion.div 
+            className="flex items-center space-x-3"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg">
+              <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                className="text-emerald-400"
+              >
+                <path 
+                  d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17C15.24 5.06 14.28 5 13.3 5C9.84 5 6.5 5.99 4.5 8L6 9.5C7.5 8 10.26 7 13.3 7C14.13 7 14.94 7.08 15.72 7.22L13 9.94L14.41 11.35L21 4.94V9H21Z" 
                   fill="currentColor"
-                >
-                  <path d="M3 12c0 1.657 1.343 3 3 3s3-1.343 3-3-1.343-3-3-3-3 1.343-3 3zm6 0c0 1.657 1.343 3 3 3s3-1.343 3-3-1.343-3-3-3-3 1.343-3 3zm6 0c0 1.657 1.343 3 3 3s3-1.343 3-3-1.343-3-3-3-3 1.343-3 3z"/>
-                </svg>
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-white flex items-center">
-                  Africa Carbon Dashboard
-                  <TermTooltip term="Carbon Credits">
-                    <span className="ml-2 text-gray-400 hover:text-emerald-400 cursor-help transition-colors">
-                      ⓘ
-                    </span>
-                  </TermTooltip>
-                </h1>
-                <p className="text-sm text-gray-400">
-                  © The Catalyst Fund & FSD Africa
-                </p>
-              </div>
+                />
+                <circle cx="8" cy="16" r="2" fill="currentColor"/>
+                <circle cx="16" cy="16" r="2" fill="currentColor"/>
+                <path d="M12 12C10.9 12 10 12.9 10 14C10 15.1 10.9 16 12 16C13.1 16 14 15.1 14 14C14 12.9 13.1 12 12 12Z" fill="currentColor"/>
+              </svg>
             </div>
-          </div>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">
+                <TermTooltip 
+                  term="Africa Carbon Dashboard" 
+                  explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024" 
+                />
+              </h1>
+              <p className="text-sm text-default-600">
+                © The Catalyst Fund & FSD Africa
+              </p>
+            </div>
+          </motion.div>
 
-          {/* Controls */}
-          <div className="flex items-center space-x-4">
+          {/* Right side - Controls */}
+          <motion.div 
+            className="flex items-center space-x-3"
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
             {/* Date Range Selector */}
-            <Select value={dateRange} onValueChange={onDateRangeChange}>
-              <SelectTrigger className="w-32 bg-dark-800 border-gray-700 text-gray-200">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Years</SelectItem>
-                <SelectItem value="2024">2024</SelectItem>
-                <SelectItem value="2023">2023</SelectItem>
-                <SelectItem value="2022">2022</SelectItem>
-                <SelectItem value="2021">2021</SelectItem>
-                <SelectItem value="2020">2020</SelectItem>
-                <SelectItem value="2019">2019</SelectItem>
-                <SelectItem value="2018">2018</SelectItem>
-                <SelectItem value="2017">2017</SelectItem>
-                <SelectItem value="2016">2016</SelectItem>
-                <SelectItem value="2015">2015</SelectItem>
-                <SelectItem value="2021-2024">2021-2024</SelectItem>
-                <SelectItem value="2020-2023">2020-2023</SelectItem>
-                <SelectItem value="2019-2022">2019-2022</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="bg-gray-800 rounded-lg px-3 py-2 h-10 flex items-center">
+              <Select
+                value={dateRange || "all"}
+                onValueChange={(value: string) => {
+                  handleDateRangeChange(value);
+                }}
+                defaultValue="all"
+              >
+                <SelectTrigger className="w-32 border-none bg-transparent text-white min-h-0 h-auto px-0">
+                  <SelectValue placeholder="All Years">
+                    {dateRangeOptions.find(option => option.key === (dateRange || "all"))?.label || "All Years"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {dateRangeOptions.map((option) => (
+                    <SelectItem key={option.key} value={option.key}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             {/* Export Button */}
             <Button
-              onClick={handleExportClick}
+              variant="default"
+              size="sm"
+              onClick={() => setIsExportModalOpen(true)}
               disabled={isLoading}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white flex items-center space-x-2"
+              className="h-10"
             >
-              <Download size={16} />
-              <span>Export</span>
+              <Download size={16} className="mr-2" />
+              Export
             </Button>
-          </div>
+          </motion.div>
         </div>
-
-        {/* Integrated Filters Bar */}
-        <FiltersBar
-          filters={filters}
-          activeFilters={activeFilters}
-          onFilterChange={onFilterChange}
-          onRemoveFilter={onRemoveFilter}
-          onClearFilters={onClearFilters}
-        />
       </div>
 
       {/* Export Modal */}
       <ExportModal
-        isOpen={showExportModal}
-        onClose={() => setShowExportModal(false)}
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
         onExport={onExport}
-        isLoading={isLoading}
+        exportType="all"
       />
     </motion.header>
   );

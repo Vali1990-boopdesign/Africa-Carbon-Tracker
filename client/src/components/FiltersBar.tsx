@@ -34,7 +34,7 @@ export function FiltersBar({
   onRemoveFilter,
   onClearFilters,
 }: FiltersBarProps) {
-  const [searchValue, setSearchValue] = useState(filters?.search || "");
+  const [searchValue, setSearchValue] = useState(filters.search);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
@@ -112,8 +112,13 @@ export function FiltersBar({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-      <div className="p-3">
+    <motion.div
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="glass-effect rounded-xl p-4">
         <div className="flex flex-wrap items-center gap-4">
           {/* Global Search */}
           <div className="flex-1 min-w-64" ref={searchRef}>
@@ -175,7 +180,7 @@ export function FiltersBar({
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
             <Select
-              value={filters?.country || "all"}
+              value={filters.country || "all"}
               onValueChange={(value) =>
                 onFilterChange("country", value === "all" ? "" : value)
               }
@@ -194,7 +199,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters?.sector || "all"}
+              value={filters.sector || "all"}
               onValueChange={(value) =>
                 onFilterChange("sector", value === "all" ? "" : value)
               }
@@ -213,7 +218,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters?.projectType || "all"}
+              value={filters.projectType || "all"}
               onValueChange={(value) =>
                 onFilterChange("projectType", value === "all" ? "" : value)
               }
@@ -276,6 +281,6 @@ export function FiltersBar({
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }

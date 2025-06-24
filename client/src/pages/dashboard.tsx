@@ -125,28 +125,29 @@ export default function Dashboard() {
     updateFilter("search", country);
   };
 
-  const handleFilterChange = updateFilter;
-  const handleRemoveFilter = removeFilter;
-  const handleClearFilters = clearFilters;
-  const handleExport = handleHeaderExport;
-  const setDateRange = handleDateRangeChange;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
-      <Header
-        onExport={handleExport}
+      <Header 
         dateRange={getCurrentDateRange()}
-        onDateRangeChange={setDateRange}
+        onDateRangeChange={handleDateRangeChange}
+        onExport={handleHeaderExport}
         isLoading={isLoading}
-        filters={filters}
-        activeFilters={activeFilters}
-        onFilterChange={handleFilterChange}
-        onRemoveFilter={handleRemoveFilter}
-        onClearFilters={handleClearFilters}
       />
 
       {/* Data Note */}
+
+
+      {/* Filters Bar */}
+      <div className="mb-8">
+        <FiltersBar
+          filters={filters}
+          activeFilters={activeFilters}
+          onFilterChange={updateFilter}
+          onRemoveFilter={removeFilter}
+          onClearFilters={clearFilters}
+        />
+      </div>
 
       {/* Metrics Cards */}
       <MetricsCards
@@ -187,7 +188,7 @@ export default function Dashboard() {
               onCountryClick={handleCountryClick}
               onScopeClick={handleScopeClick}
             />
-
+            
             <Intermediaries
               transactions={transactions}
               isLoading={isLoading}
