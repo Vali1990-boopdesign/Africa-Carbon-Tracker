@@ -22,10 +22,10 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
             <HelpCircle className="w-3 h-3 text-gray-400 dark:text-gray-500 flex-shrink-0" />
           </span>
         </TooltipTrigger>
-        <TooltipContent className="max-w-xs sm:max-w-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg z-50" side="top" align="center" sideOffset={8}>
-          <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+        <TooltipContent className="max-w-sm sm:max-w-md lg:max-w-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg z-50" side="top" align="center" sideOffset={8}>
+          <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed text-left p-1">
             {explanation.split('\n').map((line, index) => (
-              <div key={index}>{line}</div>
+              <div key={index} className="mb-1 last:mb-0">{line}</div>
             ))}
           </div>
         </TooltipContent>
