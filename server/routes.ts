@@ -7,6 +7,7 @@ import { desc, sql, eq, and, gte, lte, inArray } from "drizzle-orm";
 import type { DashboardMetrics, CountryData, SectorData, TimeSeriesData, TopBuyerData } from "@shared/schema";
 import { validateNewCSVData } from "./validate-new-csv";
 import { importLatestCSVData } from "./import-latest-csv";
+import { importBilateralAgreements } from "./import-bilateral";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Dashboard metrics endpoint with filters

@@ -42,7 +42,7 @@ export async function importBilateralAgreements() {
   try {
     console.log("Starting bilateral agreements import...");
     
-    const csvPath = path.join(process.cwd(), "attached_assets", "3b-[External] Africa Carbon Buyers_v2024 - Africa's Bi-Lateral Agreements_1749477252806.csv");
+    const csvPath = path.join(process.cwd(), "attached_assets", "bilateral_agreements_data.csv");
     
     // Check if file exists before proceeding
     if (!fs.existsSync(csvPath)) {
