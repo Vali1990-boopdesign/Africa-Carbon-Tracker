@@ -11,6 +11,7 @@ interface KeyInsightsProps {
 
 export function KeyInsights({ isLoading }: KeyInsightsProps) {
   const [currentInsight, setCurrentInsight] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const insights = [
     {
@@ -52,11 +53,13 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
 
   // Auto-rotate insights every 5 seconds
   useEffect(() => {
+    if (isPaused) return;
+    
     const interval = setInterval(() => {
       setCurrentInsight((prev) => (prev + 1) % insights.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [insights.length]);
+  }, [insights.length, isPaused]);
 
   const nextInsight = () => {
     setCurrentInsight((prev) => (prev + 1) % insights.length);
@@ -88,7 +91,11 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
       transition={{ duration: 0.5, delay: 0.1 }}
     >
       <div className="p-[2px] rounded-xl bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500">
-        <Card className="min-h-48 relative overflow-hidden bg-background">
+        <Card 
+          className="min-h-48 relative overflow-hidden bg-background"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between w-full">
             <h3 className="text-lg font-semibold">Key Insights</h3>
