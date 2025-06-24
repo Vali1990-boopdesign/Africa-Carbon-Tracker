@@ -157,28 +157,16 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
       <Card className="glass-effect border-gray-700">
         <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={onTabChange}>
-            <TabsList className="grid w-full grid-cols-3 bg-dark-800/50 border border-gray-700 p-1">
-              <TabsTrigger 
-                value="trends" 
-                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
-                title="Historical carbon credit retirement trends over time"
-              >
+            <TabsList className="grid w-full grid-cols-3 mb-4">
+              <TabsTrigger value="trends" className="text-sm" title="Historical carbon credit retirement trends over time">
                 <TrendingUp className="mr-2" size={16} />
                 <TermTooltip term="Trends" explanation="Year-over-year carbon credit retirement patterns showing market growth and adoption across African projects" />
               </TabsTrigger>
-              <TabsTrigger 
-                value="projects"
-                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
-                title="Unique carbon credit projects per year"
-              >
+              <TabsTrigger value="projects" className="text-sm" title="Unique carbon credit projects per year">
                 <BarChart3 className="mr-2" size={16} />
                 <TermTooltip term="Projects" explanation="Year-over-year count of unique carbon credit projects from which credits were retired, showing project diversity and market development over time" />
               </TabsTrigger>
-              <TabsTrigger 
-                value="buyers"
-                className="data-[state=active]:bg-emerald-500/30 data-[state=active]:text-emerald-300 data-[state=active]:shadow-md rounded-md px-3 py-2"
-                title="Unique carbon credit buyers per year"
-              >
+              <TabsTrigger value="buyers" className="text-sm" title="Unique carbon credit buyers per year">
                 <Axis3d className="mr-2" size={16} />
                 <TermTooltip term="Buyers" explanation="Annual count of unique organizations purchasing African carbon credits, indicating market participation growth and buyer diversity trends" />
               </TabsTrigger>
@@ -186,7 +174,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="trends" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={yearlyData} margin={{ top: 20, right: 30, left: 120, bottom: 90 }}>
+                <LineChart data={yearlyData} margin={{ top: 20, right: 20, left: 80, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
@@ -221,7 +209,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="projects" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={projectYearlyData} margin={{ top: 20, right: 30, left: 120, bottom: 90 }}>
+                <LineChart data={projectYearlyData} margin={{ top: 20, right: 20, left: 80, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
@@ -257,7 +245,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
 
             <TabsContent value="buyers" className="h-80 mt-4">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={buyerYearlyData} margin={{ top: 20, right: 30, left: 120, bottom: 90 }}>
+                <LineChart data={buyerYearlyData} margin={{ top: 20, right: 20, left: 80, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis 
                     dataKey="year" 
