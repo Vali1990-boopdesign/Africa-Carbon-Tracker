@@ -9,9 +9,10 @@ interface IntermediariesProps {
   transactions?: Transaction[];
   isLoading: boolean;
   onRegistryClick?: (registry: string) => void;
+  onMarketplaceClick?: (marketplace: string) => void;
 }
 
-export function Intermediaries({ transactions, isLoading, onRegistryClick }: IntermediariesProps) {
+export function Intermediaries({ transactions, isLoading, onRegistryClick, onMarketplaceClick }: IntermediariesProps) {
   const [activeTab, setActiveTab] = useState("registries");
 
   if (isLoading) {
@@ -180,10 +181,11 @@ export function Intermediaries({ transactions, isLoading, onRegistryClick }: Int
                 marketplaceArray.slice(0, 8).map((marketplace, index) => (
                   <motion.div
                     key={marketplace.name}
-                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+                    className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
+                    onClick={() => onMarketplaceClick?.(marketplace.name)}
                   >
                     <div className="flex items-center space-x-3">
                       <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">

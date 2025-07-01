@@ -155,6 +155,7 @@ The application is designed for scalability with a clear separation between clie
   - Changed subtitle from generic "Buyer Country" to show actual region data (e.g., "North America", "Europe")
   - Improved geographic context for carbon credit buyer location analysis
   - Renamed section from "Demand: Top Buyers" to "Demand: Buyers & Classifications" to better reflect comprehensive analytics
+  - Added interactive filtering to marketplace entries in Intermediaries section, enabling click-to-filter functionality
 - **Production Deployment Ready**: Application now deploys successfully without crash loops or port conflicts
   - Server properly binds to port 5000 with robust startup sequence
   - Database initialization runs non-blocking in background

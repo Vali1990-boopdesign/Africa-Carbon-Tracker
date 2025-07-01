@@ -125,6 +125,10 @@ export default function Dashboard() {
     updateFilter("search", country);
   };
 
+  const handleMarketplaceClick = (marketplace: string) => {
+    updateFilter("search", marketplace);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
@@ -193,6 +197,7 @@ export default function Dashboard() {
               transactions={transactions}
               isLoading={isLoading}
               onRegistryClick={handleRegistryClick}
+              onMarketplaceClick={handleMarketplaceClick}
             />
           </div>
 
