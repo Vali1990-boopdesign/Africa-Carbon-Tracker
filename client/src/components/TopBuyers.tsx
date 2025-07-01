@@ -26,7 +26,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
     return (
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Top Buyers</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -57,7 +57,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
     return (
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Top Buyers</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
@@ -175,7 +175,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
     >
       <Card className="glass-effect border-gray-700">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Top Buyers</CardTitle>
+          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
 
         <CardContent className="p-4">
