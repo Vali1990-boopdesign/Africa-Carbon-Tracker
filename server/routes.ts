@@ -8,22 +8,77 @@ import type { DashboardMetrics, CountryData, SectorData, TimeSeriesData, TopBuye
 import { validateNewCSVData } from "./validate-new-csv";
 import { importLatestCSVData } from "./import-latest-csv";
 import { importBilateralAgreements } from "./import-bilateral";
+import rateLimit from "express-rate-limit";
+import cors from "cors";
+
+// API Key authentication middleware
+const requireApiKey = (req: any, res: any, next: any) => {
+  const apiKey = req.headers['x-api-key'] || req.query.apiKey;
+  const validApiKey = process.env.API_KEY;
+  
+  // For development, allow access without API key
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+  
+  if (!validApiKey) {
+    return res.status(500).json({ error: "API key not configured" });
+  }
+  
+  if (!apiKey || apiKey !== validApiKey) {
+    return res.status(401).json({ error: "Invalid or missing API key" });
+  }
+  
+  next();
+};
+
+// Rate limiting
+const createRateLimit = (windowMs: number, max: number) => rateLimit({
+  windowMs,
+  max,
+  message: { error: "Too many requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const generalLimit = createRateLimit(15 * 60 * 1000, 100); // 100 requests per 15 minutes
+const exportLimit = createRateLimit(60 * 60 * 1000, 5); // 5 exports per hour
+const adminLimit = createRateLimit(60 * 60 * 1000, 10); // 10 admin requests per hour
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Configure CORS
+  app.use(cors({
+    origin: process.env.NODE_ENV === 'production' 
+      ? [process.env.FRONTEND_URL || 'https://your-domain.replit.app']
+      : true,
+    credentials: true
+  }));
+
+  // Apply rate limiting to all API routes
+  app.use('/api', generalLimit);
+
+  // Input validation helper
+  const validateFilters = (query: any) => {
+    const { country, sector, projectType, scope, startYear, endYear, search } = query;
+    
+    // Sanitize string inputs
+    const sanitizeString = (str: string) => str ? str.replace(/[<>\"']/g, '').substring(0, 100) : '';
+    
+    return {
+      country: sanitizeString(country as string),
+      sector: sanitizeString(sector as string), 
+      projectType: sanitizeString(projectType as string),
+      scope: sanitizeString(scope as string),
+      startYear: startYear ? Math.max(2000, Math.min(2030, parseInt(startYear as string) || 2010)) : undefined,
+      endYear: endYear ? Math.max(2000, Math.min(2030, parseInt(endYear as string) || 2024)) : undefined,
+      search: sanitizeString(search as string),
+    };
+  };
+
   // Dashboard metrics endpoint with filters
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const metrics = await storage.getDashboardMetrics(filters);
       res.json(metrics);
@@ -42,17 +97,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Transactions endpoint with filtering
   app.get("/api/transactions", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const transactions = await storage.getTransactionsByFilters(filters);
       res.json(transactions);
@@ -349,8 +394,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Export transactions
-  app.get("/api/export/transactions", async (req, res) => {
+  // Export transactions - PROTECTED
+  app.get("/api/export/transactions", exportLimit, requireApiKey, async (req, res) => {
     try {
       const allTransactions = await db.select().from(transactions);
 
@@ -366,8 +411,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Validation endpoint
-  app.get("/api/validate", async (req, res) => {
+  // Validation endpoint - PROTECTED
+  app.get("/api/validate", adminLimit, requireApiKey, async (req, res) => {
     try {
       const results = await validateNewCSVData();
       res.json(results);
@@ -377,8 +422,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // HTML validation report endpoint
-  app.get("/api/validate/report", async (req, res) => {
+  // HTML validation report endpoint - PROTECTED
+  app.get("/api/validate/report", adminLimit, requireApiKey, async (req, res) => {
     try {
       const results = await validateNewCSVData();
 
@@ -471,8 +516,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 });
 
-  // Import latest CSV data endpoint
-  app.post("/api/import-latest", async (req, res) => {
+  // Import latest CSV data endpoint - PROTECTED
+  app.post("/api/import-latest", adminLimit, requireApiKey, async (req, res) => {
     try {
       console.log("🔄 Starting manual import of latest CSV data...");
       const result = await importLatestCSVData();
