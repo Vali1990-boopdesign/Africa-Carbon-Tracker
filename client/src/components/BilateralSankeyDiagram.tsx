@@ -100,11 +100,11 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     const marginLeft = 30;
 
     svg
-      .attr("width", width)
+      .attr("width", "100%")
       .attr("height", height)
       .attr("viewBox", [0, 0, width, height])
       .style("max-width", "100%")
-      .style("height", "auto");
+      .style("height", "500px");
 
     // Create color scale
     const color = d3.scaleOrdinal()
@@ -170,33 +170,42 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       .style("box-shadow", "0 4px 12px rgba(0, 0, 0, 0.3)");
 
     // Add link paths with hover interactions
-    link.append("path")
+    const linkPaths = link.append("path")
       .attr("d", d3Sankey.sankeyLinkHorizontal())
       .attr("stroke", (d, i) => `url(#gradient-${i})`)
-      .attr("stroke-width", (d: any) => Math.max(2, d.width))
-      .style("cursor", "pointer")
-      .on("mouseover", function(event: any, d: any) {
+      .attr("stroke-width", (d: any) => Math.max(3, d.width))
+      .attr("stroke-opacity", 0.6)
+      .style("cursor", "pointer");
+
+    // Add hover interactions to links
+    linkPaths
+      .on("mouseover", function(event: MouseEvent, d: any) {
+        console.log('Tooltip triggered for:', d.source.id, '→', d.target.id);
+        
+        // Show tooltip
         tooltip
           .style("visibility", "visible")
           .html(`<strong>${d.source.id} → ${d.target.id}</strong><br/>${d.value} partnership${d.value > 1 ? 's' : ''}`);
         
         // Highlight the link
         d3.select(this)
-          .attr("stroke-opacity", 0.8)
-          .attr("stroke-width", Math.max(3, d.width + 1));
+          .attr("stroke-opacity", 0.9)
+          .attr("stroke-width", Math.max(4, d.width + 2));
       })
-      .on("mousemove", function(event: any) {
+      .on("mousemove", function(event: MouseEvent) {
+        // Update tooltip position
         tooltip
-          .style("top", (event.pageY - 10) + "px")
-          .style("left", (event.pageX + 10) + "px");
+          .style("top", (event.pageY - 40) + "px")
+          .style("left", (event.pageX + 15) + "px");
       })
-      .on("mouseout", function(event: any, d: any) {
+      .on("mouseout", function(event: MouseEvent, d: any) {
+        // Hide tooltip
         tooltip.style("visibility", "hidden");
         
         // Reset link appearance
         d3.select(this)
-          .attr("stroke-opacity", 0.5)
-          .attr("stroke-width", Math.max(2, d.width));
+          .attr("stroke-opacity", 0.6)
+          .attr("stroke-width", Math.max(3, d.width));
       });
 
     // Add nodes
@@ -268,8 +277,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="w-full bg-gray-800/50 rounded-lg p-6 min-h-[550px]">
-          <svg ref={svgRef} className="w-full h-auto"></svg>
+        <div className="w-full bg-gray-800/50 rounded-lg p-6 min-h-[550px] flex items-center justify-center">
+          <svg ref={svgRef} className="w-full h-[500px]"></svg>
         </div>
         <div className="mt-4 text-sm text-gray-400">
           <p>Flow diagram showing bilateral partnership connections between African countries and their international partners. Line thickness represents the number of agreements.</p>
