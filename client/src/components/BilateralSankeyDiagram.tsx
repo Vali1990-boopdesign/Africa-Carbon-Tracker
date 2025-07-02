@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Network } from "lucide-react";
@@ -13,6 +13,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   const [chartError, setChartError] = useState<string | null>(null);
   const [isChartLoaded, setIsChartLoaded] = useState(false);
   const [chartKey, setChartKey] = useState(0);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   // Transform bilateral agreements data into Sankey format
   const generateSankeyData = () => {
@@ -83,15 +84,10 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       top: 10,
       width: '90%',
       height: '90%'
-    },
-    forceIFrame: false
+    }
   };
 
   const data = generateSankeyData();
-  
-  // Debug logging
-  console.log('Bilateral agreements:', agreements.length);
-  console.log('Sankey data:', data);
 
   const handleChartError = (error: any) => {
     console.error('Chart error:', error);
@@ -104,12 +100,49 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     setChartError(null);
   };
 
-  // Reset chart when agreements change
+  // Reset chart when agreements change with error catching
   useEffect(() => {
-    setChartKey(prev => prev + 1);
-    setIsChartLoaded(false);
-    setChartError(null);
+    try {
+      setChartKey(prev => prev + 1);
+      setIsChartLoaded(false);
+      setChartError(null);
+    } catch (error) {
+      console.error('Error resetting chart:', error);
+      setChartError('Chart initialization failed');
+    }
   }, [agreements]);
+
+  // Add global error handler for unhandled chart errors
+  useEffect(() => {
+    const handleGlobalError = (event: ErrorEvent) => {
+      if (event.error && event.error.message && 
+          (event.error.message.includes('google') || 
+           event.error.message.includes('chart') ||
+           event.error.message.includes('sankey'))) {
+        event.preventDefault();
+        setChartError('Chart loading failed - displaying connection count instead');
+        return false;
+      }
+    };
+
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      if (event.reason && typeof event.reason === 'string' && 
+          (event.reason.includes('google') || 
+           event.reason.includes('chart') ||
+           event.reason.includes('sankey'))) {
+        event.preventDefault();
+        setChartError('Chart loading failed - displaying connection count instead');
+      }
+    };
+
+    window.addEventListener('error', handleGlobalError);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('error', handleGlobalError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
+  }, []);
 
   if (data.length <= 1) {
     return (
@@ -139,11 +172,34 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
             Partnership Flow
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex items-center justify-center py-12">
-          <div className="text-center text-gray-400">
+        <CardContent>
+          <div className="text-center text-gray-400 py-8">
             <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
-            <p>{chartError}</p>
-            <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
+            <p className="mb-4">{chartError}</p>
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <h4 className="font-medium text-white mb-3">Partnership Connections Summary</h4>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-emerald-400 font-medium">{data.length - 1}</span>
+                  <p>Total Connections</p>
+                </div>
+                <div>
+                  <span className="text-blue-400 font-medium">{agreements.length}</span>
+                  <p>Bilateral Agreements</p>
+                </div>
+              </div>
+              <div className="mt-4 max-h-32 overflow-y-auto">
+                <p className="text-xs text-gray-500 mb-2">Recent Partnerships:</p>
+                {data.slice(1, 6).map((connection, index) => (
+                  <div key={index} className="text-xs text-gray-300 mb-1">
+                    {connection[0]} → {connection[1]} ({connection[2]} agreement{connection[2] > 1 ? 's' : ''})
+                  </div>
+                ))}
+                {data.length > 6 && (
+                  <p className="text-xs text-gray-500">...and {data.length - 6} more</p>
+                )}
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -159,8 +215,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-96 w-full relative">
-          {!isChartLoaded && (
+        <div className="h-96 w-full relative" ref={chartRef}>
+          {!isChartLoaded && !chartError && (
             <div className="absolute inset-0 flex items-center justify-center bg-dark-800/50 rounded">
               <div className="text-gray-400">Loading partnership flow...</div>
             </div>
@@ -183,7 +239,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
               }
             ]}
             chartPackages={['sankey']}
-            loader={<div className="text-gray-400">Loading chart...</div>}
+            loader={<div className="text-gray-400 flex items-center justify-center h-full">Loading chart...</div>}
             errorElement={
               <div className="text-center text-gray-400 py-8">
                 <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
