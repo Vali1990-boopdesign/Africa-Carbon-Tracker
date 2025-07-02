@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Network } from "lucide-react";
@@ -13,44 +13,59 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   const [chartError, setChartError] = useState<string | null>(null);
   const [isChartLoaded, setIsChartLoaded] = useState(false);
   const [chartKey, setChartKey] = useState(0);
+  const [hasInitialized, setHasInitialized] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
+  const isMountedRef = useRef(true);
 
   // Transform bilateral agreements data into Sankey format
-  const generateSankeyData = () => {
-    if (!agreements || agreements.length === 0) {
+  const generateSankeyData = useCallback(() => {
+    try {
+      if (!agreements || agreements.length === 0) {
+        return [["From", "To", "Weight"]];
+      }
+
+      // Count agreements by individual country-partner pairs
+      const connectionCounts = new Map<string, number>();
+      
+      agreements.forEach(agreement => {
+        try {
+          // Ensure we have valid country and partner data
+          if (agreement?.country && agreement?.partner) {
+            // Split partners if they contain commas (multiple partners in one field)
+            const partners = String(agreement.partner).split(',').map(p => p.trim());
+            
+            partners.forEach(partner => {
+              if (partner && partner.length > 0) {
+                const key = `${String(agreement.country).trim()}→${partner}`;
+                connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
+              }
+            });
+          }
+        } catch (err) {
+          console.warn('Error processing agreement:', err);
+        }
+      });
+
+      // Convert to Sankey data format
+      const sankeyData = [["From", "To", "Weight"]];
+      
+      connectionCounts.forEach((count, key) => {
+        try {
+          const [country, partner] = key.split('→');
+          if (country && partner && count > 0) {
+            sankeyData.push([country, partner, count]);
+          }
+        } catch (err) {
+          console.warn('Error processing connection:', err);
+        }
+      });
+
+      return sankeyData;
+    } catch (error) {
+      console.error('Error generating Sankey data:', error);
       return [["From", "To", "Weight"]];
     }
-
-    // Count agreements by individual country-partner pairs
-    const connectionCounts = new Map<string, number>();
-    
-    agreements.forEach(agreement => {
-      // Ensure we have valid country and partner data
-      if (agreement.country && agreement.partner) {
-        // Split partners if they contain commas (multiple partners in one field)
-        const partners = agreement.partner.split(',').map(p => p.trim());
-        
-        partners.forEach(partner => {
-          if (partner) {
-            const key = `${agreement.country.trim()}→${partner}`;
-            connectionCounts.set(key, (connectionCounts.get(key) || 0) + 1);
-          }
-        });
-      }
-    });
-
-    // Convert to Sankey data format
-    const sankeyData = [["From", "To", "Weight"]];
-    
-    connectionCounts.forEach((count, key) => {
-      const [country, partner] = key.split('→');
-      if (country && partner && count > 0) {
-        sankeyData.push([country, partner, count]);
-      }
-    });
-
-    return sankeyData;
-  };
+  }, [agreements]);
 
   const sankeyOptions = {
     sankey: {
@@ -84,63 +99,95 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       top: 10,
       width: '90%',
       height: '90%'
-    }
+    },
+    forceIFrame: false,
+    packages: ['sankey']
   };
 
   const data = generateSankeyData();
 
-  const handleChartError = (error: any) => {
+  const handleChartError = useCallback((error: any) => {
     console.error('Chart error:', error);
-    setChartError('Chart visualization temporarily unavailable');
-    setIsChartLoaded(false);
-  };
+    if (isMountedRef.current) {
+      setChartError('Chart visualization temporarily unavailable');
+      setIsChartLoaded(false);
+    }
+  }, []);
 
-  const handleChartReady = () => {
-    setIsChartLoaded(true);
-    setChartError(null);
-  };
+  const handleChartReady = useCallback(() => {
+    if (isMountedRef.current) {
+      setIsChartLoaded(true);
+      setChartError(null);
+      setHasInitialized(true);
+    }
+  }, []);
 
   // Reset chart when agreements change with error catching
   useEffect(() => {
+    if (!isMountedRef.current) return;
+    
     try {
       setChartKey(prev => prev + 1);
       setIsChartLoaded(false);
       setChartError(null);
+      setHasInitialized(false);
     } catch (error) {
       console.error('Error resetting chart:', error);
-      setChartError('Chart initialization failed');
+      if (isMountedRef.current) {
+        setChartError('Chart initialization failed');
+      }
     }
   }, [agreements]);
+
+  // Component mount/unmount management
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // Add global error handler for unhandled chart errors
   useEffect(() => {
     const handleGlobalError = (event: ErrorEvent) => {
-      if (event.error && event.error.message && 
-          (event.error.message.includes('google') || 
-           event.error.message.includes('chart') ||
-           event.error.message.includes('sankey'))) {
-        event.preventDefault();
-        setChartError('Chart loading failed - displaying connection count instead');
-        return false;
+      // Prevent errors from bubbling up to Vite's error overlay
+      if (event.error && event.error.message) {
+        const message = String(event.error.message).toLowerCase();
+        if (message.includes('google') || 
+            message.includes('chart') ||
+            message.includes('sankey') ||
+            message.includes('visualization')) {
+          event.preventDefault();
+          event.stopPropagation();
+          if (isMountedRef.current) {
+            setChartError('Chart loading failed - displaying connection count instead');
+          }
+          return false;
+        }
       }
     };
 
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      if (event.reason && typeof event.reason === 'string' && 
-          (event.reason.includes('google') || 
-           event.reason.includes('chart') ||
-           event.reason.includes('sankey'))) {
-        event.preventDefault();
-        setChartError('Chart loading failed - displaying connection count instead');
+      if (event.reason) {
+        const reason = String(event.reason).toLowerCase();
+        if (reason.includes('google') || 
+            reason.includes('chart') ||
+            reason.includes('sankey') ||
+            reason.includes('visualization')) {
+          event.preventDefault();
+          if (isMountedRef.current) {
+            setChartError('Chart loading failed - displaying connection count instead');
+          }
+        }
       }
     };
 
-    window.addEventListener('error', handleGlobalError);
-    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+    window.addEventListener('error', handleGlobalError, true);
+    window.addEventListener('unhandledrejection', handleUnhandledRejection, true);
 
     return () => {
-      window.removeEventListener('error', handleGlobalError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      window.removeEventListener('error', handleGlobalError, true);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection, true);
     };
   }, []);
 
@@ -221,33 +268,48 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
               <div className="text-gray-400">Loading partnership flow...</div>
             </div>
           )}
-          <Chart
-            key={chartKey}
-            chartType="Sankey"
-            width="100%"
-            height="100%"
-            data={data}
-            options={sankeyOptions}
-            chartEvents={[
-              {
-                eventName: 'ready',
-                callback: handleChartReady
-              },
-              {
-                eventName: 'error',
-                callback: handleChartError
-              }
-            ]}
-            chartPackages={['sankey']}
-            loader={<div className="text-gray-400 flex items-center justify-center h-full">Loading chart...</div>}
-            errorElement={
-              <div className="text-center text-gray-400 py-8">
-                <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Chart visualization temporarily unavailable</p>
-                <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
-              </div>
+          {(() => {
+            try {
+              return (
+                <Chart
+                  key={chartKey}
+                  chartType="Sankey"
+                  width="100%"
+                  height="100%"
+                  data={data}
+                  options={sankeyOptions}
+                  chartEvents={[
+                    {
+                      eventName: 'ready',
+                      callback: handleChartReady
+                    },
+                    {
+                      eventName: 'error',
+                      callback: handleChartError
+                    }
+                  ]}
+                  chartPackages={['sankey']}
+                  loader={<div className="text-gray-400 flex items-center justify-center h-full">Loading chart...</div>}
+                  errorElement={
+                    <div className="text-center text-gray-400 py-8">
+                      <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                      <p>Chart visualization temporarily unavailable</p>
+                      <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
+                    </div>
+                  }
+                />
+              );
+            } catch (error) {
+              console.error('Chart render error:', error);
+              return (
+                <div className="text-center text-gray-400 py-8">
+                  <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>Chart visualization temporarily unavailable</p>
+                  <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
+                </div>
+              );
             }
-          />
+          })()}
         </div>
         <div className="mt-4 text-sm text-gray-400">
           <p>Flow diagram showing bilateral partnership connections between African countries and their international partners. Line thickness represents the number of agreements.</p>
