@@ -92,19 +92,21 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       return;
     }
 
-    const width = 1000;
-    const height = 500;
-    const marginTop = 30;
-    const marginRight = 30;
-    const marginBottom = 30;
-    const marginLeft = 30;
+    // Get container dimensions
+    const containerWidth = svgRef.current?.parentElement?.clientWidth || 900;
+    const width = Math.max(containerWidth - 40, 900);
+    const height = 480;
+    const marginTop = 40;
+    const marginRight = 120;
+    const marginBottom = 40;
+    const marginLeft = 120;
 
     svg
-      .attr("width", "100%")
+      .attr("width", width)
       .attr("height", height)
       .attr("viewBox", [0, 0, width, height])
-      .style("max-width", "100%")
-      .style("height", "500px");
+      .style("width", "100%")
+      .style("height", "480px");
 
     // Create color scale
     const color = d3.scaleOrdinal()
@@ -115,8 +117,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     const sankey = d3Sankey.sankey()
       .nodeId((d: any) => d.id)
       .nodeAlign(d3Sankey.sankeyJustify)
-      .nodeWidth(15)
-      .nodePadding(10)
+      .nodeWidth(20)
+      .nodePadding(15)
       .extent([[marginLeft, marginTop], [width - marginRight, height - marginBottom]]);
 
     // Generate the Sankey layout
@@ -134,23 +136,26 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       .join("g")
       .style("mix-blend-mode", "multiply");
 
-    // Create gradients for links
-    const gradient = svg.append("defs")
+    // Create gradients for links with proper flow direction
+    svg.append("defs")
       .selectAll("linearGradient")
       .data(sankeyData.links)
       .join("linearGradient")
       .attr("id", (d, i) => `gradient-${i}`)
       .attr("gradientUnits", "userSpaceOnUse")
       .attr("x1", (d: any) => d.source.x1)
-      .attr("x2", (d: any) => d.target.x0);
-
-    gradient.append("stop")
-      .attr("offset", "0%")
-      .attr("stop-color", "#10b981"); // Green for African countries
-
-    gradient.append("stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "#3b82f6"); // Blue for partner countries
+      .attr("y1", (d: any) => (d.source.y0 + d.source.y1) / 2)
+      .attr("x2", (d: any) => d.target.x0)
+      .attr("y2", (d: any) => (d.target.y0 + d.target.y1) / 2)
+      .call(gradient => {
+        gradient.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", "#10b981"); // Green for African countries (source)
+        
+        gradient.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", "#3b82f6"); // Blue for partner countries (target)
+      });
 
     // Create tooltip div
     const tooltip = d3.select("body").selectAll(".sankey-tooltip")
@@ -180,8 +185,6 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     // Add hover interactions to links
     linkPaths
       .on("mouseover", function(event: MouseEvent, d: any) {
-        console.log('Tooltip triggered for:', d.source.id, '→', d.target.id);
-        
         // Show tooltip
         tooltip
           .style("visibility", "visible")
@@ -228,18 +231,18 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     // Add node labels
     svg.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 14)
+      .attr("font-size", 16)
       .attr("fill", "#ffffff")
       .selectAll("text")
       .data(sankeyData.nodes)
       .join("text")
-      .attr("x", (d: any) => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
+      .attr("x", (d: any) => d.x0 < width / 2 ? d.x1 + 12 : d.x0 - 12)
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
       .attr("text-anchor", (d: any) => d.x0 < width / 2 ? "start" : "end")
       .text((d: any) => d.id)
       .style("font-weight", "600")
-      .style("text-shadow", "1px 1px 2px rgba(0,0,0,0.8)");
+      .style("text-shadow", "2px 2px 4px rgba(0,0,0,0.9)");
 
   }, [generateSankeyData]);
 
