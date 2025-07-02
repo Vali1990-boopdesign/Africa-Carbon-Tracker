@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Network } from "lucide-react";
+import { Network, ArrowRight } from "lucide-react";
 import type { BilateralAgreement } from "@shared/schema";
 
 interface BilateralSankeyDiagramProps {
@@ -46,8 +45,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         }
       });
 
-      // Convert to Sankey data format
-      const sankeyData = [["From", "To", "Weight"]];
+      // Convert to Sankey data format - explicitly type the array
+      const sankeyData: any[] = [["From", "To", "Weight"]];
       
       connectionCounts.forEach((count, key) => {
         try {
@@ -70,38 +69,30 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   const sankeyOptions = {
     sankey: {
       node: {
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#84cc16'],
+        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4'],
         label: {
-          fontName: 'Arial, sans-serif',
-          fontSize: 11,
-          color: '#ffffff',
-          bold: false
+          fontSize: 12,
+          color: '#ffffff'
         },
-        width: 6,
-        nodePadding: 10
+        width: 8
       },
       link: {
-        colorMode: 'gradient',
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#84cc16']
+        colorMode: 'gradient'
       }
     },
     backgroundColor: 'transparent',
     tooltip: {
       textStyle: {
         color: '#000000',
-        fontSize: 11,
-        fontName: 'Arial, sans-serif'
-      },
-      showColorCode: false
+        fontSize: 12
+      }
     },
     chartArea: {
-      left: 10,
-      top: 10,
-      width: '90%',
-      height: '90%'
-    },
-    forceIFrame: false,
-    packages: ['sankey']
+      left: 20,
+      top: 20,
+      width: '85%',
+      height: '85%'
+    }
   };
 
   const data = generateSankeyData();
@@ -147,49 +138,22 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     };
   }, []);
 
-  // Add global error handler for unhandled chart errors
+  // Chart loading timeout management
   useEffect(() => {
-    const handleGlobalError = (event: ErrorEvent) => {
-      // Prevent errors from bubbling up to Vite's error overlay
-      if (event.error && event.error.message) {
-        const message = String(event.error.message).toLowerCase();
-        if (message.includes('google') || 
-            message.includes('chart') ||
-            message.includes('sankey') ||
-            message.includes('visualization')) {
-          event.preventDefault();
-          event.stopPropagation();
-          if (isMountedRef.current) {
-            setChartError('Chart loading failed - displaying connection count instead');
-          }
-          return false;
+    if (agreements && agreements.length > 0) {
+      // Set a timeout to show fallback if chart doesn't load within reasonable time
+      const timeout = setTimeout(() => {
+        if (isMountedRef.current && !isChartLoaded && !hasInitialized && !chartError) {
+          console.log('Chart timeout reached, showing connection summary');
+          setChartError('Chart visualization loading - showing connection summary');
         }
-      }
-    };
+      }, 15000); // 15 second timeout
 
-    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      if (event.reason) {
-        const reason = String(event.reason).toLowerCase();
-        if (reason.includes('google') || 
-            reason.includes('chart') ||
-            reason.includes('sankey') ||
-            reason.includes('visualization')) {
-          event.preventDefault();
-          if (isMountedRef.current) {
-            setChartError('Chart loading failed - displaying connection count instead');
-          }
-        }
-      }
-    };
-
-    window.addEventListener('error', handleGlobalError, true);
-    window.addEventListener('unhandledrejection', handleUnhandledRejection, true);
-
-    return () => {
-      window.removeEventListener('error', handleGlobalError, true);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection, true);
-    };
-  }, []);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [agreements, isChartLoaded, hasInitialized, chartError]);
 
   if (data.length <= 1) {
     return (
@@ -237,11 +201,14 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
               </div>
               <div className="mt-4 max-h-32 overflow-y-auto">
                 <p className="text-xs text-gray-500 mb-2">Recent Partnerships:</p>
-                {data.slice(1, 6).map((connection, index) => (
-                  <div key={index} className="text-xs text-gray-300 mb-1">
-                    {connection[0]} → {connection[1]} ({connection[2]} agreement{connection[2] > 1 ? 's' : ''})
-                  </div>
-                ))}
+                {data.slice(1, 6).map((connection, index) => {
+                  const count = typeof connection[2] === 'number' ? connection[2] : parseInt(String(connection[2])) || 1;
+                  return (
+                    <div key={index} className="text-xs text-gray-300 mb-1">
+                      {connection[0]} → {connection[1]} ({count} agreement{count > 1 ? 's' : ''})
+                    </div>
+                  );
+                })}
                 {data.length > 6 && (
                   <p className="text-xs text-gray-500">...and {data.length - 6} more</p>
                 )}
