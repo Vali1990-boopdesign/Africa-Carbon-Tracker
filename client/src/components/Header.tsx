@@ -152,7 +152,7 @@ export function Header({
           >
             <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg">
               <lord-icon
-                trigger="loop-on-load"
+                trigger="in"
                 src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
                 style={{
                   width: "24px",
