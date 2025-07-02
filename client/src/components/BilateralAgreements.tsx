@@ -81,7 +81,7 @@ export function BilateralAgreements() {
     return urlMap[key] || 'https://www.goldstandard.org/carbon-market-regulations-tracker';
   };
 
-  const displayedAgreements = showAll ? agreements : agreements.slice(0, 6);
+  const displayedAgreements = showAll ? agreements : agreements.slice(0, 3);
 
   if (isLoading) {
     return (
@@ -189,7 +189,7 @@ export function BilateralAgreements() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-white">Recent Agreements</h3>
-              {agreements.length > 6 && (
+              {agreements.length > 3 && (
                 <Button
                   variant="outline"
                   size="sm"
