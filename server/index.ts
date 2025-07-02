@@ -6,6 +6,7 @@ import { setupVite, serveStatic, log } from "./vite";
 import { testDatabaseConnection } from "./db";
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (Replit's reverse proxy)
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
