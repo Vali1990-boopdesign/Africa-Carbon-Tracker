@@ -4,7 +4,6 @@ import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Network } from "lucide-react";
 import type { BilateralAgreement } from "@shared/schema";
-import { Tooltip } from "recharts";
 
 interface BilateralSankeyDiagramProps {
   agreements: BilateralAgreement[];
@@ -52,32 +51,35 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   const sankeyOptions = {
     sankey: {
       node: {
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444'],
+        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#f97316'],
         label: {
           fontName: 'Inter',
           fontSize: 12,
           color: '#ffffff',
           bold: true
         },
-        width: 4,
+        width: 8,
       },
       link: {
         colorMode: 'gradient',
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']
+        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#f97316']
       }
     },
     backgroundColor: 'transparent',
-    tooltip : {textStyle: {color: '#000000'}, showColorCode: true}
-    // tooltip: {
-    //   textStyle: {
-    //     color: '#ffffff',
-    //     fontSize: 12
-    //   },
-    //   showColorCode: true
-    // }
+    tooltip: {
+      textStyle: {
+        color: '#000000',
+        fontSize: 12
+      },
+      showColorCode: true
+    }
   };
 
   const data = generateSankeyData();
+  
+  // Debug logging
+  console.log('Bilateral agreements:', agreements.length);
+  console.log('Sankey data:', data);
 
   if (data.length <= 1) {
     return (
@@ -114,6 +116,19 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
             height="100%"
             data={data}
             options={sankeyOptions}
+            loader={
+              <div className="flex items-center justify-center h-full">
+                <div className="text-gray-400">Loading partnership flow...</div>
+              </div>
+            }
+            chartEvents={[
+              {
+                eventName: 'error',
+                callback: ({ eventArgs, google }) => {
+                  console.error('Chart error:', eventArgs);
+                }
+              }
+            ]}
           />
         </div>
         <div className="mt-4 text-sm text-gray-400">
