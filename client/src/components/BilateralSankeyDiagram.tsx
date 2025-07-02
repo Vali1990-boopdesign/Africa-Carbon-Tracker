@@ -92,12 +92,12 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       return;
     }
 
-    const width = 800;
-    const height = 400;
-    const marginTop = 20;
-    const marginRight = 20;
-    const marginBottom = 20;
-    const marginLeft = 20;
+    const width = 1000;
+    const height = 500;
+    const marginTop = 30;
+    const marginRight = 30;
+    const marginBottom = 30;
+    const marginLeft = 30;
 
     svg
       .attr("width", width)
@@ -146,21 +146,58 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
     gradient.append("stop")
       .attr("offset", "0%")
-      .attr("stop-color", (d: any) => color(d.source.group));
+      .attr("stop-color", "#10b981"); // Green for African countries
 
     gradient.append("stop")
       .attr("offset", "100%")
-      .attr("stop-color", (d: any) => color(d.target.group));
+      .attr("stop-color", "#3b82f6"); // Blue for partner countries
 
-    // Add link paths
+    // Create tooltip div
+    const tooltip = d3.select("body").selectAll(".sankey-tooltip")
+      .data([0])
+      .join("div")
+      .attr("class", "sankey-tooltip")
+      .style("position", "absolute")
+      .style("visibility", "hidden")
+      .style("background", "rgba(0, 0, 0, 0.9)")
+      .style("color", "white")
+      .style("padding", "8px 12px")
+      .style("border-radius", "6px")
+      .style("font-size", "12px")
+      .style("font-weight", "500")
+      .style("pointer-events", "none")
+      .style("z-index", "1000")
+      .style("box-shadow", "0 4px 12px rgba(0, 0, 0, 0.3)");
+
+    // Add link paths with hover interactions
     link.append("path")
       .attr("d", d3Sankey.sankeyLinkHorizontal())
       .attr("stroke", (d, i) => `url(#gradient-${i})`)
-      .attr("stroke-width", (d: any) => Math.max(1, d.width));
-
-    // Add link titles
-    link.append("title")
-      .text((d: any) => `${d.source.id} → ${d.target.id}\n${d.value} agreement${d.value > 1 ? 's' : ''}`);
+      .attr("stroke-width", (d: any) => Math.max(2, d.width))
+      .style("cursor", "pointer")
+      .on("mouseover", function(event: any, d: any) {
+        tooltip
+          .style("visibility", "visible")
+          .html(`<strong>${d.source.id} → ${d.target.id}</strong><br/>${d.value} partnership${d.value > 1 ? 's' : ''}`);
+        
+        // Highlight the link
+        d3.select(this)
+          .attr("stroke-opacity", 0.8)
+          .attr("stroke-width", Math.max(3, d.width + 1));
+      })
+      .on("mousemove", function(event: any) {
+        tooltip
+          .style("top", (event.pageY - 10) + "px")
+          .style("left", (event.pageX + 10) + "px");
+      })
+      .on("mouseout", function(event: any, d: any) {
+        tooltip.style("visibility", "hidden");
+        
+        // Reset link appearance
+        d3.select(this)
+          .attr("stroke-opacity", 0.5)
+          .attr("stroke-width", Math.max(2, d.width));
+      });
 
     // Add nodes
     const node = svg.append("g")
@@ -182,17 +219,18 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     // Add node labels
     svg.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 12)
+      .attr("font-size", 14)
       .attr("fill", "#ffffff")
       .selectAll("text")
       .data(sankeyData.nodes)
       .join("text")
-      .attr("x", (d: any) => d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6)
+      .attr("x", (d: any) => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
       .attr("y", (d: any) => (d.y1 + d.y0) / 2)
       .attr("dy", "0.35em")
       .attr("text-anchor", (d: any) => d.x0 < width / 2 ? "start" : "end")
       .text((d: any) => d.id)
-      .style("font-weight", "500");
+      .style("font-weight", "600")
+      .style("text-shadow", "1px 1px 2px rgba(0,0,0,0.8)");
 
   }, [generateSankeyData]);
 
@@ -230,7 +268,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="w-full bg-gray-800/50 rounded-lg p-4">
+        <div className="w-full bg-gray-800/50 rounded-lg p-6 min-h-[550px]">
           <svg ref={svgRef} className="w-full h-auto"></svg>
         </div>
         <div className="mt-4 text-sm text-gray-400">
