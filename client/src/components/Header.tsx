@@ -9,8 +9,13 @@ import { MessageCircle, Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
+import lottie from "lottie-web";
+import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
+
+// Define lord-icon custom element
+defineElement(lottie.loadAnimation);
 
 interface HeaderProps {
   dateRange: string;
@@ -146,21 +151,14 @@ export function Header({
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg">
-              <svg 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                className="text-emerald-400"
-              >
-                <path 
-                  d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17C15.24 5.06 14.28 5 13.3 5C9.84 5 6.5 5.99 4.5 8L6 9.5C7.5 8 10.26 7 13.3 7C14.13 7 14.94 7.08 15.72 7.22L13 9.94L14.41 11.35L21 4.94V9H21Z" 
-                  fill="currentColor"
-                />
-                <circle cx="8" cy="16" r="2" fill="currentColor"/>
-                <circle cx="16" cy="16" r="2" fill="currentColor"/>
-                <path d="M12 12C10.9 12 10 12.9 10 14C10 15.1 10.9 16 12 16C13.1 16 14 15.1 14 14C14 12.9 13.1 12 12 12Z" fill="currentColor"/>
-              </svg>
+              <lord-icon
+                trigger="loop-on-load"
+                src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
+                style={{
+                  width: "24px",
+                  height: "24px"
+                }}
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">
