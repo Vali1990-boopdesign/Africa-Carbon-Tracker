@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Chart } from "react-google-charts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Network } from "lucide-react";
@@ -9,8 +9,10 @@ interface BilateralSankeyDiagramProps {
   agreements: BilateralAgreement[];
 }
 
-
 export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramProps) {
+  const [chartError, setChartError] = useState<string | null>(null);
+  const [isChartLoaded, setIsChartLoaded] = useState(false);
+
   // Transform bilateral agreements data into Sankey format
   const generateSankeyData = () => {
     if (!agreements || agreements.length === 0) {
@@ -51,27 +53,35 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   const sankeyOptions = {
     sankey: {
       node: {
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#f97316'],
+        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#84cc16'],
         label: {
-          fontName: 'Inter',
-          fontSize: 12,
+          fontName: 'Inter, Arial, sans-serif',
+          fontSize: 11,
           color: '#ffffff',
-          bold: true
+          bold: false
         },
-        width: 8,
+        width: 6,
+        nodePadding: 10
       },
       link: {
         colorMode: 'gradient',
-        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#8b5cf6', '#f97316']
+        colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#84cc16']
       }
     },
     backgroundColor: 'transparent',
     tooltip: {
       textStyle: {
         color: '#000000',
-        fontSize: 12
+        fontSize: 11,
+        fontName: 'Inter, Arial, sans-serif'
       },
-      showColorCode: true
+      showColorCode: false
+    },
+    chartArea: {
+      left: 10,
+      top: 10,
+      width: '90%',
+      height: '90%'
     }
   };
 
@@ -80,6 +90,16 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   // Debug logging
   console.log('Bilateral agreements:', agreements.length);
   console.log('Sankey data:', data);
+
+  const handleChartError = (error: any) => {
+    console.error('Chart error:', error);
+    setChartError('Failed to load chart visualization');
+  };
+
+  const handleChartReady = () => {
+    setIsChartLoaded(true);
+    setChartError(null);
+  };
 
   if (data.length <= 1) {
     return (
@@ -100,6 +120,26 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     );
   }
 
+  if (chartError) {
+    return (
+      <Card className="glass-effect border-gray-700">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+            <Network className="w-6 h-6 text-emerald-500" />
+            Partnership Flow
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center justify-center py-12">
+          <div className="text-center text-gray-400">
+            <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
+            <p>{chartError}</p>
+            <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="glass-effect border-gray-700">
       <CardHeader>
@@ -109,30 +149,35 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-96 w-full">
+        <div className="h-96 w-full relative">
+          {!isChartLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center bg-dark-800/50 rounded">
+              <div className="text-gray-400">Loading partnership flow...</div>
+            </div>
+          )}
           <Chart
             chartType="Sankey"
             width="100%"
             height="100%"
             data={data}
             options={sankeyOptions}
-            loader={
-              <div className="flex items-center justify-center h-full">
-                <div className="text-gray-400">Loading partnership flow...</div>
-              </div>
-            }
             chartEvents={[
               {
+                eventName: 'ready',
+                callback: handleChartReady
+              },
+              {
                 eventName: 'error',
-                callback: ({ eventArgs, google }) => {
-                  console.error('Chart error:', eventArgs);
-                }
+                callback: handleChartError
               }
             ]}
+            chartPackages={['sankey']}
+            formatters={[]}
           />
         </div>
         <div className="mt-4 text-sm text-gray-400">
           <p>Flow diagram showing bilateral partnership connections between African countries and their international partners. Line thickness represents the number of agreements.</p>
+          <p className="mt-1">Displaying {data.length - 1} partnership connections from {agreements.length} bilateral agreements.</p>
         </div>
       </CardContent>
     </Card>
