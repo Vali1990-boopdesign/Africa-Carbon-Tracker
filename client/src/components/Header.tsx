@@ -155,8 +155,8 @@ export function Header({
                 trigger="in"
                 src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
                 style={{
-                  width: "32px",
-                  height: "32px"
+                  width: "43px",
+                  height: "43px"
                 }}
               />
             </div>
