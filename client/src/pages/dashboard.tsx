@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { DataNote } from "@/components/DataNote";
-import { FiltersBar } from "@/components/FiltersBar";
 import { MetricsCards } from "@/components/MetricsCards";
 import { AfricaTreemap } from "@/components/AfricaTreemap";
 import { TimeSeriesChart } from "@/components/TimeSeriesChart";
@@ -73,9 +72,9 @@ export default function Dashboard() {
     }
   };
 
-  
 
-  
+
+
 
   const handleCountryClick = (country: string) => {
     updateFilter("country", country);
@@ -118,22 +117,16 @@ export default function Dashboard() {
       <Header 
         dateRange={getCurrentDateRange()}
         onDateRangeChange={handleDateRangeChange}
+        filters={filters}
+        activeFilters={activeFilters}
+        onFilterChange={updateFilter}
+        onRemoveFilter={removeFilter}
+        onClearFilters={clearFilters}
         isLoading={isLoading}
       />
 
       {/* Data Note */}
 
-
-      {/* Filters Bar */}
-      <div className="mb-8">
-        <FiltersBar
-          filters={filters}
-          activeFilters={activeFilters}
-          onFilterChange={updateFilter}
-          onRemoveFilter={removeFilter}
-          onClearFilters={clearFilters}
-        />
-      </div>
 
       {/* Metrics Cards */}
       <MetricsCards
@@ -174,7 +167,7 @@ export default function Dashboard() {
               onCountryClick={handleCountryClick}
               onScopeClick={handleScopeClick}
             />
-            
+
             <Intermediaries
               transactions={transactions}
               isLoading={isLoading}
