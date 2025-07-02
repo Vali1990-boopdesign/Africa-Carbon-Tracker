@@ -8,25 +8,22 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
-import { ExportModal } from "./ExportModal";
 import type { Transaction } from "@shared/schema";
 
 interface DataTableProps {
   transactions?: Transaction[];
   isLoading: boolean;
-  onExport?: (selectedIds: number[]) => void;
 }
 
 type SortField = keyof Transaction;
 type SortDirection = "asc" | "desc";
 
-export function DataTable({ transactions, isLoading, onExport }: DataTableProps) {
+export function DataTable({ transactions, isLoading }: DataTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sortField, setSortField] = useState<SortField>("retirementYear");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -76,7 +73,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
   const sortedTransactions = [...transactions].sort((a, b) => {
     const aValue = a[sortField];
     const bValue = b[sortField];
-    
+
     if (sortDirection === "asc") {
       return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
     } else {
@@ -105,10 +102,6 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
       newSelected.delete(id);
     }
     setSelectedRows(newSelected);
-  };
-
-  const handleExport = () => {
-    onExport?.(Array.from(selectedRows));
   };
 
   const getProjectTypeColor = (type: string) => {
@@ -153,14 +146,6 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
               <span className="text-sm text-gray-400">
                 Showing {startIndex + 1}-{Math.min(endIndex, transactions.length)} of {transactions.length} transactions
               </span>
-              <Button
-                onClick={() => setIsExportModalOpen(true)}
-                disabled={selectedRows.size === 0}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 text-sm font-medium transition-colors"
-              >
-                <Download className="mr-2" size={16} />
-                Export Selected ({selectedRows.size})
-              </Button>
             </div>
           </div>
         </CardHeader>
@@ -243,14 +228,6 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                         >
                           <Eye size={14} />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-gray-400 hover:text-white h-8 w-8"
-                          title="Export"
-                        >
-                          <Download size={14} />
-                        </Button>
                       </div>
                     </TableCell>
                   </motion.tr>
@@ -258,7 +235,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
               </TableBody>
             </Table>
           </div>
-          
+
           {/* Pagination */}
           <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-700">
             <div className="flex items-center space-x-2">
@@ -278,7 +255,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="flex items-center space-x-2">
               <Button
                 variant="outline"
@@ -289,7 +266,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
               >
                 <ChevronLeft size={16} />
               </Button>
-              
+
               <div className="flex items-center space-x-1">
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                   const page = i + 1;
@@ -323,7 +300,7 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
                   </>
                 )}
               </div>
-              
+
               <Button
                 variant="outline"
                 size="icon"
@@ -337,15 +314,6 @@ export function DataTable({ transactions, isLoading, onExport }: DataTableProps)
           </div>
         </CardContent>
       </Card>
-
-      {/* Export Modal */}
-      <ExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-        onExport={handleExport}
-        exportType="selected"
-        selectedCount={selectedRows.size}
-      />
     </motion.div>
   );
 }

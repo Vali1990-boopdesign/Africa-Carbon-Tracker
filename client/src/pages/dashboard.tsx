@@ -73,26 +73,9 @@ export default function Dashboard() {
     }
   };
 
-  const handleHeaderExport = () => {
-    if (transactions) {
-      exportFilteredData(transactions, filters);
-      toast({
-        title: "Export Success",
-        description: "Data exported successfully as CSV",
-      });
-    }
-  };
+  
 
-  const handleTableExport = (selectedIds: number[]) => {
-    if (transactions) {
-      const selectedTransactions = transactions.filter(t => selectedIds.includes(t.id));
-      exportFilteredData(selectedTransactions, filters);
-      toast({
-        title: "Export Success",
-        description: `Exported ${selectedTransactions.length} selected records`,
-      });
-    }
-  };
+  
 
   const handleCountryClick = (country: string) => {
     updateFilter("country", country);
@@ -135,7 +118,6 @@ export default function Dashboard() {
       <Header 
         dateRange={getCurrentDateRange()}
         onDateRangeChange={handleDateRangeChange}
-        onExport={handleHeaderExport}
         isLoading={isLoading}
       />
 
@@ -228,7 +210,6 @@ export default function Dashboard() {
         <DataTable
           transactions={transactions}
           isLoading={transactionsLoading}
-          onExport={handleTableExport}
         />
       </div>
 

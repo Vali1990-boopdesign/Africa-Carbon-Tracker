@@ -1,21 +1,20 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
-import { ExportModal } from "./ExportModal";
+import { ContactModal } from "./ContactModal";
 // Using web-based CO2 icon instead of PNG import
 
 interface HeaderProps {
-  onExport: () => void;
   dateRange: string;
   onDateRangeChange: (range: string) => void;
   isLoading?: boolean;
 }
 
-export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: HeaderProps) {
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+export function Header({ dateRange, onDateRangeChange, isLoading }: HeaderProps) {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
@@ -107,27 +106,25 @@ export function Header({ onExport, dateRange, onDateRangeChange, isLoading }: He
               </Select>
             </div>
 
-            {/* Export Button */}
+            {/* Contact Us Button */}
             <Button
               variant="default"
               size="sm"
-              onClick={() => setIsExportModalOpen(true)}
+              onClick={() => setIsContactModalOpen(true)}
               disabled={isLoading}
               className="h-10"
             >
-              <Download size={16} className="mr-2" />
-              Export
+              <MessageCircle size={16} className="mr-2" />
+              Contact Us
             </Button>
           </motion.div>
         </div>
       </div>
 
-      {/* Export Modal */}
-      <ExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-        onExport={onExport}
-        exportType="all"
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
       />
     </motion.header>
   );
