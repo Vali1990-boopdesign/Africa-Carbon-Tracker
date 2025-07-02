@@ -129,10 +129,12 @@ export default function Dashboard() {
 
 
       {/* Metrics Cards */}
-      <MetricsCards
-        metrics={metrics}
-        isLoading={metricsLoading}
-      />
+      <div className="mt-6">
+        <MetricsCards
+          metrics={metrics}
+          isLoading={metricsLoading}
+        />
+      </div>
 
       {/* Key Insights - moved below metrics */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
