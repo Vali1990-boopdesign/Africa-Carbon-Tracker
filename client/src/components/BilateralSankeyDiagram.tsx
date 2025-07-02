@@ -12,6 +12,7 @@ interface BilateralSankeyDiagramProps {
 export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramProps) {
   const [chartError, setChartError] = useState<string | null>(null);
   const [isChartLoaded, setIsChartLoaded] = useState(false);
+  const [chartKey, setChartKey] = useState(0);
 
   // Transform bilateral agreements data into Sankey format
   const generateSankeyData = () => {
@@ -55,7 +56,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       node: {
         colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#f97316', '#84cc16'],
         label: {
-          fontName: 'Inter, Arial, sans-serif',
+          fontName: 'Arial, sans-serif',
           fontSize: 11,
           color: '#ffffff',
           bold: false
@@ -73,7 +74,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       textStyle: {
         color: '#000000',
         fontSize: 11,
-        fontName: 'Inter, Arial, sans-serif'
+        fontName: 'Arial, sans-serif'
       },
       showColorCode: false
     },
@@ -82,7 +83,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       top: 10,
       width: '90%',
       height: '90%'
-    }
+    },
+    forceIFrame: false
   };
 
   const data = generateSankeyData();
@@ -93,13 +95,21 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
   const handleChartError = (error: any) => {
     console.error('Chart error:', error);
-    setChartError('Failed to load chart visualization');
+    setChartError('Chart visualization temporarily unavailable');
+    setIsChartLoaded(false);
   };
 
   const handleChartReady = () => {
     setIsChartLoaded(true);
     setChartError(null);
   };
+
+  // Reset chart when agreements change
+  useEffect(() => {
+    setChartKey(prev => prev + 1);
+    setIsChartLoaded(false);
+    setChartError(null);
+  }, [agreements]);
 
   if (data.length <= 1) {
     return (
@@ -156,6 +166,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
             </div>
           )}
           <Chart
+            key={chartKey}
             chartType="Sankey"
             width="100%"
             height="100%"
@@ -172,7 +183,14 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
               }
             ]}
             chartPackages={['sankey']}
-            formatters={[]}
+            loader={<div className="text-gray-400">Loading chart...</div>}
+            errorElement={
+              <div className="text-center text-gray-400 py-8">
+                <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>Chart visualization temporarily unavailable</p>
+                <p className="text-sm mt-2">Showing {data.length - 1} partnership connections</p>
+              </div>
+            }
           />
         </div>
         <div className="mt-4 text-sm text-gray-400">
