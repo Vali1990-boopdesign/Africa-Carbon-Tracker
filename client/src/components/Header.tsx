@@ -150,13 +150,13 @@ export function Header({
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <div className="flex items-center justify-center w-10 h-10 bg-emerald-500/20 rounded-lg">
+            <div className="flex items-center justify-center w-12 h-12">
               <lord-icon
                 trigger="in"
                 src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
                 style={{
-                  width: "24px",
-                  height: "24px"
+                  width: "32px",
+                  height: "32px"
                 }}
               />
             </div>
