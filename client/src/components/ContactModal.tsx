@@ -56,7 +56,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       };
 
       // Send to Google Sheets via webhook/API
-      await fetch("https://script.google.com/macros/s/AKfycbwtWXxlA3pIGZTEvVmNAOcN337IWU59KfP0ebfJqU4pYrCYej9EF7q0QQtmd6Xlt6fTIg/exec", {
+      await fetch("https://script.google.com/macros/s/AKfycbyh_rJA5h3SNL4mNSzjNYXa84XPWqR98PWtkNwPOvP16stOovyjqImsSY_LVwUGxA8F4A/exec", {
         method: "POST",
         mode: "no-cors",
         headers: {
