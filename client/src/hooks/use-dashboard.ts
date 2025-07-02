@@ -197,8 +197,8 @@ export function useDashboard() {
       sector: "",
       projectType: "",
       scope: "",
-      startYear: 2011,
-      endYear: 2023,
+      startYear: 2010,
+      endYear: 2024,
       search: "",
     });
   };

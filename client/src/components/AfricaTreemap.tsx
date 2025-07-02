@@ -43,7 +43,7 @@ export function AfricaTreemap({
     } else {
       return b.activeProjects - a.activeProjects;
     }
-  }).slice(0, 20);
+  });
 
   const getCountrySize = (item: CountryData) => {
     if (activeTab === "credits") {
@@ -119,7 +119,7 @@ export function AfricaTreemap({
             <div className="w-full">
               <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-1 w-full">
                 {sortedData.map((item, index) => {
-                  const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(1);
+                  const percentage = ((item.totalCredits / totalCredits) * 100).toFixed(2);
                   const size = getCountrySize(item);
                   const colorIndex = Math.min(index, colors.length - 1);
                   const gridSpan = 1;
@@ -127,7 +127,7 @@ export function AfricaTreemap({
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-3 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
@@ -136,8 +136,8 @@ export function AfricaTreemap({
                       onClick={() => onCountryClick?.(item.country)}
                       title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                     >
-                      <div className="text-center overflow-hidden w-full">
-                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 truncate`}>
+                      <div className="text-center w-full flex flex-col justify-center h-full">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 break-words leading-tight`}>
                           {item.country}
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
@@ -163,7 +163,7 @@ export function AfricaTreemap({
             <div className="w-full">
               <div className="grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 gap-1 w-full">
                 {sortedData.map((item, index) => {
-                  const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(1);
+                  const percentage = ((item.activeProjects / totalProjects) * 100).toFixed(2);
                   const size = getCountrySize(item);
                   const colorIndex = Math.min(index, colors.length - 1);
                   const gridSpan = 1;
@@ -171,7 +171,7 @@ export function AfricaTreemap({
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-3 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
@@ -180,8 +180,8 @@ export function AfricaTreemap({
                       onClick={() => onCountryClick?.(item.country)}
                       title={`${item.country}: ${item.activeProjects} projects (${percentage}%)`}
                     >
-                      <div className="text-center overflow-hidden w-full">
-                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 truncate`}>
+                      <div className="text-center w-full flex flex-col justify-center h-full">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 break-words leading-tight`}>
                           {item.country}
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
@@ -207,15 +207,15 @@ export function AfricaTreemap({
             <div className="w-full">
               <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-1 w-full">
                 {scopeData.map((item, index) => {
-                  const percentage = item.percentage;
+                  const percentage = item.percentage.toFixed(2);
                   const colorIndex = Math.min(index, colors.length - 1);
-                  const size = Math.max(25, Math.min(percentage * 2, 100));
+                  const size = Math.max(25, Math.min(item.percentage * 2, 100));
                   const gridSpan = 1;
                   
                   return (
                     <div
                       key={item.scope}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-3 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
@@ -224,8 +224,8 @@ export function AfricaTreemap({
                       onClick={() => onScopeClick?.(item.scope)}
                       title={`${item.scope}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
                     >
-                      <div className="text-center overflow-hidden w-full">
-                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 truncate`}>
+                      <div className="text-center w-full flex flex-col justify-center h-full">
+                        <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 break-words leading-tight`}>
                           {item.scope}
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>

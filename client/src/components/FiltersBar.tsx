@@ -241,6 +241,7 @@ export function FiltersBar({
               size="icon"
               onClick={onClearFilters}
               className="text-gray-400 hover:text-white"
+              title="Clear all filters"
             >
               <X size={16} />
             </Button>
