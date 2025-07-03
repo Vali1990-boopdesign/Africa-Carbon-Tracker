@@ -31,37 +31,7 @@
   </head>
   <body class="dark">
     <div id="root"></div>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script type="module" src="/src/main.tsx"></script>
-    <script>
-      // Global error handler to prevent Vite overlay from showing for chart errors
-      window.addEventListener('error', function(event) {
-        if (event.error && event.error.message) {
-          const message = String(event.error.message).toLowerCase();
-          if (message.includes('google') || 
-              message.includes('chart') ||
-              message.includes('sankey') ||
-              message.includes('visualization')) {
-            event.preventDefault();
-            console.warn('Chart error handled:', event.error.message);
-            return false;
-          }
-        }
-      }, true);
-
-      window.addEventListener('unhandledrejection', function(event) {
-        if (event.reason) {
-          const reason = String(event.reason).toLowerCase();
-          if (reason.includes('google') || 
-              reason.includes('chart') ||
-              reason.includes('sankey') ||
-              reason.includes('visualization')) {
-            event.preventDefault();
-            console.warn('Chart promise rejection handled:', event.reason);
-          }
-        }
-      }, true);
-    </script>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
   </body>
 </html>

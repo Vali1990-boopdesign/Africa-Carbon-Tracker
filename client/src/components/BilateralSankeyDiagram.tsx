@@ -16,6 +16,7 @@ declare global {
         style?: React.CSSProperties;
         onError?: (event: any) => void;
         onLoad?: (event: any) => void;
+        state?: string;
       };
     }
   }
@@ -293,8 +294,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
                 style={{ width: '32px', height: '32px' }}
-                onError={(e: any) => console.error('Lord icon error (empty state):', e)}
-                onLoad={(e: any) => console.log('Lord icon loaded (empty state):', e)}
+                state="hover-pinch"
               />
             </div>
             Partnership Flow
@@ -334,8 +334,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
                 style={{ width: '32px', height: '32px' }}
-                onError={(e: any) => console.error('Lord icon error (empty state):', e)}
-                onLoad={(e: any) => console.log('Lord icon loaded (empty state):', e)}
+                state="hover-pinch"
               />
             </div>
             Partnership Flow

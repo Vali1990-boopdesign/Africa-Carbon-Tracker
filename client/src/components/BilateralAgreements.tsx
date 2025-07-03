@@ -130,21 +130,7 @@ export function BilateralAgreements() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card 
-        className="glass-effect border-gray-700"
-        onMouseEnter={(e) => {
-          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
-          if (lordIcon) {
-            lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-          }
-        }}
-        onMouseLeave={(e) => {
-          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
-          if (lordIcon) {
-            lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-          }
-        }}
-      >
+      <Card className="glass-effect border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
           <div className="hover-icon-trigger">
@@ -153,6 +139,7 @@ export function BilateralAgreements() {
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
+              state="hover-swipe"
             />
           </div>
           <TermTooltip 
