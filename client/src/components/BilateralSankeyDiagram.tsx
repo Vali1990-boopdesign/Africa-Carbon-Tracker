@@ -257,7 +257,12 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       <Card className="glass-effect border-gray-700">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
-            <Network className="w-6 h-6 text-emerald-500" />
+            <lord-icon
+              src="/lord-icons/wired-outline-456-handshake-deal-hover-pinch.json"
+              trigger="hover"
+              colors="primary:#10b981,secondary:#059669"
+              style={{ width: '32px', height: '32px' }}
+            />
             Partnership Flow
           </CardTitle>
         </CardHeader>
@@ -275,7 +280,12 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     <Card className="glass-effect border-gray-700">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
-          <Network className="w-6 h-6 text-emerald-500" />
+          <lord-icon
+            src="/lord-icons/wired-outline-456-handshake-deal-hover-pinch.json"
+            trigger="hover"
+            colors="primary:#10b981,secondary:#059669"
+            style={{ width: '32px', height: '32px' }}
+          />
           Partnership Flow
         </CardTitle>
       </CardHeader>
