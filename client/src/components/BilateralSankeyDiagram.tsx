@@ -5,6 +5,20 @@ import * as d3 from "d3";
 import * as d3Sankey from "d3-sankey";
 import type { BilateralAgreement } from "@shared/schema";
 
+// Define lord-icon element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': {
+        src?: string;
+        trigger?: string;
+        colors?: string;
+        style?: React.CSSProperties;
+      };
+    }
+  }
+}
+
 interface BilateralSankeyDiagramProps {
   agreements: BilateralAgreement[];
 }
@@ -258,7 +272,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
             <lord-icon
-              src="/lord-icons/wired-outline-456-handshake-deal-hover-pinch.json"
+              src="https://cdn.lordicon.com/xcwscsol.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
@@ -281,7 +295,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
           <lord-icon
-            src="/lord-icons/wired-outline-456-handshake-deal-hover-pinch.json"
+            src="https://cdn.lordicon.com/xcwscsol.json"
             trigger="hover"
             colors="primary:#10b981,secondary:#059669"
             style={{ width: '32px', height: '32px' }}

@@ -9,6 +9,20 @@ import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import { TermTooltip } from "./TermTooltip";
 import type { BilateralAgreement } from "@shared/schema";
 
+// Define lord-icon element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': {
+        src?: string;
+        trigger?: string;
+        colors?: string;
+        style?: React.CSSProperties;
+      };
+    }
+  }
+}
+
 interface BilateralAgreementsSummary {
   totalAgreements: number;
   activeAgreements: number;
@@ -120,7 +134,7 @@ export function BilateralAgreements() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
             <lord-icon
-              src="/lord-icons/wired-outline-56-document-hover-swipe.json"
+              src="https://cdn.lordicon.com/anlckueb.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
