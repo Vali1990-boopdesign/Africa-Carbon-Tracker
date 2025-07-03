@@ -92,7 +92,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
     >
       <div className="p-[2px] rounded-xl bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500">
         <Card 
-          className="min-h-48 relative overflow-hidden bg-background z-10"
+          className="min-h-48 relative overflow-hidden bg-background"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
