@@ -14,6 +14,8 @@ declare global {
         trigger?: string;
         colors?: string;
         style?: React.CSSProperties;
+        onError?: (event: any) => void;
+        onLoad?: (event: any) => void;
       };
     }
   }
@@ -35,12 +37,12 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
       // Count agreements by individual country-partner pairs
       const connectionCounts = new Map<string, number>();
-      
+
       agreements.forEach(agreement => {
         try {
           if (agreement?.country && agreement?.partner) {
             const partners = String(agreement.partner).split(',').map(p => p.trim());
-            
+
             partners.forEach(partner => {
               if (partner && partner.length > 0) {
                 const key = `${String(agreement.country).trim()}→${partner}`;
@@ -56,7 +58,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       // Extract unique nodes
       const nodeSet = new Set<string>();
       const links: Array<{source: string, target: string, value: number}> = [];
-      
+
       connectionCounts.forEach((count, key) => {
         try {
           const [country, partner] = key.split('→');
@@ -92,7 +94,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     svg.selectAll("*").remove();
 
     const { nodes, links } = generateSankeyData();
-    
+
     if (nodes.length === 0 || links.length === 0) {
       // Show empty state
       svg.append("text")
@@ -165,7 +167,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         gradient.append("stop")
           .attr("offset", "0%")
           .attr("stop-color", "#10b981"); // Green for African countries (source)
-        
+
         gradient.append("stop")
           .attr("offset", "100%")
           .attr("stop-color", "#3b82f6"); // Blue for partner countries (target)
@@ -203,7 +205,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         tooltip
           .style("visibility", "visible")
           .html(`<strong>${d.source.id} → ${d.target.id}</strong><br/>${d.value} partnership${d.value > 1 ? 's' : ''}`);
-        
+
         // Highlight the link
         d3.select(this)
           .attr("stroke-opacity", 0.9)
@@ -218,7 +220,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       .on("mouseout", function(event: MouseEvent, d: any) {
         // Hide tooltip
         tooltip.style("visibility", "hidden");
-        
+
         // Reset link appearance
         d3.select(this)
           .attr("stroke-opacity", 0.6)
@@ -291,6 +293,8 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
                 style={{ width: '32px', height: '32px' }}
+                onError={(e: any) => console.error('Lord icon error (empty state):', e)}
+                onLoad={(e: any) => console.log('Lord icon loaded (empty state):', e)}
               />
             </div>
             Partnership Flow
@@ -323,18 +327,20 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       }}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
-          <div className="hover-icon-trigger">
-            <lord-icon
-              src="/wired-outline-456-handshake-deal-hover-pinch.json"
-              trigger="hover"
-              colors="primary:#10b981,secondary:#059669"
-              style={{ width: '32px', height: '32px' }}
-            />
-          </div>
-          Partnership Flow
-        </CardTitle>
-      </CardHeader>
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+            <div className="hover-icon-trigger">
+              <lord-icon
+                src="/wired-outline-456-handshake-deal-hover-pinch.json"
+                trigger="hover"
+                colors="primary:#10b981,secondary:#059669"
+                style={{ width: '32px', height: '32px' }}
+                onError={(e: any) => console.error('Lord icon error (empty state):', e)}
+                onLoad={(e: any) => console.log('Lord icon loaded (empty state):', e)}
+              />
+            </div>
+            Partnership Flow
+          </CardTitle>
+        </CardHeader>
       <CardContent>
         <div className="w-full bg-gray-800/50 rounded-lg p-6 min-h-[550px] flex items-center justify-center">
           <svg ref={svgRef} className="w-full h-[500px]"></svg>
