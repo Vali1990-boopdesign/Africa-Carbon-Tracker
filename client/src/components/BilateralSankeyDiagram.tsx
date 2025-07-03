@@ -293,7 +293,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
-                style={{ width: '32px', height: '32px' }}
+                style={{ width: '38px', height: '38px' }}
                 state="hover-pinch"
               />
             </div>
@@ -333,7 +333,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
-                style={{ width: '32px', height: '32px' }}
+                style={{ width: '38px', height: '38px' }}
                 state="hover-pinch"
               />
             </div>
