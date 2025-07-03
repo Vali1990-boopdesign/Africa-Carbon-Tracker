@@ -1,8 +1,32 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Globe, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { DashboardMetrics } from "@shared/schema";
+
+// Define lord-icon element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': {
+        src?: string;
+        trigger?: string;
+        colors?: string;
+        style?: React.CSSProperties;
+      };
+    }
+  }
+}
+
+// Custom hook for triggering lord-icon animations
+function useLordIconAnimation() {
+  const triggerAnimation = (element: HTMLElement) => {
+    const lordIcon = element.querySelector('lord-icon') as any;
+    if (lordIcon && lordIcon.trigger) {
+      lordIcon.trigger();
+    }
+  };
+  return triggerAnimation;
+}
 
 interface MetricsCardsProps {
   metrics?: DashboardMetrics;
@@ -10,6 +34,7 @@ interface MetricsCardsProps {
 }
 
 export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
+  const triggerAnimation = useLordIconAnimation();
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
@@ -48,34 +73,29 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "credit-transactions",
       titleComponent: <TermTooltip term="Credits Transacted" explanation="Total cumulative carbon credits of tCO2e transacted (retired, purchased, etc.) in time period. Pre-purchases are not captured here." />,
       value: metrics.totalCreditsRetired.toLocaleString(),
-      icon: null,
-      iconBg: "",
-      iconColor: "",
-      isLottie: true,
+      lottieIcon: "/wired-outline-401-leaves-eco-hover-spin.json",
+      colors: "primary:#10b981,secondary:#059669"
     },
     {
       key: "unique-buyers",
       titleComponent: <TermTooltip term="Unique Buyers" explanation="Distinct organizations that have purchased and retired carbon credits, representing the diversity of market participants committed to climate action" />,
       value: metrics.activeBuyers.toLocaleString(),
-      icon: Users,
-      iconBg: "bg-blue-500/20",
-      iconColor: "text-blue-500",
+      lottieIcon: "/wired-outline-313-two-avatar-icon-calm-hover-jumping.json",
+      colors: "primary:#3b82f6,secondary:#1d4ed8"
     },
     {
       key: "african-countries",
       titleComponent: <TermTooltip term="African Countries" explanation="Number of African nations with active carbon credit projects, showcasing the continent's contribution to global climate mitigation efforts" />,
       value: metrics.africanCountries.toString(),
-      icon: Globe,
-      iconBg: "bg-amber-500/20",
-      iconColor: "text-amber-500",
+      lottieIcon: "/wired-outline-735-world-globe-hover-roll.json",
+      colors: "primary:#f59e0b,secondary:#d97706"
     },
     {
       key: "avg-credits",
       titleComponent: <TermTooltip term="Avg Credits per Transaction" explanation="Average number of carbon credits purchased in each transaction, indicating typical buying patterns and market participation scale" />,
       value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
-      icon: CreditCard,
-      iconBg: "bg-purple-500/20",
-      iconColor: "text-purple-500",
+      lottieIcon: "/wired-outline-299-coins-dollar-hover-jump.json",
+      colors: "primary:#8b5cf6,secondary:#7c3aed"
     },
   ];
 
@@ -89,7 +109,10 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
-            <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10">
+            <Card 
+              className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group"
+              onMouseEnter={(e) => triggerAnimation(e.currentTarget)}
+            >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0 pr-4">
@@ -97,21 +120,15 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</div>
                   </div>
                   <div className="flex items-center justify-center flex-shrink-0 ml-3">
-                    {card.isLottie ? (
-                      <lord-icon
-                        src="/wired-outline-401-leaves-eco-hover-spin.json"
-                        trigger="hover"
-                        colors="primary:#10b981,secondary:#059669"
-                        style={{
-                          width: "32px",
-                          height: "32px"
-                        }}
-                      />
-                    ) : (
-                      <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
-                        <card.icon className={card.iconColor} size={24} />
-                      </div>
-                    )}
+                    <lord-icon
+                      src={card.lottieIcon}
+                      trigger="hover"
+                      colors={card.colors}
+                      style={{
+                        width: "48px",
+                        height: "48px"
+                      }}
+                    />
                   </div>
                 </div>
               </CardContent>
