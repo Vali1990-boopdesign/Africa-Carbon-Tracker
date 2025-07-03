@@ -272,7 +272,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
             <lord-icon
-              src="https://cdn.lordicon.com/xcwscsol.json"
+              src="/wired-outline-456-handshake-deal-hover-pinch.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
@@ -295,7 +295,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
           <lord-icon
-            src="https://cdn.lordicon.com/xcwscsol.json"
+            src="/wired-outline-456-handshake-deal-hover-pinch.json"
             trigger="hover"
             colors="primary:#10b981,secondary:#059669"
             style={{ width: '32px', height: '32px' }}

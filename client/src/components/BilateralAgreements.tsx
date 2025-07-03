@@ -134,7 +134,7 @@ export function BilateralAgreements() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
             <lord-icon
-              src="https://cdn.lordicon.com/anlckueb.json"
+              src="/wired-outline-56-document-hover-swipe.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
