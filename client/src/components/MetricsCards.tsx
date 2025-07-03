@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Globe, Leaf, CreditCard } from "lucide-react";
+import { Users, Globe, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { DashboardMetrics } from "@shared/schema";
@@ -48,9 +48,10 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       key: "credit-transactions",
       titleComponent: <TermTooltip term="Credits Transacted" explanation="Total cumulative carbon credits of tCO2e transacted (retired, purchased, etc.) in time period. Pre-purchases are not captured here." />,
       value: metrics.totalCreditsRetired.toLocaleString(),
-      icon: Leaf,
-      iconBg: "bg-emerald-500/20",
-      iconColor: "text-emerald-500",
+      icon: null,
+      iconBg: "",
+      iconColor: "",
+      isLottie: true,
     },
     {
       key: "unique-buyers",
@@ -95,8 +96,22 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                     <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">{card.titleComponent}</div>
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</div>
                   </div>
-                  <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center flex-shrink-0 ml-3`}>
-                    <card.icon className={card.iconColor} size={24} />
+                  <div className="flex items-center justify-center flex-shrink-0 ml-3">
+                    {card.isLottie ? (
+                      <lord-icon
+                        src="/wired-outline-401-leaves-eco-hover-spin.json"
+                        trigger="hover"
+                        colors="primary:#10b981,secondary:#059669"
+                        style={{
+                          width: "32px",
+                          height: "32px"
+                        }}
+                      />
+                    ) : (
+                      <div className={`w-12 h-12 ${card.iconBg} rounded-lg flex items-center justify-center`}>
+                        <card.icon className={card.iconColor} size={24} />
+                      </div>
+                    )}
                   </div>
                 </div>
               </CardContent>
