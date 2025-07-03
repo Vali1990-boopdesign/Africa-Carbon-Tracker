@@ -100,7 +100,21 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
             <Card 
-              className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group"
+              className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group metrics-card"
+              onMouseEnter={(e) => {
+                const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+                if (lordIcon) {
+                  // Trigger animation by simulating hover on the icon
+                  lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+                }
+              }}
+              onMouseLeave={(e) => {
+                const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+                if (lordIcon) {
+                  // Reset animation by simulating mouse leave on the icon
+                  lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+                }
+              }}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
