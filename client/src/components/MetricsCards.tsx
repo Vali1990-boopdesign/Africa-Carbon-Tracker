@@ -17,16 +17,7 @@ declare global {
   }
 }
 
-// Custom hook for triggering lord-icon animations
-function useLordIconAnimation() {
-  const triggerAnimation = (element: HTMLElement) => {
-    const lordIcon = element.querySelector('lord-icon') as any;
-    if (lordIcon && lordIcon.trigger) {
-      lordIcon.trigger();
-    }
-  };
-  return triggerAnimation;
-}
+
 
 interface MetricsCardsProps {
   metrics?: DashboardMetrics;
@@ -34,7 +25,6 @@ interface MetricsCardsProps {
 }
 
 export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
-  const triggerAnimation = useLordIconAnimation();
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
@@ -111,7 +101,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
           >
             <Card 
               className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group"
-              onMouseEnter={(e) => triggerAnimation(e.currentTarget)}
             >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
@@ -120,15 +109,17 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                     <div className="text-2xl font-bold text-gray-900 dark:text-white">{card.value}</div>
                   </div>
                   <div className="flex items-center justify-center flex-shrink-0 ml-3">
-                    <lord-icon
-                      src={card.lottieIcon}
-                      trigger="hover"
-                      colors={card.colors}
-                      style={{
-                        width: "48px",
-                        height: "48px"
-                      }}
-                    />
+                    <div className="hover-icon-trigger">
+                      <lord-icon
+                        src={card.lottieIcon}
+                        trigger="hover"
+                        colors={card.colors}
+                        style={{
+                          width: "48px",
+                          height: "48px"
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </CardContent>
