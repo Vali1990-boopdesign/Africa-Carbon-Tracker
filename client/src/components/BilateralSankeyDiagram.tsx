@@ -268,15 +268,31 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
   if (nodes.length === 0) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card 
+        className="glass-effect border-gray-700"
+        onMouseEnter={(e) => {
+          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+          if (lordIcon) {
+            lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+          }
+        }}
+        onMouseLeave={(e) => {
+          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+          if (lordIcon) {
+            lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+          }
+        }}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
-            <lord-icon
-              src="/wired-outline-456-handshake-deal-hover-pinch.json"
-              trigger="hover"
-              colors="primary:#10b981,secondary:#059669"
-              style={{ width: '32px', height: '32px' }}
-            />
+            <div className="hover-icon-trigger">
+              <lord-icon
+                src="/wired-outline-456-handshake-deal-hover-pinch.json"
+                trigger="hover"
+                colors="primary:#10b981,secondary:#059669"
+                style={{ width: '32px', height: '32px' }}
+              />
+            </div>
             Partnership Flow
           </CardTitle>
         </CardHeader>
@@ -291,15 +307,31 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   }
 
   return (
-    <Card className="glass-effect border-gray-700">
+    <Card 
+      className="glass-effect border-gray-700"
+      onMouseEnter={(e) => {
+        const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+        if (lordIcon) {
+          lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+        }
+      }}
+      onMouseLeave={(e) => {
+        const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+        if (lordIcon) {
+          lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+        }
+      }}
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
-          <lord-icon
-            src="/wired-outline-456-handshake-deal-hover-pinch.json"
-            trigger="hover"
-            colors="primary:#10b981,secondary:#059669"
-            style={{ width: '32px', height: '32px' }}
-          />
+          <div className="hover-icon-trigger">
+            <lord-icon
+              src="/wired-outline-456-handshake-deal-hover-pinch.json"
+              trigger="hover"
+              colors="primary:#10b981,secondary:#059669"
+              style={{ width: '32px', height: '32px' }}
+            />
+          </div>
           Partnership Flow
         </CardTitle>
       </CardHeader>

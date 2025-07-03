@@ -91,7 +91,7 @@ export function BilateralAgreements() {
       'zambia-norway, sweden, singapore': 'https://www.goldstandard.org/carbon-market-regulations-tracker',
       'zimbabwe-united arab emirates (via blue carbon)': 'https://www.goldstandard.org/carbon-market-regulations-tracker'
     };
-    
+
     return urlMap[key] || 'https://www.goldstandard.org/carbon-market-regulations-tracker';
   };
 
@@ -130,20 +130,36 @@ export function BilateralAgreements() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card 
+        className="glass-effect border-gray-700"
+        onMouseEnter={(e) => {
+          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+          if (lordIcon) {
+            lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+          }
+        }}
+        onMouseLeave={(e) => {
+          const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
+          if (lordIcon) {
+            lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+          }
+        }}
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+          <div className="hover-icon-trigger">
             <lord-icon
               src="/wired-outline-56-document-hover-swipe.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
             />
-            <TermTooltip 
-              term="Africa's Bilateral Agreements"
-              explanation="Bilateral Agreements are partnerships between two countries that establish a framework for trading carbon credits and achieving emission reduction goals under Article 6.2 of the Paris Agreement"
-            />
-          </CardTitle>
+          </div>
+          <TermTooltip 
+            term="Africa's Bilateral Agreements"
+            explanation="Bilateral Agreements are partnerships between two countries that establish a framework for trading carbon credits and achieving emission reduction goals under Article 6.2 of the Paris Agreement"
+          />
+        </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Summary Stats */}
