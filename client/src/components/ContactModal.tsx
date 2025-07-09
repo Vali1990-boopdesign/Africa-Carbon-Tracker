@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -23,6 +24,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -36,7 +38,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
            formData.email.trim() !== "" && 
            formData.message.trim() !== "" &&
            formData.message.length <= 200 &&
-           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
+           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) &&
+           privacyConsent;
   };
 
   const handleSubmit = async () => {
@@ -77,6 +80,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         email: "",
         message: ""
       });
+      setPrivacyConsent(false);
       onClose();
     } catch (error) {
       console.error("Error sending contact form:", error);
@@ -97,6 +101,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       email: "",
       message: ""
     });
+    setPrivacyConsent(false);
     onClose();
   };
 
@@ -186,6 +191,51 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   {remainingChars} characters remaining
                 </span>
               </div>
+            </div>
+          </div>
+
+          {/* Privacy Disclaimer */}
+          <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 space-y-3">
+            <div className="text-xs italic text-gray-400 leading-relaxed">
+              By submitting your information, you consent to the collection, processing, and storage of your personal data (including your name, email address, and organization name) in accordance with our{" "}
+              <a 
+                href="https://bfaglobal.com/wp-content/uploads/2024/09/BFA-Global-Data-Protection-Binding-Corporate-Rules.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 underline"
+              >
+                Privacy Policy
+              </a>{" "}
+              and{" "}
+              <a 
+                href="https://bfaglobal.com/wp-content/uploads/2024/09/BFA-Global-Kenya-Ltd-Data-Protection-Policy.pdf" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-emerald-400 hover:text-emerald-300 underline"
+              >
+                Data Protection Policy
+              </a>.
+            </div>
+            <div className="text-xs italic text-gray-400 leading-relaxed">
+              We will only use your personal data to communicate with you and provide support related to carbon credits and relevant services. Your data will be stored securely and may be transferred to authorized third parties for the sole purpose of fulfilling our service obligations. We will retain your data for as long as necessary to fulfill our commitments.
+            </div>
+            <div className="text-xs italic text-gray-400 leading-relaxed">
+              You have the right to request access to, correction, or deletion of your personal data, and you can contact us at any time for assistance. For more details, please refer to our Data Protection Policy.
+            </div>
+            
+            <div className="flex items-start space-x-3 pt-2">
+              <Checkbox
+                id="privacy-consent"
+                checked={privacyConsent}
+                onCheckedChange={(checked) => setPrivacyConsent(!!checked)}
+                className="mt-0.5 data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+              />
+              <Label 
+                htmlFor="privacy-consent" 
+                className="text-sm text-gray-300 cursor-pointer leading-relaxed"
+              >
+                I have read and agree to the privacy disclaimer above <span className="text-red-400">*</span>
+              </Label>
             </div>
           </div>
 
