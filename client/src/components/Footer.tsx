@@ -14,7 +14,7 @@ export function Footer() {
           {/* BFA Global Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
             <img
-              src="/bfa-global-logo.png"
+              src="https://bfaglobal.com/wp-content/uploads/2023/05/BFAGLOBAL_Logo_landscape_RGB.png"
               alt="BFA Global"
               className="h-8 object-contain"
             />
