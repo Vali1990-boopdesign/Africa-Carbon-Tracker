@@ -28,6 +28,15 @@ export function Footer() {
               className="h-8 object-contain"
             />
           </div>
+
+          {/* BFA Global Logo */}
+          <div className="bg-white rounded-lg p-2 shadow-lg">
+            <img
+              src="/bfa-global-logo.png"
+              alt="BFA Global"
+              className="h-8 object-contain"
+            />
+          </div>
         </div>
 
         {/* Legal Disclaimer */}
