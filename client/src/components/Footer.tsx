@@ -16,7 +16,7 @@ export function Footer() {
             <img
               src="/bfa-global-logo.png"
               alt="BFA Global"
-              className="h-6 object-contain"
+              className="h-4 object-contain"
               onError={(e) => {
                 console.error('BFA Global logo failed to load:', e);
               }}
