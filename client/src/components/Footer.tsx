@@ -11,6 +11,15 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Partner Logos */}
         <div className="flex justify-center items-center gap-6 mb-6">
+          {/* BFA Global Logo */}
+          <div className="bg-white rounded-lg p-2 shadow-lg">
+            <img
+              src="/bfa-global-logo.png"
+              alt="BFA Global"
+              className="h-8 object-contain"
+            />
+          </div>
+
           {/* Catalyst Fund Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
             <img
@@ -25,15 +34,6 @@ export function Footer() {
             <img
               src="/fsd-africa-logo.png"
               alt="FSD Africa"
-              className="h-8 object-contain"
-            />
-          </div>
-
-          {/* BFA Global Logo */}
-          <div className="bg-white rounded-lg p-2 shadow-lg">
-            <img
-              src="/bfa-global-logo.png"
-              alt="BFA Global"
               className="h-8 object-contain"
             />
           </div>
