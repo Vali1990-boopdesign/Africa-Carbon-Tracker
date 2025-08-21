@@ -10,40 +10,26 @@ import { importLatestCSVData } from "./import-latest-csv";
 import { importBilateralAgreements } from "./import-bilateral";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
+import { 
+  createSecureRateLimit, 
+  requireCaptcha, 
+  blockSuspiciousIPs, 
+  requireSecureApiKey,
+  detectBots,
+  honeypot,
+  getClientIP,
+  trackSuccessfulAttempt 
+} from "./security";
+import { generateCaptcha } from "./captcha";
 
-// API Key authentication middleware
-const requireApiKey = (req: any, res: any, next: any) => {
-  const apiKey = req.headers['x-api-key'] || req.query.apiKey;
-  const validApiKey = process.env.API_KEY;
-  
-  // For development, allow access without API key
-  if (process.env.NODE_ENV === 'development') {
-    return next();
-  }
-  
-  if (!validApiKey) {
-    return res.status(500).json({ error: "API key not configured" });
-  }
-  
-  if (!apiKey || apiKey !== validApiKey) {
-    return res.status(401).json({ error: "Invalid or missing API key" });
-  }
-  
-  next();
-};
+// Enhanced rate limiting with progressive restrictions
+const generalLimit = createSecureRateLimit(15 * 60 * 1000, 100, true); // 100 requests per 15 minutes
+const exportLimit = createSecureRateLimit(60 * 60 * 1000, 3, false); // 3 exports per hour (reduced)
+const adminLimit = createSecureRateLimit(60 * 60 * 1000, 5, false); // 5 admin requests per hour (reduced)
+const chatLimit = createSecureRateLimit(5 * 60 * 1000, 20, false); // 20 chat requests per 5 minutes
 
-// Rate limiting
-const createRateLimit = (windowMs: number, max: number) => rateLimit({
-  windowMs,
-  max,
-  message: { error: "Too many requests, please try again later" },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-
-const generalLimit = createRateLimit(15 * 60 * 1000, 100); // 100 requests per 15 minutes
-const exportLimit = createRateLimit(60 * 60 * 1000, 5); // 5 exports per hour
-const adminLimit = createRateLimit(60 * 60 * 1000, 10); // 10 admin requests per hour
+// Legacy middleware for backwards compatibility
+const requireApiKey = requireSecureApiKey;
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Configure CORS
@@ -54,8 +40,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     credentials: true
   }));
 
-  // Apply rate limiting to all API routes
-  app.use('/api', generalLimit);
+  // Security middleware chain
+  app.use('/api', blockSuspiciousIPs); // Block suspicious IPs first
+  app.use('/api', detectBots); // Detect and block bots
+  app.use('/api', generalLimit); // Apply rate limiting
+
+  // Honeypot endpoint to catch bots
+  app.get('/admin', honeypot);
+  app.get('/wp-admin', honeypot);
+  app.get('/api/admin/users', honeypot);
+  app.get('/api/internal/debug', honeypot);
+
+  // CAPTCHA endpoint
+  app.get('/api/captcha', (req, res) => {
+    const captcha = generateCaptcha();
+    res.json({
+      id: captcha.id,
+      question: captcha.question
+    });
+  });
+
+  // Serve robots.txt
+  app.get('/robots.txt', (req, res) => {
+    res.type('text/plain');
+    res.sendFile('robots.txt', { root: '.' });
+  });
 
   // Input validation helper
   const validateFilters = (query: any) => {
@@ -233,8 +242,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Carbon Credits Assistant endpoint - Local terminology database
-  app.post("/api/chat", (req, res) => {
+  // Carbon Credits Assistant endpoint - Local terminology database with CAPTCHA protection
+  app.post("/api/chat", chatLimit, requireCaptcha, (req, res) => {
+    const ip = getClientIP(req);
+    trackSuccessfulAttempt(ip);
     try {
       const { question } = req.body;
 
@@ -394,8 +405,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Export transactions - PROTECTED
-  app.get("/api/export/transactions", exportLimit, requireApiKey, async (req, res) => {
+  // Export transactions - PROTECTED with CAPTCHA
+  app.get("/api/export/transactions", exportLimit, requireCaptcha, requireSecureApiKey, async (req, res) => {
+    const ip = getClientIP(req);
+    trackSuccessfulAttempt(ip);
     try {
       const allTransactions = await db.select().from(transactions);
 
@@ -411,8 +424,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Validation endpoint - PROTECTED
-  app.get("/api/validate", adminLimit, requireApiKey, async (req, res) => {
+  // Validation endpoint - PROTECTED with CAPTCHA
+  app.get("/api/validate", adminLimit, requireCaptcha, requireSecureApiKey, async (req, res) => {
+    const ip = getClientIP(req);
+    trackSuccessfulAttempt(ip);
     try {
       const results = await validateNewCSVData();
       res.json(results);
@@ -422,8 +437,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // HTML validation report endpoint - PROTECTED
-  app.get("/api/validate/report", adminLimit, requireApiKey, async (req, res) => {
+  // HTML validation report endpoint - PROTECTED with CAPTCHA
+  app.get("/api/validate/report", adminLimit, requireCaptcha, requireSecureApiKey, async (req, res) => {
+    const ip = getClientIP(req);
+    trackSuccessfulAttempt(ip);
     try {
       const results = await validateNewCSVData();
 
@@ -516,8 +533,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 });
 
-  // Import latest CSV data endpoint - PROTECTED
-  app.post("/api/import-latest", adminLimit, requireApiKey, async (req, res) => {
+  // Import latest CSV data endpoint - PROTECTED with CAPTCHA
+  app.post("/api/import-latest", adminLimit, requireCaptcha, requireSecureApiKey, async (req, res) => {
+    const ip = getClientIP(req);
+    trackSuccessfulAttempt(ip);
     try {
       console.log("🔄 Starting manual import of latest CSV data...");
       const result = await importLatestCSVData();
