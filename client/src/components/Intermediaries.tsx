@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { TermTooltip } from "./TermTooltip";
 import type { Transaction } from "@shared/schema";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface IntermediariesProps {
   transactions?: Transaction[];
@@ -154,12 +155,12 @@ export function Intermediaries({ transactions, isLoading, onRegistryClick, onMar
                     </div>
                     <div>
                       <p className="text-sm font-medium text-gray-900 dark:text-white">{registry.name}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{registry.transactionCount.toLocaleString()} transactions</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{formatNumber(registry.transactionCount)} transactions</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                      {registry.totalCredits.toLocaleString()}
+                      {formatNumber(registry.totalCredits)}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">credits</p>
                   </div>
@@ -193,12 +194,12 @@ export function Intermediaries({ transactions, isLoading, onRegistryClick, onMar
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-900 dark:text-white">{marketplace.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{marketplace.transactionCount.toLocaleString()} transactions</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{formatNumber(marketplace.transactionCount)} transactions</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-                        {marketplace.totalCredits.toLocaleString()}
+                        {formatNumber(marketplace.totalCredits)}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">credits</p>
                     </div>

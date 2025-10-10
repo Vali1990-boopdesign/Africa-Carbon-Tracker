@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { TopBuyerData, SectorData } from "@shared/schema";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface TopBuyersProps {
   topBuyers?: TopBuyerData[];
@@ -157,7 +158,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
         <div className="text-right flex items-center space-x-2">
           <div>
             <p className="text-sm font-medium text-emerald-400">
-              {credits.toLocaleString()}
+              {formatNumber(credits)}
             </p>
             <p className="text-xs text-gray-400">{percentage.toFixed(1)}%</p>
           </div>

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface CountryData {
   country: string;
@@ -134,14 +135,14 @@ export function AfricaTreemap({
                         maxHeight: '140px'
                       }}
                       onClick={() => onCountryClick?.(item.country)}
-                      title={`${item.country}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
+                      title={`${item.country}: ${formatNumber(item.totalCredits)} credits (${percentage}%)`}
                     >
                       <div className="text-center w-full flex flex-col justify-center h-full">
                         <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 break-words leading-tight`}>
                           {item.country}
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
-                          {item.totalCredits.toLocaleString()}
+                          {formatNumber(item.totalCredits)}
                         </div>
                         <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
                           {percentage}%
@@ -222,14 +223,14 @@ export function AfricaTreemap({
                         maxHeight: '140px'
                       }}
                       onClick={() => onScopeClick?.(item.scope)}
-                      title={`${item.scope}: ${item.totalCredits.toLocaleString()} credits (${percentage}%)`}
+                      title={`${item.scope}: ${formatNumber(item.totalCredits)} credits (${percentage}%)`}
                     >
                       <div className="text-center w-full flex flex-col justify-center h-full">
                         <div className={`font-semibold text-xs ${colors[colorIndex].text} mb-1 break-words leading-tight`}>
                           {item.scope}
                         </div>
                         <div className={`text-xs font-bold ${colors[colorIndex].text} mb-1`}>
-                          {item.totalCredits.toLocaleString()}
+                          {formatNumber(item.totalCredits)}
                         </div>
                         <div className={`text-xs ${colors[colorIndex].text} opacity-80`}>
                           {percentage}%

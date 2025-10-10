@@ -9,6 +9,7 @@ import { Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-re
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { Transaction } from "@shared/schema";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface DataTableProps {
   transactions?: Transaction[];
@@ -209,7 +210,7 @@ export function DataTable({ transactions, isLoading }: DataTableProps) {
                     </TableCell>
                     <TableCell className="text-right">
                       <span className="text-sm font-semibold text-white">
-                        {transaction.creditsRetired.toLocaleString()}
+                        {formatNumber(transaction.creditsRetired)}
                       </span>
                     </TableCell>
                     <TableCell>

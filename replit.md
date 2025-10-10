@@ -51,3 +51,33 @@ Preferred communication style: Simple, everyday language.
 
 ### Integrations
 - **Google Sheets**: For logging export and contact form submissions.
+
+## Recent Changes
+
+### October 10, 2025
+- **Export Functionality Implementation**: Added missing export data feature to dashboard
+  - Integrated ExportModal component that was previously built but not connected
+  - Added "Export Data" button above Transaction Details table with emerald green styling
+  - Connected export flow: button → modal → form validation → Google Sheets logging → CSV download
+  - Export modal includes name, email, organisation fields with disclaimer acceptance requirement
+  - CSV export uses exportFilteredData utility respecting current dashboard filters
+  - Added error handling and success toast notifications
+- **Content Security Policy Fix**: Resolved critical CSP blocking issue for external form submissions
+  - Updated connect-src directive to allow https://script.google.com and https://script.googleusercontent.com
+  - Fixes previously blocked requests to Google Sheets webhooks for export and contact forms
+  - Both export logging and contact form submissions now work without CSP violations
+  - No "Failed to fetch" errors in browser console
+- **Number Formatting Standardization**: Fixed all number displays to use US format instead of Indian format
+  - Created `formatNumber()` utility function in `client/src/lib/formatNumber.ts` that enforces en-US locale
+  - Replaced all `.toLocaleString()` calls throughout the application with `formatNumber()`
+  - Numbers now consistently display with US separators: 1,000,000 instead of Indian format (10,00,000 lakhs)
+  - Updated components: MetricsCards, DataTable, TopBuyers, AfricaTreemap, Intermediaries, TimeSeriesChart, and chart.tsx
+  - Ensures consistent number formatting across all metrics, tables, charts, and visualizations
+  - No more lakhs (1,00,000) or crores (1,00,00,000) - all numbers use thousands, millions, billions format
+- **Comprehensive Testing**: Conducted end-to-end testing of all dashboard features
+  - Verified metrics cards, filters, search, date ranges, visualizations work correctly
+  - Confirmed interactive elements (treemap clicks, buyer selections, tabs) apply filters properly
+  - Tested data table sorting, pagination, and row selection functionality
+  - Validated Carbon Glossary modal and search functionality
+  - Verified bilateral agreements section displays correctly with Sankey diagram
+  - All core dashboard features functional and ready for public use

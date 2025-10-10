@@ -5,6 +5,7 @@ import { TrendingUp, BarChart3, Axis3d } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { TimeSeriesData, Transaction } from "@shared/schema";
+import { formatNumber } from "@/lib/formatNumber";
 
 interface TimeSeriesChartProps {
   timeSeriesData?: TimeSeriesData[];
@@ -139,7 +140,7 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
           <p className="text-gray-900 dark:text-gray-100 text-sm font-medium">{`${label}`}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} className="text-emerald-600 dark:text-emerald-400 text-sm font-medium">
-              {`${entry.name}: ${entry.value?.toLocaleString()}`}
+              {`${entry.name}: ${formatNumber(entry.value)}`}
             </p>
           ))}
         </div>

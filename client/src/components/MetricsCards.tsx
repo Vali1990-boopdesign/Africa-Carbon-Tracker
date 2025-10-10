@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { DashboardMetrics } from "@shared/schema";
+import { formatNumber } from "@/lib/formatNumber";
 
 // Define lord-icon element for TypeScript
 declare global {
@@ -62,14 +63,14 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       key: "credit-transactions",
       titleComponent: <TermTooltip term="Credits Transacted" explanation="Total cumulative carbon credits of tCO2e transacted (retired, purchased, etc.) in time period. Pre-purchases are not captured here." />,
-      value: metrics.totalCreditsRetired.toLocaleString(),
+      value: formatNumber(metrics.totalCreditsRetired),
       lottieIcon: "/wired-outline-401-leaves-eco-hover-spin.json",
       colors: "primary:#10b981,secondary:#059669"
     },
     {
       key: "unique-buyers",
       titleComponent: <TermTooltip term="Unique Buyers" explanation="Distinct organizations that have purchased and retired carbon credits, representing the diversity of market participants committed to climate action" />,
-      value: metrics.activeBuyers.toLocaleString(),
+      value: formatNumber(metrics.activeBuyers),
       lottieIcon: "/wired-outline-313-two-avatar-icon-calm-hover-jumping.json",
       colors: "primary:#3b82f6,secondary:#1d4ed8"
     },
@@ -83,7 +84,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
     {
       key: "avg-credits",
       titleComponent: <TermTooltip term="Avg Credits per Transaction" explanation="Average number of carbon credits purchased in each transaction, indicating typical buying patterns and market participation scale" />,
-      value: `${(metrics.averageCreditsPerTransaction || 0).toLocaleString()}`,
+      value: formatNumber(metrics.averageCreditsPerTransaction || 0),
       lottieIcon: "/wired-outline-299-coins-dollar-hover-jump.json",
       colors: "primary:#8b5cf6,secondary:#7c3aed"
     },
