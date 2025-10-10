@@ -1,190 +1,53 @@
 # Africa Carbon Credits Analytics Dashboard
 
 ## Overview
-
-This is a comprehensive analytics dashboard for African carbon credits data built with React, Express.js, and PostgreSQL. The application provides real-time insights into carbon credit transactions, buyer profiles, and market trends across African countries. It features interactive visualizations, advanced filtering capabilities, and data export functionality.
+This project provides a comprehensive analytics dashboard for African carbon credits data. Built with React, Express.js, and PostgreSQL, it offers real-time insights into carbon credit transactions, buyer profiles, and market trends across African countries. The dashboard features interactive visualizations, advanced filtering, data export functionality, and aims to provide crucial business intelligence for the carbon market.
 
 ## User Preferences
-
 Preferred communication style: Simple, everyday language.
 
 ## System Architecture
 
-### Frontend Architecture
+### Frontend
 - **Framework**: React 18 with TypeScript
-- **Build Tool**: Vite for fast development and optimized builds
-- **Routing**: Wouter for lightweight client-side routing
-- **State Management**: TanStack Query (React Query) for server state management
-- **UI Library**: shadcn/ui components built on Radix UI primitives
-- **Styling**: Tailwind CSS with custom design system and dark theme
+- **Build Tool**: Vite
+- **Routing**: Wouter
+- **State Management**: TanStack Query (React Query)
+- **UI Library**: shadcn/ui built on Radix UI primitives
+- **Styling**: Tailwind CSS with custom design system and dark theme, responsive design with glass morphism elements
 - **Charts**: Recharts for data visualizations
-- **Animations**: Framer Motion for smooth UI transitions
+- **Animations**: Framer Motion
+- **Features**: Interactive dashboard with multiple visualization types (maps, charts, tables), advanced filtering, data export, theme system, and an interactive tooltip system with a Carbon Glossary.
 
-### Backend Architecture
+### Backend
 - **Runtime**: Node.js with TypeScript
 - **Framework**: Express.js for REST API
 - **Database ORM**: Drizzle ORM with PostgreSQL dialect
-- **Database**: PostgreSQL 16 (configured via Replit modules)
-- **Data Provider**: Neon Database serverless for production
-- **Development**: In-memory storage fallback for development
+- **Database**: PostgreSQL 16 (local), Neon Database (production)
+- **Key Components**:
+    - **Data Models**: Transactions, Buyer Profiles, Dashboard Metrics.
+    - **API Endpoints**: For dashboard metrics, transactions, geographical data, sector breakdowns, time-series data, and top buyers.
 
-### Key Components
-
-#### Data Models
-- **Transactions**: Core carbon credit transaction records with buyer, project, and retirement details
-- **Buyer Profiles**: Aggregated buyer information with cumulative retirement statistics
-- **Dashboard Metrics**: Computed analytics for real-time insights
-
-#### API Endpoints
-- `/api/dashboard/metrics` - Aggregate dashboard statistics
-- `/api/transactions` - Filtered transaction data with search capabilities
-- `/api/dashboard/countries` - Geographic distribution data for map visualization
-- `/api/dashboard/sectors` - Sector breakdown for pie charts
-- `/api/dashboard/time-series` - Historical trend data
-- `/api/dashboard/top-buyers` - Leading carbon credit purchasers
-
-#### Frontend Features
-- **Interactive Dashboard**: Multiple visualization types (maps, charts, tables)
-- **Advanced Filtering**: Real-time filters for country, sector, project type, date ranges, and search
-- **Responsive Design**: Mobile-first approach with glass morphism design elements
-- **Data Export**: CSV/Excel export functionality for filtered datasets
-- **Theme System**: Dark/light theme toggle with system preference detection
-
-## Data Flow
-
-1. **Data Ingestion**: Transaction data flows through the Drizzle ORM schema into PostgreSQL
-2. **API Layer**: Express.js routes handle data aggregation and filtering queries
-3. **Client Queries**: React Query manages API calls with caching and background updates
-4. **UI Updates**: Real-time dashboard updates based on filter changes and data refreshes
-5. **User Interactions**: Filter selections trigger API calls and update visualizations
+### System Design
+- **Data Flow**: Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, managed by React Query on the client, updating the UI in real-time.
+- **Deployment**: Frontend builds to `dist/public`, backend to `dist/index.js`, served by Express.js. Utilizes Replit modules for Node.js, Web server, and PostgreSQL.
 
 ## External Dependencies
 
 ### Core Libraries
-- **Database**: `@neondatabase/serverless` for production database connectivity
-- **ORM**: `drizzle-orm` and `drizzle-kit` for database operations and migrations
-- **UI Components**: Radix UI primitives (`@radix-ui/*`) for accessible component foundations
-- **Visualization**: `recharts` for charts and `embla-carousel-react` for carousels
-- **Forms**: `react-hook-form` with `@hookform/resolvers` for form validation
-- **Utilities**: `date-fns` for date manipulation, `clsx` and `tailwind-merge` for styling
+- **Database**: `@neondatabase/serverless`
+- **ORM**: `drizzle-orm`, `drizzle-kit`
+- **UI Components**: Radix UI primitives (`@radix-ui/*`)
+- **Visualization**: `recharts`, `embla-carousel-react`
+- **Forms**: `react-hook-form`, `@hookform/resolvers`
+- **Utilities**: `date-fns`, `clsx`, `tailwind-merge`
+- **Icons**: Lord-Icon for animated icons
 
 ### Development Tools
-- **TypeScript**: Full type safety across frontend and backend
-- **Vite**: Development server and build tool with hot module replacement
-- **ESBuild**: Production bundling for server-side code
-- **Tailwind CSS**: Utility-first CSS framework with PostCSS
+- **TypeScript**: For type safety.
+- **Vite**: Development server and build tool.
+- **ESBuild**: Production bundling for server-side code.
+- **Tailwind CSS**: Utility-first CSS framework.
 
-## Deployment Strategy
-
-### Production Build
-- **Frontend**: Vite builds static assets to `dist/public`
-- **Backend**: ESBuild bundles Node.js server code to `dist/index.js`
-- **Assets**: Static files served by Express in production mode
-
-### Environment Configuration
-- **Development**: `npm run dev` - TSX for server, Vite dev server for client
-- **Production**: `npm run build && npm run start` - Compiled assets and server
-- **Database**: Environment variable `DATABASE_URL` for PostgreSQL connection
-
-### Replit Configuration
-- **Modules**: Node.js 20, Web server, PostgreSQL 16
-- **Deployment**: Autoscale deployment target with build and run commands
-- **Port**: Internal port 5000 mapped to external port 80
-- **Development**: Live reload and error overlay integration
-
-The application is designed for scalability with a clear separation between client and server concerns, efficient data caching strategies, and optimized build processes for both development and production environments.
-
-## Recent Changes
-
-### December 16, 2024
-- **Data Import Fix**: Resolved missing 2024 data issue by fixing import validation logic
-  - Identified and imported 6,381 missing 2024 transaction records from CSV source
-  - Updated data range from 2010-2022 to complete 2010-2024 coverage
-  - Dashboard now displays full dataset with 122+ million total credits retired
-- **Metrics System Update**: Replaced misleading "Avg Credit Price" metric with "Average Credits per Transaction"
-  - Updated `DashboardMetrics` interface to use `averageCreditsPerTransaction` and `transactionChange`
-  - Modified both MemStorage and DatabaseStorage implementations
-  - Updated frontend MetricsCards component with comma formatting and credit card icon
-  - Changed "Total Credits" header to "Total Credit Transactions" with proper number formatting
-- **Partner Logos**: Added FSD Africa logo alongside Catalyst Fund logo in footer with matching styling
-- **Data Integrity**: Ensured all metrics reflect authentic data from complete CSV dataset (2010-2024)
-- **Metrics Display Cleanup**: Removed year-over-year percentage changes from top metrics boxes
-  - Removed static YE2023 baseline comparisons that conflicted with dynamic dashboard filtering
-  - Simplified metrics cards to show clean title and value without confusing percentage changes
-  - Updated DashboardMetrics interface and storage implementations for cleaner data flow
-- **Interactive Tooltip System**: Comprehensive carbon credit terminology explanations throughout dashboard
-  - Created TermTooltip component with dotted underlines and help icons for immediate context
-  - Added 15+ carbon credit definitions (retirement, additionality, verification, MRV, etc.)
-  - Enhanced all major components: metrics cards, data table headers, chart titles, and map sections
-  - Implemented floating Carbon Glossary with search functionality for comprehensive term reference
-  - Added bilateral agreements tooltip explaining Article 6.2 partnerships framework
-- **Dashboard Section Restructuring**: Improved supply and demand visualization organization
-  - Renamed "Africa Carbon Credits" to "Supply: Africa Carbon Credits" for clearer categorization
-  - Renamed "Top Buyers" to "Demand: Top Buyers" with enhanced functionality
-  - Added scope toggle in Demand section showing authentic project scope breakdowns from transaction data
-  - Implemented tabbed interface for buyers vs project scope analysis (Agriculture, Forestry, Renewable Energy, etc.)
-  - Real-time aggregation of carbon credit purchases by project type with accurate percentage distributions
-  - Updated Sector Breakdown to display categories ordered from largest to smallest market share for clearer hierarchy
-  - Created "Intermediaries" section with registry analysis (Verra Standard vs Gold Standard) and carbon marketplace rankings
-  - Added authentic data aggregation for carbon marketplaces by buyer classification with transaction counts and credit volumes
-- **Bilateral Agreements Enhancement**: Updated metrics calculations for accurate partnership representation
-  - Modified "Total Agreements" to count individual connections between African countries and partner nations (17 total)
-  - Set "Partners" to fixed count of 8 unique partner countries (Japan, Kuwait, Norway, Singapore, South Korea, Sweden, Switzerland, UAE)
-  - Renamed "Countries" to "Buyers from Partner Countries" showing 444 buyers from the 8 partner nations
-  - Updated "Active" to "Buyers in past 5 years" counting 389 buyers from partner countries with 2019-2024 transactions
-  - Added interactive tooltip explaining bilateral agreements under Article 6.2 of Paris Agreement framework
-
-### June 24, 2025
-- **Deployment Crash Resolution**: Fixed critical deployment issues causing server failures and data inconsistencies
-  - Removed auto-executing CSV validation and import processes that interfered with server startup
-  - Enhanced error handling with production fallback mechanisms and graceful degradation
-  - Stabilized database operations to prevent concurrent import conflicts during deployment
-  - Ensured health endpoints (/health, /ready) work independently of database initialization status
-- **Data Integrity Restoration**: Resolved fluctuating data calculations in both preview and production environments
-  - Restored complete dataset with 72.3M credits across 15,078 transactions (2010-2024)
-  - Fixed data seeding conflicts that caused varying metrics between server restarts
-  - Prevented automatic imports in production mode while maintaining development functionality
-  - Verified stable API responses with consistent transaction counts and credit totals
-- **Bilateral Agreements Implementation**: Fixed missing bilateral agreements data and visualization
-  - Created authentic bilateral agreements CSV with 9 Africa-partner country partnerships
-  - Added bilateral agreements import endpoint and restored Sankey diagram functionality
-  - Fixed API responses showing 17 total connections across 8 partner countries (Japan, Kuwait, Norway, etc.)
-  - Verified all bilateral agreement metrics display correctly in production deployment
-- **UI Enhancement**: Updated "Demand: Top Buyers" Countries tab display format
-  - Modified country data structure to properly separate country and region information
-  - Changed subtitle from generic "Buyer Country" to show actual region data (e.g., "North America", "Europe")
-  - Improved geographic context for carbon credit buyer location analysis
-  - Renamed section from "Demand: Top Buyers" to "Demand: Buyers & Classifications" to better reflect comprehensive analytics
-  - Added interactive filtering to marketplace entries in Intermediaries section, enabling click-to-filter functionality
-- **Production Deployment Ready**: Application now deploys successfully without crash loops or port conflicts
-  - Server properly binds to port 5000 with robust startup sequence
-  - Database initialization runs non-blocking in background
-  - Production build artifacts optimized at 74.1kb bundle size
-  - All API endpoints return correct data matching development environment
-
-### July 09, 2025
-- **Privacy Disclaimer Implementation**: Added comprehensive privacy consent modal to contact form
-  - Implemented mandatory checkbox requiring user consent before form submission
-  - Added privacy disclaimer text in italics with smaller font size as requested
-  - Included hyperlinks to BFA Global Data Protection Policy and Kenya Ltd Data Protection Policy
-  - Submit button remains disabled until privacy consent checkbox is checked
-  - Form validation now includes privacy consent as required field
-  - Privacy consent state resets when modal is closed or form is successfully submitted
-- **Build Investigation & Resolution**: Identified and documented Vite path alias resolution issue
-  - Fixed Dialog accessibility warning by adding DialogDescription component
-  - Investigated build timeouts caused by TypeScript path alias resolution during production build
-  - Confirmed application runs perfectly in development mode with all features functional
-  - Server-side build works correctly (76.0kb bundle in 24ms)
-  - Frontend build issue isolated to Vite configuration requiring path alias adjustment
-- **Lord-Icon Integration**: Successfully implemented animated icons for bilateral agreements sections
-  - Updated Content Security Policy to allow cdn.lordicon.com domains
-  - Added document icon for "Africa's Bilateral Agreements" section
-  - Added handshake icon for "Partnership Flow" section  
-  - Icons load properly with hover animations and emerald green color scheme
-  - No CSP violations or console errors in current implementation
-- **Deployment Ready Status**: Application prepared for production deployment
-  - All core functionality verified working in development environment
-  - Privacy compliance features fully implemented and tested
-  - Database operations stable with 72.3M credits across 15,078 transactions
-  - API endpoints returning consistent data with proper error handling
-  - Server builds successfully for production deployment
+### Integrations
+- **Google Sheets**: For logging export and contact form submissions.

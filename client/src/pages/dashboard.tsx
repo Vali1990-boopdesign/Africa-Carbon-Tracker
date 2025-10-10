@@ -13,15 +13,19 @@ import { Footer } from "@/components/Footer";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
+import { ExportModal } from "@/components/ExportModal";
 
 import { useDashboard } from "@/hooks/use-dashboard";
 import { exportFilteredData } from "@/utils/csvExport";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 
 export default function Dashboard() {
   const { toast } = useToast();
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const {
     metrics,
     transactions,
@@ -109,6 +113,31 @@ export default function Dashboard() {
 
   const handleMarketplaceClick = (marketplace: string) => {
     updateFilter("search", marketplace);
+  };
+
+  const handleExport = () => {
+    try {
+      if (transactions && transactions.length > 0) {
+        exportFilteredData(transactions, filters);
+        toast({
+          title: "Export Complete",
+          description: `Successfully exported ${transactions.length} transactions to CSV`,
+        });
+      } else {
+        toast({
+          title: "No Data to Export",
+          description: "There are no transactions matching your current filters",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Export error:", error);
+      toast({
+        title: "Export Failed",
+        description: "There was an error exporting the data. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -202,6 +231,17 @@ export default function Dashboard() {
 
       {/* Detailed Data Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div className="mb-4 flex justify-end">
+          <Button
+            onClick={() => setIsExportModalOpen(true)}
+            disabled={!transactions || transactions.length === 0}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white"
+            data-testid="button-export-data"
+          >
+            <Download className="mr-2" size={16} />
+            Export Data
+          </Button>
+        </div>
         <DataTable
           transactions={transactions}
           isLoading={transactionsLoading}
@@ -213,6 +253,15 @@ export default function Dashboard() {
 
       {/* Carbon Credit Glossary */}
       <CarbonGlossary />
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        onExport={handleExport}
+        exportType="all"
+        selectedCount={transactions?.length}
+      />
 
       {/* Loading Overlay - Removed since using direct CSV export */}
       {false && (
