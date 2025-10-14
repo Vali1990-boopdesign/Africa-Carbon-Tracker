@@ -4,14 +4,13 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
@@ -30,6 +29,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -78,20 +78,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
         },
       );
 
-      toast({
-        title: "Message Sent",
-        description: "Thank you for your message. We'll get back to you soon!",
-      });
-
-      // Reset form and close modal
-      setFormData({
-        name: "",
-        organisation: "",
-        email: "",
-        message: "",
-      });
-      setPrivacyConsent(false);
-      onClose();
+      // Show success state
+      setShowSuccess(true);
     } catch (error) {
       console.error("Error sending contact form:", error);
       toast({
@@ -113,6 +101,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
       message: "",
     });
     setPrivacyConsent(false);
+    setShowSuccess(false);
     onClose();
   };
 
@@ -121,15 +110,48 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-semibold text-white flex items-center">
-            <MessageCircle className="mr-2" size={20} />
-            Contact Us
-          </DialogTitle>
-          <DialogDescription className="text-gray-400 text-sm">
-            Send us a message about the Africa Carbon Dashboard
-          </DialogDescription>
-        </DialogHeader>
+        {showSuccess ? (
+          // Success State
+          <div className="text-center py-8">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="mb-6"
+            >
+              <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle className="text-emerald-500" size={48} />
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h3 className="text-2xl font-semibold text-white mb-3">
+                Message Sent Successfully!
+              </h3>
+              <p className="text-gray-400 mb-6">
+                Thank you for your message. We'll get back to you soon!
+              </p>
+              <Button
+                onClick={handleClose}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                Close
+              </Button>
+            </motion.div>
+          </div>
+        ) : (
+          // Form State
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-xl font-semibold text-white flex items-center">
+                <MessageCircle className="mr-2" size={20} />
+                Contact Us
+              </DialogTitle>
+            </DialogHeader>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -296,6 +318,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             </Button>
           </div>
         </motion.div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
