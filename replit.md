@@ -54,14 +54,17 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 14, 2025
+- **Export Functionality Removed**: Removed all export sheets functionality from the dashboard
+  - Removed "Export Data" button from UI
+  - Removed ExportModal component and all related code
+  - Removed Google Sheets logging integration for exports
+  - Removed CSV export utilities and handlers
+  - Cleaned up unused imports (useState, useMutation, useToast, Button, Download icon)
+  - Deleted orphaned files: client/src/components/ExportModal.tsx and client/src/utils/csvExport.ts
+  - Dashboard now operates without export functionality
+
 ### October 10, 2025
-- **Export Functionality Implementation**: Added missing export data feature to dashboard
-  - Integrated ExportModal component that was previously built but not connected
-  - Added "Export Data" button above Transaction Details table with emerald green styling
-  - Connected export flow: button → modal → form validation → Google Sheets logging → CSV download
-  - Export modal includes name, email, organisation fields with disclaimer acceptance requirement
-  - CSV export uses exportFilteredData utility respecting current dashboard filters
-  - Added error handling and success toast notifications
 - **Content Security Policy Fix**: Resolved critical CSP blocking issue for external form submissions
   - Updated connect-src directive to allow https://script.google.com and https://script.googleusercontent.com
   - Fixes previously blocked requests to Google Sheets webhooks for export and contact forms

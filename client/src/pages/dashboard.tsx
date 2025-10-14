@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { DataNote } from "@/components/DataNote";
 import { MetricsCards } from "@/components/MetricsCards";
@@ -13,19 +11,10 @@ import { Footer } from "@/components/Footer";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
-import { ExportModal } from "@/components/ExportModal";
-
 import { useDashboard } from "@/hooks/use-dashboard";
-import { exportFilteredData } from "@/utils/csvExport";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
 
 export default function Dashboard() {
-  const { toast } = useToast();
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const {
     metrics,
     transactions,
@@ -113,31 +102,6 @@ export default function Dashboard() {
 
   const handleMarketplaceClick = (marketplace: string) => {
     updateFilter("search", marketplace);
-  };
-
-  const handleExport = () => {
-    try {
-      if (transactions && transactions.length > 0) {
-        exportFilteredData(transactions, filters);
-        toast({
-          title: "Export Complete",
-          description: `Successfully exported ${transactions.length} transactions to CSV`,
-        });
-      } else {
-        toast({
-          title: "No Data to Export",
-          description: "There are no transactions matching your current filters",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error("Export error:", error);
-      toast({
-        title: "Export Failed",
-        description: "There was an error exporting the data. Please try again.",
-        variant: "destructive",
-      });
-    }
   };
 
   return (
@@ -231,17 +195,6 @@ export default function Dashboard() {
 
       {/* Detailed Data Table */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
-        <div className="mb-4 flex justify-end">
-          <Button
-            onClick={() => setIsExportModalOpen(true)}
-            disabled={!transactions || transactions.length === 0}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white"
-            data-testid="button-export-data"
-          >
-            <Download className="mr-2" size={16} />
-            Export Data
-          </Button>
-        </div>
         <DataTable
           transactions={transactions}
           isLoading={transactionsLoading}
@@ -253,51 +206,6 @@ export default function Dashboard() {
 
       {/* Carbon Credit Glossary */}
       <CarbonGlossary />
-
-      {/* Export Modal */}
-      <ExportModal
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
-        onExport={handleExport}
-        exportType="all"
-        selectedCount={transactions?.length}
-      />
-
-      {/* Loading Overlay - Removed since using direct CSV export */}
-      {false && (
-        <motion.div 
-          className="fixed inset-0 bg-dark-950/80 backdrop-blur-sm flex items-center justify-center z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <div className="glass-effect rounded-xl p-8 max-w-sm mx-4">
-            <div className="text-center">
-              <motion.div 
-                className="w-12 h-12 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <motion.div
-                  className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                />
-              </motion.div>
-              <h3 className="text-lg font-semibold text-white mb-2">Exporting Data</h3>
-              <p className="text-gray-400 text-sm mb-4">Processing carbon credit data...</p>
-              <div className="w-full bg-dark-800 rounded-full h-2">
-                <motion.div 
-                  className="bg-emerald-500 h-2 rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
-                />
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
     </div>
   );
 }
