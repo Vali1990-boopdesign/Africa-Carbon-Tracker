@@ -361,13 +361,17 @@ export function Header({
                 </Select>
 
                 <Select
-                  value={filters.projectType || "all"}
+                  value={filters.projectType.length === 1 ? filters.projectType[0] : "all"}
                   onValueChange={(value) =>
                     onFilterChange("projectType", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder="All Project Types" />
+                    <SelectValue placeholder={
+                      filters.projectType.length > 1 
+                        ? `${filters.projectType.length} Project Types` 
+                        : "All Project Types"
+                    } />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Project Types</SelectItem>

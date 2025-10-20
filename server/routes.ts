@@ -83,7 +83,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       country: sanitizeArray(country as string),
       buyerCountry: sanitizeArray(buyerCountry as string),
       sector: sanitizeArray(sector as string), 
-      projectType: sanitizeString(projectType as string),
+      projectType: sanitizeArray(projectType as string),
       scope: sanitizeArray(scope as string),
       startYear: startYear ? Math.max(2000, Math.min(2030, parseInt(startYear as string) || 2010)) : undefined,
       endYear: endYear ? Math.max(2000, Math.min(2030, parseInt(endYear as string) || 2024)) : undefined,

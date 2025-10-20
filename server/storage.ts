@@ -9,7 +9,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -27,7 +27,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -37,7 +37,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -47,7 +47,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -57,7 +57,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -67,7 +67,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -77,7 +77,7 @@ export interface IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -89,7 +89,7 @@ export interface DashboardFilters {
   country?: string[];
   buyerCountry?: string[];
   sector?: string[];
-  projectType?: string;
+  projectType?: string[];
   scope?: string[];
   startYear?: number;
   endYear?: number;
@@ -224,7 +224,7 @@ export class MemStorage implements IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -249,8 +249,8 @@ export class MemStorage implements IStorage {
       transactions = transactions.filter(t => filters.scope!.includes(t.scope));
     }
 
-    if (filters.projectType) {
-      transactions = transactions.filter(t => t.type === filters.projectType);
+    if (filters.projectType && filters.projectType.length > 0) {
+      transactions = transactions.filter(t => filters.projectType!.includes(t.type));
     }
 
     if (filters.startYear) {
@@ -301,8 +301,9 @@ export class MemStorage implements IStorage {
 
   async getDashboardMetrics(filters?: {
     country?: string[];
+    buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -338,7 +339,7 @@ export class MemStorage implements IStorage {
   async getCountryData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -374,7 +375,7 @@ export class MemStorage implements IStorage {
   async getSectorData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -401,7 +402,7 @@ export class MemStorage implements IStorage {
   async getTimeSeriesData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -418,7 +419,7 @@ export class MemStorage implements IStorage {
   async getTopBuyers(limit: number = 10, filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -454,7 +455,7 @@ export class MemStorage implements IStorage {
   async getScopeData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -488,7 +489,7 @@ export class DatabaseStorage implements IStorage {
     country?: string[];
     buyerCountry?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -509,8 +510,8 @@ export class DatabaseStorage implements IStorage {
       conditions.push(inArray(transactions.buyerSector, filters.sector));
     }
 
-    if (filters.projectType) {
-      conditions.push(eq(transactions.type, filters.projectType));
+    if (filters.projectType && filters.projectType.length > 0) {
+      conditions.push(inArray(transactions.type, filters.projectType));
     }
 
     if (filters.scope && filters.scope.length > 0) {
@@ -650,8 +651,8 @@ export class DatabaseStorage implements IStorage {
       conditions.push(inArray(transactions.buyerSector, filters.sector));
     }
 
-    if (filters.projectType) {
-      conditions.push(eq(transactions.type, filters.projectType));
+    if (filters.projectType && filters.projectType.length > 0) {
+      conditions.push(inArray(transactions.type, filters.projectType));
     }
 
     if (filters.scope && filters.scope.length > 0) {
@@ -682,7 +683,7 @@ export class DatabaseStorage implements IStorage {
   async getCountryData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -718,7 +719,7 @@ export class DatabaseStorage implements IStorage {
   async getSectorData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -745,7 +746,7 @@ export class DatabaseStorage implements IStorage {
   async getTimeSeriesData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -762,7 +763,7 @@ export class DatabaseStorage implements IStorage {
   async getTopBuyers(limit: number = 10, filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;
@@ -797,7 +798,7 @@ export class DatabaseStorage implements IStorage {
   async getScopeData(filters?: {
     country?: string[];
     sector?: string[];
-    projectType?: string;
+    projectType?: string[];
     scope?: string[];
     startYear?: number;
     endYear?: number;

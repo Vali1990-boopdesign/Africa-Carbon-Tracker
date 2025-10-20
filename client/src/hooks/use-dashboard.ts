@@ -6,7 +6,7 @@ export interface DashboardFilters {
   country: string[];
   buyerCountry: string[];
   sector: string[];
-  projectType: string;
+  projectType: string[];
   scope: string[];
   startYear: number;
   endYear: number;
@@ -18,7 +18,7 @@ export function useDashboard() {
     country: [],
     buyerCountry: [],
     sector: [],
-    projectType: "",
+    projectType: [],
     scope: [],
     startYear: 2010,
     endYear: 2024,
@@ -219,10 +219,15 @@ export function useDashboard() {
   // Filter management
   const updateFilter = (key: keyof DashboardFilters, value: string | number) => {
     setFilters(prev => {
-      // Handle array filters (country, buyerCountry, sector, scope) - toggle values
-      if (key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'scope') {
+      // Handle array filters (country, buyerCountry, sector, projectType, scope) - toggle values
+      if (key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'projectType' || key === 'scope') {
         const currentArray = prev[key] as string[];
         const stringValue = value.toString();
+        
+        // If empty string, clear the array (happens when "All" is selected)
+        if (stringValue === '') {
+          return { ...prev, [key]: [] };
+        }
         
         // If value is already in array, remove it (toggle off)
         if (currentArray.includes(stringValue)) {
@@ -243,7 +248,7 @@ export function useDashboard() {
       country: [],
       buyerCountry: [],
       sector: [],
-      projectType: "",
+      projectType: [],
       scope: [],
       startYear: 2010,
       endYear: 2024,
@@ -254,7 +259,7 @@ export function useDashboard() {
   const removeFilter = (key: keyof DashboardFilters, value?: string) => {
     setFilters(prev => {
       // For array filters, remove specific value if provided
-      if ((key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'scope') && value) {
+      if ((key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'projectType' || key === 'scope') && value) {
         const currentArray = prev[key] as string[];
         return { 
           ...prev, 
@@ -267,7 +272,7 @@ export function useDashboard() {
         ...prev, 
         [key]: key === "startYear" ? 2010 : 
                key === "endYear" ? 2024 : 
-               key === "country" || key === "buyerCountry" || key === "sector" || key === "scope" ? [] : 
+               key === "country" || key === "buyerCountry" || key === "sector" || key === "projectType" || key === "scope" ? [] : 
                "" 
       };
     });
@@ -293,6 +298,11 @@ export function useDashboard() {
         active.push({ key: "sector", label: `${sector} Sector`, value: sector });
       });
     }
+    if (filters.projectType && filters.projectType.length > 0) {
+      filters.projectType.forEach(type => {
+        active.push({ key: "projectType", label: type, value: type });
+      });
+    }
     if (filters.scope && filters.scope.length > 0) {
       filters.scope.forEach(scope => {
         active.push({ key: "scope", label: `${scope} Scope`, value: scope });
@@ -300,7 +310,6 @@ export function useDashboard() {
     }
     
     // Handle non-array filters
-    if (filters.projectType) active.push({ key: "projectType", label: filters.projectType, value: filters.projectType });
     if (filters.startYear !== 2010 || filters.endYear !== 2024) {
       active.push({ key: "startYear", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
     }
