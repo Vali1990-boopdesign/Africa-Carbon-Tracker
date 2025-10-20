@@ -68,7 +68,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Input validation helper
   const validateFilters = (query: any) => {
-    const { country, sector, projectType, scope, startYear, endYear, search } = query;
+    const { country, buyerCountry, sector, projectType, scope, startYear, endYear, search } = query;
     
     // Sanitize string inputs
     const sanitizeString = (str: string) => str ? str.replace(/[<>\"']/g, '').substring(0, 100) : '';
@@ -81,6 +81,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     return {
       country: sanitizeArray(country as string),
+      buyerCountry: sanitizeArray(buyerCountry as string),
       sector: sanitizeArray(sector as string), 
       projectType: sanitizeString(projectType as string),
       scope: sanitizeArray(scope as string),
@@ -124,17 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Country data for map with filters
   app.get("/api/dashboard/countries", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const countryData = await storage.getCountryData(filters);
       res.json(countryData);
@@ -146,17 +137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Sector data for pie chart with filters
   app.get("/api/dashboard/sectors", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const sectorData = await storage.getSectorData(filters);
       res.json(sectorData);
@@ -168,17 +149,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Scope data for scope breakdown with filters
   app.get("/api/dashboard/scopes", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const scopeData = await storage.getScopeData(filters);
       res.json(scopeData);
@@ -190,17 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Time series data for charts with filters
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
+      const filters = validateFilters(req.query);
 
       const timeSeriesData = await storage.getTimeSeriesData(filters);
       res.json(timeSeriesData);
@@ -212,18 +173,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Top buyers data with filters
   app.get("/api/dashboard/top-buyers", async (req, res) => {
     try {
-      const { country, sector, projectType, scope, startYear, endYear, search } = req.query;
+      const filters = validateFilters(req.query);
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-
-      const filters = {
-        country: country as string,
-        sector: sector as string,
-        projectType: projectType as string,
-        scope: scope as string,
-        startYear: startYear ? parseInt(startYear as string) : undefined,
-        endYear: endYear ? parseInt(endYear as string) : undefined,
-        search: search as string,
-      };
 
       const topBuyers = await storage.getTopBuyers(limit, filters);
       res.json(topBuyers);

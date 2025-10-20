@@ -97,7 +97,7 @@ export default function Dashboard() {
   };
 
   const handleBuyerCountryClick = (country: string) => {
-    updateFilter("country", country);
+    updateFilter("buyerCountry", country);
   };
 
   const handleMarketplaceClick = (marketplace: string) => {

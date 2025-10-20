@@ -4,6 +4,7 @@ import type { DashboardMetrics, Transaction, CountryData, SectorData, TimeSeries
 
 export interface DashboardFilters {
   country: string[];
+  buyerCountry: string[];
   sector: string[];
   projectType: string;
   scope: string[];
@@ -15,6 +16,7 @@ export interface DashboardFilters {
 export function useDashboard() {
   const [filters, setFilters] = useState<DashboardFilters>({
     country: [],
+    buyerCountry: [],
     sector: [],
     projectType: "",
     scope: [],
@@ -217,8 +219,8 @@ export function useDashboard() {
   // Filter management
   const updateFilter = (key: keyof DashboardFilters, value: string | number) => {
     setFilters(prev => {
-      // Handle array filters (country, sector, scope) - toggle values
-      if (key === 'country' || key === 'sector' || key === 'scope') {
+      // Handle array filters (country, buyerCountry, sector, scope) - toggle values
+      if (key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'scope') {
         const currentArray = prev[key] as string[];
         const stringValue = value.toString();
         
@@ -239,6 +241,7 @@ export function useDashboard() {
   const clearFilters = () => {
     setFilters({
       country: [],
+      buyerCountry: [],
       sector: [],
       projectType: "",
       scope: [],
@@ -251,7 +254,7 @@ export function useDashboard() {
   const removeFilter = (key: keyof DashboardFilters, value?: string) => {
     setFilters(prev => {
       // For array filters, remove specific value if provided
-      if ((key === 'country' || key === 'sector' || key === 'scope') && value) {
+      if ((key === 'country' || key === 'buyerCountry' || key === 'sector' || key === 'scope') && value) {
         const currentArray = prev[key] as string[];
         return { 
           ...prev, 
@@ -264,7 +267,7 @@ export function useDashboard() {
         ...prev, 
         [key]: key === "startYear" ? 2010 : 
                key === "endYear" ? 2024 : 
-               key === "country" || key === "sector" || key === "scope" ? [] : 
+               key === "country" || key === "buyerCountry" || key === "sector" || key === "scope" ? [] : 
                "" 
       };
     });
@@ -278,6 +281,11 @@ export function useDashboard() {
     if (filters.country && filters.country.length > 0) {
       filters.country.forEach(country => {
         active.push({ key: "country", label: country, value: country });
+      });
+    }
+    if (filters.buyerCountry && filters.buyerCountry.length > 0) {
+      filters.buyerCountry.forEach(country => {
+        active.push({ key: "buyerCountry", label: `${country} (Buyer)`, value: country });
       });
     }
     if (filters.sector && filters.sector.length > 0) {
