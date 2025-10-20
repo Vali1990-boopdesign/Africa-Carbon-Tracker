@@ -54,6 +54,19 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### October 20, 2025
+- **Project Type Multi-Select Filtering**: Implemented multi-select functionality for the "All Project Types" dropdown filter in the header
+  - Changed projectType from single string to string array throughout the application (DashboardFilters interface)
+  - Updated Header.tsx to display dynamic count when multiple project types selected (e.g., "2 Project Types")
+  - Enhanced updateFilter function to support toggle behavior for project types, matching country/sector/scope filters
+  - Added empty string check to properly clear all selections when "All Project Types" is selected
+  - Updated backend validateFilters to parse comma-separated project type values into string arrays
+  - Modified storage layer (MemStorage and DatabaseStorage) to use array filtering with inArray/includes checks
+  - Users can now select multiple project types simultaneously (e.g., Cookstoves + Afforestation)
+  - Filter badges display for each selected project type with individual removal capability
+  - End-to-end testing confirmed: multi-select works correctly, "All" option clears filters, metrics update properly
+  - Consistent implementation across all array-based filters (country, buyerCountry, sector, projectType, scope)
+
 ### October 14, 2025
 - **Export Functionality Removed**: Removed all export sheets functionality from the dashboard
   - Removed "Export Data" button from UI
