@@ -73,11 +73,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Sanitize string inputs
     const sanitizeString = (str: string) => str ? str.replace(/[<>\"']/g, '').substring(0, 100) : '';
     
+    // Handle comma-separated values for array filters
+    const sanitizeArray = (str: string) => {
+      if (!str) return [];
+      return str.split(',').map(s => sanitizeString(s.trim())).filter(s => s.length > 0);
+    };
+    
     return {
-      country: sanitizeString(country as string),
-      sector: sanitizeString(sector as string), 
+      country: sanitizeArray(country as string),
+      sector: sanitizeArray(sector as string), 
       projectType: sanitizeString(projectType as string),
-      scope: sanitizeString(scope as string),
+      scope: sanitizeArray(scope as string),
       startYear: startYear ? Math.max(2000, Math.min(2030, parseInt(startYear as string) || 2010)) : undefined,
       endYear: endYear ? Math.max(2000, Math.min(2030, parseInt(endYear as string) || 2024)) : undefined,
       search: sanitizeString(search as string),

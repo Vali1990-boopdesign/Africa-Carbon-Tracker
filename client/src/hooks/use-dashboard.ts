@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import type { DashboardMetrics, Transaction, CountryData, SectorData, TimeSeriesData, TopBuyerData, ScopeData } from "@shared/schema";
 
 export interface DashboardFilters {
-  country: string;
-  sector: string;
+  country: string[];
+  sector: string[];
   projectType: string;
-  scope: string;
+  scope: string[];
   startYear: number;
   endYear: number;
   search: string;
@@ -14,10 +14,10 @@ export interface DashboardFilters {
 
 export function useDashboard() {
   const [filters, setFilters] = useState<DashboardFilters>({
-    country: "",
-    sector: "",
+    country: [],
+    sector: [],
     projectType: "",
-    scope: "",
+    scope: [],
     startYear: 2010,
     endYear: 2024,
     search: "",
@@ -31,7 +31,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -54,7 +58,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -77,7 +85,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -100,7 +112,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -123,7 +139,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -146,7 +166,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -169,7 +193,11 @@ export function useDashboard() {
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            params.append(key, value.join(','));
+          }
+        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
           params.append(key, value.toString());
         }
       });
@@ -188,35 +216,83 @@ export function useDashboard() {
 
   // Filter management
   const updateFilter = (key: keyof DashboardFilters, value: string | number) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    setFilters(prev => {
+      // Handle array filters (country, sector, scope) - toggle values
+      if (key === 'country' || key === 'sector' || key === 'scope') {
+        const currentArray = prev[key] as string[];
+        const stringValue = value.toString();
+        
+        // If value is already in array, remove it (toggle off)
+        if (currentArray.includes(stringValue)) {
+          return { ...prev, [key]: currentArray.filter(item => item !== stringValue) };
+        } else {
+          // Otherwise, add it (toggle on)
+          return { ...prev, [key]: [...currentArray, stringValue] };
+        }
+      }
+      
+      // Handle non-array filters
+      return { ...prev, [key]: value };
+    });
   };
 
   const clearFilters = () => {
     setFilters({
-      country: "",
-      sector: "",
+      country: [],
+      sector: [],
       projectType: "",
-      scope: "",
+      scope: [],
       startYear: 2010,
       endYear: 2024,
       search: "",
     });
   };
 
-  const removeFilter = (key: keyof DashboardFilters) => {
-    setFilters(prev => ({ 
-      ...prev, 
-      [key]: key === "startYear" ? 2010 : key === "endYear" ? 2024 : "" 
-    }));
+  const removeFilter = (key: keyof DashboardFilters, value?: string) => {
+    setFilters(prev => {
+      // For array filters, remove specific value if provided
+      if ((key === 'country' || key === 'sector' || key === 'scope') && value) {
+        const currentArray = prev[key] as string[];
+        return { 
+          ...prev, 
+          [key]: currentArray.filter(item => item !== value)
+        };
+      }
+      
+      // Otherwise clear the entire filter
+      return { 
+        ...prev, 
+        [key]: key === "startYear" ? 2010 : 
+               key === "endYear" ? 2024 : 
+               key === "country" || key === "sector" || key === "scope" ? [] : 
+               "" 
+      };
+    });
   };
 
   // Active filters computation
   const activeFilters = useMemo(() => {
     const active: Array<{ key: keyof DashboardFilters; label: string; value: string }> = [];
-    if (filters.country) active.push({ key: "country", label: filters.country, value: filters.country });
-    if (filters.sector) active.push({ key: "sector", label: `${filters.sector} Sector`, value: filters.sector });
+    
+    // Handle array filters
+    if (filters.country && filters.country.length > 0) {
+      filters.country.forEach(country => {
+        active.push({ key: "country", label: country, value: country });
+      });
+    }
+    if (filters.sector && filters.sector.length > 0) {
+      filters.sector.forEach(sector => {
+        active.push({ key: "sector", label: `${sector} Sector`, value: sector });
+      });
+    }
+    if (filters.scope && filters.scope.length > 0) {
+      filters.scope.forEach(scope => {
+        active.push({ key: "scope", label: `${scope} Scope`, value: scope });
+      });
+    }
+    
+    // Handle non-array filters
     if (filters.projectType) active.push({ key: "projectType", label: filters.projectType, value: filters.projectType });
-    if (filters.scope) active.push({ key: "scope", label: `${filters.scope} Scope`, value: filters.scope });
     if (filters.startYear !== 2010 || filters.endYear !== 2024) {
       active.push({ key: "startYear", label: `${filters.startYear}-${filters.endYear}`, value: `${filters.startYear}-${filters.endYear}` });
     }

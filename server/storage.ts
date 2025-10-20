@@ -1,15 +1,15 @@
 import { transactions, buyerProfiles, type Transaction, type InsertTransaction, type BuyerProfile, type InsertBuyerProfile, type DashboardMetrics, type CountryData, type SectorData, type TimeSeriesData, type TopBuyerData, type ScopeData } from "@shared/schema";
 import { db } from "./db";
-import { eq, and, gte, lte, like, or, sql, type SQL } from "drizzle-orm";
+import { eq, and, gte, lte, like, or, sql, inArray, type SQL } from "drizzle-orm";
 
 export interface IStorage {
   // Transaction operations
   getTransactions(): Promise<Transaction[]>;
   getTransactionsByFilters(filters: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -23,55 +23,55 @@ export interface IStorage {
 
   // Dashboard analytics
   getDashboardMetrics(filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<DashboardMetrics>;
   getCountryData(filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<CountryData[]>;
   getSectorData(filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<SectorData[]>;
   getTimeSeriesData(filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<TimeSeriesData[]>;
   getTopBuyers(limit?: number, filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<TopBuyerData[]>;
   getScopeData(filters?: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
@@ -79,8 +79,8 @@ export interface IStorage {
 }
 
 export interface DashboardFilters {
-  country?: string;
-  sector?: string;
+  country?: string[];
+  sector?: string[];
   projectType?: string;
   startYear?: number;
   endYear?: number;
@@ -212,26 +212,27 @@ export class MemStorage implements IStorage {
   }
 
   async getTransactionsByFilters(filters: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<Transaction[]> {
     let transactions = Array.from(this.transactions.values());
 
-    if (filters.country) {
-      transactions = transactions.filter(t => t.country === filters.country);
+    // Handle array filters
+    if (filters.country && filters.country.length > 0) {
+      transactions = transactions.filter(t => filters.country!.includes(t.country));
     }
 
-    if (filters.sector) {
-      transactions = transactions.filter(t => t.buyerSector === filters.sector);
+    if (filters.sector && filters.sector.length > 0) {
+      transactions = transactions.filter(t => filters.sector!.includes(t.buyerSector));
     }
 
-    if (filters.scope) {
-      transactions = transactions.filter(t => t.scope === filters.scope);
+    if (filters.scope && filters.scope.length > 0) {
+      transactions = transactions.filter(t => filters.scope!.includes(t.scope));
     }
 
     if (filters.projectType) {
@@ -464,30 +465,31 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getTransactionsByFilters(filters: {
-    country?: string;
-    sector?: string;
+    country?: string[];
+    sector?: string[];
     projectType?: string;
-    scope?: string;
+    scope?: string[];
     startYear?: number;
     endYear?: number;
     search?: string;
   }): Promise<Transaction[]> {
     const conditions = [];
 
-    if (filters.country) {
-      conditions.push(eq(transactions.country, filters.country));
+    // Handle array filters with inArray
+    if (filters.country && filters.country.length > 0) {
+      conditions.push(inArray(transactions.country, filters.country));
     }
 
-    if (filters.sector) {
-      conditions.push(eq(transactions.buyerSector, filters.sector));
+    if (filters.sector && filters.sector.length > 0) {
+      conditions.push(inArray(transactions.buyerSector, filters.sector));
     }
 
     if (filters.projectType) {
       conditions.push(eq(transactions.type, filters.projectType));
     }
 
-    if (filters.scope) {
-      conditions.push(eq(transactions.scope, filters.scope));
+    if (filters.scope && filters.scope.length > 0) {
+      conditions.push(inArray(transactions.scope, filters.scope));
     }
 
     if (filters.startYear) {
@@ -610,12 +612,13 @@ export class DatabaseStorage implements IStorage {
   private buildWhereConditions(filters: DashboardFilters): SQL[] {
     const conditions: SQL[] = [];
 
-    if (filters.country) {
-      conditions.push(eq(transactions.country, filters.country));
+    // Handle array filters with inArray
+    if (filters.country && filters.country.length > 0) {
+      conditions.push(inArray(transactions.country, filters.country));
     }
 
-    if (filters.sector) {
-      conditions.push(eq(transactions.buyerSector, filters.sector));
+    if (filters.sector && filters.sector.length > 0) {
+      conditions.push(inArray(transactions.buyerSector, filters.sector));
     }
 
     if (filters.projectType) {

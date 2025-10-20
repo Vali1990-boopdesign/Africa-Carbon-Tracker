@@ -27,7 +27,7 @@ interface HeaderProps {
     value: string;
   }>;
   onFilterChange: (key: keyof DashboardFilters, value: string | number) => void;
-  onRemoveFilter: (key: keyof DashboardFilters) => void;
+  onRemoveFilter: (key: keyof DashboardFilters, value?: string) => void;
   onClearFilters: () => void;
   isLoading?: boolean;
 }
@@ -315,13 +315,17 @@ export function Header({
               {/* Filter Dropdowns */}
               <div className="flex items-center space-x-3">
                 <Select
-                  value={filters.country || "all"}
+                  value={filters.country.length === 1 ? filters.country[0] : "all"}
                   onValueChange={(value) =>
                     onFilterChange("country", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder="All Countries" />
+                    <SelectValue placeholder={
+                      filters.country.length > 1 
+                        ? `${filters.country.length} Countries` 
+                        : "All Countries"
+                    } />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Countries</SelectItem>
@@ -334,13 +338,17 @@ export function Header({
                 </Select>
 
                 <Select
-                  value={filters.sector || "all"}
+                  value={filters.sector.length === 1 ? filters.sector[0] : "all"}
                   onValueChange={(value) =>
                     onFilterChange("sector", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder="All Buyer Sectors" />
+                    <SelectValue placeholder={
+                      filters.sector.length > 1 
+                        ? `${filters.sector.length} Sectors` 
+                        : "All Buyer Sectors"
+                    } />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Buyer Sectors</SelectItem>
@@ -405,7 +413,7 @@ export function Header({
                         <Badge
                           variant="secondary"
                           className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
-                          onClick={() => onRemoveFilter(filter.key)}
+                          onClick={() => onRemoveFilter(filter.key, filter.value)}
                         >
                           {filter.label}
                           <X className="ml-1" size={12} />
