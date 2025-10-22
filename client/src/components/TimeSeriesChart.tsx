@@ -159,15 +159,15 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
         <CardContent className="p-4">
           <Tabs value={activeTab} onValueChange={onTabChange}>
             <TabsList className="grid w-full grid-cols-3 mb-4">
-              <TabsTrigger value="trends" className="text-sm">
+              <TabsTrigger value="trends" className="text-sm cursor-pointer">
                 <TrendingUp className="mr-2" size={16} />
                 <TermTooltip term="trends" explanation="Market patterns over time" />
               </TabsTrigger>
-              <TabsTrigger value="projects" className="text-sm">
+              <TabsTrigger value="projects" className="text-sm cursor-pointer">
                 <BarChart3 className="mr-2" size={16} />
                 <TermTooltip term="projects" explanation="Emission reduction initiatives" />
               </TabsTrigger>
-              <TabsTrigger value="buyers" className="text-sm">
+              <TabsTrigger value="buyers" className="text-sm cursor-pointer">
                 <Axis3d className="mr-2" size={16} />
                 <TermTooltip term="buyers" explanation="Companies purchasing carbon credits" />
               </TabsTrigger>
