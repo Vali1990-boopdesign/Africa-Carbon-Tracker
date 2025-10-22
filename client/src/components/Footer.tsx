@@ -11,6 +11,15 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Partner Logos */}
         <div className="flex justify-center items-center gap-6 mb-6">
+          {/* Catalyst Fund Logo */}
+          <div className="bg-white rounded-lg p-2 shadow-lg">
+            <img
+              src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
+              alt="Catalyst Fund"
+              className="h-8 object-contain"
+            />
+          </div>
+
           {/* BFA Global Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
             <img
@@ -20,15 +29,6 @@ export function Footer() {
               onError={(e) => {
                 console.error("BFA Global logo failed to load:", e);
               }}
-            />
-          </div>
-
-          {/* Catalyst Fund Logo */}
-          <div className="bg-white rounded-lg p-2 shadow-lg">
-            <img
-              src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
-              alt="Catalyst Fund"
-              className="h-8 object-contain"
             />
           </div>
 
