@@ -191,15 +191,26 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
               {sortedTopBuyers.slice(0, buyersShowCount).map((buyer, index) => 
                 renderItemRow(buyer, index, onBuyerClick, 'buyer')
               )}
-              {sortedTopBuyers.length > buyersShowCount && (
-                <Button 
-                  variant="outline" 
-                  className="w-full mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
-                  onClick={() => setBuyersShowCount(prev => prev + 5)}
-                >
-                  Load More
-                </Button>
-              )}
+              <div className="flex gap-2">
+                {sortedTopBuyers.length > buyersShowCount && (
+                  <Button 
+                    variant="outline" 
+                    className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                    onClick={() => setBuyersShowCount(prev => prev + 5)}
+                  >
+                    Load More
+                  </Button>
+                )}
+                {buyersShowCount > 5 && (
+                  <Button 
+                    variant="outline" 
+                    className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                    onClick={() => setBuyersShowCount(5)}
+                  >
+                    Show Less
+                  </Button>
+                )}
+              </div>
             </TabsContent>
 
             <TabsContent value="countries" className="space-y-3">
@@ -212,15 +223,26 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                   {countryData.slice(0, countriesShowCount).map((country, index) => 
                     renderItemRow(country, index, onCountryClick, 'country')
                   )}
-                  {countryData.length > countriesShowCount && (
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
-                      onClick={() => setCountriesShowCount(prev => prev + 5)}
-                    >
-                      Load More
-                    </Button>
-                  )}
+                  <div className="flex gap-2">
+                    {countryData.length > countriesShowCount && (
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        onClick={() => setCountriesShowCount(prev => prev + 5)}
+                      >
+                        Load More
+                      </Button>
+                    )}
+                    {countriesShowCount > 5 && (
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        onClick={() => setCountriesShowCount(5)}
+                      >
+                        Show Less
+                      </Button>
+                    )}
+                  </div>
                 </>
               )}
             </TabsContent>
@@ -235,15 +257,26 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                   {sortedSectorData.slice(0, sectorsShowCount).map((sector, index) => 
                     renderItemRow(sector, index, onSectorClick, 'sector')
                   )}
-                  {sortedSectorData.length > sectorsShowCount && (
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
-                      onClick={() => setSectorsShowCount(prev => prev + 5)}
-                    >
-                      Load More
-                    </Button>
-                  )}
+                  <div className="flex gap-2">
+                    {sortedSectorData.length > sectorsShowCount && (
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        onClick={() => setSectorsShowCount(prev => prev + 5)}
+                      >
+                        Load More
+                      </Button>
+                    )}
+                    {sectorsShowCount > 5 && (
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        onClick={() => setSectorsShowCount(5)}
+                      >
+                        Show Less
+                      </Button>
+                    )}
+                  </div>
                 </>
               )}
             </TabsContent>
