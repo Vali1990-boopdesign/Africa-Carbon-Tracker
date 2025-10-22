@@ -1,10 +1,15 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { MessageCircle, Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
@@ -32,15 +37,15 @@ interface HeaderProps {
   isLoading?: boolean;
 }
 
-export function Header({ 
-  dateRange, 
-  onDateRangeChange, 
+export function Header({
+  dateRange,
+  onDateRangeChange,
   filters,
   activeFilters,
   onFilterChange,
   onRemoveFilter,
   onClearFilters,
-  isLoading 
+  isLoading,
 }: HeaderProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(filters.search);
@@ -115,7 +120,7 @@ export function Header({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       if (currentScrollY < 10) {
         // Always show header at top of page
         setIsHeaderVisible(true);
@@ -126,7 +131,7 @@ export function Header({
         // Scrolling up - show header
         setIsHeaderVisible(true);
       }
-      
+
       setLastScrollY(currentScrollY);
     };
 
@@ -140,7 +145,7 @@ export function Header({
     { key: "2013-2015", label: "2013 - 2015" },
     { key: "2016-2018", label: "2016 - 2018" },
     { key: "2019-2021", label: "2019 - 2021" },
-    { key: "2022-2024", label: "2022 - 2024" }
+    { key: "2022-2024", label: "2022 - 2024" },
   ];
 
   const handleDateRangeChange = (value: string) => {
@@ -162,9 +167,9 @@ export function Header({
     <motion.header
       className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider"
       initial={{ y: -20, opacity: 0 }}
-      animate={{ 
-        y: isHeaderVisible ? 0 : -100, 
-        opacity: isHeaderVisible ? 1 : 0 
+      animate={{
+        y: isHeaderVisible ? 0 : -100,
+        opacity: isHeaderVisible ? 1 : 0,
       }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
     >
@@ -172,7 +177,7 @@ export function Header({
         {/* Top Header Section */}
         <div className="flex items-center justify-between h-16">
           {/* Left side - Title and Icon */}
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-3"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -184,25 +189,25 @@ export function Header({
                 src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
                 style={{
                   width: "43px",
-                  height: "43px"
+                  height: "43px",
                 }}
               />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">
-                <TermTooltip 
-                  term="Africa Carbon Dashboard" 
-                  explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024" 
+                <TermTooltip
+                  term="Africa Carbon Dashboard"
+                  explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024"
                 />
               </h1>
               <p className="text-sm text-default-600">
-                © The Catalyst Fund & FSD Africa
+                © The Catalyst Fund, BFA Global & FSD Africa
               </p>
             </div>
           </motion.div>
 
           {/* Right side - Controls */}
-          <motion.div 
+          <motion.div
             className="flex items-center space-x-3"
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -219,7 +224,9 @@ export function Header({
               >
                 <SelectTrigger className="w-32 border-none bg-transparent text-white min-h-0 h-auto px-0">
                   <SelectValue placeholder="All Years">
-                    {dateRangeOptions.find(option => option.key === (dateRange || "all"))?.label || "All Years"}
+                    {dateRangeOptions.find(
+                      (option) => option.key === (dateRange || "all"),
+                    )?.label || "All Years"}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -291,9 +298,11 @@ export function Header({
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
                           className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg z-[99999] max-h-64 overflow-y-auto"
                           style={{
-                            filter: "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))",
+                            filter:
+                              "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))",
                             backdropFilter: "blur(12px)",
-                            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                            boxShadow:
+                              "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                           }}
                         >
                           {searchSuggestions.map((suggestion, index) => (
@@ -315,17 +324,21 @@ export function Header({
               {/* Filter Dropdowns */}
               <div className="flex items-center space-x-3">
                 <Select
-                  value={filters.country.length === 1 ? filters.country[0] : "all"}
+                  value={
+                    filters.country.length === 1 ? filters.country[0] : "all"
+                  }
                   onValueChange={(value) =>
                     onFilterChange("country", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder={
-                      filters.country.length > 1 
-                        ? `${filters.country.length} Countries` 
-                        : "All Countries"
-                    } />
+                    <SelectValue
+                      placeholder={
+                        filters.country.length > 1
+                          ? `${filters.country.length} Countries`
+                          : "All Countries"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Countries</SelectItem>
@@ -338,17 +351,21 @@ export function Header({
                 </Select>
 
                 <Select
-                  value={filters.sector.length === 1 ? filters.sector[0] : "all"}
+                  value={
+                    filters.sector.length === 1 ? filters.sector[0] : "all"
+                  }
                   onValueChange={(value) =>
                     onFilterChange("sector", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder={
-                      filters.sector.length > 1 
-                        ? `${filters.sector.length} Sectors` 
-                        : "All Buyer Sectors"
-                    } />
+                    <SelectValue
+                      placeholder={
+                        filters.sector.length > 1
+                          ? `${filters.sector.length} Sectors`
+                          : "All Buyer Sectors"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Buyer Sectors</SelectItem>
@@ -361,17 +378,23 @@ export function Header({
                 </Select>
 
                 <Select
-                  value={filters.projectType.length === 1 ? filters.projectType[0] : "all"}
+                  value={
+                    filters.projectType.length === 1
+                      ? filters.projectType[0]
+                      : "all"
+                  }
                   onValueChange={(value) =>
                     onFilterChange("projectType", value === "all" ? "" : value)
                   }
                 >
                   <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
-                    <SelectValue placeholder={
-                      filters.projectType.length > 1 
-                        ? `${filters.projectType.length} Project Types` 
-                        : "All Project Types"
-                    } />
+                    <SelectValue
+                      placeholder={
+                        filters.projectType.length > 1
+                          ? `${filters.projectType.length} Project Types`
+                          : "All Project Types"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Project Types</SelectItem>
@@ -417,7 +440,9 @@ export function Header({
                         <Badge
                           variant="secondary"
                           className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
-                          onClick={() => onRemoveFilter(filter.key, filter.value)}
+                          onClick={() =>
+                            onRemoveFilter(filter.key, filter.value)
+                          }
                         >
                           {filter.label}
                           <X className="ml-1" size={12} />
