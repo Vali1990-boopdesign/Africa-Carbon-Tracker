@@ -155,13 +155,6 @@ export function DataTable({ transactions, isLoading }: DataTableProps) {
             <Table>
               <TableHeader>
                 <TableRow className="border-gray-700">
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={selectedRows.size === currentTransactions.length && currentTransactions.length > 0}
-                      onCheckedChange={handleSelectAll}
-                      className="border-gray-600 data-[state=checked]:bg-emerald-600"
-                    />
-                  </TableHead>
                   <SortableHeader field="buyerBrandName">Buyer</SortableHeader>
                   <SortableHeader field="country">Country</SortableHeader>
                   <SortableHeader field="type">Project Type</SortableHeader>
@@ -184,13 +177,6 @@ export function DataTable({ transactions, isLoading }: DataTableProps) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedRows.has(transaction.id)}
-                        onCheckedChange={(checked) => handleSelectRow(transaction.id, checked as boolean)}
-                        className="border-gray-600 data-[state=checked]:bg-emerald-600"
-                      />
-                    </TableCell>
                     <TableCell>
                       <div>
                         <p className="text-sm font-medium text-white">{transaction.buyerBrandName}</p>
