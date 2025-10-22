@@ -104,6 +104,10 @@ export default function Dashboard() {
     updateFilter("search", marketplace);
   };
 
+  const handleProjectTypeClick = (projectType: string) => {
+    updateFilter("projectType", projectType);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-950 via-dark-900 to-dark-950">
       {/* Header */}
@@ -198,6 +202,7 @@ export default function Dashboard() {
         <DataTable
           transactions={transactions}
           isLoading={transactionsLoading}
+          onProjectTypeClick={handleProjectTypeClick}
         />
       </div>
 

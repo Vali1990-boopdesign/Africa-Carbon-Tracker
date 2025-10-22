@@ -14,12 +14,13 @@ import { formatNumber } from "@/lib/formatNumber";
 interface DataTableProps {
   transactions?: Transaction[];
   isLoading: boolean;
+  onProjectTypeClick?: (projectType: string) => void;
 }
 
 type SortField = keyof Transaction;
 type SortDirection = "asc" | "desc";
 
-export function DataTable({ transactions, isLoading }: DataTableProps) {
+export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataTableProps) {
   const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set());
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -190,7 +191,14 @@ export function DataTable({ transactions, isLoading }: DataTableProps) {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge className={getProjectTypeColor(transaction.type)}>
+                      <Badge 
+                        className={`${getProjectTypeColor(transaction.type)} cursor-pointer hover:opacity-80 transition-opacity`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onProjectTypeClick?.(transaction.type);
+                        }}
+                        data-testid={`chip-project-type-${transaction.type.toLowerCase().replace(/\s+/g, '-')}`}
+                      >
                         {transaction.type}
                       </Badge>
                     </TableCell>
