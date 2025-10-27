@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Header } from "@/components/Header";
 import { DataNote } from "@/components/DataNote";
 import { MetricsCards } from "@/components/MetricsCards";
@@ -11,6 +12,7 @@ import { Footer } from "@/components/Footer";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
+import { FeedbackModal, useFeedbackTrigger } from "@/components/FeedbackModal";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { motion } from "framer-motion";
 
@@ -34,6 +36,13 @@ export default function Dashboard() {
     metricsLoading,
     transactionsLoading,
   } = useDashboard();
+
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+
+  // Smart timing trigger for feedback modal
+  useFeedbackTrigger(() => {
+    setShowFeedbackModal(true);
+  });
 
 
 
@@ -211,6 +220,12 @@ export default function Dashboard() {
 
       {/* Carbon Credit Glossary */}
       <CarbonGlossary />
+
+      {/* Feedback Modal */}
+      <FeedbackModal
+        isOpen={showFeedbackModal}
+        onClose={() => setShowFeedbackModal(false)}
+      />
     </div>
   );
 }
