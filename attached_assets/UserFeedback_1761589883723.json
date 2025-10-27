@@ -1,0 +1,127 @@
+{
+  "feedbackForm": {
+    "title": "Help Us Improve",
+    "description": "Share your experience with the Africa Carbon Dashboard",
+    "questions": [
+      {
+        "id": "q1_usefulness",
+        "type": "scale",
+        "required": true,
+        "question": "How useful was the dashboard for your needs?",
+        "scale": {
+          "min": 0,
+          "max": 10,
+          "minLabel": "Not useful",
+          "maxLabel": "Extremely useful"
+        },
+        "conditionalFollow": {
+          "trigger": "value < 5",
+          "followUpId": "q1_followup"
+        }
+      },
+      {
+        "id": "q1_followup",
+        "type": "textarea",
+        "required": false,
+        "question": "What might help make the dashboard more useful for your needs?",
+        "placeholder": "Share your thoughts...",
+        "maxLength": 300,
+        "conditionalDisplay": true
+      },
+      {
+        "id": "q2_use_case",
+        "type": "single_choice",
+        "required": true,
+        "question": "What did you primarily use the dashboard for?",
+        "options": [
+          {
+            "value": "identify_buyers",
+            "label": "Identifying potential carbon credit buyers"
+          },
+          {
+            "value": "market_trends",
+            "label": "Understanding market trends for a specific country/region"
+          },
+          {
+            "value": "project_scope",
+            "label": "Exploring demand by project scope (e.g., cookstoves, boreholes)"
+          },
+          {
+            "value": "research_policy",
+            "label": "Research or policy analysis"
+          },
+          {
+            "value": "other",
+            "label": "Other",
+            "hasTextField": true,
+            "textFieldPlaceholder": "Please specify..."
+          }
+        ]
+      },
+      {
+        "id": "q3_future_feature",
+        "type": "textarea",
+        "required": false,
+        "question": "If you could add ONE feature to make this dashboard 10x more useful, what would it be?",
+        "placeholder": "Describe your ideal feature...",
+        "maxLength": 200
+      },
+      {
+        "id": "q4_follow_up",
+        "type": "checkbox",
+        "required": false,
+        "question": "I'm open to a 10-minute follow-up conversation about my feedback",
+        "conditionalFollow": {
+          "trigger": "checked",
+          "followUpId": "q4_email"
+        }
+      },
+      {
+        "id": "q4_email",
+        "type": "email",
+        "required": false,
+        "question": "Email address",
+        "placeholder": "your.email@example.com",
+        "conditionalDisplay": true,
+        "validation": {
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "message": "Please enter a valid email address"
+        }
+      }
+    ],
+    "submission": {
+      "successTitle": "Thank you for your feedback",
+      "successMessage": "Your insights help us continuously improve the dashboard's functionality and user experience. We review all feedback monthly and use it to inform our development roadmap.",
+      "buttonText": "Close"
+    },
+    "settings": {
+      "allowMultipleSubmissions": true,
+      "showProgressIndicator": true,
+      "savePartialResponses": false,
+      "anonymousMode": true
+    }
+  }
+}
+```
+
+---
+
+## Google Sheets Integration
+
+### **Setup Instructions**
+
+**1. Create Google Sheet Structure**
+
+Create a new Google Sheet with these columns:
+```
+A: Timestamp
+B: Session_ID
+C: Q1_Usefulness_Score
+D: Q1_Followup_Text
+E: Q2_Primary_Use_Case
+F: Q2_Other_Specify
+G: Q3_Future_Feature
+H: Q4_Open_To_Followup
+I: Q4_Email
+J: User_Agent
+K: Referrer_URL
