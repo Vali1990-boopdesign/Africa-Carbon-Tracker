@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import { registerRoutes } from "./routes";
 import { seedDatabase } from "./seed";
 import { runMigrations } from "./migrate";
@@ -7,6 +8,10 @@ import { testDatabaseConnection } from "./db";
 
 const app = express();
 app.set('trust proxy', 1); // Trust first proxy (Replit's reverse proxy)
+
+// Enable Gzip/Brotli compression for all responses
+app.use(compression());
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
