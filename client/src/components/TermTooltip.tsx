@@ -32,26 +32,26 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
   );
 }
 
-// Simplified carbon credit term definitions (5-6 words max)
+// Carbon credit term definitions
 export const carbonTerms = {
-  "trends": "Market patterns over time",
-  "projects": "Emission reduction initiatives",
-  "buyers": "Companies purchasing carbon credits",
-  "carbon credits": "Certificates for emission reductions",
-  "retirement": "Permanent cancellation of credits",
-  "registry": "Official tracking platforms",
-  "additionality": "Projects requiring carbon financing",
-  "voluntary carbon market": "Decentralized marketplace for credits",
-  "verification": "Third-party project assessment",
-  "baseline": "Reference emissions without project",
-  "permanence": "Duration of carbon storage",
-  "leakage": "Unintended emissions increases elsewhere",
-  "MRV": "Measurement, reporting, and verification",
-  "scope": "Emission categories (1, 2, 3)",
-  "co-benefits": "Additional positive project impacts",
-  "vintage": "Year of emission reduction",
-  "buffer pool": "Credits reserved for reversals",
-  "double counting": "Improper multiple claiming prevention"
+  "trends": "Patterns and shifts in the carbon market over time, including pricing, demand, supply, and policy changes that influence how carbon credits are created and traded.",
+  "projects": "Activities or initiatives designed to reduce or remove greenhouse gas emissions — for example, renewable energy installations, reforestation, or methane capture programs.",
+  "buyers": "Organizations, companies, or individuals that purchase carbon credits to offset their emissions or meet sustainability targets.",
+  "carbon credits": "Tradable certificates representing one metric ton of carbon dioxide (or equivalent greenhouse gases) reduced or removed from the atmosphere.",
+  "retirement": "The process of permanently canceling a carbon credit after it's used to offset emissions, ensuring it can't be traded or claimed again.",
+  "registry": "Official databases that issue, track, and record the creation, transfer, and retirement of carbon credits to maintain transparency and avoid double counting.",
+  "additionality": "A principle ensuring that emission reductions or removals would not have occurred without the carbon finance from the project.",
+  "voluntary carbon market": "A decentralized system where companies and individuals buy carbon credits voluntarily (not due to legal requirements) to meet climate goals or corporate sustainability commitments.",
+  "verification": "An independent, third-party review process confirming that a carbon project's emission reductions are real, measurable, and compliant with standards.",
+  "baseline": "An estimate of what emissions would have been if the project had not taken place — used to calculate the true impact of emission reductions.",
+  "permanence": "The extent to which carbon reductions or removals are expected to last over time, addressing the risk of reversal (e.g., forest fires releasing stored carbon).",
+  "leakage": "When a project unintentionally causes emissions to increase elsewhere — for instance, stopping deforestation in one area leading to more cutting in another.",
+  "MRV": "A standardized process that tracks, documents, and confirms the actual emission reductions or removals achieved by a project.",
+  "scope": "Categories defining where emissions occur within an organization: Scope 1: Direct emissions from owned operations. Scope 2: Indirect emissions from purchased energy. Scope 3: All other indirect emissions across the value chain.",
+  "co-benefits": "Positive social, environmental, or economic impacts from carbon projects — such as job creation, biodiversity conservation, or improved community health.",
+  "vintage": "The year in which a carbon credit's emission reduction or removal occurred, often influencing its market value and relevance.",
+  "buffer pool": "A reserve of carbon credits set aside as insurance to cover potential future reversals of stored carbon (e.g., due to natural disasters).",
+  "double counting": "A situation where the same emission reduction is claimed by more than one entity; carbon registries and verification systems work to prevent this."
 };
 
 export function getTermExplanation(term: string): string | undefined {
