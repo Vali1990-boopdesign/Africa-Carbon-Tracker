@@ -77,7 +77,7 @@ export function CarbonGlossary() {
             )}
           </div>
           
-          {/* Footer */}
+          /*{/* Footer */}
           <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
               Hover over dotted underlined terms throughout the dashboard for quick explanations
