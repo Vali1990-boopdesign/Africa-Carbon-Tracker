@@ -19,7 +19,7 @@ export function CarbonGlossary() {
   const filteredTerms = Object.entries(carbonTerms).filter(
     ([term, definition]) =>
       term.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      definition.toLowerCase().includes(searchTerm.toLowerCase())
+      definition.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -40,7 +40,7 @@ export function CarbonGlossary() {
             Carbon Credit Glossary
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="space-y-4">
           {/* Search */}
           <div className="relative">
@@ -61,7 +61,10 @@ export function CarbonGlossary() {
               </div>
             ) : (
               filteredTerms.map(([term, definition]) => (
-                <Card key={term} className="border border-gray-200 dark:border-gray-700">
+                <Card
+                  key={term}
+                  className="border border-gray-200 dark:border-gray-700"
+                >
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base font-semibold text-emerald-600 dark:text-emerald-400 capitalize">
                       {term}
@@ -75,13 +78,6 @@ export function CarbonGlossary() {
                 </Card>
               ))
             )}
-          </div>
-          
-          /*{/* Footer */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-              Hover over dotted underlined terms throughout the dashboard for quick explanations
-            </p>
           </div>
         </div>
       </DialogContent>
