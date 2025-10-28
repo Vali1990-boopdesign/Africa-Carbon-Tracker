@@ -289,7 +289,7 @@ export function Header({
               <div className="flex-1 min-w-64" ref={searchRef}>
                 <div className="relative">
                   <Search
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
                     size={16}
                   />
                   <Input
@@ -298,7 +298,7 @@ export function Header({
                     value={searchValue || ""}
                     onChange={(e) => handleSearchChange(e.target.value)}
                     onFocus={() => setIsSearchFocused(true)}
-                    className="w-full bg-gray-800 dark:bg-dark-800 border-gray-600 dark:border-gray-700 pl-10 text-gray-200 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:border-emerald-500"
+                    className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 pl-10 text-gray-900 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 focus:border-emerald-500"
                   />
 
                   {/* Search Suggestions Dropdown */}
@@ -354,7 +354,7 @@ export function Header({
                     onFilterChange("country", value === "all" ? "" : value)
                   }
                 >
-                  <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
+                  <SelectTrigger className="w-40 bg-white dark:bg-dark-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200">
                     <SelectValue
                       placeholder={
                         filters.country.length > 1
@@ -381,7 +381,7 @@ export function Header({
                     onFilterChange("sector", value === "all" ? "" : value)
                   }
                 >
-                  <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
+                  <SelectTrigger className="w-40 bg-white dark:bg-dark-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200">
                     <SelectValue
                       placeholder={
                         filters.sector.length > 1
@@ -410,7 +410,7 @@ export function Header({
                     onFilterChange("projectType", value === "all" ? "" : value)
                   }
                 >
-                  <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
+                  <SelectTrigger className="w-48 bg-white dark:bg-dark-800 border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-200">
                     <SelectValue
                       placeholder={
                         filters.projectType.length > 1
@@ -433,7 +433,7 @@ export function Header({
                   variant="ghost"
                   size="icon"
                   onClick={onClearFilters}
-                  className="text-gray-400 hover:text-white"
+                  className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   title="Clear all filters"
                 >
                   <X size={16} />
@@ -450,7 +450,7 @@ export function Header({
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                 >
-                  <span className="text-xs text-gray-400">Active filters:</span>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">Active filters:</span>
                   <div className="flex items-center space-x-2 flex-wrap">
                     {activeFilters.map((filter, index) => (
                       <motion.div
@@ -462,7 +462,7 @@ export function Header({
                       >
                         <Badge
                           variant="secondary"
-                          className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
+                          className="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/30 cursor-pointer"
                           onClick={() =>
                             onRemoveFilter(filter.key, filter.value)
                           }
