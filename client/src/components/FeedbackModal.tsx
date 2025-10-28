@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
 import { CheckCircle2, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -32,7 +32,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
   const [formData, setFormData] = useState({
     q1_usefulness: null as number | null,
     q1_followup: "",
-    q2_use_case: "",
+    q2_use_case: [] as string[],
     q2_other_specify: "",
     q3_future_feature: "",
     q4_follow_up: false,
@@ -81,7 +81,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
       case 1:
         return formData.q1_usefulness !== null;
       case 2:
-        return formData.q2_use_case !== "";
+        return formData.q2_use_case.length > 0;
       case 3:
         // Step 3 has optional fields, always valid
         // But if email is provided, it must be valid and consent must be given
@@ -117,7 +117,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         sessionId: generateSessionId(),
         q1_usefulness_score: formData.q1_usefulness,
         q1_followup_text: formData.q1_followup || "",
-        q2_primary_use_case: formData.q2_use_case,
+        q2_primary_use_case: formData.q2_use_case.join(", "),
         q2_other_specify: formData.q2_other_specify || "",
         q3_future_feature: formData.q3_future_feature || "",
         q4_open_to_followup: formData.q4_follow_up,
@@ -161,7 +161,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
     setFormData({
       q1_usefulness: null,
       q1_followup: "",
-      q2_use_case: "",
+      q2_use_case: [],
       q2_other_specify: "",
       q3_future_feature: "",
       q4_follow_up: false,
@@ -327,19 +327,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   {currentStep === 2 && (
                     <div className="space-y-3">
                       <Label className="text-sm font-semibold text-white mb-2 block">
-                        What did you primarily use the dashboard for?{" "}
+                        What did you primarily use the dashboard for? (Select all that apply){" "}
                         <span className="text-red-500">*</span>
                       </Label>
-                      <RadioGroup
-                        value={formData.q2_use_case}
-                        onValueChange={(value) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            q2_use_case: value,
-                          }))
-                        }
-                        className="space-y-2"
-                      >
+                      <div className="space-y-2">
                         {[
                           {
                             value: "identify_buyers",
@@ -363,10 +354,23 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             key={option.value}
                             className="flex items-center space-x-2 p-2 rounded border border-gray-700 hover:border-emerald-500/50 bg-gray-800/50 transition-colors"
                           >
-                            <RadioGroupItem
-                              value={option.value}
+                            <Checkbox
                               id={option.value}
-                              data-testid={`radio-${option.value}`}
+                              checked={formData.q2_use_case.includes(option.value)}
+                              onCheckedChange={(checked) => {
+                                if (checked) {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    q2_use_case: [...prev.q2_use_case, option.value],
+                                  }));
+                                } else {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    q2_use_case: prev.q2_use_case.filter((v) => v !== option.value),
+                                  }));
+                                }
+                              }}
+                              data-testid={`checkbox-${option.value}`}
                             />
                             <Label
                               htmlFor={option.value}
@@ -376,9 +380,9 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             </Label>
                           </div>
                         ))}
-                      </RadioGroup>
+                      </div>
 
-                      {formData.q2_use_case === "other" && (
+                      {formData.q2_use_case.includes("other") && (
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
