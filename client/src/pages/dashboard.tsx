@@ -5,7 +5,6 @@ import { MetricsCards } from "@/components/MetricsCards";
 import { AfricaTreemap } from "@/components/AfricaTreemap";
 import { TimeSeriesChart } from "@/components/TimeSeriesChart";
 import { TopBuyers } from "@/components/TopBuyers";
-
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
 import { Footer } from "@/components/Footer";
@@ -13,6 +12,7 @@ import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
 import { FeedbackModal, useFeedbackTrigger } from "@/components/FeedbackModal";
+import { FilterBottomSheet, FilterFAB } from "@/components/FilterBottomSheet";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { motion } from "framer-motion";
 
@@ -38,6 +38,7 @@ export default function Dashboard() {
   } = useDashboard();
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
 
   // Smart timing trigger for feedback modal
   useFeedbackTrigger(() => {
@@ -225,6 +226,22 @@ export default function Dashboard() {
       <FeedbackModal
         isOpen={showFeedbackModal}
         onClose={() => setShowFeedbackModal(false)}
+      />
+
+      {/* Filter FAB (Mobile Only) */}
+      <FilterFAB
+        onClick={() => setIsFilterSheetOpen(true)}
+        activeCount={activeFilters.length}
+      />
+
+      {/* Filter Bottom Sheet (Mobile Only) */}
+      <FilterBottomSheet
+        isOpen={isFilterSheetOpen}
+        onClose={() => setIsFilterSheetOpen(false)}
+        filters={filters}
+        activeFilters={activeFilters}
+        onFilterChange={updateFilter}
+        onClearFilters={clearFilters}
       />
     </div>
   );

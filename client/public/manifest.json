@@ -1,0 +1,32 @@
+{
+  "name": "Africa Carbon Credits Analytics Dashboard",
+  "short_name": "Carbon Analytics",
+  "description": "Comprehensive analytics dashboard for African carbon credits with real-time insights and interactive visualizations",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/carbon-icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/carbon-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "analytics", "business"],
+  "screenshots": [
+    {
+      "src": "/carbon-icon.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ]
+}

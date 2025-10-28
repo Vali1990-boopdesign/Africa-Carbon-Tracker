@@ -14,6 +14,7 @@ import { MessageCircle, Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
+import { NavigationDrawer, HamburgerMenuButton } from "./NavigationDrawer";
 import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
@@ -48,6 +49,7 @@ export function Header({
   isLoading,
 }: HeaderProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(filters.search);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -176,13 +178,16 @@ export function Header({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Header Section */}
         <div className="flex items-center justify-between h-16">
-          {/* Left side - Title and Icon */}
+          {/* Left side - Hamburger Menu and Title */}
           <motion.div
             className="flex items-center space-x-3"
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
+            {/* Hamburger Menu (Mobile Only) */}
+            <HamburgerMenuButton onClick={() => setIsDrawerOpen(true)} />
+            
             <div className="flex items-center justify-center w-12 h-12">
               <lord-icon
                 trigger="in"
@@ -193,7 +198,7 @@ export function Header({
                 }}
               />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <h1 className="text-xl font-bold text-foreground">
                 <TermTooltip
                   term="Africa Carbon Dashboard"
@@ -461,6 +466,12 @@ export function Header({
       <ContactModal
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
+      />
+
+      {/* Navigation Drawer (Mobile) */}
+      <NavigationDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
       />
     </motion.header>
   );
