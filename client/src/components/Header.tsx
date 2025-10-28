@@ -10,11 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageCircle, Search, X } from "lucide-react";
+import { MessageCircle, Search, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
 import { NavigationDrawer, HamburgerMenuButton } from "./NavigationDrawer";
+import { useTheme } from "./ThemeProvider";
 import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
@@ -56,6 +57,7 @@ export function Header({
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
+  const { theme, setTheme } = useTheme();
 
   // Fetch all transactions to populate filter options
   const { data: allTransactions } = useQuery<Transaction[]>({
@@ -219,7 +221,7 @@ export function Header({
             transition={{ duration: 0.3, delay: 0.2 }}
           >
             {/* Date Range Selector */}
-            <div className="bg-gray-800 rounded-lg px-3 py-2 h-10 flex items-center">
+            <div className="bg-gray-800 dark:bg-gray-800 light:bg-white light:border light:border-gray-300 rounded-lg px-3 py-2 h-10 flex items-center">
               <Select
                 value={dateRange || "all"}
                 onValueChange={(value: string) => {
@@ -227,7 +229,7 @@ export function Header({
                 }}
                 defaultValue="all"
               >
-                <SelectTrigger className="w-32 border-none bg-transparent text-white min-h-0 h-auto px-0">
+                <SelectTrigger className="w-32 border-none bg-transparent text-white dark:text-white light:text-gray-900 min-h-0 h-auto px-0">
                   <SelectValue placeholder="All Years">
                     {dateRangeOptions.find(
                       (option) => option.key === (dateRange || "all"),
@@ -243,6 +245,22 @@ export function Header({
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Theme Toggle Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="h-10 w-10 rounded-lg bg-gray-800 dark:bg-gray-800 light:bg-white light:border light:border-gray-300 hover:bg-gray-700 dark:hover:bg-gray-700 light:hover:bg-gray-100"
+              aria-label="Toggle theme"
+              data-testid="button-theme-toggle"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-amber-400" />
+              ) : (
+                <Moon className="h-5 w-5 text-slate-700" />
+              )}
+            </Button>
 
             {/* Contact Us Button */}
             <Button
