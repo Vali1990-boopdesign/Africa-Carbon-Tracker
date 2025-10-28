@@ -45,43 +45,25 @@
 }
 
 .light {
-  --background: 210 11% 98%; /* #F5F7FA - Material light surface */
-  --foreground: 220 13% 13%; /* #1A1F2E - Material dark text */
-  --card: 0 0% 100%; /* #FFFFFF - Pure white for cards */
-  --card-foreground: 220 13% 13%;
+  --background: 0 0% 100%;
+  --foreground: 220 13% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 13% 9%;
   --popover: 0 0% 100%;
-  --popover-foreground: 220 13% 13%;
-  --primary: 142 72% 29%; /* #0F7A4D - Emerald primary */
+  --popover-foreground: 220 13% 9%;
+  --primary: 142 72% 29%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 210 14% 93%; /* #EDF0F5 - Light gray */
-  --secondary-foreground: 220 13% 13%;
-  --muted: 210 14% 96%; /* #F5F7FA - Lighter muted */
-  --muted-foreground: 220 9% 46%; /* #6B7280 - Medium gray text */
-  --accent: 142 72% 95%; /* #E6F7EF - Light emerald accent */
-  --accent-foreground: 142 72% 29%;
+  --secondary: 220 13% 91%;
+  --secondary-foreground: 220 13% 9%;
+  --muted: 220 13% 95%;
+  --muted-foreground: 220 9% 46%;
+  --accent: 220 13% 95%;
+  --accent-foreground: 220 13% 9%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  --border: 220 13% 88%; /* #DCE1E8 - Light border */
-  --input: 0 0% 100%; /* White input background */
+  --border: 220 13% 91%;
+  --input: 220 13% 95%;
   --ring: 142 72% 29%;
-  
-  /* Chart Colors for light mode */
-  --chart-1: 142 72% 35%; /* Emerald - slightly darker for contrast */
-  --chart-2: 217 91% 50%; /* Blue - adjusted for visibility */
-  --chart-3: 45 93% 40%; /* Amber - darker for readability */
-  --chart-4: 271 81% 50%; /* Purple */
-  --chart-5: 0 72% 45%; /* Red - darker */
-  
-  /* Light mode specific colors */
-  --light-50: 210 14% 98%;
-  --light-100: 210 14% 96%;
-  --light-200: 210 14% 93%;
-  --light-300: 220 13% 88%;
-  --light-700: 220 13% 40%;
-  --light-800: 220 13% 20%;
-  --light-900: 220 13% 13%;
-  --emerald-light: 142 72% 95%;
-  --emerald-medium: 142 72% 85%;
 }
 
 * {
@@ -94,19 +76,11 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Glass effect utility - dark mode */
+/* Glass effect utility */
 .glass-effect {
   background: rgba(31, 41, 55, 0.8);
   border: 1px solid rgba(75, 85, 99, 0.3);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-/* Glass effect utility - light mode */
-.light .glass-effect {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(220, 225, 232, 0.6);
-  box-shadow: 0 8px 32px 0 rgba(100, 116, 139, 0.12);
-  backdrop-filter: blur(10px);
 }
 
 /* Dark theme colors */

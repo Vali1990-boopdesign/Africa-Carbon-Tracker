@@ -31,15 +31,15 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="glass-effect border-gray-300 dark:border-gray-700 animate-pulse">
+            <Card key={i} className="glass-effect border-gray-700 animate-pulse">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-24 mb-2"></div>
-                    <div className="h-8 bg-gray-300 dark:bg-gray-700 rounded w-16 mb-2"></div>
-                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-32"></div>
+                    <div className="h-4 bg-gray-700 rounded w-24 mb-2"></div>
+                    <div className="h-8 bg-gray-700 rounded w-16 mb-2"></div>
+                    <div className="h-4 bg-gray-700 rounded w-32"></div>
                   </div>
-                  <div className="w-12 h-12 bg-gray-300 dark:bg-gray-700 rounded-lg"></div>
+                  <div className="w-12 h-12 bg-gray-700 rounded-lg"></div>
                 </div>
               </CardContent>
             </Card>
@@ -52,7 +52,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
   if (!metrics) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <div className="text-center text-gray-600 dark:text-gray-400">
+        <div className="text-center text-gray-400">
           <p>Unable to load metrics data</p>
         </div>
       </div>
@@ -101,7 +101,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
             <Card 
-              className="glass-effect border-gray-300 dark:border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/50 dark:hover:border-emerald-500/30 hover:bg-emerald-50/50 dark:hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group metrics-card"
+              className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group metrics-card"
               onMouseEnter={(e) => {
                 const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
                 if (lordIcon) {
