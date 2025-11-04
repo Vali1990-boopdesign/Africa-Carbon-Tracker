@@ -197,9 +197,8 @@ export function Header({
             {/* Hamburger Menu (Mobile Only) */}
             <HamburgerMenuButton onClick={() => setIsDrawerOpen(true)} />
             
-            <div className="flex items-center justify-center w-12 h-12">
+            <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
               <lord-icon
-                key={lottieSrc}
                 trigger="in"
                 src={lottieSrc}
                 style={{
