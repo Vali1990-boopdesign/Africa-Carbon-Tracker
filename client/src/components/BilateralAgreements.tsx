@@ -228,7 +228,7 @@ export function BilateralAgreements() {
                 {displayedAgreements.map((agreement, index) => (
                   <motion.div
                     key={agreement.id}
-                    className="p-4 bg-surface-container/50 rounded-lg border border-outline hover:border-primary/30 transition-all duration-200"
+                    className="p-4 bg-surface-container/50 rounded-lg border hover:border-primary/30 transition-all duration-200"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}

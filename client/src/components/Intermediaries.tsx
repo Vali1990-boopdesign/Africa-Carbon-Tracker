@@ -140,7 +140,7 @@ export function Intermediaries({ transactions, isLoading, onRegistryClick, onMar
               {registryArray.map((registry, index) => (
                 <motion.div
                   key={registry.name}
-                  className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline cursor-pointer hover:bg-surface-container transition-colors duration-200"
+                  className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border cursor-pointer hover:bg-surface-container transition-colors duration-200"
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
@@ -182,7 +182,7 @@ export function Intermediaries({ transactions, isLoading, onRegistryClick, onMar
                 marketplaceArray.slice(0, 8).map((marketplace, index) => (
                   <motion.div
                     key={marketplace.name}
-                    className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline cursor-pointer hover:bg-surface-container transition-colors duration-200"
+                    className="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border cursor-pointer hover:bg-surface-container transition-colors duration-200"
                     initial={{ x: 20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
