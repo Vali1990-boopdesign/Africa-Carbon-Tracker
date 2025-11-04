@@ -18,7 +18,9 @@ import {
   detectBots,
   honeypot,
   getClientIP,
-  trackSuccessfulAttempt 
+  trackSuccessfulAttempt,
+  trackTiming,
+  strictDataProtection
 } from "./security";
 import { generateCaptcha } from "./captcha";
 
@@ -42,14 +44,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Security middleware chain
   app.use('/api', blockSuspiciousIPs); // Block suspicious IPs first
-  app.use('/api', detectBots); // Detect and block bots
-  app.use('/api', generalLimit); // Apply rate limiting
+  
+  // Apply bot detection to all routes
+  app.use(detectBots);
+  app.use(trackTiming);
 
-  // Honeypot endpoint to catch bots
-  app.get('/admin', honeypot);
+  // Honeypot endpoints to catch scrapers
   app.get('/wp-admin', honeypot);
-  app.get('/api/admin/users', honeypot);
-  app.get('/api/internal/debug', honeypot);
+  app.get('/wp-login.php', honeypot);
+  app.get('/.env', honeypot);
+  app.get('/admin', honeypot);
+  app.post('/admin', honeypot);
+
+  // Apply general rate limiting
+  app.use('/api', generalLimit); 
+
+  // Apply strict rate limiting to data endpoints
+  app.use('/api/transactions', strictDataProtection);
+  app.use('/api/export', strictDataProtection);
+  app.use('/api/bilateral-agreements', strictDataProtection);
 
   // CAPTCHA endpoint
   app.get('/api/captcha', (req, res) => {
@@ -69,16 +82,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Input validation helper
   const validateFilters = (query: any) => {
     const { country, buyerCountry, sector, projectType, scope, startYear, endYear, search } = query;
-    
+
     // Sanitize string inputs
     const sanitizeString = (str: string) => str ? str.replace(/[<>\"']/g, '').substring(0, 100) : '';
-    
+
     // Handle comma-separated values for array filters
     const sanitizeArray = (str: string) => {
       if (!str) return [];
       return str.split(',').map(s => sanitizeString(s.trim())).filter(s => s.length > 0);
     };
-    
+
     return {
       country: sanitizeArray(country as string),
       buyerCountry: sanitizeArray(buyerCountry as string),
@@ -100,7 +113,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(metrics);
     } catch (error) {
       console.error("Dashboard metrics error:", error);
-      
+
       // Check if it's a database connection error
       if (error.code === '57P01' || error.message?.includes('terminating connection')) {
         res.status(503).json({ error: "Database temporarily unavailable. Please try again." });
