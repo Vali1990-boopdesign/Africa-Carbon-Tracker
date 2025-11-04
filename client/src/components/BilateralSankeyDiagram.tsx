@@ -230,8 +230,6 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
     // Add nodes
     const node = svg.append("g")
-      .attr("stroke", "#000")
-      .attr("stroke-width", 0.5)
       .selectAll("rect")
       .data(sankeyData.nodes)
       .join("rect")
@@ -248,7 +246,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     // Add node labels
     svg.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 16)
+      .attr("font-size", 12.8)
       .attr("fill", "#ffffff")
       .selectAll("text")
       .data(sankeyData.nodes)
