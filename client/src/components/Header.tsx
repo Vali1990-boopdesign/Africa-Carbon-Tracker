@@ -313,12 +313,13 @@ export function Header({
                   <AnimatePresence>
                     {isSearchFocused && searchSuggestions.length > 0 && (
                       <>
-                        {/* Backdrop overlay */}
+                        {/* Backdrop overlay - positioned below the header */}
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="fixed inset-0 bg-black/30 z-[9998]"
+                          className="fixed left-0 right-0 bottom-0 bg-black/30 z-[9998]"
+                          style={{ top: '100vh' }}
                           onClick={() => setIsSearchFocused(false)}
                         />
 
@@ -334,6 +335,7 @@ export function Header({
                             backdropFilter: "blur(12px)",
                             boxShadow:
                               "0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                            borderRadius: "0.75rem",
                           }}
                         >
                           {searchSuggestions.map((suggestion, index) => (
