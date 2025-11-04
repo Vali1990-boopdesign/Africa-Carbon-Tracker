@@ -135,21 +135,21 @@ export function FilterBottomSheet({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 bg-gray-900 rounded-t-3xl shadow-2xl z-50 max-h-[85vh] flex flex-col lg:hidden"
+            className="fixed bottom-0 left-0 right-0 bg-surface-container rounded-t-3xl shadow-2xl z-50 max-h-[85vh] flex flex-col lg:hidden"
           >
             {/* Drag Handle */}
             <div className="flex justify-center pt-3 pb-2">
-              <div className="w-12 h-1 bg-gray-700 rounded-full" />
+              <div className="w-12 h-1 bg-surface-container-high rounded-full" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+            <div className="flex items-center justify-between px-6 py-4 border-b border">
               <div className="flex items-center gap-3">
                 <Filter className="h-5 w-5 text-emerald-500" />
                 <div>
-                  <h2 className="text-lg font-semibold text-white">Filters</h2>
+                  <h2 className="text-lg font-semibold text-on-surface">Filters</h2>
                   {activeFilterCount > 0 && (
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-muted-foreground">
                       {activeFilterCount} active {activeFilterCount === 1 ? 'filter' : 'filters'}
                     </p>
                   )}
@@ -159,7 +159,7 @@ export function FilterBottomSheet({
                 variant="ghost"
                 size="icon"
                 onClick={onClose}
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-on-surface"
                 data-testid="button-close-filters"
               >
                 <X className="h-5 w-5" />
@@ -232,7 +232,7 @@ export function FilterBottomSheet({
             </ScrollArea>
 
             {/* Footer Actions */}
-            <div className="flex gap-3 p-6 border-t border-gray-800 bg-gray-900/95">
+            <div className="flex gap-3 p-6 border-t border bg-surface-container/95">
               <Button
                 variant="outline"
                 onClick={handleClearAll}
@@ -283,7 +283,7 @@ function FilterSection({
 
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">
+      <h3 className="text-sm font-medium text-on-surface-variant uppercase tracking-wide">
         {title}
       </h3>
       
@@ -294,7 +294,7 @@ function FilterSection({
           placeholder={`Search ${title.toLowerCase()}...`}
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="bg-gray-800 border-gray-700 text-white placeholder-gray-500"
+          className="bg-surface-container-high border text-on-surface placeholder-muted-foreground"
         />
       )}
 
@@ -303,15 +303,15 @@ function FilterSection({
         {displayedOptions.map((option) => (
           <label
             key={option}
-            className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-800 cursor-pointer transition-colors"
+            className="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-high cursor-pointer transition-colors"
           >
             <Checkbox
               checked={selectedValues.includes(option)}
               onCheckedChange={() => onToggle(option)}
-              className="border-gray-600"
+              className="border"
               data-testid={`checkbox-${title.toLowerCase()}-${option}`}
             />
-            <span className="text-sm text-gray-200 flex-1">{option}</span>
+            <span className="text-sm text-on-surface flex-1">{option}</span>
             {selectedValues.includes(option) && (
               <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400">
                 Selected

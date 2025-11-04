@@ -10,11 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageCircle, Search, X } from "lucide-react";
+import { MessageCircle, Search, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
 import { NavigationDrawer, HamburgerMenuButton } from "./NavigationDrawer";
+import { useTheme } from "./ThemeProvider";
 import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
@@ -56,6 +57,7 @@ export function Header({
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
+  const { theme, setTheme } = useTheme();
 
   // Fetch all transactions to populate filter options
   const { data: allTransactions } = useQuery<Transaction[]>({
@@ -244,13 +246,30 @@ export function Header({
               </Select>
             </div>
 
+            {/* Theme Toggle */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="h-10 w-10"
+              data-testid="button-theme-toggle"
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? (
+                <Sun size={18} className="text-foreground" />
+              ) : (
+                <Moon size={18} className="text-foreground" />
+              )}
+            </Button>
+
             {/* Contact Us Button */}
             <Button
               variant="default"
               size="sm"
               onClick={() => setIsContactModalOpen(true)}
               disabled={isLoading}
-              className="h-10"
+              className="h-10 hidden sm:flex"
+              data-testid="button-contact-us"
             >
               <MessageCircle size={16} className="mr-2" />
               Contact Us

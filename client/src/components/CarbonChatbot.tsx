@@ -104,21 +104,21 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
       exit={{ scale: 0, opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className={`glass-effect border-gray-700 shadow-2xl ${isMinimized ? 'w-80 h-16' : 'w-96 h-[500px]'} transition-all duration-300`}>
-        <CardHeader className="p-4 border-b border-gray-700">
+      <Card className={`glass-effect border shadow-2xl ${isMinimized ? 'w-80 h-16' : 'w-96 h-[500px]'} transition-all duration-300`}>
+        <CardHeader className="p-4 border-b border">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
                 <MessageCircle size={16} className="text-white" />
               </div>
-              <CardTitle className="text-white text-sm">Carbon Credits Assistant</CardTitle>
+              <CardTitle className="text-on-surface text-sm">Carbon Credits Assistant</CardTitle>
             </div>
             <div className="flex items-center space-x-1">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsMinimized(!isMinimized)}
-                className="h-8 w-8 text-gray-400 hover:text-white"
+                className="h-8 w-8 text-muted-foreground hover:text-on-surface"
               >
                 {isMinimized ? <Maximize2 size={14} /> : <Minimize2 size={14} />}
               </Button>
@@ -143,7 +143,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                     className={`max-w-[80%] rounded-lg p-3 text-sm whitespace-pre-line ${
                       message.isUser
                         ? 'bg-emerald-500 text-white'
-                        : 'bg-gray-700 text-gray-100'
+                        : 'bg-surface-container-high text-on-surface'
                     }`}
                   >
                     {message.content}
@@ -158,11 +158,11 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-gray-700 text-gray-100 rounded-lg p-3 text-sm">
+                  <div className="bg-surface-container-high text-on-surface rounded-lg p-3 text-sm">
                     <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                     </div>
                   </div>
                 </motion.div>
@@ -171,7 +171,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
 
             {/* Quick Questions */}
             {(messages.length === 1 || messages[messages.length - 1]?.content.includes("Would you like clarity on anything else?")) && (
-              <div className="p-4 border-t border-gray-700">
+              <div className="p-4 border-t border">
                 <div className="flex flex-wrap gap-1">
                   {quickQuestions.map((question, index) => (
                     <Button
@@ -182,7 +182,7 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
                         setInputValue(question);
                         setTimeout(() => handleSendMessage(), 100);
                       }}
-                      className="text-xs h-auto py-1 px-2 border-gray-600 text-gray-300 hover:text-white hover:bg-gray-700"
+                      className="text-xs h-auto py-1 px-2 border text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high"
                       disabled={chatMutation.isPending}
                     >
                       {question}
@@ -193,14 +193,14 @@ export function CarbonChatbot({ className }: CarbonChatbotProps) {
             )}
 
             {/* Input */}
-            <div className="p-4 border-t border-gray-700">
+            <div className="p-4 border-t border">
               <div className="flex space-x-2">
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask about carbon credits..."
-                  className="flex-1 bg-gray-800 border-gray-600 text-white placeholder-gray-400"
+                  className="flex-1 bg-surface-container-high border text-on-surface placeholder-muted-foreground"
                   disabled={chatMutation.isPending}
                 />
                 <Button

@@ -25,25 +25,25 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
+          <CardTitle className="text-lg font-semibold text-on-surface">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
             {[...Array(5)].map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-surface-container/50 rounded-lg">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gray-600 rounded-full"></div>
+                    <div className="w-8 h-8 bg-muted rounded-full"></div>
                     <div>
-                      <div className="h-4 bg-gray-600 rounded w-24 mb-1"></div>
-                      <div className="h-3 bg-gray-600 rounded w-16"></div>
+                      <div className="h-4 bg-muted rounded w-24 mb-1"></div>
+                      <div className="h-3 bg-muted rounded w-16"></div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="h-4 bg-gray-600 rounded w-16 mb-1"></div>
-                    <div className="h-3 bg-gray-600 rounded w-12"></div>
+                    <div className="h-4 bg-muted rounded w-16 mb-1"></div>
+                    <div className="h-3 bg-muted rounded w-12"></div>
                   </div>
                 </div>
               </div>
@@ -56,13 +56,13 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
 
   if (!topBuyers || topBuyers.length === 0) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
+          <CardTitle className="text-lg font-semibold text-on-surface">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
-            <p className="text-gray-400">No buyer data available</p>
+            <p className="text-muted-foreground">No buyer data available</p>
           </div>
         </CardContent>
       </Card>
@@ -134,7 +134,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
     return (
       <motion.div
         key={name}
-        className="flex items-center justify-between p-3 bg-dark-800/50 rounded-lg hover:bg-dark-800 transition-colors cursor-pointer group"
+        className="flex items-center justify-between p-3 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors cursor-pointer group"
         onClick={() => onClick?.(name)}
         initial={{ x: 20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
@@ -143,26 +143,26 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
       >
         <div className="flex items-center space-x-3">
           <div 
-            className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+            className="w-8 h-8 rounded-full flex items-center justify-center text-on-surface text-xs font-bold"
             style={{ backgroundColor: item.color }}
           >
             {initials}
           </div>
           <div>
-            <p className="text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">
+            <p className="text-sm font-medium text-on-surface group-hover:text-primary transition-colors">
               {name}
             </p>
-            <p className="text-xs text-gray-400">{subtitle}</p>
+            <p className="text-xs text-muted-foreground">{subtitle}</p>
           </div>
         </div>
         <div className="text-right flex items-center space-x-2">
           <div>
-            <p className="text-sm font-medium text-emerald-400">
+            <p className="text-sm font-medium text-primary">
               {formatNumber(credits)}
             </p>
-            <p className="text-xs text-gray-400">{percentage.toFixed(1)}%</p>
+            <p className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</p>
           </div>
-          <ChevronRight size={14} className="text-gray-400 group-hover:text-emerald-400 transition-colors" />
+          <ChevronRight size={14} className="text-muted-foreground group-hover:text-primary transition-colors" />
         </div>
       </motion.div>
     );
@@ -174,9 +174,9 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-white">Demand: Buyers & Classifications</CardTitle>
+          <CardTitle className="text-lg font-semibold text-on-surface">Demand: Buyers & Classifications</CardTitle>
         </CardHeader>
 
         <CardContent className="p-4">
@@ -195,7 +195,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                 {sortedTopBuyers.length > buyersShowCount && (
                   <Button 
                     variant="outline" 
-                    className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                    className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                     onClick={() => setBuyersShowCount(prev => prev + 5)}
                   >
                     Load More
@@ -204,7 +204,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                 {buyersShowCount > 5 && (
                   <Button 
                     variant="outline" 
-                    className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                    className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                     onClick={() => setBuyersShowCount(5)}
                   >
                     Show Less
@@ -216,7 +216,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
             <TabsContent value="countries" className="space-y-3">
               {countryData.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-gray-400">No country data available</p>
+                  <p className="text-muted-foreground">No country data available</p>
                 </div>
               ) : (
                 <>
@@ -227,7 +227,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                     {countryData.length > countriesShowCount && (
                       <Button 
                         variant="outline" 
-                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                         onClick={() => setCountriesShowCount(prev => prev + 5)}
                       >
                         Load More
@@ -236,7 +236,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                     {countriesShowCount > 5 && (
                       <Button 
                         variant="outline" 
-                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                         onClick={() => setCountriesShowCount(5)}
                       >
                         Show Less
@@ -250,7 +250,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
             <TabsContent value="sectors" className="space-y-3">
               {!sortedSectorData || sortedSectorData.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-gray-400">No sector data available</p>
+                  <p className="text-muted-foreground">No sector data available</p>
                 </div>
               ) : (
                 <>
@@ -261,7 +261,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                     {sortedSectorData.length > sectorsShowCount && (
                       <Button 
                         variant="outline" 
-                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                         onClick={() => setSectorsShowCount(prev => prev + 5)}
                       >
                         Load More
@@ -270,7 +270,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
                     {sectorsShowCount > 5 && (
                       <Button 
                         variant="outline" 
-                        className="flex-1 mt-3 bg-dark-800 border-gray-700 text-gray-200 hover:bg-dark-700"
+                        className="flex-1 mt-3 bg-surface-container border text-on-surface-variant hover:bg-surface-container-high"
                         onClick={() => setSectorsShowCount(5)}
                       >
                         Show Less

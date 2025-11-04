@@ -99,23 +99,23 @@ export function BilateralAgreements() {
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <div className="h-6 bg-gray-700 rounded w-48 animate-pulse"></div>
+          <div className="h-6 bg-surface-container rounded w-48 animate-pulse"></div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
                 <div key={i} className="text-center">
-                  <div className="h-8 bg-gray-700 rounded w-16 mx-auto mb-2 animate-pulse"></div>
-                  <div className="h-4 bg-gray-700 rounded w-24 mx-auto animate-pulse"></div>
+                  <div className="h-8 bg-surface-container rounded w-16 mx-auto mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-surface-container rounded w-24 mx-auto animate-pulse"></div>
                 </div>
               ))}
             </div>
             <div className="space-y-3">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-16 bg-dark-800/50 rounded animate-pulse"></div>
+                <div key={i} className="h-16 bg-surface-container/50 rounded animate-pulse"></div>
               ))}
             </div>
           </div>
@@ -130,9 +130,9 @@ export function BilateralAgreements() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
           <div className="hover-icon-trigger">
             <lord-icon
               src="/wired-outline-56-document-hover-swipe.json"
@@ -160,8 +160,8 @@ export function BilateralAgreements() {
                 <div className="flex items-center justify-center mb-2">
                   <Users className="w-6 h-6 text-purple-400" />
                 </div>
-                <div className="text-2xl font-bold text-white">{summary.uniquePartners}</div>
-                <div className="text-sm text-gray-400">Partners</div>
+                <div className="text-2xl font-bold text-on-surface">{summary.uniquePartners}</div>
+                <div className="text-sm text-muted-foreground">Partners</div>
               </motion.div>
 
               <motion.div
@@ -172,8 +172,8 @@ export function BilateralAgreements() {
                 <div className="flex items-center justify-center mb-2">
                   <FileText className="w-6 h-6 text-emerald-400" />
                 </div>
-                <div className="text-2xl font-bold text-white">{summary.totalAgreements}</div>
-                <div className="text-sm text-gray-400">Total Agreements</div>
+                <div className="text-2xl font-bold text-on-surface">{summary.totalAgreements}</div>
+                <div className="text-sm text-muted-foreground">Total Agreements</div>
               </motion.div>
 
               <motion.div
@@ -184,8 +184,8 @@ export function BilateralAgreements() {
                 <div className="flex items-center justify-center mb-2">
                   <Users className="w-6 h-6 text-blue-400" />
                 </div>
-                <div className="text-2xl font-bold text-white">{summary.uniqueCountries}</div>
-                <div className="text-sm text-gray-400">Buyers from Partner Countries</div>
+                <div className="text-2xl font-bold text-on-surface">{summary.uniqueCountries}</div>
+                <div className="text-sm text-muted-foreground">Buyers from Partner Countries</div>
               </motion.div>
 
               <motion.div
@@ -196,8 +196,8 @@ export function BilateralAgreements() {
                 <div className="flex items-center justify-center mb-2">
                   <Clock className="w-6 h-6 text-green-400" />
                 </div>
-                <div className="text-2xl font-bold text-white">{summary.activeAgreements}</div>
-                <div className="text-sm text-gray-400">Buyers in past 5 years</div>
+                <div className="text-2xl font-bold text-on-surface">{summary.activeAgreements}</div>
+                <div className="text-sm text-muted-foreground">Buyers in past 5 years</div>
               </motion.div>
             </div>
           )}
@@ -210,13 +210,13 @@ export function BilateralAgreements() {
           {/* Agreements List */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-white">Recent Agreements</h3>
+              <h3 className="text-lg font-medium text-on-surface">Recent Agreements</h3>
               {agreements.length > 3 && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowAll(!showAll)}
-                  className="bg-dark-800 border-gray-700 text-gray-300 hover:bg-dark-700 hover:text-white"
+                  className="bg-surface-container border text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
                 >
                   {showAll ? 'Show Less' : `Show All (${agreements.length})`}
                 </Button>
@@ -228,7 +228,7 @@ export function BilateralAgreements() {
                 {displayedAgreements.map((agreement, index) => (
                   <motion.div
                     key={agreement.id}
-                    className="p-4 bg-dark-800/50 rounded-lg border border-gray-700 hover:border-emerald-500/30 transition-all duration-200"
+                    className="p-4 bg-surface-container/50 rounded-lg border border-outline hover:border-primary/30 transition-all duration-200"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -236,11 +236,11 @@ export function BilateralAgreements() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h4 className="font-medium text-white line-clamp-1">
+                          <h4 className="font-medium text-on-surface line-clamp-1">
                             {agreement.agreementName}
                           </h4>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-400">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-muted-foreground">
                           <div>
                             <span className="font-medium">Country:</span> {agreement.country}
                           </div>
@@ -255,19 +255,19 @@ export function BilateralAgreements() {
                         </div>
                         {agreement.agreementType && (
                           <div className="mt-2">
-                            <Badge variant="outline" className="border-gray-600 text-gray-300">
+                            <Badge variant="outline" className="border-outline text-on-surface-variant">
                               {agreement.agreementType}
                             </Badge>
                           </div>
                         )}
                         {agreement.description && (
-                          <p className="mt-2 text-sm text-gray-400 line-clamp-2">
+                          <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
                             {agreement.description.replace(' Link', '')} 
                             <a 
                               href={getAgreementUrl(agreement.country, agreement.partner)}
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-emerald-400 hover:text-emerald-300 underline ml-1"
+                              className="text-primary hover:text-primary/80 underline ml-1"
                             >
                               Link
                             </a>
@@ -282,7 +282,7 @@ export function BilateralAgreements() {
           </div>
 
           {agreements.length === 0 && (
-            <div className="text-center text-gray-400 py-8">
+            <div className="text-center text-muted-foreground py-8">
               <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>No bilateral agreements data available</p>
             </div>

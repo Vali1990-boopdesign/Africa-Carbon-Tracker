@@ -75,26 +75,26 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-gray-900 shadow-2xl z-50 overflow-y-auto lg:hidden"
+              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-surface-container shadow-2xl z-50 overflow-y-auto lg:hidden"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
             >
               <div className="flex flex-col h-full">
                 {/* Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-800">
+                <div className="flex items-center justify-between p-6 border-b border">
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">🌱</span>
                     <div>
-                      <h2 className="text-lg font-semibold text-white">Carbon Analytics</h2>
-                      <p className="text-xs text-gray-400">Africa Carbon Credits</p>
+                      <h2 className="text-lg font-semibold text-on-surface">Carbon Analytics</h2>
+                      <p className="text-xs text-muted-foreground">Africa Carbon Credits</p>
                     </div>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={onClose}
-                    className="text-gray-400 hover:text-white"
+                    className="text-muted-foreground hover:text-on-surface"
                     data-testid="button-close-drawer"
                   >
                     <X className="h-5 w-5" />
@@ -105,7 +105,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                 <div className="flex-1 px-6 py-4 space-y-6">
                   {/* Contact Us */}
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                       Get in Touch
                     </h3>
                     <Button
@@ -123,7 +123,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
 
                   {/* Theme Toggle */}
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                       Appearance
                     </h3>
                     <Button
@@ -148,7 +148,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
 
                   {/* Partner Organizations */}
                   <div className="space-y-3">
-                    <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                       Partners
                     </h3>
                     <div className="space-y-3">
@@ -178,15 +178,15 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
 
                   {/* About */}
                   <div className="space-y-2 pb-6">
-                    <h3 className="text-sm font-medium text-gray-400 uppercase tracking-wide">
+                    <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
                       About This Dashboard
                     </h3>
-                    <p className="text-sm text-gray-300 leading-relaxed">
+                    <p className="text-sm text-on-surface-variant leading-relaxed">
                       This dashboard analyzes carbon credit retirements from African
                       countries, focusing on enterprise-level transactions. The analysis
                       maps buyer data to parent companies for consistency.
                     </p>
-                    <p className="text-xs text-gray-500 pt-2">
+                    <p className="text-xs text-muted-foreground pt-2">
                       © 2024 The Catalyst Fund, BFA Global & FSD Africa
                     </p>
                   </div>
@@ -213,7 +213,7 @@ export function HamburgerMenuButton({ onClick }: { onClick: () => void }) {
       variant="ghost"
       size="icon"
       onClick={onClick}
-      className="lg:hidden text-gray-400 hover:text-white"
+      className="lg:hidden text-muted-foreground hover:text-on-surface"
       data-testid="button-hamburger-menu"
     >
       <Menu className="h-5 w-5" />

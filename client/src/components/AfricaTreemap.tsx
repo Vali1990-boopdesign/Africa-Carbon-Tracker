@@ -57,35 +57,35 @@ export function AfricaTreemap({
   };
 
   const colors = [
-    { bg: "bg-emerald-600", text: "text-white" },
-    { bg: "bg-emerald-500", text: "text-white" },
-    { bg: "bg-emerald-400", text: "text-gray-900" },
-    { bg: "bg-blue-600", text: "text-white" },
-    { bg: "bg-blue-500", text: "text-white" },
-    { bg: "bg-blue-400", text: "text-gray-900" },
-    { bg: "bg-purple-600", text: "text-white" },
-    { bg: "bg-purple-500", text: "text-white" },
-    { bg: "bg-purple-400", text: "text-gray-900" },
-    { bg: "bg-yellow-600", text: "text-white" },
-    { bg: "bg-yellow-500", text: "text-gray-900" },
-    { bg: "bg-yellow-400", text: "text-gray-900" },
-    { bg: "bg-red-600", text: "text-white" },
-    { bg: "bg-red-500", text: "text-white" },
-    { bg: "bg-red-400", text: "text-gray-900" },
-    { bg: "bg-green-600", text: "text-white" },
-    { bg: "bg-green-500", text: "text-white" },
-    { bg: "bg-green-400", text: "text-gray-900" },
+    { bg: "bg-emerald-600", text: "text-on-surface" },
+    { bg: "bg-emerald-500", text: "text-on-surface" },
+    { bg: "bg-emerald-400", text: "text-on-surface" },
+    { bg: "bg-blue-600", text: "text-on-surface" },
+    { bg: "bg-blue-500", text: "text-on-surface" },
+    { bg: "bg-blue-400", text: "text-on-surface" },
+    { bg: "bg-purple-600", text: "text-on-surface" },
+    { bg: "bg-purple-500", text: "text-on-surface" },
+    { bg: "bg-purple-400", text: "text-on-surface" },
+    { bg: "bg-yellow-600", text: "text-on-surface" },
+    { bg: "bg-yellow-500", text: "text-on-surface" },
+    { bg: "bg-yellow-400", text: "text-on-surface" },
+    { bg: "bg-red-600", text: "text-on-surface" },
+    { bg: "bg-red-500", text: "text-on-surface" },
+    { bg: "bg-red-400", text: "text-on-surface" },
+    { bg: "bg-green-600", text: "text-on-surface" },
+    { bg: "bg-green-500", text: "text-on-surface" },
+    { bg: "bg-green-400", text: "text-on-surface" },
   ];
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95">
+      <Card className="glass-effect border bg-surface-container">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Supply: Africa Carbon Credits</CardTitle>
+          <CardTitle className="text-lg font-semibold text-on-surface">Supply: Africa Carbon Credits</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center h-80">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
           </div>
         </CardContent>
       </Card>
@@ -93,9 +93,9 @@ export function AfricaTreemap({
   }
 
   return (
-    <Card className="glass-effect border-gray-700 bg-white/95 dark:bg-gray-900/95 h-fit">
+    <Card className="glass-effect border bg-surface-container h-fit">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-gray-900 dark:text-white">Supply: Africa Carbon Credits</CardTitle>
+        <CardTitle className="text-lg font-semibold text-on-surface">Supply: Africa Carbon Credits</CardTitle>
       </CardHeader>
       <CardContent className="p-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -113,7 +113,7 @@ export function AfricaTreemap({
           
           <TabsContent value="credits" className="space-y-2">
             <div className="text-center mb-3">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Total Carbon Credits by Country
               </p>
             </div>
@@ -128,7 +128,7 @@ export function AfricaTreemap({
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-outline rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
@@ -157,7 +157,7 @@ export function AfricaTreemap({
           
           <TabsContent value="projects" className="space-y-2">
             <div className="text-center mb-3">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Projects by Country
               </p>
             </div>
@@ -172,7 +172,7 @@ export function AfricaTreemap({
                   return (
                     <div
                       key={item.country}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-outline rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
@@ -201,7 +201,7 @@ export function AfricaTreemap({
           
           <TabsContent value="scope" className="space-y-2">
             <div className="text-center mb-3">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Carbon Credits by Scope Area
               </p>
             </div>
@@ -216,7 +216,7 @@ export function AfricaTreemap({
                   return (
                     <div
                       key={item.scope}
-                      className={`${colors[colorIndex].bg} border border-white dark:border-gray-600 rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
+                      className={`${colors[colorIndex].bg} border border-outline rounded-lg p-2 flex flex-col justify-center items-center cursor-pointer hover:opacity-80 transition-all duration-200 hover:scale-105 hover:shadow-lg`}
                       style={{ 
                         gridColumn: `span ${gridSpan}`,
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,

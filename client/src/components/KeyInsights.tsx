@@ -73,10 +73,10 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
     return (
       <Card className="h-40">
         <CardHeader>
-          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-32 animate-pulse"></div>
+          <div className="h-6 bg-surface-container-high rounded w-32 animate-pulse"></div>
         </CardHeader>
         <CardContent>
-          <div className="h-20 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"></div>
+          <div className="h-20 bg-surface-container rounded-lg animate-pulse"></div>
         </CardContent>
       </Card>
     );
@@ -144,7 +144,7 @@ export function KeyInsights({ isLoading }: KeyInsightsProps) {
               </div>
               <div className="flex-1">
                 <h4 className="font-medium text-foreground mb-2">{currentInsightData.title}</h4>
-                <p className="text-sm text-gray-400 leading-relaxed">{currentInsightData.description}</p>
+                <p className="text-sm text-muted-foreground leading-relaxed">{currentInsightData.description}</p>
               </div>
             </motion.div>
           </AnimatePresence>

@@ -29,17 +29,17 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="h-6 bg-gray-700 rounded w-32 animate-pulse"></div>
-            <div className="h-8 bg-gray-700 rounded w-24 animate-pulse"></div>
+            <div className="h-6 bg-surface-container-high rounded w-32 animate-pulse"></div>
+            <div className="h-8 bg-surface-container-high rounded w-24 animate-pulse"></div>
           </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-12 bg-dark-800/50 rounded animate-pulse"></div>
+              <div key={i} className="h-12 bg-surface-container/50 rounded animate-pulse"></div>
             ))}
           </div>
         </CardContent>
@@ -49,12 +49,12 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
 
   if (!transactions || transactions.length === 0) {
     return (
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="text-xl font-semibold text-white">Transaction Details</CardTitle>
+          <CardTitle className="text-xl font-semibold text-on-surface">Transaction Details</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center text-gray-400 py-12">
+          <div className="text-center text-muted-foreground py-12">
             <p>No transaction data available</p>
             <p className="text-sm mt-1">Try adjusting your filters</p>
           </div>
@@ -124,7 +124,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
 
   const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
     <TableHead 
-      className="text-gray-300 cursor-pointer hover:text-white transition-colors"
+      className="text-on-surface-variant cursor-pointer hover:text-on-surface transition-colors"
       onClick={() => handleSort(field)}
     >
       <div className="flex items-center space-x-1">
@@ -140,12 +140,12 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="glass-effect border-gray-700">
+      <Card className="glass-effect border">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl font-semibold text-white">Transaction Details</CardTitle>
+            <CardTitle className="text-xl font-semibold text-on-surface">Transaction Details</CardTitle>
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 Showing {startIndex + 1}-{Math.min(endIndex, transactions.length)} of {transactions.length} transactions
               </span>
             </div>
@@ -155,7 +155,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-700">
+                <TableRow className="border">
                   <SortableHeader field="buyerBrandName">Buyer</SortableHeader>
                   <SortableHeader field="country">Country</SortableHeader>
                   <SortableHeader field="type">Project Type</SortableHeader>
@@ -166,28 +166,28 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                     <TermTooltip term="Retirement Year" explanation="The year when these carbon credits were permanently cancelled, ensuring the environmental benefit cannot be claimed again" />
                   </SortableHeader>
                   <SortableHeader field="buyerSector">Sector</SortableHeader>
-                  <TableHead className="text-right text-gray-300">Actions</TableHead>
+                  <TableHead className="text-right text-on-surface-variant">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {currentTransactions.map((transaction, index) => (
                   <motion.tr
                     key={transaction.id}
-                    className="border-gray-800 hover:bg-emerald-500/5 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer"
+                    className="border-outline-variant hover:bg-primary/5 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
                     <TableCell>
                       <div>
-                        <p className="text-sm font-medium text-white">{transaction.buyerBrandName}</p>
-                        <p className="text-xs text-gray-400">{transaction.buyerHQLocation}</p>
+                        <p className="text-sm font-medium text-on-surface">{transaction.buyerBrandName}</p>
+                        <p className="text-xs text-muted-foreground">{transaction.buyerHQLocation}</p>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-2">
                         <div className="w-5 h-3 bg-green-500 rounded-sm"></div>
-                        <span className="text-sm text-gray-200">{transaction.country}</span>
+                        <span className="text-sm text-on-surface">{transaction.country}</span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -203,15 +203,15 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="text-sm font-semibold text-white">
+                      <span className="text-sm font-semibold text-on-surface">
                         {formatNumber(transaction.creditsRetired)}
                       </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm text-gray-200">{transaction.retirementYear}</span>
+                      <span className="text-sm text-on-surface">{transaction.retirementYear}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm text-gray-200">{transaction.buyerSector}</span>
+                      <span className="text-sm text-on-surface">{transaction.buyerSector}</span>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end space-x-2">
@@ -232,14 +232,14 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-700">
+          <div className="flex items-center justify-between mt-6 pt-4 border-t border">
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-400">Rows per page:</span>
+              <span className="text-sm text-muted-foreground">Rows per page:</span>
               <Select 
                 value={pageSize.toString()} 
                 onValueChange={(value) => setPageSize(parseInt(value))}
               >
-                <SelectTrigger className="w-20 bg-dark-800 border-gray-700 text-gray-200">
+                <SelectTrigger className="w-20 bg-surface-container border text-on-surface">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -257,7 +257,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
               >
                 <ChevronLeft size={16} />
               </Button>
@@ -273,8 +273,8 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                       onClick={() => setCurrentPage(page)}
                       className={
                         currentPage === page
-                          ? "bg-emerald-600 border-emerald-600 text-white"
-                          : "bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                          ? "bg-emerald-600 border-emerald-600 text-on-surface"
+                          : "bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
                       }
                     >
                       {page}
@@ -283,12 +283,12 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 })}
                 {totalPages > 5 && (
                   <>
-                    <span className="px-2 text-sm text-gray-400">...</span>
+                    <span className="px-2 text-sm text-muted-foreground">...</span>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(totalPages)}
-                      className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                      className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
                     >
                       {totalPages}
                     </Button>
@@ -301,7 +301,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="bg-dark-800 border-gray-700 text-gray-400 hover:text-white hover:border-gray-600"
+                className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
               >
                 <ChevronRight size={16} />
               </Button>

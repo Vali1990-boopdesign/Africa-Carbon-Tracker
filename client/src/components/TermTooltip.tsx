@@ -19,11 +19,11 @@ export function TermTooltip({ term, explanation, className = "" }: TermTooltipPr
         <TooltipTrigger asChild>
           <span className={`inline-flex items-center gap-1 cursor-help ${className}`}>
             {term.charAt(0).toUpperCase() + term.slice(1)}
-            <HelpCircle className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 flex-shrink-0" />
+            <HelpCircle className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
           </span>
         </TooltipTrigger>
-        <TooltipContent className="max-w-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg z-[9999]" side="bottom" align="center" sideOffset={8}>
-          <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed text-left p-2">
+        <TooltipContent className="max-w-xs bg-card border shadow-lg z-[9999]" side="bottom" align="center" sideOffset={8}>
+          <div className="text-sm text-on-surface-variant leading-relaxed text-left p-2">
             {explanation}
           </div>
         </TooltipContent>

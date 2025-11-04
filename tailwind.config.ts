@@ -51,6 +51,37 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        surface: {
+          DEFAULT: "hsl(var(--surface))",
+          variant: "hsl(var(--surface-variant))",
+          container: {
+            lowest: "hsl(var(--surface-container-lowest))",
+            low: "hsl(var(--surface-container-low))",
+            DEFAULT: "hsl(var(--surface-container))",
+            high: "hsl(var(--surface-container-high))",
+            highest: "hsl(var(--surface-container-highest))",
+          },
+        },
+        "on-surface": {
+          DEFAULT: "hsl(var(--on-surface))",
+          variant: "hsl(var(--on-surface-variant))",
+        },
+        outline: {
+          DEFAULT: "hsl(var(--outline))",
+          variant: "hsl(var(--outline-variant))",
+        },
+        "project-type": {
+          forestry: "hsl(var(--color-forestry))",
+          "forestry-bg": "hsl(var(--color-forestry-bg))",
+          renewable: "hsl(var(--color-renewable))",
+          "renewable-bg": "hsl(var(--color-renewable-bg))",
+          waste: "hsl(var(--color-waste))",
+          "waste-bg": "hsl(var(--color-waste-bg))",
+          cookstoves: "hsl(var(--color-cookstoves))",
+          "cookstoves-bg": "hsl(var(--color-cookstoves-bg))",
+          default: "hsl(var(--color-default))",
+          "default-bg": "hsl(var(--color-default-bg))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

@@ -272,7 +272,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
   if (nodes.length === 0) {
     return (
       <Card 
-        className="glass-effect border-gray-700"
+        className="glass-effect border"
         onMouseEnter={(e) => {
           const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
           if (lordIcon) {
@@ -287,7 +287,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         }}
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
             <div className="hover-icon-trigger">
               <lord-icon
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
@@ -301,7 +301,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
           </CardTitle>
         </CardHeader>
         <CardContent className="flex items-center justify-center py-12">
-          <div className="text-center text-gray-400">
+          <div className="text-center text-muted-foreground">
             <Network className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>No partnership data available for visualization</p>
           </div>
@@ -312,7 +312,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
 
   return (
     <Card 
-      className="glass-effect border-gray-700"
+      className="glass-effect border"
       onMouseEnter={(e) => {
         const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
         if (lordIcon) {
@@ -327,7 +327,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       }}
     >
       <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-white">
+          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
             <div className="hover-icon-trigger">
               <lord-icon
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
@@ -341,10 +341,10 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
           </CardTitle>
         </CardHeader>
       <CardContent>
-        <div className="w-full bg-gray-800/50 rounded-lg p-6 min-h-[550px] flex items-center justify-center">
+        <div className="w-full bg-surface-container/50 rounded-lg p-6 min-h-[550px] flex items-center justify-center">
           <svg ref={svgRef} className="w-full h-[500px]"></svg>
         </div>
-        <div className="mt-4 text-sm text-gray-400">
+        <div className="mt-4 text-sm text-muted-foreground">
           <p>Flow diagram showing bilateral partnership connections between African countries and their international partners. Line thickness represents the number of agreements.</p>
           <p className="mt-1">Displaying {links.length} partnership connections from {agreements.length} bilateral agreements.</p>
           <div className="flex gap-6 mt-3">

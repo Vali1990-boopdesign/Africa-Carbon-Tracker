@@ -124,7 +124,7 @@ export function FiltersBar({
           <div className="flex-1 min-w-64" ref={searchRef}>
             <div className="relative">
               <Search
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground"
                 size={16}
               />
               <Input
@@ -133,7 +133,7 @@ export function FiltersBar({
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                className="w-full bg-gray-800 dark:bg-dark-800 border-gray-600 dark:border-gray-700 pl-10 text-gray-200 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-400 focus:border-emerald-500"
+                className="w-full bg-surface-container border pl-10 text-on-surface placeholder-muted-foreground focus:border-emerald-500"
               />
 
               {/* Search Suggestions Dropdown */}
@@ -154,7 +154,7 @@ export function FiltersBar({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg z-[99999] max-h-64 overflow-y-auto"
+                      className="absolute top-full left-0 right-0 mt-2 bg-surface-container-high border rounded-lg z-[99999] max-h-64 overflow-y-auto"
                       style={{
                         filter: "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))",
                         backdropFilter: "blur(12px)",
@@ -165,7 +165,7 @@ export function FiltersBar({
                         <button
                           key={index}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 transition-all duration-200 border-b border-gray-100 dark:border-gray-600 last:border-b-0 first:rounded-t-lg last:rounded-b-lg"
+                          className="w-full text-left px-4 py-3 hover:bg-surface-container-highest text-on-surface transition-all duration-200 border-b border last:border-b-0 first:rounded-t-lg last:rounded-b-lg"
                         >
                           {suggestion}
                         </button>
@@ -185,7 +185,7 @@ export function FiltersBar({
                 onFilterChange("country", value === "all" ? "" : value)
               }
             >
-              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
+              <SelectTrigger className="w-40 bg-surface-container border text-on-surface">
                 <SelectValue placeholder="All Countries" />
               </SelectTrigger>
               <SelectContent>
@@ -204,7 +204,7 @@ export function FiltersBar({
                 onFilterChange("sector", value === "all" ? "" : value)
               }
             >
-              <SelectTrigger className="w-40 bg-dark-800 border-gray-700 text-gray-200">
+              <SelectTrigger className="w-40 bg-surface-container border text-on-surface">
                 <SelectValue placeholder="All Buyer Sectors" />
               </SelectTrigger>
               <SelectContent>
@@ -223,7 +223,7 @@ export function FiltersBar({
                 onFilterChange("projectType", value === "all" ? "" : value)
               }
             >
-              <SelectTrigger className="w-48 bg-dark-800 border-gray-700 text-gray-200">
+              <SelectTrigger className="w-48 bg-surface-container border text-on-surface">
                 <SelectValue placeholder="All Project Types" />
               </SelectTrigger>
               <SelectContent>
@@ -240,7 +240,7 @@ export function FiltersBar({
               variant="ghost"
               size="icon"
               onClick={onClearFilters}
-              className="text-gray-400 hover:text-white"
+              className="text-muted-foreground hover:text-on-surface"
               title="Clear all filters"
             >
               <X size={16} />
@@ -257,7 +257,7 @@ export function FiltersBar({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
             >
-              <span className="text-xs text-gray-400">Active filters:</span>
+              <span className="text-xs text-muted-foreground">Active filters:</span>
               <div className="flex items-center space-x-2 flex-wrap">
                 {activeFilters.map((filter, index) => (
                   <motion.div

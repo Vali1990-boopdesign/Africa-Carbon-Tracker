@@ -109,7 +109,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="bg-surface-container border text-on-surface max-w-2xl max-h-[90vh] overflow-y-auto">
         {showSuccess ? (
           // Success State
           <div className="text-center py-8">
@@ -129,10 +129,10 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <h3 className="text-2xl font-semibold text-white mb-3">
+              <h3 className="text-2xl font-semibold text-on-surface mb-3">
                 Message Sent Successfully!
               </h3>
-              <p className="text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 Thank you for your message. We'll get back to you soon!
               </p>
               <Button
@@ -147,7 +147,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           // Form State
           <>
             <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-white flex items-center">
+              <DialogTitle className="text-xl font-semibold text-on-surface flex items-center">
                 <MessageCircle className="mr-2" size={20} />
                 Contact Us
               </DialogTitle>
@@ -170,7 +170,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           {/* Form Fields */}
           <div className="space-y-4">
             <div>
-              <Label htmlFor="name" className="text-gray-300">
+              <Label htmlFor="name" className="text-on-surface-variant">
                 Name <span className="text-red-400">*</span>
               </Label>
               <Input
@@ -178,13 +178,13 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 type="text"
                 value={formData.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
+                className="bg-surface-container-high border text-on-surface placeholder-muted-foreground mt-1"
                 placeholder="Enter your full name"
               />
             </div>
 
             <div>
-              <Label htmlFor="organisation" className="text-gray-300">
+              <Label htmlFor="organisation" className="text-on-surface-variant">
                 Organisation
               </Label>
               <Input
@@ -194,13 +194,13 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 onChange={(e) =>
                   handleInputChange("organisation", e.target.value)
                 }
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
+                className="bg-surface-container-high border text-on-surface placeholder-muted-foreground mt-1"
                 placeholder="Enter your organisation (optional)"
               />
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-gray-300">
+              <Label htmlFor="email" className="text-on-surface-variant">
                 Email <span className="text-red-400">*</span>
               </Label>
               <Input
@@ -208,26 +208,26 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1"
+                className="bg-surface-container-high border text-on-surface placeholder-muted-foreground mt-1"
                 placeholder="Enter your email address"
               />
             </div>
 
             <div>
-              <Label htmlFor="message" className="text-gray-300">
+              <Label htmlFor="message" className="text-on-surface-variant">
                 Message <span className="text-red-400">*</span>
               </Label>
               <Textarea
                 id="message"
                 value={formData.message}
                 onChange={(e) => handleInputChange("message", e.target.value)}
-                className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 mt-1 min-h-[100px]"
+                className="bg-surface-container-high border text-on-surface placeholder-muted-foreground mt-1 min-h-[100px]"
                 placeholder="Enter your message (max 200 characters)"
                 maxLength={200}
               />
               <div className="flex justify-end mt-1">
                 <span
-                  className={`text-xs ${remainingChars < 0 ? "text-red-400" : remainingChars < 20 ? "text-yellow-400" : "text-gray-400"}`}
+                  className={`text-xs ${remainingChars < 0 ? "text-red-400" : remainingChars < 20 ? "text-yellow-400" : "text-muted-foreground"}`}
                 >
                   {remainingChars} characters remaining
                 </span>
@@ -236,8 +236,8 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
 
           {/* Privacy Disclaimer */}
-          <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 space-y-3">
-            <div className="text-xs italic text-gray-400 leading-relaxed">
+          <div className="bg-surface-container-high/50 border rounded-lg p-4 space-y-3">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               By submitting your information, you consent to the collection,
               processing, and storage of your personal data (including your
               name, email address, and organisation name) in accordance with our{" "}
@@ -260,14 +260,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </a>
               .
             </div>
-            <div className="text-xs italic text-gray-400 leading-relaxed">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               We will only use your personal data to communicate with you and
               provide support related to carbon credits and relevant services.
               Your data will be stored securely for the sole purpose of
               fulfilling our service obligations. We will retain your data for
               as long as necessary to fulfill our commitments.
             </div>
-            <div className="text-xs italic text-gray-400 leading-relaxed">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               You have the right to request access to, correction, or deletion
               of your personal data, and you can contact us at any time for
               assistance. For more details, please refer to our Data Protection
@@ -283,7 +283,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               />
               <Label
                 htmlFor="privacy-consent"
-                className="text-sm text-gray-300 cursor-pointer leading-relaxed"
+                className="text-sm text-on-surface-variant cursor-pointer leading-relaxed"
               >
                 I have read and agree to the privacy disclaimer above{" "}
                 <span className="text-red-400">*</span>
@@ -296,7 +296,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             <Button
               variant="outline"
               onClick={handleClose}
-              className="bg-transparent border-gray-600 text-gray-300 hover:bg-gray-800"
+              className="bg-transparent border text-on-surface-variant hover:bg-surface-container-high"
             >
               Cancel
             </Button>

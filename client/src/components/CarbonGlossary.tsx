@@ -28,15 +28,15 @@ export function CarbonGlossary() {
         <Button
           variant="outline"
           size="sm"
-          className="fixed bottom-20 right-6 z-40 bg-white/90 dark:bg-gray-800/90 border-gray-300 dark:border-gray-600 shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-gray-800"
+          className="fixed bottom-20 right-6 z-40 bg-card/90 border shadow-lg backdrop-blur-sm hover:bg-card"
         >
           <BookOpen className="w-4 h-4 mr-2" />
           Glossary
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[80vh] bg-white dark:bg-gray-900">
+      <DialogContent className="max-w-4xl max-h-[80vh] bg-surface-container">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-white">
+          <DialogTitle className="text-xl font-bold text-on-surface">
             Carbon Credit Glossary
           </DialogTitle>
         </DialogHeader>
@@ -44,34 +44,34 @@ export function CarbonGlossary() {
         <div className="space-y-4">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search terms or definitions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="pl-10 bg-surface-container-high border"
             />
           </div>
 
           {/* Terms List */}
           <div className="overflow-y-auto max-h-96 space-y-3">
             {filteredTerms.length === 0 ? (
-              <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+              <div className="text-center text-muted-foreground py-8">
                 No terms found matching "{searchTerm}"
               </div>
             ) : (
               filteredTerms.map(([term, definition]) => (
                 <Card
                   key={term}
-                  className="border border-gray-200 dark:border-gray-700"
+                  className="border"
                 >
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold text-emerald-600 dark:text-emerald-400 capitalize">
+                    <CardTitle className="text-base font-semibold text-emerald-600 capitalize">
                       {term}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    <p className="text-sm text-on-surface-variant leading-relaxed">
                       {definition}
                     </p>
                   </CardContent>

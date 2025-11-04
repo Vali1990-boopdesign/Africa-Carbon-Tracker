@@ -182,7 +182,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 20, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="fixed bottom-36 right-6 z-50 w-[400px] max-h-[600px] bg-gray-900 border border-gray-700 rounded-lg shadow-2xl overflow-hidden"
+        className="fixed bottom-36 right-6 z-50 w-[400px] max-h-[600px] bg-surface-container border rounded-lg shadow-2xl overflow-hidden"
       >
         {showSuccess ? (
           <div className="p-6">
@@ -194,10 +194,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
               <div className="w-12 h-12 bg-emerald-600/20 rounded-full flex items-center justify-center">
                 <CheckCircle2 className="w-8 h-8 text-emerald-500" />
               </div>
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold text-on-surface">
                 Thank you for your feedback
               </h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-muted-foreground text-sm">
                 Your insights help us continuously improve the dashboard's
                 functionality and user experience.
               </p>
@@ -212,19 +212,19 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
           </div>
         ) : (
           <>
-            <div className="p-4 border-b border-gray-700">
+            <div className="p-4 border-b border">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-lg font-bold text-white">
+                  <h2 className="text-lg font-bold text-on-surface">
                     Help Us Improve
                   </h2>
-                  <p className="text-gray-400 text-xs mt-0.5">
+                  <p className="text-muted-foreground text-xs mt-0.5">
                     Share your experience with the dashboard
                   </p>
                 </div>
                 <button
                   onClick={handleClose}
-                  className="text-gray-400 hover:text-white transition-colors ml-2"
+                  className="text-muted-foreground hover:text-on-surface transition-colors ml-2"
                   data-testid="button-close"
                 >
                   <X className="w-5 h-5" />
@@ -234,13 +234,13 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
             {/* Progress Bar */}
             <div className="px-4 pt-3 pb-2">
-              <div className="flex justify-between text-xs text-gray-400 mb-1.5">
+              <div className="flex justify-between text-xs text-muted-foreground mb-1.5">
                 <span>
                   Step {currentStep} of {totalSteps}
                 </span>
                 <span>{Math.round((currentStep / totalSteps) * 100)}%</span>
               </div>
-              <div className="w-full bg-gray-700 rounded-full h-1.5">
+              <div className="w-full bg-surface-container-high rounded-full h-1.5">
                 <div
                   className="bg-emerald-600 h-1.5 rounded-full transition-all duration-300"
                   style={{ width: `${(currentStep / totalSteps) * 100}%` }}
@@ -262,12 +262,12 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   {currentStep === 1 && (
                     <div className="space-y-4">
                       <div>
-                        <Label className="text-sm font-semibold text-white mb-3 block">
+                        <Label className="text-sm font-semibold text-on-surface mb-3 block">
                           How useful was the dashboard for your needs?{" "}
                           <span className="text-red-500">*</span>
                         </Label>
                         <div className="space-y-2">
-                          <div className="flex justify-between text-xs text-gray-400 px-1">
+                          <div className="flex justify-between text-xs text-muted-foreground px-1">
                             <span>Not useful</span>
                             <span>Very useful</span>
                           </div>
@@ -280,7 +280,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                                 className={`h-10 rounded border-2 transition-all text-sm font-semibold ${
                                   formData.q1_usefulness === num
                                     ? "bg-emerald-600 border-emerald-500 text-white scale-105"
-                                    : "bg-gray-800 border-gray-600 text-gray-300 hover:border-emerald-500/50 hover:bg-gray-700"
+                                    : "bg-surface-container-high border text-on-surface-variant hover:border-emerald-500/50 hover:bg-surface-container-highest"
                                 }`}
                                 data-testid={`rating-${num}`}
                               >
@@ -299,7 +299,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             animate={{ opacity: 1, height: "auto" }}
                             className="space-y-1.5"
                           >
-                            <Label className="text-white text-sm">
+                            <Label className="text-on-surface text-sm">
                               What might help make it more useful?
                             </Label>
                             <Textarea
@@ -312,10 +312,10 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                               }
                               placeholder="Share your thoughts..."
                               maxLength={300}
-                              className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-500 min-h-[80px] text-sm"
+                              className="bg-surface-container-high border text-on-surface placeholder:text-muted-foreground min-h-[80px] text-sm"
                               data-testid="input-followup"
                             />
-                            <p className="text-xs text-gray-500 text-right">
+                            <p className="text-xs text-muted-foreground text-right">
                               {formData.q1_followup.length}/300
                             </p>
                           </motion.div>
@@ -326,7 +326,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   {/* Step 2: Use Case */}
                   {currentStep === 2 && (
                     <div className="space-y-3">
-                      <Label className="text-sm font-semibold text-white mb-2 block">
+                      <Label className="text-sm font-semibold text-on-surface mb-2 block">
                         What did you primarily use the dashboard for? (Select all that apply){" "}
                         <span className="text-red-500">*</span>
                       </Label>
@@ -352,7 +352,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                         ].map((option) => (
                           <div
                             key={option.value}
-                            className="flex items-center space-x-2 p-2 rounded border border-gray-700 hover:border-emerald-500/50 bg-gray-800/50 transition-colors"
+                            className="flex items-center space-x-2 p-2 rounded border hover:border-emerald-500/50 bg-surface-container-high/50 transition-colors"
                           >
                             <Checkbox
                               id={option.value}
@@ -374,7 +374,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             />
                             <Label
                               htmlFor={option.value}
-                              className="text-white text-sm cursor-pointer flex-1 font-normal"
+                              className="text-on-surface text-sm cursor-pointer flex-1 font-normal"
                             >
                               {option.label}
                             </Label>
@@ -397,7 +397,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                               }))
                             }
                             placeholder="Please specify..."
-                            className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-500 text-sm"
+                            className="bg-surface-container-high border text-on-surface placeholder:text-muted-foreground text-sm"
                             data-testid="input-other"
                           />
                         </motion.div>
@@ -409,7 +409,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   {currentStep === 3 && (
                     <div className="space-y-4">
                       <div className="space-y-1.5">
-                        <Label className="text-sm font-semibold text-white">
+                        <Label className="text-sm font-semibold text-on-surface">
                           What ONE feature would make this 10x more useful?
                         </Label>
                         <Textarea
@@ -422,16 +422,16 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                           }
                           placeholder="Describe your ideal feature..."
                           maxLength={200}
-                          className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-500 min-h-[80px] text-sm"
+                          className="bg-surface-container-high border text-on-surface placeholder:text-muted-foreground min-h-[80px] text-sm"
                           data-testid="input-feature"
                         />
-                        <p className="text-xs text-gray-500 text-right">
+                        <p className="text-xs text-muted-foreground text-right">
                           {formData.q3_future_feature.length}/200
                         </p>
                       </div>
 
                       {/* Follow-up Checkbox */}
-                      <div className="space-y-3 p-3 bg-gray-800/50 rounded border border-gray-700">
+                      <div className="space-y-3 p-3 bg-surface-container-high/50 rounded border">
                         <div className="flex items-start space-x-2">
                           <Checkbox
                             id="follow-up"
@@ -447,7 +447,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                           />
                           <Label
                             htmlFor="follow-up"
-                            className="text-white text-sm cursor-pointer font-normal leading-snug"
+                            className="text-on-surface text-sm cursor-pointer font-normal leading-snug"
                           >
                             I'm open to a 10-minute follow-up conversation
                           </Label>
@@ -461,7 +461,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             className="space-y-2 pl-6"
                           >
                             <div>
-                              <Label className="text-white text-sm mb-1.5 block">
+                              <Label className="text-on-surface text-sm mb-1.5 block">
                                 Email
                               </Label>
                               <Input
@@ -475,7 +475,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                                   setEmailError("");
                                 }}
                                 placeholder="your.email@example.com"
-                                className="bg-gray-800 border-gray-600 text-white placeholder:text-gray-500 text-sm"
+                                className="bg-surface-container-high border text-on-surface placeholder:text-muted-foreground text-sm"
                                 data-testid="input-email"
                               />
                               {emailError && (
@@ -486,7 +486,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                             </div>
 
                             {/* Privacy Consent */}
-                            <div className="flex items-start space-x-2 p-2 bg-gray-900/50 rounded border border-gray-600">
+                            <div className="flex items-start space-x-2 p-2 bg-surface-container/50 rounded border">
                               <Checkbox
                                 id="privacy-consent"
                                 checked={formData.privacyConsent}
@@ -501,7 +501,7 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                               />
                               <Label
                                 htmlFor="privacy-consent"
-                                className="text-xs text-gray-400 cursor-pointer font-normal leading-snug"
+                                className="text-xs text-muted-foreground cursor-pointer font-normal leading-snug"
                               >
                                 I consent to BFA Global storing my email for
                                 follow-up only. Not used for marketing.
@@ -517,13 +517,13 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between p-4 border-t border-gray-700">
+            <div className="flex justify-between p-4 border-t border">
               <Button
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
                 variant="outline"
                 size="sm"
-                className="border-gray-600 text-gray-300 hover:bg-gray-800 disabled:opacity-50"
+                className="border text-on-surface-variant hover:bg-surface-container-high disabled:opacity-50"
                 data-testid="button-back"
               >
                 <ChevronLeft className="w-3 h-3 mr-1" />
