@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export function Footer() {
   return (
     <motion.footer
-      className="mt-auto bg-gradient-to-t from-gray-900/50 to-transparent border-t border-gray-800"
+      className="mt-auto bg-surface-container/30 border-t border"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -43,8 +43,8 @@ export function Footer() {
         </div>
 
         {/* Legal Disclaimer */}
-        <div className="text-center space-y-4 text-gray-400 text-sm max-w-4xl mx-auto">
-          <p className="font-medium text-gray-300">Legal Disclaimer</p>
+        <div className="text-center space-y-4 text-muted-foreground text-sm max-w-4xl mx-auto">
+          <p className="font-medium text-on-surface-variant">Legal Disclaimer</p>
           <p className="leading-relaxed">
             This dashboard analyzes carbon credit retirements from African
             countries, focusing on enterprise-level transactions (ignoring
@@ -58,7 +58,7 @@ export function Footer() {
             instance, pre-purchases of carbon credits yet to be issued (and
             retired) will not be reflected here.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4 border-t border-gray-700">
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-2 sm:space-y-0 sm:space-x-6 pt-4 border-t border">
             <p>
               &copy; 2024 The Catalyst Fund, BFA Global & FSD Africa. All rights
               reserved.
