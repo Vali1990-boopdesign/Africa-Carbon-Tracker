@@ -16,6 +16,16 @@ setInterval(() => {
   for (const [ip, data] of failedAttempts.entries()) {
     if (now - data.lastAttempt > oneHour) {
       failedAttempts.delete(ip);
+      // Also remove from suspicious IPs when expired
+      suspiciousIPs.delete(ip);
+    }
+  }
+  
+  // Clear suspicious IPs that are no longer blocked
+  for (const ip of suspiciousIPs) {
+    const attempt = failedAttempts.get(ip);
+    if (!attempt || (attempt.blocked && attempt.blocked < now)) {
+      suspiciousIPs.delete(ip);
     }
   }
 }, 60 * 60 * 1000);
@@ -25,6 +35,11 @@ export const createSecureRateLimit = (windowMs: number, max: number, skipSuccess
   rateLimit({
     windowMs,
     max: (req) => {
+      // Much higher limits in development
+      if (process.env.NODE_ENV === 'development') {
+        return max * 100; // 100x higher limits in dev
+      }
+      
       const ip = getClientIP(req);
       if (suspiciousIPs.has(ip)) {
         return Math.max(1, Math.floor(max * 0.1)); // 90% reduction for suspicious IPs
@@ -35,6 +50,10 @@ export const createSecureRateLimit = (windowMs: number, max: number, skipSuccess
     standardHeaders: true,
     legacyHeaders: false,
     skipSuccessfulRequests,
+    skip: (req) => {
+      // Skip rate limiting entirely in development
+      return process.env.NODE_ENV === 'development';
+    },
     handler: (req, res) => {
       const ip = getClientIP(req);
       trackFailedAttempt(ip);
@@ -78,9 +97,14 @@ export function trackSuccessfulAttempt(ip: string): void {
   const existing = failedAttempts.get(ip);
   if (existing) {
     existing.count = Math.max(0, existing.count - 2); // Reduce count on success
+    existing.blocked = 0; // Clear any active block
     if (existing.count === 0) {
       failedAttempts.delete(ip);
       suspiciousIPs.delete(ip);
+    } else if (existing.count < 5) {
+      // Remove from suspicious IPs if below threshold
+      suspiciousIPs.delete(ip);
+      failedAttempts.set(ip, existing);
     } else {
       failedAttempts.set(ip, existing);
     }
@@ -138,6 +162,11 @@ export const requireCaptcha = (req: Request, res: Response, next: NextFunction) 
 
 // IP blocking middleware
 export const blockSuspiciousIPs = (req: Request, res: Response, next: NextFunction) => {
+  // Skip blocking in development mode
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+  
   const ip = getClientIP(req);
   
   if (isBlocked(ip)) {
@@ -191,6 +220,11 @@ export const requireSecureApiKey = (req: Request, res: Response, next: NextFunct
 
 // Request fingerprinting to detect bots
 export const detectBots = (req: Request, res: Response, next: NextFunction) => {
+  // Skip bot detection in development mode
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+  
   const userAgent = req.headers['user-agent'] || '';
   const acceptHeader = req.headers['accept'] || '';
   const ip = getClientIP(req);
@@ -207,6 +241,9 @@ export const detectBots = (req: Request, res: Response, next: NextFunction) => {
   if (isSuspiciousUserAgent || (lacksTypicalHeaders && hasNoUserAgent)) {
     suspiciousIPs.add(ip);
     trackFailedAttempt(ip);
+    
+    // Log for monitoring
+    console.warn(`🤖 Bot detected - IP: ${ip}, UA: ${userAgent}, Accept: ${acceptHeader}`);
     
     return res.status(403).json({
       error: "Automated requests detected. Please use the web interface.",

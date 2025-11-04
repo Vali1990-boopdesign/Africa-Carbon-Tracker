@@ -52,9 +52,44 @@ Preferred communication style: Simple, everyday language.
 ### Integrations
 - **Google Sheets**: For logging export and contact form submissions.
 
+## Security & Architecture
+
+### Security Layer (server/security.ts)
+- **Rate Limiting**: Progressive rate limiting with development mode bypass; limits scale by environment
+- **Bot Detection**: Heuristic-based bot detection with auto-expiry for flagged IPs; disabled in development
+- **IP Blocking**: Temporary blocking system with automatic cleanup after 1 hour; suspicious IPs expire when blocks clear
+- **CAPTCHA System**: Progressive CAPTCHA requirements for repeated failed attempts
+- **Input Validation**: Bounded array sizes (max 50 countries, 20 project types) to prevent database overload
+- **Development Mode**: Security middleware disabled in development for testing; full enforcement in production
+
+### Data Validation
+- **Filter Arrays**: Maximum sizes enforced (50 for countries, 20 for sectors/project types, 10 for scopes)
+- **String Sanitization**: XSS protection via character filtering and 100-character length limits
+- **Year Bounds**: Constrained to 2000-2030 range
+- **Error Codes**: Structured error responses with machine-readable codes (DB_UNAVAILABLE, METRICS_ERROR)
+
+### Performance Considerations
+- **Security State**: In-memory tracking with automatic hourly cleanup
+- **Successful Requests**: Track successful API usage to reduce false positives and clear blocks
+- **Logging**: Bot detection events logged for monitoring and debugging
+
 ## Recent Changes
 
-### November 4, 2025
+### November 4, 2025 (Evening)
+- **Critical Security Fixes**: Resolved production-readiness issues identified in architectural review
+  - Fixed suspicious IP permanent throttling: Added auto-expiry when blocks clear and hourly cleanup
+  - Added successful request tracking: API endpoints now track successful usage to reduce false positives
+  - Implemented bounded filter arrays: Prevent database overload from unbounded IN clauses (max 50 items)
+  - Enhanced error responses: Added structured error codes (DB_UNAVAILABLE, METRICS_ERROR) for better debugging
+  - Improved bot detection logging: Console warnings for bot detections with IP, User-Agent, and Accept headers
+  - Development mode hardening: Security middleware properly bypasses in development while enforcing in production
+- **UI Refinements**: Fixed data table chip readability and theme switching
+  - Updated chip colors: Light backgrounds (emerald-100, blue-100, amber-100) with dark text (800) for light mode
+  - Fixed lottie icon switching: Seamless theme-aware animation switching between light and dark variants
+  - Enhanced table borders: Added bottom border to data table for consistent row separation
+  - Improved pagination: Better color contrast for pagination buttons using semantic tokens
+
+### November 4, 2025 (Morning)
 - **Light Mode Implementation**: Implemented comprehensive light/dark theme system following Material Design 3 principles
   - **Material Design 3 Token System**: Expanded CSS variables with semantic color tokens (surface, on-surface, outline, etc.) for both light and dark themes
   - **Theme Toggle**: Added sun/moon icon toggle button to Header with localStorage persistence and accessibility attributes

@@ -66,25 +66,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.sendFile('robots.txt', { root: '.' });
   });
 
-  // Input validation helper
+  // Input validation helper with bounds checking
   const validateFilters = (query: any) => {
     const { country, buyerCountry, sector, projectType, scope, startYear, endYear, search } = query;
     
     // Sanitize string inputs
     const sanitizeString = (str: string) => str ? str.replace(/[<>\"']/g, '').substring(0, 100) : '';
     
-    // Handle comma-separated values for array filters
-    const sanitizeArray = (str: string) => {
+    // Handle comma-separated values for array filters with size limits
+    const sanitizeArray = (str: string, maxItems: number = 50) => {
       if (!str) return [];
-      return str.split(',').map(s => sanitizeString(s.trim())).filter(s => s.length > 0);
+      const items = str.split(',').map(s => sanitizeString(s.trim())).filter(s => s.length > 0);
+      // Limit array size to prevent database overload
+      if (items.length > maxItems) {
+        console.warn(`Filter array exceeded max size (${items.length} > ${maxItems}), truncating`);
+        return items.slice(0, maxItems);
+      }
+      return items;
     };
     
     return {
-      country: sanitizeArray(country as string),
-      buyerCountry: sanitizeArray(buyerCountry as string),
-      sector: sanitizeArray(sector as string), 
-      projectType: sanitizeArray(projectType as string),
-      scope: sanitizeArray(scope as string),
+      country: sanitizeArray(country as string, 50),
+      buyerCountry: sanitizeArray(buyerCountry as string, 50),
+      sector: sanitizeArray(sector as string, 20), 
+      projectType: sanitizeArray(projectType as string, 20),
+      scope: sanitizeArray(scope as string, 10),
       startYear: startYear ? Math.max(2000, Math.min(2030, parseInt(startYear as string) || 2010)) : undefined,
       endYear: endYear ? Math.max(2000, Math.min(2030, parseInt(endYear as string) || 2024)) : undefined,
       search: sanitizeString(search as string),
@@ -95,17 +101,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
+      const ip = getClientIP(req);
 
       const metrics = await storage.getDashboardMetrics(filters);
+      
+      // Track successful API usage
+      trackSuccessfulAttempt(ip);
+      
       res.json(metrics);
     } catch (error) {
       console.error("Dashboard metrics error:", error);
       
       // Check if it's a database connection error
       if (error.code === '57P01' || error.message?.includes('terminating connection')) {
-        res.status(503).json({ error: "Database temporarily unavailable. Please try again." });
+        res.status(503).json({ 
+          error: "Database temporarily unavailable. Please try again.",
+          code: "DB_UNAVAILABLE" 
+        });
       } else {
-        res.status(500).json({ error: "Failed to fetch dashboard metrics" });
+        res.status(500).json({ 
+          error: "Failed to fetch dashboard metrics",
+          code: "METRICS_ERROR"
+        });
       }
     }
   });
