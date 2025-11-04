@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, Download, ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import type { Transaction } from "@shared/schema";
@@ -110,15 +109,15 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
     switch (type.toLowerCase()) {
       case "afforestation":
       case "forestry":
-        return "bg-emerald-500/20 text-emerald-400";
+        return "bg-emerald-500/30 text-emerald-300 hover:bg-emerald-500/40 hover:text-emerald-200";
       case "solar":
       case "renewable energy":
-        return "bg-blue-500/20 text-blue-400";
+        return "bg-blue-500/30 text-blue-300 hover:bg-blue-500/40 hover:text-blue-200";
       case "methane capture":
       case "waste management":
-        return "bg-amber-500/20 text-amber-400";
+        return "bg-amber-500/30 text-amber-300 hover:bg-amber-500/40 hover:text-amber-200";
       default:
-        return "bg-gray-500/20 text-gray-400";
+        return "bg-gray-500/30 text-gray-300 hover:bg-gray-500/40 hover:text-gray-200";
     }
   };
 
@@ -166,7 +165,6 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                     <TermTooltip term="Retirement Year" explanation="The year when these carbon credits were permanently cancelled, ensuring the environmental benefit cannot be claimed again" />
                   </SortableHeader>
                   <SortableHeader field="buyerSector">Sector</SortableHeader>
-                  <TableHead className="text-right text-on-surface-variant">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -192,7 +190,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                     </TableCell>
                     <TableCell>
                       <Badge 
-                        className={`${getProjectTypeColor(transaction.type)} cursor-pointer hover:opacity-80 transition-opacity`}
+                        className={`${getProjectTypeColor(transaction.type)} cursor-pointer transition-all`}
                         onClick={(e) => {
                           e.stopPropagation();
                           onProjectTypeClick?.(transaction.type);
@@ -213,18 +211,6 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                     <TableCell>
                       <span className="text-sm text-on-surface">{transaction.buyerSector}</span>
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end space-x-2">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="text-blue-400 hover:text-blue-300 h-8 w-8"
-                          title="View Details"
-                        >
-                          <Eye size={14} />
-                        </Button>
-                      </div>
-                    </TableCell>
                   </motion.tr>
                 ))}
               </TableBody>
@@ -232,7 +218,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-6 pt-4 border-t border">
+          <div className="flex items-center justify-between mt-6 pt-4">
             <div className="flex items-center space-x-2">
               <span className="text-sm text-muted-foreground">Rows per page:</span>
               <Select 
@@ -257,7 +243,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
+                className="bg-surface-container border text-on-surface-variant hover:text-on-surface hover:border"
               >
                 <ChevronLeft size={16} />
               </Button>
@@ -273,8 +259,8 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                       onClick={() => setCurrentPage(page)}
                       className={
                         currentPage === page
-                          ? "bg-emerald-600 border-emerald-600 text-on-surface"
-                          : "bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
+                          ? "bg-emerald-600 border-emerald-600 text-white"
+                          : "bg-surface-container border text-on-surface-variant hover:text-on-surface hover:border"
                       }
                     >
                       {page}
@@ -288,7 +274,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                       variant="outline"
                       size="sm"
                       onClick={() => setCurrentPage(totalPages)}
-                      className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
+                      className="bg-surface-container border text-on-surface-variant hover:text-on-surface hover:border"
                     >
                       {totalPages}
                     </Button>
@@ -301,7 +287,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 size="icon"
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className="bg-surface-container border text-muted-foreground hover:text-on-surface hover:border"
+                className="bg-surface-container border text-on-surface-variant hover:text-on-surface hover:border"
               >
                 <ChevronRight size={16} />
               </Button>
