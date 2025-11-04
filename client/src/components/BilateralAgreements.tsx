@@ -139,7 +139,6 @@ export function BilateralAgreements() {
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
               style={{ width: '32px', height: '32px' }}
-              state="hover-swipe"
             />
           </div>
           <TermTooltip 
