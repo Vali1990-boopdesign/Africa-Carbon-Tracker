@@ -190,7 +190,8 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                     </TableCell>
                     <TableCell>
                       <Badge 
-                        className={`${getProjectTypeColor(transaction.type)} cursor-pointer transition-all`}
+                        variant={null}
+                        className={`${getProjectTypeColor(transaction.type)} cursor-pointer transition-all border-transparent`}
                         onClick={(e) => {
                           e.stopPropagation();
                           onProjectTypeClick?.(transaction.type);
