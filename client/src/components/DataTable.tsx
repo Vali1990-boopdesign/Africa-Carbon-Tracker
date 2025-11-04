@@ -106,20 +106,8 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
   };
 
   const getProjectTypeColor = (type: string) => {
-    switch (type.toLowerCase()) {
-      case "afforestation":
-      case "forestry":
-        return "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-500/30 border border-emerald-200 dark:border-emerald-500/40";
-      case "solar":
-      case "renewable energy":
-      case "energy efficiency - domestic":
-        return "bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/30 border border-blue-200 dark:border-blue-500/40";
-      case "methane capture":
-      case "waste management":
-        return "bg-amber-50 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/30 border border-amber-200 dark:border-amber-500/40";
-      default:
-        return "bg-gray-50 text-gray-700 dark:bg-gray-500/20 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-500/30 border border-gray-200 dark:border-gray-500/40";
-    }
+    // Using M3 neutral surface containers with semantic text tokens for WCAG AA compliance
+    return "bg-surface-container text-on-surface dark:bg-surface-container dark:text-on-surface hover:bg-surface-container-high dark:hover:bg-surface-container-high border border-outline-variant dark:border-outline-variant";
   };
 
   const SortableHeader = ({ field, children }: { field: SortField; children: React.ReactNode }) => (
