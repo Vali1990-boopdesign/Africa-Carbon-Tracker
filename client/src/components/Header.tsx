@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -58,6 +58,13 @@ export function Header({
   const [lastScrollY, setLastScrollY] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+
+  // Memoize lottie source based on theme to prevent re-renders
+  const lottieSrc = useMemo(() => {
+    return theme === "dark" 
+      ? "/wired-outline-2332-carbon-neutral-hover-pinch-dark.json"
+      : "/wired-outline-2332-carbon-neutral-hover-pinch.json";
+  }, [theme]);
 
   // Fetch all transactions to populate filter options
   const { data: allTransactions } = useQuery<Transaction[]>({
@@ -192,8 +199,9 @@ export function Header({
             
             <div className="flex items-center justify-center w-12 h-12">
               <lord-icon
+                key={lottieSrc}
                 trigger="in"
-                src="/wired-outline-2332-carbon-neutral-hover-pinch.json"
+                src={lottieSrc}
                 style={{
                   width: "43px",
                   height: "43px",
