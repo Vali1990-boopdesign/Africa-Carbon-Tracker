@@ -84,7 +84,12 @@ Preferred communication style: Simple, everyday language.
   - Improved bot detection logging: Console warnings for bot detections with IP, User-Agent, and Accept headers
   - Development mode hardening: Security middleware properly bypasses in development while enforcing in production
 - **UI Refinements**: Fixed data table chip readability and theme switching
-  - Updated chip colors: Light backgrounds (emerald-100, blue-100, amber-100) with dark text (800) for light mode
+  - **Badge Text Visibility Fix**: Resolved critical light mode text visibility issue in DataTable project type badges
+    - Added "custom" variant to Badge component (client/src/components/ui/badge.tsx) that only applies border-transparent without default text/background colors
+    - Updated DataTable.tsx to use variant="custom" to prevent CVA default variant from overriding theme-specific color classes
+    - Fixed badge text contrast: Dark text (emerald/blue/amber/gray-900) on light backgrounds in light mode, light text (300 shades) on darker backgrounds in dark mode
+    - Verified Tailwind class ordering follows last-write-wins semantics with proper dark: modifier precedence
+    - Architecture review confirmed no CVA merge conflicts or specificity issues
   - Fixed lottie icon switching: Seamless theme-aware animation switching between light and dark variants
   - Enhanced table borders: Added bottom border to data table for consistent row separation
   - Improved pagination: Better color contrast for pagination buttons using semantic tokens
