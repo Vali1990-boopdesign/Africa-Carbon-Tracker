@@ -134,7 +134,7 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
     return (
       <motion.div
         key={name}
-        className="flex items-center justify-between p-3 bg-surface-container/50 rounded-lg hover:bg-surface-container transition-colors cursor-pointer group"
+        className="flex items-center justify-between p-3 bg-surface-container/50 rounded-lg border hover:bg-surface-container transition-colors cursor-pointer group"
         onClick={() => onClick?.(name)}
         initial={{ x: 20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
