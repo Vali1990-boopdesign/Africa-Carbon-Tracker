@@ -42,17 +42,8 @@ export const createSecureRateLimit = (windowMs: number, max: number, skipSuccess
         error: "Too many requests. Please slow down.",
         requiresCaptcha: shouldRequireCaptcha(ip)
       });
-    },
-    // Add skip for health checks
-    skip: (req) => req.path === '/health' || req.path === '/ready'
+    }
   });
-
-// Very strict rate limit for data export/scraping attempts
-export const strictDataProtection = createSecureRateLimit(
-  60 * 60 * 1000, // 1 hour
-  3, // Only 3 requests per hour
-  false
-);
 
 // Get real client IP (handles proxies)
 export function getClientIP(req: Request): string {
@@ -226,57 +217,6 @@ export const detectBots = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-// Request timing tracking for bot detection
-const requestTimings = new Map<string, number[]>();
-
-export function trackRequestTiming(ip: string): void {
-  const now = Date.now();
-  const timings = requestTimings.get(ip) || [];
-  
-  // Keep only last 10 requests
-  timings.push(now);
-  if (timings.length > 10) {
-    timings.shift();
-  }
-  
-  requestTimings.set(ip, timings);
-  
-  // Check for bot-like behavior (too fast, too regular)
-  if (timings.length >= 5) {
-    const intervals = [];
-    for (let i = 1; i < timings.length; i++) {
-      intervals.push(timings[i] - timings[i - 1]);
-    }
-    
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const variance = intervals.reduce((sum, interval) => {
-      return sum + Math.pow(interval - avgInterval, 2);
-    }, 0) / intervals.length;
-    
-    // Bots often have very regular intervals or very fast requests
-    const isVeryFast = avgInterval < 100; // Less than 100ms between requests
-    const isTooRegular = variance < 10; // Almost identical intervals
-    
-    if (isVeryFast || isTooRegular) {
-      suspiciousIPs.add(ip);
-      trackFailedAttempt(ip);
-      console.warn(`🤖 Bot-like timing detected from IP: ${ip}, avg: ${avgInterval}ms, variance: ${variance}`);
-    }
-  }
-}
-
-// Clean up old timing data
-setInterval(() => {
-  const now = Date.now();
-  const fiveMinutes = 5 * 60 * 1000;
-  
-  for (const [ip, timings] of requestTimings.entries()) {
-    if (timings.length > 0 && now - timings[timings.length - 1] > fiveMinutes) {
-      requestTimings.delete(ip);
-    }
-  }
-}, 60 * 1000); // Clean every minute
-
 // Honey pot endpoint to catch bots
 export const honeypot = (req: Request, res: Response) => {
   const ip = getClientIP(req);
@@ -292,37 +232,4 @@ export const honeypot = (req: Request, res: Response) => {
     timestamp: new Date().toISOString(),
     id: crypto.randomUUID()
   });
-};
-
-// Middleware to track request timing
-export const trackTiming = (req: Request, res: Response, next: NextFunction) => {
-  const ip = getClientIP(req);
-  trackRequestTiming(ip);
-  next();
-};
-
-// Middleware to obfuscate data for suspicious IPs
-export const protectSensitiveData = (req: Request, res: Response, next: NextFunction) => {
-  const ip = getClientIP(req);
-  
-  if (suspiciousIPs.has(ip) || isBlocked(ip)) {
-    // Override json method to return limited data
-    const originalJson = res.json.bind(res);
-    res.json = function(data: any) {
-      // Return minimal/fake data for suspicious IPs
-      if (Array.isArray(data)) {
-        return originalJson({ 
-          data: data.slice(0, 3), // Only first 3 items
-          message: "Limited results due to unusual activity pattern",
-          total: 3
-        });
-      }
-      return originalJson({ 
-        message: "Access restricted due to unusual activity pattern",
-        hint: "Please contact support if you believe this is an error"
-      });
-    };
-  }
-  
-  next();
 };
