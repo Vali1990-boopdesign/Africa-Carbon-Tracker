@@ -54,6 +54,20 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### November 4, 2025
+- **Light Mode Implementation**: Implemented comprehensive light/dark theme system following Material Design 3 principles
+  - **Material Design 3 Token System**: Expanded CSS variables with semantic color tokens (surface, on-surface, outline, etc.) for both light and dark themes
+  - **Theme Toggle**: Added sun/moon icon toggle button to Header with localStorage persistence and accessibility attributes
+  - **Semantic Color Migration**: Migrated all components from hard-coded colors (text-white, bg-gray-*, etc.) to theme-aware semantic tokens
+  - **Chart Adaptations**: Updated all chart components with theme-optimized colors (brighter for dark, darker for light) while maintaining WCAG AA contrast
+  - **Project Type Colors**: Created semantic color system for project types (forestry, renewable, waste, cookstoves) with theme-adaptive backgrounds
+  - **Glass Effect**: Updated glass-effect utility to use theme-aware tokens with backdrop-filter for both light and dark modes
+  - **Component Coverage**: Migrated 20+ components including Header, MetricsCards, DataTable, FiltersBar, all charts, mobile components, and modals
+  - **Accessibility**: Ensured WCAG 2.1 AA contrast ratios (4.5:1 for text, 3:1 for UI elements) in both themes
+  - **PWA Compatibility**: Light mode fully compatible with existing PWA features (navigation drawer, filter bottom sheet)
+  - **No Breaking Changes**: Desktop and mobile layouts preserved, all functionality maintained, theme switching seamless
+  - **Modified Files**: client/src/index.css (expanded token system), tailwind.config.ts (added semantic tokens), client/src/components/Header.tsx (theme toggle), plus 20+ component files migrated to semantic tokens
+
 ### October 28, 2025
 - **Progressive Web App (PWA) Implementation**: Transformed dashboard into a mobile-friendly Progressive Web App
   - **PWA Foundation**: Created manifest.json with app metadata, icons, and iOS support; implemented service worker with network-first caching strategy and offline fallback
