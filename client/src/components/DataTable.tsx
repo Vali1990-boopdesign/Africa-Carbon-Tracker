@@ -109,16 +109,16 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
     switch (type.toLowerCase()) {
       case "afforestation":
       case "forestry":
-        return "bg-emerald-500/15 text-on-surface dark:bg-emerald-500/25 dark:text-on-surface hover:bg-emerald-500/25 dark:hover:bg-emerald-500/35 border-emerald-500/30";
+        return "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-500/30 border border-emerald-200 dark:border-emerald-500/40";
       case "solar":
       case "renewable energy":
       case "energy efficiency - domestic":
-        return "bg-blue-500/15 text-on-surface dark:bg-blue-500/25 dark:text-on-surface hover:bg-blue-500/25 dark:hover:bg-blue-500/35 border-blue-500/30";
+        return "bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-500/30 border border-blue-200 dark:border-blue-500/40";
       case "methane capture":
       case "waste management":
-        return "bg-amber-500/15 text-on-surface dark:bg-amber-500/25 dark:text-on-surface hover:bg-amber-500/25 dark:hover:bg-amber-500/35 border-amber-500/30";
+        return "bg-amber-50 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-500/30 border border-amber-200 dark:border-amber-500/40";
       default:
-        return "bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest border-outline-variant";
+        return "bg-gray-50 text-gray-700 dark:bg-gray-500/20 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-500/30 border border-gray-200 dark:border-gray-500/40";
     }
   };
 
