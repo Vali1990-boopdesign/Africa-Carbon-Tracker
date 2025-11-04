@@ -155,7 +155,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border">
+                <TableRow>
                   <SortableHeader field="buyerBrandName">Buyer</SortableHeader>
                   <SortableHeader field="country">Country</SortableHeader>
                   <SortableHeader field="type">Project Type</SortableHeader>
@@ -173,7 +173,7 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                 {currentTransactions.map((transaction, index) => (
                   <motion.tr
                     key={transaction.id}
-                    className="border-outline-variant hover:bg-primary/5 hover:border-emerald-500/20 transition-all duration-200 cursor-pointer"
+                    className="border hover:bg-primary/5 transition-all duration-200 cursor-pointer"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
