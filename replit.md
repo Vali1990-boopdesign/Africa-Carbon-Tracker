@@ -29,6 +29,17 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
+### November 5, 2025 (Session 5 - Filter Data Flow Fixes)
+- **Filter System Refactoring**: Fixed critical data flow inconsistencies and type mismatches in filter system
+  - **Single Source of Truth**: Moved all toggle logic to use-dashboard.ts updateFilter function; FilterBottomSheet now simply passes values to hook without manipulation
+  - **Type Consistency**: Removed mixed types (string | string[]), filters now consistently use arrays throughout codebase
+  - **Deduplication at Source**: Added Array.from(new Set(...)) in updateFilter to prevent duplicates from ever entering state
+  - **Stable Keys**: Fixed React key generation - removed index from FilterSection keys (now `${title}-${option}`), changed active filter badges to use `${filter.key}-${filter.value}` for uniqueness
+  - **Search State Management**: Added searchInputs reset in handleApply to prevent stale UI when FilterBottomSheet reopens
+  - **FiltersBar Compatibility**: Updated desktop filter dropdowns to handle array-based filters, showing count when multiple values selected
+  - **Simplified Code**: Removed 20+ lines of redundant type checking, normalization, and string conversion logic from FilterBottomSheet
+  - Architect review: Pass rating, confirmed data flow maintains consistent array-based state with no regressions in request construction or UI synchronization
+
 ### November 5, 2025 (Session 4 - Architectural Fixes)
 - **Theme & Stacking Context Resolution**: Fixed critical architectural issues preventing proper mobile UI display
   - **Theme Default Fix**: Changed App.tsx defaultTheme from "dark" to "light" (line 27) to align with ThemeProvider initialState; new users now see light mode by default while localStorage overrides are preserved
