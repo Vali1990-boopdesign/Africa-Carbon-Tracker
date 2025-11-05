@@ -183,6 +183,7 @@ export function FilterBottomSheet({
                     options={filterOptions(uniqueCountries, searchInputs.country)}
                     selectedValues={filters.country}
                     onToggle={(value) => toggleFilter("country", value)}
+                    totalOptionsCount={uniqueCountries.length}
                   />
 
                   {/* Buyer Countries */}
@@ -195,6 +196,7 @@ export function FilterBottomSheet({
                     options={filterOptions(uniqueBuyerCountries, searchInputs.buyerCountry)}
                     selectedValues={filters.buyerCountry}
                     onToggle={(value) => toggleFilter("buyerCountry", value)}
+                    totalOptionsCount={uniqueBuyerCountries.length}
                   />
 
                   {/* Sectors */}
@@ -207,6 +209,7 @@ export function FilterBottomSheet({
                     options={filterOptions(uniqueSectors, searchInputs.sector)}
                     selectedValues={filters.sector}
                     onToggle={(value) => toggleFilter("sector", value)}
+                    totalOptionsCount={uniqueSectors.length}
                   />
 
                   {/* Project Types */}
@@ -219,6 +222,7 @@ export function FilterBottomSheet({
                     options={filterOptions(uniqueProjectTypes, searchInputs.projectType)}
                     selectedValues={filters.projectType}
                     onToggle={(value) => toggleFilter("projectType", value)}
+                    totalOptionsCount={uniqueProjectTypes.length}
                   />
 
                   {/* Scopes */}
@@ -231,6 +235,7 @@ export function FilterBottomSheet({
                     options={filterOptions(uniqueScopes, searchInputs.scope)}
                     selectedValues={filters.scope}
                     onToggle={(value) => toggleFilter("scope", value)}
+                    totalOptionsCount={uniqueScopes.length}
                 />
                 </div>
               </ScrollArea>
@@ -271,6 +276,7 @@ interface FilterSectionProps {
   options: string[];
   selectedValues: string[];
   onToggle: (value: string) => void;
+  totalOptionsCount: number; // Total before filtering
 }
 
 function FilterSection({
@@ -280,11 +286,19 @@ function FilterSection({
   options,
   selectedValues,
   onToggle,
+  totalOptionsCount,
 }: FilterSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayLimit = 5;
-  const displayedOptions = isExpanded ? options : options.slice(0, displayLimit);
-  const hasMore = options.length > displayLimit;
+  
+  // When searching, show all filtered results
+  // When not searching, apply the expand/collapse logic
+  const displayedOptions = searchValue 
+    ? options 
+    : (isExpanded ? options : options.slice(0, displayLimit));
+  
+  const hasMore = !searchValue && options.length > displayLimit;
+  const showSearchInput = totalOptionsCount > 5;
 
   return (
     <div className="space-y-3">
@@ -292,8 +306,8 @@ function FilterSection({
         {title}
       </h3>
 
-      {/* Search Input */}
-      {options.length > 5 && (
+      {/* Search Input - Always show if total options > 5 */}
+      {showSearchInput && (
         <Input
           type="text"
           placeholder={`Search ${title.toLowerCase()}...`}
@@ -301,6 +315,13 @@ function FilterSection({
           onChange={(e) => onSearchChange(e.target.value)}
           className="bg-surface-container-high border text-on-surface placeholder-muted-foreground"
         />
+      )}
+
+      {/* No Results Message */}
+      {searchValue && options.length === 0 && (
+        <p className="text-sm text-muted-foreground text-center py-4">
+          No matching {title.toLowerCase()} found
+        </p>
       )}
 
       {/* Options List */}
@@ -326,8 +347,8 @@ function FilterSection({
         ))}
       </div>
 
-      {/* Show More/Less */}
-      {hasMore && !searchValue && (
+      {/* Show More/Less - Only when not searching */}
+      {hasMore && (
         <Button
           variant="ghost"
           size="sm"
