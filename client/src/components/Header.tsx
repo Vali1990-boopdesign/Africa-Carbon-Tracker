@@ -180,7 +180,7 @@ export function Header({
 
   return (
     <motion.header
-      className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-divider"
+      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider"
       initial={{ y: -20, opacity: 0 }}
       animate={{
         y: isHeaderVisible ? 0 : -100,

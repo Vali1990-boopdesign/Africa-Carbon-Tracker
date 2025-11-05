@@ -49,19 +49,19 @@ export function FilterBottomSheet({
   const uniqueCountries = Array.from(
     new Set(allTransactions?.map((t) => t.country) || [])
   ).sort();
-  
+
   const uniqueBuyerCountries = Array.from(
     new Set(allTransactions?.map((t) => t.buyerHQLocation) || [])
   ).sort();
-  
+
   const uniqueSectors = Array.from(
     new Set(allTransactions?.map((t) => t.buyerSector) || [])
   ).sort();
-  
+
   const uniqueProjectTypes = Array.from(
     new Set(allTransactions?.map((t) => t.type) || [])
   ).sort();
-  
+
   const uniqueScopes = Array.from(
     new Set(allTransactions?.map((t) => t.scope) || [])
   ).sort();
@@ -291,7 +291,7 @@ function FilterSection({
       <h3 className="text-sm font-medium text-on-surface-variant uppercase tracking-wide">
         {title}
       </h3>
-      
+
       {/* Search Input */}
       {options.length > 5 && (
         <Input
