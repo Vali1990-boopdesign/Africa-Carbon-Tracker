@@ -26,3 +26,18 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 -   **Utilities**: `date-fns`, `clsx`, `tailwind-merge`
 -   **Icons**: Lord-Icon
 -   **Integrations**: Google Sheets (for logging contact form submissions)
+
+## Recent Changes
+
+### November 5, 2025
+- **Comprehensive Mobile UX Improvements**: Resolved all reported mobile viewport issues with viewport-conditional rendering and proper z-index hierarchy
+  - **Z-Index Hierarchy Established**: Implemented coherent stacking order: Toast(100) > FilterBottomSheet(80/75) > SearchDropdown(70/65) > NavigationDrawer(60/55) > Header(50)
+  - **Viewport-Conditional Theme Toggle**: Added theme toggle to Header for desktop/tablet (≥768px) using useMediaQuery hook; mobile users access toggle only via NavigationDrawer, eliminating duplicates
+  - **Mobile Filter Solution**: Wrapped all Header filter dropdowns in desktop/tablet conditional; added "Filters" button for mobile that opens FilterBottomSheet component with active filter count badge
+  - **Footer Text Consistency**: Updated NavigationDrawer to include full legal disclaimer matching Footer.tsx verbatim, including micro-transactions, compliance programs, pre-purchases details
+  - **FilterBottomSheet Z-Index Fix**: Increased backdrop from z-50 to z-[75] and sheet from z-50 to z-[80] to ensure it appears above all components including navigation drawer
+  - **Search Dropdown Z-Index Fix**: Lowered dropdown from z-[99999] to z-[70] and backdrop from z-[9998] to z-[65] to resolve navigation drawer overlay conflict
+  - **Mobile Sankey Hiding**: Added useMediaQuery hook to BilateralAgreements component to conditionally hide Sankey diagram on mobile (<768px), showing only agreement cards grid
+  - **Footer Removal**: Removed Footer component from dashboard.tsx to eliminate duplicate content
+  - **Partner Logo Error Handling**: Added onError handlers to all partner logos in NavigationDrawer to hide gracefully on load failure
+  - Architect reviews: All changes validated with pass ratings, following React best practices and Material Design 3 mobile patterns
