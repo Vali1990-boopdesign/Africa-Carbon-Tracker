@@ -1,0 +1,57 @@
+Issue 1: Theme Default Mismatch
+Location: client/src/components/ThemeProvider.tsx
+
+Problem: There's a mismatch between the initialState and the actual defaultTheme prop:
+
+Line 20: initialState has theme: "light"
+Line 28: defaultTheme = "light" in the component props
+Line 29: storageKey = "vite-ui-theme"
+Line 39: The theme wrapper div uses className={${theme}...}
+However, looking at client/src/App.tsx line 28:
+
+<ThemeProvider defaultTheme="dark" storageKey="carbon-dashboard-theme">
+Root Cause: The App.tsx is passing defaultTheme="dark" but the localStorage key is different ("carbon-dashboard-theme" vs "vite-ui-theme"). When a user first visits, the ThemeProvider's useState initializer runs before the useEffect, and it checks localStorage. If nothing is found, it falls back to the defaultTheme prop which is "dark", but the initialState is "light", creating a conflict.
+
+Impact: New users see dark mode instead of light mode on first visit.
+
+Issue 2: Header Clipping Navigation Drawer and Bottom Sheet
+Location: client/src/components/Header.tsx, client/src/components/NavigationDrawer.tsx, client/src/components/FilterBottomSheet.tsx
+
+Problem 1 - Header z-index:
+
+client/src/components/Header.tsx line 235: The header has className="sticky top-0 z-40"
+This creates a stacking context at z-40
+Problem 2 - Component z-index hierarchy:
+Looking at the current z-index values:
+
+Header: z-40 (line 235 in Header.tsx)
+Search dropdown backdrop: z-[50] (line 308 in Header.tsx)
+Search dropdown content: z-[60] (line 319 in Header.tsx)
+Nav drawer backdrop: z-[70] (line 79 in NavigationDrawer.tsx)
+Nav drawer content: z-[80] (line 89 in NavigationDrawer.tsx)
+Filter sheet backdrop: z-[90] (line 150 in FilterBottomSheet.tsx)
+Filter sheet content: z-[100] (line 160 in FilterBottomSheet.tsx)
+Problem 3 - Sticky positioning and clipping:
+The header uses sticky top-0 which creates a positioning context. The navigation drawer and bottom sheet are using fixed positioning, but they're being rendered as children of the Header component (based on the component hierarchy in Header.tsx lines 493-507).
+
+Root Cause: The NavigationDrawer and FilterBottomSheet are rendered inside the Header component's JSX. When you have a position: sticky parent with a z-index, child elements with position: fixed can still be affected by the parent's stacking context and overflow properties.
+
+Looking at Header.tsx:
+
+Lines 493-499: <NavigationDrawer> is rendered inside the header
+Lines 501-507: <FilterBottomSheet> is rendered inside the header
+Since they're children of the sticky header element, they inherit the stacking context limitations.
+
+Issue 3: Additional Clipping Factors
+CSS Overflow: Checking client/src/index.css, there's no explicit body overflow hidden, but the header's motion.header wrapper might be creating a clip boundary.
+
+Backdrop Filter: Line 235 in Header.tsx uses backdrop-blur-md which can create additional stacking context issues in some browsers.
+
+Summary of Root Causes
+Dark Mode Default: App.tsx passes defaultTheme="dark" when it should be "light" for new users
+Component Clipping: NavigationDrawer and FilterBottomSheet are rendered as children of the Header component (which has position: sticky and z-40), causing them to be clipped by the header's stacking context even though they have higher z-index values
+Stacking Context Hierarchy: The sticky header creates a stacking context at z-40, and all its children (including the drawer and sheet) are contained within that context, preventing them from properly layering above the page content
+Recommended Solutions (Not Implementing Yet)
+Fix Dark Mode: Change defaultTheme="dark" to defaultTheme="light" in App.tsx line 28
+Fix Component Clipping: Move <NavigationDrawer> and <FilterBottomSheet> out of the Header component and render them at the same level (in Dashboard.tsx or App.tsx) as portal-like components, so they're not children of the sticky header
+Alternative: Use React Portal to render the drawer and sheet outside the header's DOM hierarchy while keeping them in the same component for logical organization
