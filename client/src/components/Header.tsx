@@ -180,7 +180,7 @@ export function Header({
 
   return (
     <motion.header
-      className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-divider"
+      className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-divider"
       initial={{ y: -20, opacity: 0 }}
       animate={{
         y: isHeaderVisible ? 0 : -100,
@@ -319,13 +319,12 @@ export function Header({
                   <AnimatePresence>
                     {isSearchFocused && searchSuggestions.length > 0 && (
                       <>
-                        {/* Backdrop overlay - positioned below the header */}
+                        {/* Backdrop overlay */}
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="fixed left-0 right-0 bottom-0 bg-black/30 z-[45]"
-                          style={{ top: '100vh' }}
+                          className="fixed inset-0 bg-black/30 z-[55]"
                           onClick={() => setIsSearchFocused(false)}
                         />
 
@@ -334,7 +333,7 @@ export function Header({
                           initial={{ opacity: 0, y: -10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                          className="absolute top-full left-0 right-0 mt-2 bg-surface-container border rounded-lg z-[50] max-h-64 overflow-y-auto"
+                          className="absolute top-full left-0 right-0 mt-2 bg-surface-container border rounded-lg z-[60] max-h-64 overflow-y-auto"
                           style={{
                             filter:
                               "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))",
