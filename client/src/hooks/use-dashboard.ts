@@ -229,12 +229,12 @@ export function useDashboard() {
           return { ...prev, [key]: [] };
         }
         
-        // If value is already in array, remove it (toggle off)
+        // If value is already in array, remove it (toggle off) and deduplicate
         if (currentArray.includes(stringValue)) {
-          return { ...prev, [key]: currentArray.filter(item => item !== stringValue) };
+          return { ...prev, [key]: Array.from(new Set(currentArray.filter(item => item !== stringValue))) };
         } else {
-          // Otherwise, add it (toggle on)
-          return { ...prev, [key]: [...currentArray, stringValue] };
+          // Otherwise, add it (toggle on) and deduplicate to prevent duplicates from ever entering state
+          return { ...prev, [key]: Array.from(new Set([...currentArray, stringValue])) };
         }
       }
       

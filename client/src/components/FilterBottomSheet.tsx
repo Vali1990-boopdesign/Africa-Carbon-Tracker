@@ -75,33 +75,19 @@ export function FilterBottomSheet({
   };
 
   const toggleFilter = (key: keyof DashboardFilters, value: string) => {
-    // Get current values - handle both array and string formats
-    let currentValues: string[];
-    const filterValue = filters[key];
-
-    if (Array.isArray(filterValue)) {
-      currentValues = filterValue;
-    } else if (typeof filterValue === 'string' && filterValue) {
-      currentValues = filterValue.split(',');
-    } else {
-      currentValues = [];
-    }
-
-    // Remove duplicates
-    currentValues = Array.from(new Set(currentValues));
-
-    if (currentValues.includes(value)) {
-      // Remove value (deselect)
-      const newValues = currentValues.filter((v) => v !== value);
-      onFilterChange(key, newValues.length === 0 ? "" : newValues.join(","));
-    } else {
-      // Add value (select)
-      const newValues = [...currentValues, value];
-      onFilterChange(key, newValues.join(","));
-    }
+    // Pass the value directly to the hook's updateFilter, which handles the toggle logic
+    onFilterChange(key, value);
   };
 
   const handleApply = () => {
+    // Clear search inputs to prevent stale UI state
+    setSearchInputs({
+      country: "",
+      buyerCountry: "",
+      sector: "",
+      projectType: "",
+      scope: "",
+    });
     onClose();
   };
 
@@ -288,7 +274,7 @@ interface FilterSectionProps {
   searchValue: string;
   onSearchChange: (value: string) => void;
   options: string[];
-  selectedValues: string | string[]; // Accept string or string array
+  selectedValues: string[];
   onToggle: (value: string) => void;
   totalOptionsCount: number; // Total before filtering
 }
@@ -304,9 +290,6 @@ function FilterSection({
 }: FilterSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayLimit = 5;
-
-  // Normalize selectedValues to an array for consistent checking
-  const selectedArray = Array.isArray(selectedValues) ? selectedValues : (selectedValues ? selectedValues.split(',') : []);
 
 
   // When searching, show all filtered results
@@ -344,19 +327,19 @@ function FilterSection({
 
       {/* Options List */}
       <div className="space-y-2">
-        {displayedOptions.map((option, index) => ( // Added index for key
+        {displayedOptions.map((option) => (
           <label
-            key={`${title}-${option}-${index}`}
+            key={`${title}-${option}`}
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-high cursor-pointer transition-colors"
           >
             <Checkbox
-              checked={selectedArray.includes(option)}
+              checked={selectedValues.includes(option)}
               onCheckedChange={() => onToggle(option)}
               className="border"
               data-testid={`checkbox-${title.toLowerCase()}-${option}`}
             />
             <span className="text-sm text-on-surface flex-1">{option}</span>
-            {selectedArray.includes(option) && (
+            {selectedValues.includes(option) && (
               <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400">
                 Selected
               </Badge>
