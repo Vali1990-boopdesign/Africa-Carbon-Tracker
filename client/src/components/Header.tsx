@@ -492,7 +492,7 @@ export function Header({
                   <div className="flex items-center space-x-2 flex-wrap">
                     {activeFilters.map((filter, index) => (
                       <motion.div
-                        key={filter.key}
+                        key={`${filter.key}-${filter.value}`}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}

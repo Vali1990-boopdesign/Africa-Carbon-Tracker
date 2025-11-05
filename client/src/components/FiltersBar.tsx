@@ -180,7 +180,7 @@ export function FiltersBar({
           {/* Filter Dropdowns */}
           <div className="flex items-center space-x-3">
             <Select
-              value={filters.country || "all"}
+              value={filters.country.length === 0 ? "all" : filters.country.length === 1 ? filters.country[0] : "multiple"}
               onValueChange={(value) =>
                 onFilterChange("country", value === "all" ? "" : value)
               }
@@ -190,6 +190,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Countries</SelectItem>
+                {filters.country.length > 1 && (
+                  <SelectItem value="multiple">{filters.country.length} Selected</SelectItem>
+                )}
                 {uniqueCountries.map((country) => (
                   <SelectItem key={country} value={country}>
                     {country}
@@ -199,7 +202,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters.sector || "all"}
+              value={filters.sector.length === 0 ? "all" : filters.sector.length === 1 ? filters.sector[0] : "multiple"}
               onValueChange={(value) =>
                 onFilterChange("sector", value === "all" ? "" : value)
               }
@@ -209,6 +212,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Buyer Sectors</SelectItem>
+                {filters.sector.length > 1 && (
+                  <SelectItem value="multiple">{filters.sector.length} Selected</SelectItem>
+                )}
                 {uniqueSectors.map((sector) => (
                   <SelectItem key={sector} value={sector}>
                     {sector}
@@ -218,7 +224,7 @@ export function FiltersBar({
             </Select>
 
             <Select
-              value={filters.projectType || "all"}
+              value={filters.projectType.length === 0 ? "all" : filters.projectType.length === 1 ? filters.projectType[0] : "multiple"}
               onValueChange={(value) =>
                 onFilterChange("projectType", value === "all" ? "" : value)
               }
@@ -228,6 +234,9 @@ export function FiltersBar({
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Project Types</SelectItem>
+                {filters.projectType.length > 1 && (
+                  <SelectItem value="multiple">{filters.projectType.length} Selected</SelectItem>
+                )}
                 {uniqueProjectTypes.map((type) => (
                   <SelectItem key={type} value={type}>
                     {type}
@@ -261,7 +270,7 @@ export function FiltersBar({
               <div className="flex items-center space-x-2 flex-wrap">
                 {activeFilters.map((filter, index) => (
                   <motion.div
-                    key={filter.key}
+                    key={`${filter.key}-${filter.value}`}
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
