@@ -29,6 +29,14 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
+### November 5, 2025 (Session 3 - Final Mobile Fixes)
+- **Final Mobile UI Refinements**: Resolved persistent theme, scroll lock, and layout issues
+  - **Theme Default Fix**: Changed ThemeProvider initialState from "dark" to "light" (line 20) to align context default with defaultTheme prop; new users now properly see light mode on first visit
+  - **Centralized Scroll Lock Management**: Created useBodyScrollLock hook with reference counting to prevent document.body overflow conflicts when NavigationDrawer and FilterBottomSheet open/close simultaneously
+  - **FilterBottomSheet ScrollArea Fix**: Wrapped ScrollArea in flex-1 parent container, added explicit h-full to ScrollArea, removed conflicting overflow-y-auto class to eliminate top clipping issues
+  - **Hook Integration**: Updated both NavigationDrawer and FilterBottomSheet to use useBodyScrollLock hook instead of direct body.style.overflow manipulation
+  - Architect review: Pass rating, all mobile UI regressions resolved without functional issues; suggested hardening useBodyScrollLock for non-browser environments
+
 ### November 5, 2025 (Session 2 - Bug Fixes)
 - **Mobile UI Bug Fixes**: Resolved 3 critical bugs reported after initial mobile improvements
   - **FilterFAB Removal**: Removed duplicate green FAB filter button from dashboard.tsx; FilterBottomSheet now exclusively controlled by Header "Filters" button
