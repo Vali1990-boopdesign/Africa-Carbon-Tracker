@@ -75,13 +75,27 @@ export function FilterBottomSheet({
   };
 
   const toggleFilter = (key: keyof DashboardFilters, value: string) => {
-    const currentValues = filters[key] as string[];
+    // Get current values - handle both array and string formats
+    let currentValues: string[];
+    const filterValue = filters[key];
+
+    if (Array.isArray(filterValue)) {
+      currentValues = filterValue;
+    } else if (typeof filterValue === 'string' && filterValue) {
+      currentValues = filterValue.split(',');
+    } else {
+      currentValues = [];
+    }
+
+    // Remove duplicates
+    currentValues = Array.from(new Set(currentValues));
+
     if (currentValues.includes(value)) {
-      // Remove value
+      // Remove value (deselect)
       const newValues = currentValues.filter((v) => v !== value);
       onFilterChange(key, newValues.length === 0 ? "" : newValues.join(","));
     } else {
-      // Add value
+      // Add value (select)
       const newValues = [...currentValues, value];
       onFilterChange(key, newValues.join(","));
     }
@@ -274,7 +288,7 @@ interface FilterSectionProps {
   searchValue: string;
   onSearchChange: (value: string) => void;
   options: string[];
-  selectedValues: string[];
+  selectedValues: string | string[]; // Accept string or string array
   onToggle: (value: string) => void;
   totalOptionsCount: number; // Total before filtering
 }
@@ -290,13 +304,17 @@ function FilterSection({
 }: FilterSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const displayLimit = 5;
-  
+
+  // Normalize selectedValues to an array for consistent checking
+  const selectedArray = Array.isArray(selectedValues) ? selectedValues : (selectedValues ? selectedValues.split(',') : []);
+
+
   // When searching, show all filtered results
   // When not searching, apply the expand/collapse logic
-  const displayedOptions = searchValue 
-    ? options 
+  const displayedOptions = searchValue
+    ? options
     : (isExpanded ? options : options.slice(0, displayLimit));
-  
+
   const hasMore = !searchValue && options.length > displayLimit;
   const showSearchInput = totalOptionsCount > 5;
 
@@ -326,19 +344,19 @@ function FilterSection({
 
       {/* Options List */}
       <div className="space-y-2">
-        {displayedOptions.map((option) => (
+        {displayedOptions.map((option, index) => ( // Added index for key
           <label
-            key={option}
+            key={`${title}-${option}-${index}`}
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-container-high cursor-pointer transition-colors"
           >
             <Checkbox
-              checked={selectedValues.includes(option)}
+              checked={selectedArray.includes(option)}
               onCheckedChange={() => onToggle(option)}
               className="border"
               data-testid={`checkbox-${title.toLowerCase()}-${option}`}
             />
             <span className="text-sm text-on-surface flex-1">{option}</span>
-            {selectedValues.includes(option) && (
+            {selectedArray.includes(option) && (
               <Badge variant="secondary" className="bg-emerald-600/20 text-emerald-400">
                 Selected
               </Badge>
