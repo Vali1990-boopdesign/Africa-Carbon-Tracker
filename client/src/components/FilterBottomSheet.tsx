@@ -135,15 +135,15 @@ export function FilterBottomSheet({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 bg-surface-container rounded-t-3xl shadow-2xl z-[80] max-h-[85vh] flex flex-col lg:hidden"
+            className="fixed bottom-0 left-0 right-0 bg-surface-container rounded-t-3xl shadow-2xl z-[80] max-h-[80vh] flex flex-col lg:hidden"
           >
             {/* Drag Handle */}
-            <div className="flex justify-center pt-3 pb-2">
+            <div className="flex justify-center pt-3 pb-2 shrink-0">
               <div className="w-12 h-1 bg-surface-container-high rounded-full" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border">
+            <div className="flex items-center justify-between px-6 py-3 border-b border shrink-0">
               <div className="flex items-center gap-3">
                 <Filter className="h-5 w-5 text-emerald-500" />
                 <div>
@@ -167,72 +167,72 @@ export function FilterBottomSheet({
             </div>
 
             {/* Filter Content */}
-            <ScrollArea className="flex-1 px-6 py-4">
-              <div className="space-y-6 pb-6">
-                {/* Countries */}
-                <FilterSection
-                  title="Countries"
-                  searchValue={searchInputs.country}
-                  onSearchChange={(value) =>
-                    setSearchInputs({ ...searchInputs, country: value })
-                  }
-                  options={filterOptions(uniqueCountries, searchInputs.country)}
-                  selectedValues={filters.country}
-                  onToggle={(value) => toggleFilter("country", value)}
-                />
+            <ScrollArea className="flex-1 overflow-y-auto">
+              <div className="px-6 py-4 space-y-6 pb-6">
+                  {/* Countries */}
+                  <FilterSection
+                    title="Countries"
+                    searchValue={searchInputs.country}
+                    onSearchChange={(value) =>
+                      setSearchInputs({ ...searchInputs, country: value })
+                    }
+                    options={filterOptions(uniqueCountries, searchInputs.country)}
+                    selectedValues={filters.country}
+                    onToggle={(value) => toggleFilter("country", value)}
+                  />
 
-                {/* Buyer Countries */}
-                <FilterSection
-                  title="Buyer Countries"
-                  searchValue={searchInputs.buyerCountry}
-                  onSearchChange={(value) =>
-                    setSearchInputs({ ...searchInputs, buyerCountry: value })
-                  }
-                  options={filterOptions(uniqueBuyerCountries, searchInputs.buyerCountry)}
-                  selectedValues={filters.buyerCountry}
-                  onToggle={(value) => toggleFilter("buyerCountry", value)}
-                />
+                  {/* Buyer Countries */}
+                  <FilterSection
+                    title="Buyer Countries"
+                    searchValue={searchInputs.buyerCountry}
+                    onSearchChange={(value) =>
+                      setSearchInputs({ ...searchInputs, buyerCountry: value })
+                    }
+                    options={filterOptions(uniqueBuyerCountries, searchInputs.buyerCountry)}
+                    selectedValues={filters.buyerCountry}
+                    onToggle={(value) => toggleFilter("buyerCountry", value)}
+                  />
 
-                {/* Sectors */}
-                <FilterSection
-                  title="Sectors"
-                  searchValue={searchInputs.sector}
-                  onSearchChange={(value) =>
-                    setSearchInputs({ ...searchInputs, sector: value })
-                  }
-                  options={filterOptions(uniqueSectors, searchInputs.sector)}
-                  selectedValues={filters.sector}
-                  onToggle={(value) => toggleFilter("sector", value)}
-                />
+                  {/* Sectors */}
+                  <FilterSection
+                    title="Sectors"
+                    searchValue={searchInputs.sector}
+                    onSearchChange={(value) =>
+                      setSearchInputs({ ...searchInputs, sector: value })
+                    }
+                    options={filterOptions(uniqueSectors, searchInputs.sector)}
+                    selectedValues={filters.sector}
+                    onToggle={(value) => toggleFilter("sector", value)}
+                  />
 
-                {/* Project Types */}
-                <FilterSection
-                  title="Project Types"
-                  searchValue={searchInputs.projectType}
-                  onSearchChange={(value) =>
-                    setSearchInputs({ ...searchInputs, projectType: value })
-                  }
-                  options={filterOptions(uniqueProjectTypes, searchInputs.projectType)}
-                  selectedValues={filters.projectType}
-                  onToggle={(value) => toggleFilter("projectType", value)}
-                />
+                  {/* Project Types */}
+                  <FilterSection
+                    title="Project Types"
+                    searchValue={searchInputs.projectType}
+                    onSearchChange={(value) =>
+                      setSearchInputs({ ...searchInputs, projectType: value })
+                    }
+                    options={filterOptions(uniqueProjectTypes, searchInputs.projectType)}
+                    selectedValues={filters.projectType}
+                    onToggle={(value) => toggleFilter("projectType", value)}
+                  />
 
-                {/* Scopes */}
-                <FilterSection
-                  title="Scopes"
-                  searchValue={searchInputs.scope}
-                  onSearchChange={(value) =>
-                    setSearchInputs({ ...searchInputs, scope: value })
-                  }
-                  options={filterOptions(uniqueScopes, searchInputs.scope)}
-                  selectedValues={filters.scope}
-                  onToggle={(value) => toggleFilter("scope", value)}
+                  {/* Scopes */}
+                  <FilterSection
+                    title="Scopes"
+                    searchValue={searchInputs.scope}
+                    onSearchChange={(value) =>
+                      setSearchInputs({ ...searchInputs, scope: value })
+                    }
+                    options={filterOptions(uniqueScopes, searchInputs.scope)}
+                    selectedValues={filters.scope}
+                    onToggle={(value) => toggleFilter("scope", value)}
                 />
               </div>
             </ScrollArea>
 
             {/* Footer Actions */}
-            <div className="flex gap-3 p-6 border-t border bg-surface-container/95">
+            <div className="flex gap-3 p-6 border-t border bg-surface-container/95 shrink-0">
               <Button
                 variant="outline"
                 onClick={handleClearAll}

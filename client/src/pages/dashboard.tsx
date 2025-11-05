@@ -11,7 +11,7 @@ import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
 import { FeedbackModal, useFeedbackTrigger } from "@/components/FeedbackModal";
-import { FilterBottomSheet, FilterFAB } from "@/components/FilterBottomSheet";
+import { FilterBottomSheet } from "@/components/FilterBottomSheet";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { motion } from "framer-motion";
 
@@ -222,22 +222,6 @@ export default function Dashboard() {
       <FeedbackModal
         isOpen={showFeedbackModal}
         onClose={() => setShowFeedbackModal(false)}
-      />
-
-      {/* Filter FAB (Mobile Only) */}
-      <FilterFAB
-        onClick={() => setIsFilterSheetOpen(true)}
-        activeCount={activeFilters.length}
-      />
-
-      {/* Filter Bottom Sheet (Mobile Only) */}
-      <FilterBottomSheet
-        isOpen={isFilterSheetOpen}
-        onClose={() => setIsFilterSheetOpen(false)}
-        filters={filters}
-        activeFilters={activeFilters}
-        onFilterChange={updateFilter}
-        onClearFilters={clearFilters}
       />
     </div>
   );
