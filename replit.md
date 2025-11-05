@@ -29,7 +29,14 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
-### November 5, 2025
+### November 5, 2025 (Session 2 - Bug Fixes)
+- **Mobile UI Bug Fixes**: Resolved 3 critical bugs reported after initial mobile improvements
+  - **FilterFAB Removal**: Removed duplicate green FAB filter button from dashboard.tsx; FilterBottomSheet now exclusively controlled by Header "Filters" button
+  - **Default Theme Fix**: Modified ThemeProvider initialization to validate localStorage theme value (dark/light) before use, properly falling back to defaultTheme="light" on first visit
+  - **FilterBottomSheet Layout**: Fixed clipping issues by reducing max-height from 85vh to 80vh, added shrink-0 to drag handle/header/footer, consolidated nested divs, improved scrolling with flex-1 overflow-y-auto
+  - Architect review: Pass rating, all bugs resolved without introducing new blockers
+
+### November 5, 2025 (Session 1 - Initial Mobile Improvements)
 - **Comprehensive Mobile UX Improvements**: Resolved all reported mobile viewport issues with viewport-conditional rendering and proper z-index hierarchy
   - **Z-Index Hierarchy Established**: Implemented coherent stacking order: Toast(100) > FilterBottomSheet(80/75) > SearchDropdown(70/65) > NavigationDrawer(60/55) > Header(50)
   - **Viewport-Conditional Theme Toggle**: Added theme toggle to Header for desktop/tablet (≥768px) using useMediaQuery hook; mobile users access toggle only via NavigationDrawer, eliminating duplicates
