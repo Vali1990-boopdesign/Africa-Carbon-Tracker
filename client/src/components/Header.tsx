@@ -14,8 +14,7 @@ import { MessageCircle, Search, X, Sun, Moon, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
-import { NavigationDrawer, HamburgerMenuButton } from "./NavigationDrawer";
-import { FilterBottomSheet } from "./FilterBottomSheet";
+import { HamburgerMenuButton } from "./NavigationDrawer";
 import { useTheme } from "./ThemeProvider";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import lottie from "lottie-web";
@@ -39,6 +38,8 @@ interface HeaderProps {
   onRemoveFilter: (key: keyof DashboardFilters, value?: string) => void;
   onClearFilters: () => void;
   isLoading?: boolean;
+  onOpenDrawer: () => void;
+  onOpenFilters: () => void;
 }
 
 export function Header({
@@ -50,10 +51,10 @@ export function Header({
   onRemoveFilter,
   onClearFilters,
   isLoading,
+  onOpenDrawer,
+  onOpenFilters,
 }: HeaderProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(filters.search);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -199,7 +200,7 @@ export function Header({
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             {/* Hamburger Menu (Mobile Only) */}
-            <HamburgerMenuButton onClick={() => setIsDrawerOpen(true)} />
+            <HamburgerMenuButton onClick={onOpenDrawer} />
             
             <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
               <lord-icon
@@ -462,7 +463,7 @@ export function Header({
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setIsFilterSheetOpen(true)}
+                  onClick={onOpenFilters}
                   className="bg-surface-container border"
                   data-testid="button-mobile-filters"
                 >
@@ -521,22 +522,6 @@ export function Header({
       <ContactModal
         isOpen={isContactModalOpen}
         onClose={() => setIsContactModalOpen(false)}
-      />
-
-      {/* Navigation Drawer (Mobile) */}
-      <NavigationDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-      />
-
-      {/* Filter Bottom Sheet (Mobile) */}
-      <FilterBottomSheet
-        isOpen={isFilterSheetOpen}
-        onClose={() => setIsFilterSheetOpen(false)}
-        filters={filters}
-        activeFilters={activeFilters}
-        onFilterChange={onFilterChange}
-        onClearFilters={onClearFilters}
       />
     </motion.header>
   );

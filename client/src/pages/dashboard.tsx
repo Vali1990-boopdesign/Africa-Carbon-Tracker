@@ -12,6 +12,7 @@ import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
 import { FeedbackModal, useFeedbackTrigger } from "@/components/FeedbackModal";
 import { FilterBottomSheet } from "@/components/FilterBottomSheet";
+import { NavigationDrawer } from "@/components/NavigationDrawer";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { motion } from "framer-motion";
 
@@ -38,6 +39,7 @@ export default function Dashboard() {
 
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Smart timing trigger for feedback modal
   useFeedbackTrigger(() => {
@@ -129,6 +131,8 @@ export default function Dashboard() {
         onRemoveFilter={removeFilter}
         onClearFilters={clearFilters}
         isLoading={isLoading}
+        onOpenDrawer={() => setIsDrawerOpen(true)}
+        onOpenFilters={() => setIsFilterSheetOpen(true)}
       />
 
       {/* Data Note */}
@@ -222,6 +226,22 @@ export default function Dashboard() {
       <FeedbackModal
         isOpen={showFeedbackModal}
         onClose={() => setShowFeedbackModal(false)}
+      />
+
+      {/* Navigation Drawer (Mobile) - Sibling of Header */}
+      <NavigationDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      />
+
+      {/* Filter Bottom Sheet (Mobile) - Sibling of Header */}
+      <FilterBottomSheet
+        isOpen={isFilterSheetOpen}
+        onClose={() => setIsFilterSheetOpen(false)}
+        filters={filters}
+        activeFilters={activeFilters}
+        onFilterChange={updateFilter}
+        onClearFilters={clearFilters}
       />
     </div>
   );
