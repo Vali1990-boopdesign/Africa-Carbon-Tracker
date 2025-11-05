@@ -1,0 +1,77 @@
+Root Cause Analysis
+1. Data Flow Inconsistency (Critical)
+The filter state is managed as arrays in use-dashboard.ts but the component is receiving mixed types (string or array). Look at the type definition:
+
+// In use-dashboard.ts
+export interface DashboardFilters {
+  country: string[];  // Defined as array
+  buyerCountry: string[];
+  // ...
+}
+But in FilterBottomSheet.tsx line 93, you're handling it as string OR array:
+
+selectedValues: string | string[]; // Accept string or string array
+2. Toggle Function Normalization Issue (Critical)
+In FilterBottomSheet.tsx lines 82-103, the toggleFilter function attempts to normalize with Array.from(new Set(...)), but the incoming data type is inconsistent:
+
+Sometimes filters.country is already an array
+Sometimes it's a comma-separated string
+The normalization happens AFTER receiving mixed data
+3. Key Generation Problem (Major)
+Line 296 in FilterBottomSheet.tsx:
+
+key={`${title}-${option}-${index}`}
+This is generating keys like "Countries-Benin-0", but if the options array changes (search filters it), the same country could get different indices, causing React to see it as a "new" element.
+
+4. State Update Propagation (Major)
+The updateFilter function in use-dashboard.ts (lines 238-260) has toggle logic, but when a value is clicked multiple times:
+
+It checks if the value exists in the array
+But if somehow duplicates slip through earlier in the chain, the check currentArray.includes(stringValue) will only remove ONE occurrence, not all
+5. Active Filter Computation (Major)
+In use-dashboard.ts lines 278-309, the activeFilters array is computed from the filter state. If the state has duplicates, it will show duplicate active filters.
+
+Architectural Issues
+Issue A: Type Safety Violation
+The backend returns filtered data as comma-separated strings in query params, but the frontend expects arrays. This creates a type mismatch throughout the data flow.
+
+Issue B: No Single Source of Truth
+When the bottom sheet closes, the filters remain active because:
+
+The filter state persists in useDashboard hook (correct)
+But the UI doesn't receive feedback that selection succeeded
+The onClose() only closes the sheet, doesn't validate or clean state
+Issue C: Missing Duplicate Prevention at Source
+There's no validation when filters are set - only when they're toggled. If the initial data load or a prop update brings duplicates, they persist.
+
+The Bug Flow
+User clicks "Benin" → toggleFilter called
+filters.country might be ["Benin"] OR "Benin" (inconsistent)
+Normalization converts to array, but duplicates can exist
+User clicks "Benin" again → Should remove, but if there are duplicates ["Benin", "Benin"], only one is removed
+Active filter count shows remaining duplicate
+Sheet closes but filters persist in state
+Recommended Solutions (Architectural)
+Solution 1: Enforce Type Consistency at Hook Level
+Ensure useDashboard always returns arrays, never strings:
+
+Initialize all filter fields as empty arrays []
+When receiving URL params or props, split strings into arrays
+Add a normalization layer that runs on every state update
+Solution 2: Add Deduplication at State Update
+In updateFilter function, wrap every array assignment with Array.from(new Set(...)) to prevent duplicates from ever entering state.
+
+Solution 3: Fix Key Generation
+Use a stable key that doesn't rely on index:
+
+key={`${title}-${option}`}  // Remove index
+Or use a unique ID if options can have duplicates.
+
+Solution 4: Add State Validation Layer
+Create a sanitizeFilters() function that runs before state updates:
+
+Removes duplicates from all array fields
+Converts strings to arrays
+Validates data types
+Solution 5: Clear Local State on Sheet Close
+The search inputs in FilterBottomSheet have their own state (searchInputs). When the sheet closes, these should be cleared to prevent stale UI.
