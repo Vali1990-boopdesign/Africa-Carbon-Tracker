@@ -10,12 +10,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageCircle, Search, X } from "lucide-react";
+import { MessageCircle, Search, X, Sun, Moon, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
 import { NavigationDrawer, HamburgerMenuButton } from "./NavigationDrawer";
+import { FilterBottomSheet } from "./FilterBottomSheet";
 import { useTheme } from "./ThemeProvider";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
@@ -51,6 +53,7 @@ export function Header({
 }: HeaderProps) {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(filters.search);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
@@ -58,6 +61,7 @@ export function Header({
   const [lastScrollY, setLastScrollY] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // Memoize lottie source based on theme to prevent re-renders
   const lottieSrc = useMemo(() => {
@@ -253,6 +257,24 @@ export function Header({
               </Select>
             </div>
 
+            {/* Theme Toggle (Desktop/Tablet only) */}
+            {isDesktop && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="h-10 w-10"
+                data-testid="button-theme-toggle-header"
+                title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </Button>
+            )}
+
             {/* Contact Us Button */}
             <Button
               variant="default"
@@ -302,7 +324,7 @@ export function Header({
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
-                          className="fixed left-0 right-0 bottom-0 bg-black/30 z-[9998]"
+                          className="fixed left-0 right-0 bottom-0 bg-black/30 z-[65]"
                           style={{ top: '100vh' }}
                           onClick={() => setIsSearchFocused(false)}
                         />
@@ -312,7 +334,7 @@ export function Header({
                           initial={{ opacity: 0, y: -10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                          className="absolute top-full left-0 right-0 mt-2 bg-surface-container border rounded-lg z-[99999] max-h-64 overflow-y-auto"
+                          className="absolute top-full left-0 right-0 mt-2 bg-surface-container border rounded-lg z-[70] max-h-64 overflow-y-auto"
                           style={{
                             filter:
                               "drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3))",
@@ -338,8 +360,9 @@ export function Header({
                 </div>
               </div>
 
-              {/* Filter Dropdowns */}
-              <div className="flex items-center space-x-3">
+              {/* Filter Dropdowns - Desktop/Tablet Only */}
+              {isDesktop && (
+                <div className="flex items-center space-x-3">
                 <Select
                   value={
                     filters.country.length === 1 ? filters.country[0] : "all"
@@ -433,7 +456,28 @@ export function Header({
                   <X size={16} />
                 </Button>
               </div>
+              )}
+
+              {/* Mobile Filter Button */}
+              {!isDesktop && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsFilterSheetOpen(true)}
+                  className="bg-surface-container border"
+                  data-testid="button-mobile-filters"
+                >
+                  <Filter size={16} className="mr-2" />
+                  Filters
+                  {activeFilters.length > 0 && (
+                    <Badge variant="custom" className="ml-2 bg-emerald-500 text-white border-transparent">
+                      {activeFilters.length}
+                    </Badge>
+                  )}
+                </Button>
+              )}
             </div>
+
 
             {/* Active Filters Breadcrumb */}
             <AnimatePresence>
@@ -484,6 +528,16 @@ export function Header({
       <NavigationDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
+      />
+
+      {/* Filter Bottom Sheet (Mobile) */}
+      <FilterBottomSheet
+        isOpen={isFilterSheetOpen}
+        onClose={() => setIsFilterSheetOpen(false)}
+        filters={filters}
+        activeFilters={activeFilters}
+        onFilterChange={onFilterChange}
+        onClearFilters={onClearFilters}
       />
     </motion.header>
   );

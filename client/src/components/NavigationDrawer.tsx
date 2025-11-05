@@ -188,18 +188,26 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                     </div>
                   </div>
 
-                  {/* About */}
+                  {/* Legal Disclaimer */}
                   <div className="space-y-2 pb-6">
                     <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                      About This Dashboard
+                      Legal Disclaimer
                     </h3>
-                    <p className="text-sm text-on-surface-variant leading-relaxed">
+                    <p className="text-xs text-on-surface-variant leading-relaxed">
                       This dashboard analyzes carbon credit retirements from African
-                      countries, focusing on enterprise-level transactions. The analysis
-                      maps buyer data to parent companies for consistency.
+                      countries, focusing on enterprise-level transactions (ignoring
+                      credits retired on behalf of individuals). The analysis excludes
+                      micro-transactions (of 10 or more credits) and maps buyer data to
+                      parent companies for consistency. While "retirements" and
+                      "purchases" are used interchangeably for simplicity, not all
+                      retirements represent direct purchases — some may reflect compliance
+                      programs. Given Africa's dynamic carbon market landscape, users are
+                      advised to interpret insights with appropriate caution. For
+                      instance, pre-purchases of carbon credits yet to be issued (and
+                      retired) will not be reflected here.
                     </p>
                     <p className="text-xs text-muted-foreground pt-2">
-                      © 2024 The Catalyst Fund, BFA Global & FSD Africa
+                      © 2024 The Catalyst Fund, BFA Global & FSD Africa. All rights reserved.
                     </p>
                   </div>
                 </div>
