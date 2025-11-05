@@ -31,14 +31,14 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
-    
+
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
-    
+
     if (isLeftSwipe) {
       onClose();
     }
-    
+
     setTouchStart(null);
     setTouchEnd(null);
   };
@@ -78,8 +78,13 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">🌱</span>
                     <div>
-                      <h2 className="text-lg font-semibold text-on-surface">Carbon Analytics</h2>
-                      <p className="text-xs text-muted-foreground">Africa Carbon Credits</p>
+                      <h2 className="text-lg font-semibold text-on-surface">
+                        Africa Carbon Dashboard
+                      </h2>
+                      <p className="text-xs text-muted-foreground">
+                        Analyzing African Carbon Credit Flows and Patterns for
+                        Market Intelligence and Policy Insights
+                      </p>
                     </div>
                   </div>
                   <Button
@@ -119,7 +124,9 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                       Appearance
                     </h3>
                     <Button
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                      onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                      }
                       variant="outline"
                       className="w-full justify-start gap-2"
                       data-testid="button-theme-toggle"
@@ -186,20 +193,23 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                       Legal Disclaimer
                     </h3>
                     <p className="text-xs text-on-surface-variant leading-relaxed">
-                      This dashboard analyzes carbon credit retirements from African
-                      countries, focusing on enterprise-level transactions (ignoring
-                      credits retired on behalf of individuals). The analysis excludes
-                      micro-transactions (of 10 or more credits) and maps buyer data to
-                      parent companies for consistency. While "retirements" and
-                      "purchases" are used interchangeably for simplicity, not all
-                      retirements represent direct purchases — some may reflect compliance
-                      programs. Given Africa's dynamic carbon market landscape, users are
-                      advised to interpret insights with appropriate caution. For
-                      instance, pre-purchases of carbon credits yet to be issued (and
-                      retired) will not be reflected here.
+                      This dashboard analyzes carbon credit retirements from
+                      African countries, focusing on enterprise-level
+                      transactions (ignoring credits retired on behalf of
+                      individuals). The analysis excludes micro-transactions (of
+                      10 or more credits) and maps buyer data to parent
+                      companies for consistency. While "retirements" and
+                      "purchases" are used interchangeably for simplicity, not
+                      all retirements represent direct purchases — some may
+                      reflect compliance programs. Given Africa's dynamic carbon
+                      market landscape, users are advised to interpret insights
+                      with appropriate caution. For instance, pre-purchases of
+                      carbon credits yet to be issued (and retired) will not be
+                      reflected here.
                     </p>
                     <p className="text-xs text-muted-foreground pt-2">
-                      © 2024 The Catalyst Fund, BFA Global & FSD Africa. All rights reserved.
+                      © 2024 The Catalyst Fund, BFA Global & FSD Africa. All
+                      rights reserved.
                     </p>
                   </div>
                 </div>
