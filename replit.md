@@ -29,6 +29,16 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
+### November 5, 2025 (Session 4 - Architectural Fixes)
+- **Theme & Stacking Context Resolution**: Fixed critical architectural issues preventing proper mobile UI display
+  - **Theme Default Fix**: Changed App.tsx defaultTheme from "dark" to "light" (line 27) to align with ThemeProvider initialState; new users now see light mode by default while localStorage overrides are preserved
+  - **Component Restructuring**: Lifted NavigationDrawer and FilterBottomSheet out of Header component to Dashboard level, making them siblings instead of children
+  - **Stacking Context Fix**: Resolved CSS stacking context trap where drawer/sheet (z-[80]/z-[100]) were stuck inside Header's sticky z-40 context, preventing proper layering above page content
+  - **State Management**: Moved isDrawerOpen state from Header to Dashboard, added onOpenDrawer and onOpenFilters props to Header interface, following React best practices (lift state up)
+  - **Architecture Impact**: Mobile overlays now inherit independent fixed positioning with proper z-index hierarchy: FilterBottomSheet (100) > NavigationDrawer (80) > Search dropdown (60) > Header (40)
+  - **Header Cleanup**: Removed internal drawer/sheet state, removed component rendering, kept only trigger buttons and handlers
+  - Architect review: Pass rating, confirmed restructuring resolves defects with no performance concerns or regressions
+
 ### November 5, 2025 (Session 3 - Final Mobile Fixes)
 - **Final Mobile UI Refinements**: Resolved persistent theme, scroll lock, and layout issues
   - **Theme Default Fix**: Changed ThemeProvider initialState from "dark" to "light" (line 20) to align context default with defaultTheme prop; new users now properly see light mode on first visit
