@@ -7,6 +7,7 @@ import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-
 import { motion } from "framer-motion";
 import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import { TermTooltip } from "./TermTooltip";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import type { BilateralAgreement } from "@shared/schema";
 
 // Define lord-icon element for TypeScript
@@ -35,6 +36,7 @@ export function BilateralAgreements() {
   const [summary, setSummary] = useState<BilateralAgreementsSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -201,8 +203,8 @@ export function BilateralAgreements() {
             </div>
           )}
 
-          {/* Sankey Diagram */}
-          {agreements.length > 0 && (
+          {/* Sankey Diagram - Desktop Only */}
+          {!isMobile && agreements.length > 0 && (
             <BilateralSankeyDiagram agreements={agreements} />
           )}
 

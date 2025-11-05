@@ -7,7 +7,6 @@ import { TimeSeriesChart } from "@/components/TimeSeriesChart";
 import { TopBuyers } from "@/components/TopBuyers";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";
-import { Footer } from "@/components/Footer";
 import { CarbonGlossary } from "@/components/CarbonGlossary";
 import { BilateralAgreements } from "@/components/BilateralAgreements";
 import { Intermediaries } from "@/components/Intermediaries";
@@ -215,9 +214,6 @@ export default function Dashboard() {
           onProjectTypeClick={handleProjectTypeClick}
         />
       </div>
-
-      {/* Footer */}
-      <Footer />
 
       {/* Carbon Credit Glossary */}
       <CarbonGlossary />

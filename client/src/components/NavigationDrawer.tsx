@@ -65,7 +65,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+              className="fixed inset-0 bg-black/60 z-[55] lg:hidden"
               onClick={onClose}
             />
 
@@ -75,7 +75,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-surface-container shadow-2xl z-50 overflow-y-auto lg:hidden"
+              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-surface-container shadow-2xl z-[60] overflow-y-auto lg:hidden"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
@@ -157,6 +157,10 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                           src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
                           alt="Catalyst Fund"
                           className="h-8 w-full object-contain"
+                          onError={(e) => {
+                            console.error("Catalyst Fund logo failed to load");
+                            e.currentTarget.style.display = "none";
+                          }}
                         />
                       </div>
                       <div className="bg-white rounded-lg p-3">
@@ -164,6 +168,10 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                           src="/bfa-global-logo.png"
                           alt="BFA Global"
                           className="h-8 w-full object-contain"
+                          onError={(e) => {
+                            console.error("BFA Global logo failed to load");
+                            e.currentTarget.style.display = "none";
+                          }}
                         />
                       </div>
                       <div className="bg-white rounded-lg p-3">
@@ -171,6 +179,10 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
                           src="/fsd-africa-logo.png"
                           alt="FSD Africa"
                           className="h-8 w-full object-contain"
+                          onError={(e) => {
+                            console.error("FSD Africa logo failed to load");
+                            e.currentTarget.style.display = "none";
+                          }}
                         />
                       </div>
                     </div>

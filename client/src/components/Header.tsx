@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MessageCircle, Search, X, Sun, Moon } from "lucide-react";
+import { MessageCircle, Search, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
@@ -252,22 +252,6 @@ export function Header({
                 </SelectContent>
               </Select>
             </div>
-
-            {/* Theme Toggle */}
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="h-10 w-10"
-              data-testid="button-theme-toggle"
-              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            >
-              {theme === "dark" ? (
-                <Sun size={18} className="text-foreground" />
-              ) : (
-                <Moon size={18} className="text-foreground" />
-              )}
-            </Button>
 
             {/* Contact Us Button */}
             <Button
