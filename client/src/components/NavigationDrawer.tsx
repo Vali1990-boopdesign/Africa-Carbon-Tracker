@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, MessageCircle, Sun, Moon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactModal } from "./ContactModal";
 import { useTheme } from "./ThemeProvider";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 interface NavigationDrawerProps {
   isOpen: boolean;
@@ -43,16 +44,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
   };
 
   // Prevent body scroll when drawer is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Check, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import { useQuery } from "@tanstack/react-query";
 import type { Transaction } from "@shared/schema";
@@ -102,16 +103,7 @@ export function FilterBottomSheet({
   };
 
   // Prevent body scroll when sheet is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  useBodyScrollLock(isOpen);
 
   const activeFilterCount = activeFilters.length;
 
@@ -167,8 +159,9 @@ export function FilterBottomSheet({
             </div>
 
             {/* Filter Content */}
-            <ScrollArea className="flex-1 overflow-y-auto">
-              <div className="px-6 py-4 space-y-6 pb-6">
+            <div className="flex-1 min-h-0">
+              <ScrollArea className="h-full">
+                <div className="px-6 py-4 space-y-6 pb-6">
                   {/* Countries */}
                   <FilterSection
                     title="Countries"
@@ -228,8 +221,9 @@ export function FilterBottomSheet({
                     selectedValues={filters.scope}
                     onToggle={(value) => toggleFilter("scope", value)}
                 />
-              </div>
-            </ScrollArea>
+                </div>
+              </ScrollArea>
+            </div>
 
             {/* Footer Actions */}
             <div className="flex gap-3 p-6 border-t border bg-surface-container/95 shrink-0">
