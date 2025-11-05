@@ -57,7 +57,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/60 z-[85] lg:hidden"
+              className="fixed inset-0 bg-black/60 z-[70] lg:hidden"
               onClick={onClose}
             />
 
@@ -67,7 +67,7 @@ export function NavigationDrawer({ isOpen, onClose }: NavigationDrawerProps) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-surface-container shadow-2xl z-[90] overflow-y-auto lg:hidden"
+              className="fixed left-0 top-0 bottom-0 w-[85%] max-w-sm bg-surface-container shadow-2xl z-[80] overflow-y-auto lg:hidden"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
