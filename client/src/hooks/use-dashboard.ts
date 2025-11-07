@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import type { DashboardMetrics, Transaction, CountryData, SectorData, TimeSeriesData, TopBuyerData, ScopeData } from "@shared/schema";
+import { trackFilter } from "@/lib/analytics";
 
 export interface DashboardFilters {
   country: string[];
@@ -226,19 +227,25 @@ export function useDashboard() {
         
         // If empty string, clear the array (happens when "All" is selected)
         if (stringValue === '') {
+          trackFilter(key, 'cleared');
           return { ...prev, [key]: [] };
         }
         
         // If value is already in array, remove it (toggle off) and deduplicate
         if (currentArray.includes(stringValue)) {
-          return { ...prev, [key]: Array.from(new Set(currentArray.filter(item => item !== stringValue))) };
+          const newArray = Array.from(new Set(currentArray.filter(item => item !== stringValue)));
+          trackFilter(key, stringValue, newArray.length);
+          return { ...prev, [key]: newArray };
         } else {
           // Otherwise, add it (toggle on) and deduplicate to prevent duplicates from ever entering state
-          return { ...prev, [key]: Array.from(new Set([...currentArray, stringValue])) };
+          const newArray = Array.from(new Set([...currentArray, stringValue]));
+          trackFilter(key, stringValue, newArray.length);
+          return { ...prev, [key]: newArray };
         }
       }
       
       // Handle non-array filters
+      trackFilter(key, value.toString());
       return { ...prev, [key]: value };
     });
   };
