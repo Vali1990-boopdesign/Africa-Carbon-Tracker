@@ -23,6 +23,9 @@ import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
 
+// Define lord-icon custom element
+defineElement(lottie.loadAnimation);
+
 // Define lord-icon element for TypeScript
 declare global {
   namespace JSX {
@@ -39,9 +42,6 @@ declare global {
     }
   }
 }
-
-// Define lord-icon custom element
-defineElement(lottie.loadAnimation);
 
 interface HeaderProps {
   dateRange: string;
