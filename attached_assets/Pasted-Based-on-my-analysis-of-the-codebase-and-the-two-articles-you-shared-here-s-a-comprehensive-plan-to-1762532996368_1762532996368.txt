@@ -1,0 +1,92 @@
+Based on my analysis of the codebase and the two articles you shared, here's a comprehensive plan to optimize Google Fonts loading for your deployment:
+
+Current State Analysis
+Your app currently uses Google Fonts via @import in client/src/index.css:
+
+Stack Sans Text (body font)
+Stack Sans Notch (display font for headers)
+The fonts are loading from Google's CDN, which works in development but may have issues in production deployments due to:
+
+Network latency and CORS
+Lack of font display control during loading
+No fallback optimization
+Missing preload hints
+Recommended Optimization Plan
+Option 1: Self-Host Fonts (Recommended for Deployment)
+Why: Maximum control, no external dependencies, better performance in production, GDPR-friendly.
+
+Steps:
+
+Download the font files (WOFF2 format) from Google Fonts
+Host them in client/public/fonts/ directory
+Update CSS to use @font-face with local paths
+Implement font-display: swap for better UX
+Add preload hints in client/index.html
+Benefits:
+
+Eliminates external network requests
+No Google CDN dependency
+Better caching control
+Faster deployment performance
+Option 2: Optimized Google Fonts CDN (Fallback)
+Why: Simpler if self-hosting isn't possible, but requires optimization.
+
+Steps:
+
+Replace @import with <link> tags in HTML with preconnect and dns-prefetch
+Add &display=swap parameter to font URL
+Implement Font Face Observer for better loading control
+Add system font fallbacks with similar metrics
+Benefits:
+
+No font file management
+Automatic format delivery (WOFF2 for modern browsers)
+Google's CDN performance
+Option 3: Hybrid Approach with Font Face Observer
+Why: Best user experience, combines CDN with intelligent loading.
+
+Steps:
+
+Keep Google Fonts as primary source
+Install and implement Font Face Observer library
+Add loading states (FOUT prevention)
+Implement localStorage caching strategy
+Add critical font subset preloading
+Benefits:
+
+Smart loading with fallback handling
+Loading state management
+Better perceived performance
+Specific Implementation Details
+Font Files Needed:
+Stack Sans Text:
+- Regular (400)
+- weights: normal
+- styles: normal, italic
+Stack Sans Notch:
+- Bold (700)
+- weights: 700
+- styles: normal
+File Structure:
+client/public/fonts/
+  ├── stack-sans-text-v1-latin-regular.woff2
+  ├── stack-sans-text-v1-latin-regular-italic.woff2
+  └── stack-sans-notch-v1-latin-700.woff2
+CSS Strategy:
+Use font-display: swap to show fallback immediately
+Define precise fallback stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif
+Subset fonts to Latin characters only (reduces file size by ~70%)
+Performance Optimizations:
+Preload critical fonts in <head>
+Use WOFF2 format (best compression, ~30% smaller than WOFF)
+Implement unicode-range for Latin subset only
+Add size-adjust to fallback fonts to prevent layout shift
+Recommended: Option 1 (Self-Host)
+Given that you're deploying on Replit and experiencing font loading issues, I recommend self-hosting because:
+
+✅ Eliminates the external dependency causing deployment issues
+✅ Works reliably in Replit's Autoscale/Static Deployments
+✅ Reduces layout shift with proper fallback metrics
+✅ Better performance (no DNS lookup, connection setup)
+✅ Full control over caching headers
+Font Face Observer would add ~5KB to your bundle but provide excellent loading management. However, for this specific deployment issue, self-hosting should resolve the core problem.
