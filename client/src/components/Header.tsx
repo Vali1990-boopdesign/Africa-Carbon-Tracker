@@ -17,6 +17,7 @@ import { ContactModal } from "./ContactModal";
 import { HamburgerMenuButton } from "./NavigationDrawer";
 import { useTheme } from "./ThemeProvider";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { trackSearch } from "@/lib/analytics";
 import lottie from "lottie-web";
 import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
@@ -171,12 +172,32 @@ export function Header({
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
     onFilterChange("search", value);
+    
+    if (value && allTransactions) {
+      const filteredCount = allTransactions.filter(t => 
+        t.buyerBrandName.toLowerCase().includes(value.toLowerCase()) ||
+        t.country.toLowerCase().includes(value.toLowerCase()) ||
+        t.projectName.toLowerCase().includes(value.toLowerCase()) ||
+        t.buyerSector.toLowerCase().includes(value.toLowerCase())
+      ).length;
+      trackSearch(value, filteredCount);
+    }
   };
 
   const handleSuggestionClick = (suggestion: string) => {
     setSearchValue(suggestion);
     onFilterChange("search", suggestion);
     setIsSearchFocused(false);
+    
+    if (allTransactions) {
+      const filteredCount = allTransactions.filter(t => 
+        t.buyerBrandName.toLowerCase().includes(suggestion.toLowerCase()) ||
+        t.country.toLowerCase().includes(suggestion.toLowerCase()) ||
+        t.projectName.toLowerCase().includes(suggestion.toLowerCase()) ||
+        t.buyerSector.toLowerCase().includes(suggestion.toLowerCase())
+      ).length;
+      trackSearch(suggestion, filteredCount);
+    }
   };
 
   return (
