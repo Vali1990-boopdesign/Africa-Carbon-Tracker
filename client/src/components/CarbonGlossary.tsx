@@ -12,23 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search } from "lucide-react";
 import { carbonTerms } from "./TermTooltip";
 
-// Define lord-icon element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        style?: React.CSSProperties;
-        onError?: (event: any) => void;
-        onLoad?: (event: any) => void;
-        state?: string;
-      };
-    }
-  }
-}
-
 export function CarbonGlossary() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

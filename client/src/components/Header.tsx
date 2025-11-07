@@ -18,13 +18,8 @@ import { HamburgerMenuButton } from "./NavigationDrawer";
 import { useTheme } from "./ThemeProvider";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { trackSearch } from "@/lib/analytics";
-import lottie from "lottie-web";
-import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
-
-// Define lord-icon custom element
-defineElement(lottie.loadAnimation);
 
 // Define lord-icon element for TypeScript
 declare global {
@@ -240,8 +235,9 @@ export function Header({
             {/* Hamburger Menu (Mobile Only) */}
             <HamburgerMenuButton onClick={onOpenDrawer} />
             
-            <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
+            <div className="flex items-center justify-center w-12 h-12">
               <lord-icon
+                key={lottieSrc}
                 trigger="in"
                 src={lottieSrc}
                 style={{
