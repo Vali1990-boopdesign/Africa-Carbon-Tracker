@@ -12,7 +12,7 @@ const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycby5U_nJ1a-ETnGIUVKQGPPxiRGcAfQBchMtkRiEnwGq4LmYps1UZefT-8jVYBRyr-k/exec";
 
 const FEEDBACK_CONFIG = {
-  MIN_TIME_ON_PAGE: 75000, // 75 seconds
+  MIN_TIME_ON_PAGE: 35000, // 35 seconds
   MIN_INTERACTIONS: 3,
   MIN_SCROLL_DEPTH: 50, // percentage
   REPEAT_INTERVAL_DAYS: 45,
@@ -327,8 +327,8 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                   {currentStep === 2 && (
                     <div className="space-y-3">
                       <Label className="text-sm font-semibold text-on-surface mb-2 block">
-                        What did you primarily use the dashboard for? (Select all that apply){" "}
-                        <span className="text-red-500">*</span>
+                        What did you primarily use the dashboard for? (Select
+                        all that apply) <span className="text-red-500">*</span>
                       </Label>
                       <div className="space-y-2">
                         {[
@@ -356,17 +356,24 @@ export function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
                           >
                             <Checkbox
                               id={option.value}
-                              checked={formData.q2_use_case.includes(option.value)}
+                              checked={formData.q2_use_case.includes(
+                                option.value,
+                              )}
                               onCheckedChange={(checked) => {
                                 if (checked) {
                                   setFormData((prev) => ({
                                     ...prev,
-                                    q2_use_case: [...prev.q2_use_case, option.value],
+                                    q2_use_case: [
+                                      ...prev.q2_use_case,
+                                      option.value,
+                                    ],
                                   }));
                                 } else {
                                   setFormData((prev) => ({
                                     ...prev,
-                                    q2_use_case: prev.q2_use_case.filter((v) => v !== option.value),
+                                    q2_use_case: prev.q2_use_case.filter(
+                                      (v) => v !== option.value,
+                                    ),
                                   }));
                                 }
                               }}
