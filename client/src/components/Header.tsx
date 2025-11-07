@@ -234,7 +234,7 @@ export function Header({
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-foreground font-display">
+              <h1 className="text-foreground font-display" style={{ fontSize: '22px', fontWeight: 400, letterSpacing: '0.02em' }}>
                 <TermTooltip
                   term="Africa Carbon Dashboard"
                   explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024"
