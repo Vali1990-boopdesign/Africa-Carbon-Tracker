@@ -1,0 +1,191 @@
+// ============================================
+// ENGAGEMENT TRACKING
+// ============================================
+
+// Track time-based engagement
+let engagementTime = 0;
+const engagementThresholds = {
+  30: false,
+  120: false,  // 2 minutes
+  300: false   // 5 minutes
+};
+
+setInterval(() => {
+  engagementTime += 10;
+  
+  Object.keys(engagementThresholds).forEach(threshold => {
+    if (engagementTime >= threshold && !engagementThresholds[threshold]) {
+      gtag('event', 'time_engaged', {
+        'engagement_duration': threshold,
+        'engagement_level': threshold >= 120 ? 'high' : 'medium'
+      });
+      engagementThresholds[threshold] = true;
+    }
+  });
+}, 10000); // Check every 10 seconds
+
+// Track if user actually explored data (any interaction)
+let hasInteracted = false;
+function markUserAsEngaged() {
+  if (!hasInteracted) {
+    gtag('event', 'data_explored', {
+      'first_interaction_time': engagementTime
+    });
+    hasInteracted = true;
+  }
+}
+
+// ============================================
+// FILTER TRACKING
+// ============================================
+
+function trackFilterUse(filterType, filterValue, resultCount) {
+  gtag('event', 'filter_applied', {
+    'filter_type': filterType,        // e.g., "country", "sector", "credit_type"
+    'filter_value': filterValue,       // e.g., "Kenya", "Renewable Energy"
+    'result_count': resultCount,       // How many results after filtering
+    'event_category': 'interaction'
+  });
+  markUserAsEngaged();
+}
+
+// Example usage in your filter code:
+// When user selects a country filter
+document.querySelector('#country-filter').addEventListener('change', function(e) {
+  const country = e.target.value;
+  const results = applyCountryFilter(country); // your existing filter function
+  
+  trackFilterUse('country', country, results.length);
+});
+
+// ============================================
+// CHART/VISUALIZATION TRACKING
+// ============================================
+
+function trackChartInteraction(chartType, interactionType, dataPoint) {
+  gtag('event', 'chart_interaction', {
+    'chart_type': chartType,           // e.g., "map", "bar_chart", "timeline"
+    'interaction_type': interactionType, // e.g., "click", "hover", "zoom"
+    'data_point': dataPoint,           // Optional: what they clicked on
+    'event_category': 'visualization'
+  });
+  markUserAsEngaged();
+}
+
+// Example for D3.js visualizations:
+// In your D3 chart code
+svg.selectAll('.country-path')
+  .on('click', function(event, d) {
+    trackChartInteraction('map', 'click', d.country_name);
+    // your existing click handler
+  });
+
+// ============================================
+// SEARCH TRACKING
+// ============================================
+
+function trackSearch(searchTerm, resultCount) {
+  gtag('event', 'search', {
+    'search_term': searchTerm,
+    'result_count': resultCount,
+    'event_category': 'interaction'
+  });
+  markUserAsEngaged();
+}
+
+// Example usage:
+document.querySelector('#search-input').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const query = e.target.value;
+  const results = performSearch(query); // your existing search function
+  
+  trackSearch(query, results.length);
+});
+
+// ============================================
+// DATA POINT SELECTION (KEY EVENT)
+// ============================================
+
+function trackDataPointSelection(itemType, itemName, itemDetails) {
+  gtag('event', 'data_point_selected', {
+    'item_type': itemType,             // e.g., "project", "credit", "organization"
+    'item_name': itemName,             // e.g., "Kenya Wind Farm Project"
+    'item_id': itemDetails.id,
+    'country': itemDetails.country,
+    'sector': itemDetails.sector,
+    'event_category': 'engagement'
+  });
+  markUserAsEngaged();
+}
+
+// Example: When user clicks on a specific carbon project
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('click', function() {
+    const projectData = JSON.parse(this.dataset.project);
+    
+    trackDataPointSelection('project', projectData.name, {
+      id: projectData.id,
+      country: projectData.country,
+      sector: projectData.sector
+    });
+  });
+});
+
+// ============================================
+// COMPARISON TRACKING
+// ============================================
+
+function trackComparison(items) {
+  gtag('event', 'comparison_made', {
+    'item_count': items.length,
+    'comparison_type': 'projects',     // or "credits", "countries"
+    'items_compared': items.join(', '),
+    'event_category': 'advanced_use'
+  });
+}
+
+// ============================================
+// HIGH-VALUE ACTIONS (CONVERSIONS)
+// ============================================
+
+function trackFullReportView(projectName, projectId) {
+  gtag('event', 'full_report_viewed', {
+    'project_name': projectName,
+    'project_id': projectId,
+    'event_category': 'conversion',
+    'value': 1  // You can assign monetary value if you want
+  });
+}
+
+function trackContactClick(contactType, projectId) {
+  gtag('event', 'contact_clicked', {
+    'contact_type': contactType,       // e.g., "email", "inquiry_form", "website"
+    'project_id': projectId,
+    'event_category': 'conversion',
+    'value': 5  // Higher value for conversion intent
+  });
+}
+
+function trackExternalLink(linkUrl, linkContext) {
+  gtag('event', 'external_link_clicked', {
+    'link_url': linkUrl,
+    'link_context': linkContext,       // e.g., "project_website", "partner_site"
+    'event_category': 'conversion'
+  });
+}
+
+// ============================================
+// ENTRY POINT TRACKING (from Catalyst Fund)
+// ============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  const referrer = document.referrer;
+  
+  if (referrer.includes('thecatalystfund.com')) {
+    gtag('event', 'arrived_from_catalyst_fund', {
+      'referrer_url': referrer,
+      'entry_source': 'carbon_modules_report'
+    });
+  }
+  
+  // Track initial
