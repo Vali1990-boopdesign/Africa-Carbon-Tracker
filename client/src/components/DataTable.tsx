@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronLeft, ChevronRight, ArrowUpDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
+import { trackDataPointSelection } from "@/lib/analytics";
 import type { Transaction } from "@shared/schema";
 import { formatNumber } from "@/lib/formatNumber";
 
@@ -161,6 +162,13 @@ export function DataTable({ transactions, isLoading, onProjectTypeClick }: DataT
                   <motion.tr
                     key={transaction.id}
                     className="border hover:bg-primary/5 transition-all duration-200 cursor-pointer"
+                    onClick={() => {
+                      trackDataPointSelection('transaction', transaction.projectName, {
+                        id: transaction.id,
+                        country: transaction.country,
+                        sector: transaction.buyerSector
+                      });
+                    }}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}

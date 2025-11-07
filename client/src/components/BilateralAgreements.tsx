@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import { TermTooltip } from "./TermTooltip";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { trackDataPointSelection, trackExternalLink } from "@/lib/analytics";
 import type { BilateralAgreement } from "@shared/schema";
 
 // Define lord-icon element for TypeScript
@@ -229,7 +230,13 @@ export function BilateralAgreements() {
                 {displayedAgreements.map((agreement, index) => (
                   <motion.div
                     key={agreement.id}
-                    className="p-4 bg-surface-container/50 rounded-lg border hover:border-primary/30 transition-all duration-200"
+                    className="p-4 bg-surface-container/50 rounded-lg border hover:border-primary/30 transition-all duration-200 cursor-pointer"
+                    onClick={() => {
+                      trackDataPointSelection('bilateral_agreement', agreement.agreementName, {
+                        id: agreement.id,
+                        country: agreement.country
+                      });
+                    }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -269,6 +276,10 @@ export function BilateralAgreements() {
                               target="_blank" 
                               rel="noopener noreferrer"
                               className="text-primary hover:text-primary/80 underline ml-1"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                trackExternalLink(getAgreementUrl(agreement.country, agreement.partner), 'bilateral_agreement_source');
+                              }}
                             >
                               Link
                             </a>

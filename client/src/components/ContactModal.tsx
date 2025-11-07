@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MessageCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { trackConversion } from "@/lib/analytics";
 import { useToast } from "@/hooks/use-toast";
 
 interface ContactModalProps {
@@ -80,6 +81,9 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
       // Show success state
       setShowSuccess(true);
+      
+      // Track conversion
+      trackConversion('form_submitted', 'contact_form');
     } catch (error) {
       console.error("Error sending contact form:", error);
       toast({
