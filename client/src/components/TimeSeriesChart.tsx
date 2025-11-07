@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { TrendingUp, BarChart3, Axis3d } from "lucide-react";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
+import { trackChartInteraction } from "@/lib/analytics";
 import type { TimeSeriesData, Transaction } from "@shared/schema";
 import { formatNumber } from "@/lib/formatNumber";
 
@@ -203,6 +204,11 @@ export function TimeSeriesChart({ timeSeriesData, sectorData, topBuyers, transac
                     strokeWidth={3}
                     dot={{ fill: "#10B981", strokeWidth: 2, r: 4 }}
                     activeDot={{ r: 6, stroke: "#10B981", strokeWidth: 2 }}
+                    onClick={(data: any) => {
+                      if (data && data.payload) {
+                        trackChartInteraction('timeseries_trends', 'click', `Year ${data.payload.year}`);
+                      }
+                    }}
                   />
                 </LineChart>
               </ResponsiveContainer>

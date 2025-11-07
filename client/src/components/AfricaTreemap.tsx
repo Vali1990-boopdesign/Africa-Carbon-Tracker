@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { trackChartInteraction } from "@/lib/analytics";
 import { formatNumber } from "@/lib/formatNumber";
 
 interface CountryData {
@@ -134,7 +135,10 @@ export function AfricaTreemap({
                         minHeight: `${Math.max(80 + (size / 5), 80)}px`,
                         maxHeight: '140px'
                       }}
-                      onClick={() => onCountryClick?.(item.country)}
+                      onClick={() => {
+                        trackChartInteraction('treemap_country', 'click', item.country);
+                        onCountryClick?.(item.country);
+                      }}
                       title={`${item.country}: ${formatNumber(item.totalCredits)} credits (${percentage}%)`}
                     >
                       <div className="text-center w-full flex flex-col justify-center h-full">

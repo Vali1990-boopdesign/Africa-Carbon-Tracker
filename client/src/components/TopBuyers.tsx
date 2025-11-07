@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { trackChartInteraction, trackDataPointSelection } from "@/lib/analytics";
 import type { TopBuyerData, SectorData } from "@shared/schema";
 import { formatNumber } from "@/lib/formatNumber";
 
@@ -135,7 +136,16 @@ export function TopBuyers({ topBuyers, sectorData, isLoading, onBuyerClick, onCo
       <motion.div
         key={name}
         className="flex items-center justify-between p-3 bg-surface-container/50 rounded-lg border hover:bg-surface-container transition-colors cursor-pointer group"
-        onClick={() => onClick?.(name)}
+        onClick={() => {
+          if (type === 'buyer') {
+            trackDataPointSelection('buyer', name, { sector: subtitle });
+          } else if (type === 'country') {
+            trackChartInteraction('top_buyers_country', 'click', name);
+          } else {
+            trackChartInteraction('top_buyers_sector', 'click', name);
+          }
+          onClick?.(name);
+        }}
         initial={{ x: 20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ delay: index * 0.1 }}
