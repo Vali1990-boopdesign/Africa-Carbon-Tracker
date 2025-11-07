@@ -289,11 +289,15 @@ export function Header({
                 data-testid="button-theme-toggle-header"
                 title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
-                {theme === "dark" ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
+                <lord-icon
+                  src="/sun-moon-toggle.json"
+                  trigger="hover"
+                  colors="primary:#f59e0b,secondary:#fbbf24"
+                  style={{
+                    width: "24px",
+                    height: "24px"
+                  }}
+                />
               </Button>
             )}
 
@@ -306,7 +310,15 @@ export function Header({
               className="h-10 hidden sm:flex"
               data-testid="button-contact-us"
             >
-              <MessageCircle size={16} className="mr-2" />
+              <lord-icon
+                src="/envelope-send.json"
+                trigger="hover"
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  marginRight: "8px"
+                }}
+              />
               Contact Us
             </Button>
           </motion.div>

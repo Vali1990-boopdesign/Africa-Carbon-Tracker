@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { carbonTerms } from "./TermTooltip";
 
 export function CarbonGlossary() {
@@ -30,7 +30,15 @@ export function CarbonGlossary() {
           size="sm"
           className="fixed bottom-20 right-6 z-40 bg-card/90 border shadow-lg backdrop-blur-sm hover:bg-card"
         >
-          <BookOpen className="w-4 h-4 mr-2" />
+          <lord-icon
+            src="/dictionary-glossary.json"
+            trigger="hover"
+            style={{
+              width: "20px",
+              height: "20px",
+              marginRight: "8px"
+            }}
+          />
           Glossary
         </Button>
       </DialogTrigger>

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { MessageCircle, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { trackConversion } from "@/lib/analytics";
 import { useToast } from "@/hooks/use-toast";
@@ -152,7 +152,15 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <>
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold text-on-surface flex items-center">
-                <MessageCircle className="mr-2" size={20} />
+                <lord-icon
+                  src="/envelope-send.json"
+                  trigger="hover"
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                    marginRight: "8px"
+                  }}
+                />
                 Contact Us
               </DialogTitle>
             </DialogHeader>
@@ -316,7 +324,15 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
               ) : (
-                <MessageCircle className="mr-2" size={16} />
+                <lord-icon
+                  src="/envelope-send.json"
+                  trigger="hover"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    marginRight: "8px"
+                  }}
+                />
               )}
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
