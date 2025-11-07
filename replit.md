@@ -29,6 +29,31 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
+### November 7, 2025 - Google Analytics Integration
+- **Comprehensive Event Tracking System**: Implemented end-to-end Google Analytics (GA4) tracking with measurement ID G-B5F1JWSXTZ
+  - **Analytics Utility Module** (client/src/lib/analytics.ts): Created type-safe tracking functions with 8 event categories:
+    - `engagement`: Time-on-page milestones (30s, 2min, 5min) and first user interaction
+    - `filter`: Filter selection changes with result counts
+    - `chart_interaction`: Chart element clicks (line points, treemap countries, buyer cards)
+    - `search`: Search query submissions with term and result count
+    - `data_selection`: Individual data point clicks (transactions, buyers, bilateral agreements)
+    - `comparison`: Comparison feature usage
+    - `conversion`: High-value actions (contact form submissions, CSV exports)
+    - `entry_point`: Referrer tracking for campaign attribution
+  - **Custom Engagement Hook** (client/src/hooks/useAnalytics.ts): React hook for automatic engagement tracking with cleanup on unmount
+  - **Integration Points**: Analytics tracking added to:
+    - App.tsx: useAnalytics hook for page engagement and Catalyst Fund referrer detection
+    - use-dashboard.ts: trackFilter on filter state changes with result counts
+    - Header.tsx: trackSearch on search submissions with query term and result count
+    - TimeSeriesChart.tsx: trackChartInteraction on line chart data point clicks
+    - AfricaTreemap.tsx: trackChartInteraction on country tile clicks
+    - TopBuyers.tsx: trackDataPointSelection for buyer cards, trackChartInteraction for country/sector tabs
+    - DataTable.tsx: trackDataPointSelection on transaction row clicks
+    - BilateralAgreements.tsx: trackDataPointSelection on agreement card clicks, trackExternalLink on source link clicks
+    - ContactModal.tsx: trackConversion on successful form submission
+  - **Google Analytics Setup**: GA4 script configured in client/index.html with preconnect for performance optimization
+  - **TypeScript Safety**: All tracking functions strongly typed with parameter interfaces, no runtime errors or TypeScript diagnostics
+
 ### November 5, 2025 (Session 5 - Filter Data Flow Fixes)
 - **Filter System Refactoring**: Fixed critical data flow inconsistencies and type mismatches in filter system
   - **Single Source of Truth**: Moved all toggle logic to use-dashboard.ts updateFilter function; FilterBottomSheet now simply passes values to hook without manipulation
