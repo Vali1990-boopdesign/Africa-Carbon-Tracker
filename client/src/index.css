@@ -123,6 +123,25 @@
   --glass-shadow: 220 20% 50% / 0.15; /* rgba with alpha */
 }
 
+/* Self-hosted Font Declarations */
+@font-face {
+  font-family: "Stack Sans Text";
+  src: url("/fonts/StackSansText-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+  font-optical-sizing: auto;
+}
+
+@font-face {
+  font-family: "Stack Sans Notch";
+  src: url("/fonts/StackSansNotch-Variable.ttf") format("truetype");
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+  font-optical-sizing: auto;
+}
+
 * {
   border-color: hsl(var(--border));
 }
