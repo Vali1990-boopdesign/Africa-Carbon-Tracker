@@ -117,7 +117,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                 }
               }}
             >
-              <CardContent className="p-6">
+              <CardContent className="p-6" style={{ fontFamily: '"Stack Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0 pr-4">
                     <div className="text-sm text-muted-foreground mb-2">{card.titleComponent}</div>
