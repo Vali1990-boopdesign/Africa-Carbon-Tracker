@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X, Filter } from "lucide-react";
+import { MessageCircle, Search, X, Sun, Moon, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
@@ -18,25 +18,13 @@ import { HamburgerMenuButton } from "./NavigationDrawer";
 import { useTheme } from "./ThemeProvider";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { trackSearch } from "@/lib/analytics";
+import lottie from "lottie-web";
+import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
 
-// Define lord-icon element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        style?: React.CSSProperties;
-        onError?: (event: any) => void;
-        onLoad?: (event: any) => void;
-        state?: string;
-      };
-    }
-  }
-}
+// Define lord-icon custom element
+defineElement(lottie.loadAnimation);
 
 interface HeaderProps {
   dateRange: string;
@@ -235,9 +223,8 @@ export function Header({
             {/* Hamburger Menu (Mobile Only) */}
             <HamburgerMenuButton onClick={onOpenDrawer} />
             
-            <div className="flex items-center justify-center w-12 h-12">
+            <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
               <lord-icon
-                key={lottieSrc}
                 trigger="in"
                 src={lottieSrc}
                 style={{
@@ -247,7 +234,7 @@ export function Header({
               />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-2xl font-bold text-foreground font-display">
+              <h1 className="text-xl font-bold text-foreground font-display">
                 <TermTooltip
                   term="Africa Carbon Dashboard"
                   explanation="Interactive analytics platform tracking voluntary carbon credit transactions across African nations, showing buyer behavior, project distribution, and market trends from 2010-2024"
@@ -302,15 +289,11 @@ export function Header({
                 data-testid="button-theme-toggle-header"
                 title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
               >
-                <lord-icon
-                  src="/sun-moon-toggle.json"
-                  trigger="hover"
-                  colors="primary:#f59e0b,secondary:#fbbf24"
-                  style={{
-                    width: "24px",
-                    height: "24px"
-                  }}
-                />
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
               </Button>
             )}
 
@@ -323,15 +306,7 @@ export function Header({
               className="h-10 hidden sm:flex"
               data-testid="button-contact-us"
             >
-              <lord-icon
-                src="/envelope-send.json"
-                trigger="hover"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  marginRight: "8px"
-                }}
-              />
+              <MessageCircle size={16} className="mr-2" />
               Contact Us
             </Button>
           </motion.div>

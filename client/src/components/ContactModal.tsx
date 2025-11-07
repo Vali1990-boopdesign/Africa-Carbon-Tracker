@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle } from "lucide-react";
+import { MessageCircle, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { trackConversion } from "@/lib/analytics";
 import { useToast } from "@/hooks/use-toast";
@@ -152,15 +152,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <>
             <DialogHeader>
               <DialogTitle className="text-xl font-semibold text-on-surface flex items-center">
-                <lord-icon
-                  src="/envelope-send.json"
-                  trigger="hover"
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                    marginRight: "8px"
-                  }}
-                />
+                <MessageCircle className="mr-2" size={20} />
                 Contact Us
               </DialogTitle>
             </DialogHeader>
@@ -249,7 +241,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           {/* Privacy Disclaimer */}
           <div className="bg-surface-container-high/50 border rounded-lg p-4 space-y-3">
-            <div className="text-xs text-muted-foreground leading-relaxed">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               By submitting your information, you consent to the collection,
               processing, and storage of your personal data (including your
               name, email address, and organisation name) in accordance with our{" "}
@@ -272,14 +264,14 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </a>
               .
             </div>
-            <div className="text-xs text-muted-foreground leading-relaxed">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               We will only use your personal data to communicate with you and
               provide support related to carbon credits and relevant services.
               Your data will be stored securely for the sole purpose of
               fulfilling our service obligations. We will retain your data for
               as long as necessary to fulfill our commitments.
             </div>
-            <div className="text-xs text-muted-foreground leading-relaxed">
+            <div className="text-xs italic text-muted-foreground leading-relaxed">
               You have the right to request access to, correction, or deletion
               of your personal data, and you can contact us at any time for
               assistance. For more details, please refer to our Data Protection
@@ -324,15 +316,7 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
               ) : (
-                <lord-icon
-                  src="/envelope-send.json"
-                  trigger="hover"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    marginRight: "8px"
-                  }}
-                />
+                <MessageCircle className="mr-2" size={16} />
               )}
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>

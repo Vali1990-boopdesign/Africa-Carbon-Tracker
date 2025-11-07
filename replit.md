@@ -29,21 +29,6 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
-### November 7, 2025 - Lottie Animation Integration with Lord-Icon
-- **Interactive Icon Animations**: Integrated hover-triggered Lottie animations using lord-icon library for enhanced UI micro-interactions
-  - **Lottie Files** (public/ directory):
-    - `sun-moon-toggle.json`: Theme toggle animation with sun/moon morph transition (configured with amber colors #f59e0b, #fbbf24)
-    - `dictionary-glossary.json`: Glossary button animation with book opening interaction (emerald green #10B981)
-    - `envelope-send.json`: Contact/message icon animation with flying envelope effect (emerald green #10B981)
-  - **Color Customization**: Updated dictionary and envelope animations to dashboard emerald green (#10B981) for brand consistency using Node.js script to replace stroke/fill color values in JSON
-  - **Lord-Icon Setup**: CDN script loaded in client/index.html with preconnect to cdn.lordicon.com for optimized loading
-  - **Integration Points**:
-    - Header.tsx: Theme toggle button (sun-moon-toggle), contact button (envelope-send) - both with hover trigger
-    - ContactModal.tsx: Dialog title icon and send button (envelope-send) - hover-triggered animations
-    - CarbonGlossary.tsx: Glossary trigger button (dictionary-glossary) - hover-triggered book opening animation
-  - **Performance Strategy**: All animations use trigger="hover" for on-demand activation, preventing unnecessary CPU usage; lord-icon script loaded with defer attribute for non-blocking page load
-  - **Animation Behavior**: Lottie files configured to play forward on hover and reverse on hover-out, creating smooth bidirectional transitions
-
 ### November 7, 2025 - Google Analytics Integration
 - **Comprehensive Event Tracking System**: Implemented end-to-end Google Analytics (GA4) tracking with measurement ID G-B5F1JWSXTZ
   - **Analytics Utility Module** (client/src/lib/analytics.ts): Created type-safe tracking functions with 8 event categories:
