@@ -1,0 +1,116 @@
+Critical Performance Issues Identified
+1. Largest Contentful Paint (LCP) - 4.2s (Poor)
+Impact: Largest element takes too long to render, hurting perceived load time.
+
+Recommendations:
+
+Preload critical fonts: Already implemented preload hints, but optimize by converting TTF fonts to WOFF2 format (30-50% smaller)
+Optimize font loading: Implement font subsetting to only include Latin characters used in dashboard
+Image optimization: Compress logo images (FSD Africa, BFA Global, Catalyst Fund) - likely using PNG when WebP would be 25-35% smaller
+Code splitting: Implement route-based code splitting for dashboard vs bilateral agreements pages
+Lazy load below-fold components: Defer loading of BilateralAgreements, DataTable, and heavy visualizations until they're about to enter viewport
+2. Total Blocking Time (TBT) - 520ms (Needs Improvement)
+Impact: Main thread is blocked, preventing user interactions.
+
+Recommendations:
+
+Bundle size reduction:
+Remove unused dependencies (e.g., openai in client bundle if only used server-side)
+Tree-shake lodash if imported (use individual imports)
+Consider replacing Recharts with a lighter charting library for simple charts
+Web Workers: Move heavy computations (e.g., filtering 72M+ credits data) to background threads
+Debounce filters: Add 300ms debounce to filter changes to prevent excessive re-renders
+Virtual scrolling: Implement for DataTable component (currently rendering all rows)
+3. First Contentful Paint (FCP) - 2.1s (Needs Improvement)
+Impact: User sees blank screen for too long.
+
+Recommendations:
+
+Critical CSS extraction: Inline critical Tailwind CSS for above-the-fold content
+Eliminate render-blocking resources:
+Move lord-icon script to async instead of defer
+Remove unused Google Analytics script during initial load (lazy load after FCP)
+Reduce initial bundle size: Current JavaScript bundle likely >500KB
+Server-side rendering (SSR): Consider implementing for initial dashboard metrics
+4. Cumulative Layout Shift (CLS) - 0.08 (Needs Improvement)
+Impact: Content jumping around during load.
+
+Recommendations:
+
+Reserve space for skeleton loaders: Add explicit heights to loading states in MetricsCards, TopBuyers, KeyInsights
+Font fallback metrics: Use size-adjust, ascent-override, descent-override CSS properties to match fallback fonts to Stack Sans dimensions
+Image dimensions: Ensure all <img> tags have explicit width/height attributes
+Lord-icon placeholders: Reserve exact space for animated icons before they load
+5. Speed Index - 3.8s (Poor)
+Impact: Visual completeness takes too long.
+
+Recommendations:
+
+Progressive enhancement: Show static content first, enhance with interactivity later
+Skeleton screens optimization: Current skeletons should appear instantly (within 100ms)
+Reduce animation complexity: Framer Motion animations may be delaying perceived speed
+Prioritize visible content: Load header, metrics cards, and key insights before charts
+Specific Implementation Plan
+Phase 1: Quick Wins (1-2 hours)
+Convert TTF fonts to WOFF2 format (use fonttools or online converter)
+Add explicit dimensions to all images
+Compress PNG logos to WebP format
+Add debouncing to filter inputs (300ms delay)
+Move Google Analytics to lazy load after page interactive
+Phase 2: Font Optimization (2-3 hours)
+Create font subsets with only Latin characters (reduces size by ~70%)
+Add font-display: swap with proper fallback metrics:
+@font-face {
+  font-family: "Stack Sans Text";
+  size-adjust: 100%;
+  ascent-override: 95%;
+  descent-override: 25%;
+}
+Implement FontFaceObserver for better loading control
+Phase 3: Code Splitting (3-4 hours)
+Split routes: / (dashboard) vs /bilateral-agreements
+Lazy load heavy components:
+BilateralSankeyDiagram (only load when tab opened)
+DataTable (only load when "View All" clicked)
+TimeSeriesChart (defer until visible)
+Dynamic imports for lord-icon library
+Phase 4: Bundle Optimization (4-6 hours)
+Analyze bundle with vite-plugin-visualizer
+Remove server-only dependencies from client bundle
+Replace heavy dependencies:
+Consider chart.js instead of Recharts for simpler charts
+Use native fetch instead of axios if used
+Enable Vite's manual chunk splitting for vendor code
+Phase 5: Advanced Optimizations (6-8 hours)
+Implement virtual scrolling in DataTable (use react-window)
+Add Web Workers for:
+CSV parsing
+Large dataset filtering
+Chart data computation
+Implement critical CSS extraction
+Add service worker caching strategy for static assets
+Optimize Recharts rendering (memoization, reduce data points for line charts)
+Phase 6: Infrastructure (2-3 hours)
+Enable Brotli compression (already using gzip)
+Add proper cache headers for static assets (fonts: 1 year, JS/CSS: 1 month)
+Implement HTTP/2 push for critical resources
+Consider CDN for static assets (Replit supports this)
+Expected Performance Improvements
+Metric	Current	Target	Improvement
+LCP	4.2s	2.5s	-40%
+TBT	520ms	200ms	-62%
+FCP	2.1s	1.2s	-43%
+CLS	0.08	0.05	-38%
+Speed Index	3.8s	2.2s	-42%
+Priority Order
+Immediate (Phase 1): Font format conversion, image optimization
+High Priority (Phase 2-3): Font subsetting, code splitting
+Medium Priority (Phase 4): Bundle optimization
+Lower Priority (Phase 5-6): Advanced features, infrastructure
+Monitoring
+After implementation:
+
+Use Lighthouse CI for continuous performance monitoring
+Set performance budgets (e.g., JS bundle <300KB)
+Track Core Web Vitals in Google Analytics
+Regular PageSpeed Insights audits
