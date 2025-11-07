@@ -23,6 +23,23 @@ import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
 
+// Define lord-icon element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': {
+        src?: string;
+        trigger?: string;
+        colors?: string;
+        style?: React.CSSProperties;
+        onError?: (event: any) => void;
+        onLoad?: (event: any) => void;
+        state?: string;
+      };
+    }
+  }
+}
+
 // Define lord-icon custom element
 defineElement(lottie.loadAnimation);
 

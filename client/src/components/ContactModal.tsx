@@ -15,6 +15,23 @@ import { motion } from "framer-motion";
 import { trackConversion } from "@/lib/analytics";
 import { useToast } from "@/hooks/use-toast";
 
+// Define lord-icon element for TypeScript
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lord-icon': {
+        src?: string;
+        trigger?: string;
+        colors?: string;
+        style?: React.CSSProperties;
+        onError?: (event: any) => void;
+        onLoad?: (event: any) => void;
+        state?: string;
+      };
+    }
+  }
+}
+
 interface ContactModalProps {
   isOpen: boolean;
   onClose: () => void;
