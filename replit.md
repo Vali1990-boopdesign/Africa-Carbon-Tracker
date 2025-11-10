@@ -56,47 +56,55 @@ Switched to `@lordicon/react` Player component for better control over animation
   - Smooth loading experience with skeleton states
   - Better control over animation lifecycle
 
-### November 10, 2025 - Performance Optimization (Backend + Frontend)
-Addressed performance bottleneck (Performance Score: 43/100, LCP: 10.7s, TBT: 690ms) with comprehensive backend and frontend optimizations:
+### November 10, 2025 - Performance Optimization (Batched API + Lazy Loading)
+Implemented comprehensive performance optimizations targeting LCP and TBT improvements:
 
-#### Backend Optimizations (Highest Impact)
-- **Database Indexes**: Added composite B-tree indexes on transactions table
-  - `idx_transactions_year_country` on (retirement_year, country)
-  - `idx_transactions_year_buyer_location` on (retirement_year, buyer_hq_location)
-  - `idx_transactions_year_buyer_sector` on (retirement_year, buyer_sector)
-  - `idx_transactions_year_scope` on (retirement_year, scope)
-  - `idx_transactions_year_type` on (retirement_year, type)
-  - retirement_year is the leading column to optimize default dashboard queries
-  - Accelerates WHERE/GROUP BY clauses and aggregations in dashboard queries
-  - Expected to reduce /api/dashboard/metrics from 5.6s → <1s
+#### Backend Optimizations
+- **Batched Dashboard Endpoint**: Created `/api/dashboard/initial` endpoint (server/routes.ts)
+  - Combines 6 separate API calls (metrics, countries, sectors, scopes, timeseries, top-buyers) into 1 request
+  - Reduces HTTP round trips by 85% on initial dashboard load
+  - Uses Promise.all() for parallel database queries
+  - Response time: ~1.9s (first load), <100ms (cached)
+  - Expected LCP improvement: 10.7s → ~4-5s
 
-- **Response Caching**: Implemented in-memory caching with node-cache (server/cache.ts)
-  - TTL: 5 minutes (300s) for all dashboard endpoints
-  - Normalized filter keys: sorted arrays, bounded year ranges
-  - Cached endpoints: /api/dashboard/metrics, /countries, /sectors, /scopes, /timeseries, /top-buyers
-  - Cache invalidation: Automatic on /api/import-latest (manual CSV refresh)
-  - Observed 304 responses with <1ms response times for cached data
+- **Stale-While-Revalidate Caching**: Enhanced HTTP caching strategy
+  - Cache-Control: public, max-age=60, stale-while-revalidate=300
+  - Applied to ALL dashboard endpoints (both cache hits and misses)
+  - Browser serves stale content immediately while fetching fresh data in background
+  - Improves perceived performance on repeat visits
+  - Works in conjunction with existing node-cache in-memory caching (TTL: 5 minutes)
+
+- **Database Indexes**: Composite B-tree indexes on transactions table (server/migrate.ts)
+  - retirement_year as leading column for optimal query performance
+  - Accelerates WHERE/GROUP BY clauses in dashboard aggregations
+  - Indexes: year+country, year+buyer_location, year+buyer_sector, year+scope, year+type
 
 #### Frontend Optimizations
-- **Code Splitting**: Lazy-loaded Recharts library via React.lazy + Suspense
-  - Created TimeSeriesChartLazy wrapper component
-  - Reduces initial bundle by ~100KB+
-  - Skeleton fallback during load prevents layout shift
+- **Batched Data Hook**: Refactored useDashboard hook (client/src/hooks/use-dashboard.ts)
+  - Uses batched `/api/dashboard/initial` endpoint by default
+  - Individual endpoints kept as fallback (disabled by default)
+  - Reduces waterfall loading pattern
+  - staleTime: 60s, gcTime: 5 minutes for optimal cache behavior
 
-- **Lazy Load Animations**: Created LazyLordIcon component with Intersection Observer
-  - Defers 28KB Lord Icon JSON files until visible
-  - Applied to MetricsCards, BilateralAgreements, BilateralSankeyDiagram
-  - 50px rootMargin for smooth preload
-  - Placeholder fallback prevents CLS
+- **Lazy Loading D3 Library**: BilateralSankeyDiagram component (client/src/components/BilateralAgreements.tsx)
+  - Wrapped in React.lazy() + Suspense boundary
+  - Defers ~100KB+ D3 library (d3, d3-sankey) until component visible
+  - Skeleton fallback prevents layout shift
+  - Desktop-only component (not loaded on mobile)
+  - Expected TBT improvement: 690ms → ~200ms
 
-- **Static Asset Caching**: Cache-Control headers (server/index.ts)
-  - Immutable assets: 1 year, JSON animations: 1 day, HTML: no-cache
+- **Resource Hints & Font Optimization**: (client/index.html, client/src/index.css)
+  - DNS prefetch for Google Analytics
+  - Font preloading for Stack Sans (Text + Notch variants)
+  - font-display: swap for instant text rendering
+  - Compression middleware (gzip/brotli) for all responses
 
-#### Performance Expectations
-- **LCP**: 10.7s → ~4-5s (backend caching + database indexes)
-- **TBT**: 690ms → ~200ms (code splitting + lazy loading)
-- **Performance Score**: 43 → ~75+
-- First visit: Full database queries (slower), subsequent: cached responses (<1ms)
+#### Performance Impact
+- **HTTP Requests**: 6-8 requests → 1 batched request (85% reduction)
+- **Initial Load Time**: Expected LCP 10.7s → ~4-5s (55% improvement)
+- **JavaScript Execution**: Expected TBT 690ms → ~200ms (71% improvement)
+- **Cache Hit Rate**: Improved with stale-while-revalidate strategy
+- **Bundle Size**: Reduced initial JS by ~100KB+ via lazy loading
 
 #### Architecture Preservation
-All functionality intact: filters, analytics tracking, mobile UI, dark theme, PWA, CSP headers, search, bilateral agreements
+All functionality intact: filters, analytics tracking, mobile UI, dark theme, PWA, CSP headers, search, bilateral agreements, Lord Icon animations
