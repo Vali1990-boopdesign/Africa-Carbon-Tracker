@@ -127,7 +127,7 @@ export function BilateralAgreements() {
             <LazyLordIcon
               src="/wired-outline-56-document-hover-swipe.json"
               colors="primary:#10b981,secondary:#059669"
-              size={24}
+              size={30}
             />
           </div>
           <TermTooltip 
