@@ -21,6 +21,7 @@ import {
   trackSuccessfulAttempt 
 } from "./security";
 import { generateCaptcha } from "./captcha";
+import { normalizeFilterKey, getCachedResponse, setCachedResponse, clearCache } from "./cache";
 
 // Enhanced rate limiting with progressive restrictions
 const generalLimit = createSecureRateLimit(15 * 60 * 1000, 100, true); // 100 requests per 15 minutes
@@ -97,19 +98,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
   };
 
-  // Dashboard metrics endpoint with filters
+  // Dashboard metrics endpoint with filters and caching
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
       const ip = getClientIP(req);
+      
+      const cacheKey = `metrics:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) {
+        return res.json(cached);
+      }
 
       const metrics = await storage.getDashboardMetrics(filters);
+      
+      setCachedResponse(cacheKey, metrics, 300);
       
       // Track successful API usage
       trackSuccessfulAttempt(ip);
       
       res.json(metrics);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Dashboard metrics error:", error);
       
       // Check if it's a database connection error
@@ -139,61 +149,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Country data for map with filters
+  // Country data for map with filters and caching
   app.get("/api/dashboard/countries", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
+      const cacheKey = `countries:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) return res.json(cached);
 
       const countryData = await storage.getCountryData(filters);
+      setCachedResponse(cacheKey, countryData, 300);
       res.json(countryData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch country data" });
     }
   });
 
-  // Sector data for pie chart with filters
+  // Sector data for pie chart with filters and caching
   app.get("/api/dashboard/sectors", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
+      const cacheKey = `sectors:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) return res.json(cached);
 
       const sectorData = await storage.getSectorData(filters);
+      setCachedResponse(cacheKey, sectorData, 300);
       res.json(sectorData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch sector data" });
     }
   });
 
-  // Scope data for scope breakdown with filters
+  // Scope data for scope breakdown with filters and caching
   app.get("/api/dashboard/scopes", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
+      const cacheKey = `scopes:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) return res.json(cached);
 
       const scopeData = await storage.getScopeData(filters);
+      setCachedResponse(cacheKey, scopeData, 300);
       res.json(scopeData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch scope data" });
     }
   });
 
-  // Time series data for charts with filters
+  // Time series data for charts with filters and caching
   app.get("/api/dashboard/timeseries", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
+      const cacheKey = `timeseries:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) return res.json(cached);
 
       const timeSeriesData = await storage.getTimeSeriesData(filters);
+      setCachedResponse(cacheKey, timeSeriesData, 300);
       res.json(timeSeriesData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch time series data" });
     }
   });
 
-  // Top buyers data with filters
+  // Top buyers data with filters and caching
   app.get("/api/dashboard/top-buyers", async (req, res) => {
     try {
       const filters = validateFilters(req.query);
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+      const cacheKey = `top-buyers:${limit}:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) return res.json(cached);
 
       const topBuyers = await storage.getTopBuyers(limit, filters);
+      setCachedResponse(cacheKey, topBuyers, 300);
       res.json(topBuyers);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch top buyers" });
