@@ -26,3 +26,34 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 -   **Utilities**: `date-fns`, `clsx`, `tailwind-merge`
 -   **Icons**: Lord-Icon
 -   **Integrations**: Google Sheets
+
+## Recent Changes
+
+### November 10, 2025 - Frontend Performance Optimization
+Based on PageSpeed Insights analysis (Performance Score: 56/100, LCP: 10.4s, FCP: 4.1s), implemented targeted frontend optimizations while preserving all functionality:
+
+- **Static Asset Caching**: Added Cache-Control middleware in server/index.ts
+  - Immutable assets (fonts, images, hashed JS/CSS): `public, max-age=31536000, immutable` (1 year)
+  - JSON animations: `public, max-age=86400` (1 day)
+  - HTML: `no-cache, must-revalidate` (always fresh)
+  - Improves repeat visit performance and reduces server load
+
+- **Google Analytics Deferral**: Moved GA script from `<head>` to end of `<body>`
+  - Eliminates render-blocking script in head
+  - Preserves dataLayer initialization for tracking reliability
+  - Expected ~100-150ms FCP improvement
+
+- **Resource Hints Optimization**: Replaced `preconnect` with `dns-prefetch` for Google Analytics
+  - `preconnect` retained only for Lord Icon CDN (critical for hero icons)
+  - `dns-prefetch` for non-critical analytics domains
+  - Reduces critical path latency
+
+- **Compression**: Verified gzip/brotli working on all API responses via `compression()` middleware
+  - 60-70% transfer size reduction confirmed via curl testing
+
+- **Performance Expectations**: 
+  - Frontend optimizations provide modest gains: FCP 4.1s → ~3.5s, improved TBT
+  - **Main LCP bottleneck remains**: 10.4s LCP caused by 4.9s API waterfall (/api/transactions: 399KB)
+  - Future backend optimization needed: API batching, pagination, caching, or database query optimization
+
+- **Architecture Preservation**: All functionality intact (filters, analytics tracking, mobile UI, dark theme, PWA, CSP headers)
