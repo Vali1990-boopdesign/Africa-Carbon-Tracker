@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { DataNote } from "@/components/DataNote";
 import { MetricsCards } from "@/components/MetricsCards";
 import { AfricaTreemap } from "@/components/AfricaTreemap";
-import { TimeSeriesChart } from "@/components/TimeSeriesChart";
+import { TimeSeriesChartLazy as TimeSeriesChart } from "@/components/TimeSeriesChartLazy";
 import { TopBuyers } from "@/components/TopBuyers";
 import { DataTable } from "@/components/DataTable";
 import { KeyInsights } from "@/components/KeyInsights";

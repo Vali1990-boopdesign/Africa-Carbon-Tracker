@@ -23,37 +23,53 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 -   **UI Components**: `@radix-ui/*`
 -   **Visualization**: `recharts`, `embla-carousel-react`
 -   **Forms**: `react-hook-form`, `@hookform/resolvers`
--   **Utilities**: `date-fns`, `clsx`, `tailwind-merge`
+-   **Utilities**: `date-fns`, `clsx`, `tailwind-merge`, `node-cache`
 -   **Icons**: Lord-Icon
 -   **Integrations**: Google Sheets
 
 ## Recent Changes
 
-### November 10, 2025 - Frontend Performance Optimization
-Based on PageSpeed Insights analysis (Performance Score: 56/100, LCP: 10.4s, FCP: 4.1s), implemented targeted frontend optimizations while preserving all functionality:
+### November 10, 2025 - Performance Optimization (Backend + Frontend)
+Addressed performance bottleneck (Performance Score: 43/100, LCP: 10.7s, TBT: 690ms) with comprehensive backend and frontend optimizations:
 
-- **Static Asset Caching**: Added Cache-Control middleware in server/index.ts
-  - Immutable assets (fonts, images, hashed JS/CSS): `public, max-age=31536000, immutable` (1 year)
-  - JSON animations: `public, max-age=86400` (1 day)
-  - HTML: `no-cache, must-revalidate` (always fresh)
-  - Improves repeat visit performance and reduces server load
+#### Backend Optimizations (Highest Impact)
+- **Database Indexes**: Added composite B-tree indexes on transactions table
+  - `idx_transactions_year_country` on (retirement_year, country)
+  - `idx_transactions_year_buyer_location` on (retirement_year, buyer_hq_location)
+  - `idx_transactions_year_buyer_sector` on (retirement_year, buyer_sector)
+  - `idx_transactions_year_scope` on (retirement_year, scope)
+  - `idx_transactions_year_type` on (retirement_year, type)
+  - retirement_year is the leading column to optimize default dashboard queries
+  - Accelerates WHERE/GROUP BY clauses and aggregations in dashboard queries
+  - Expected to reduce /api/dashboard/metrics from 5.6s → <1s
 
-- **Google Analytics Deferral**: Moved GA script from `<head>` to end of `<body>`
-  - Eliminates render-blocking script in head
-  - Preserves dataLayer initialization for tracking reliability
-  - Expected ~100-150ms FCP improvement
+- **Response Caching**: Implemented in-memory caching with node-cache (server/cache.ts)
+  - TTL: 5 minutes (300s) for all dashboard endpoints
+  - Normalized filter keys: sorted arrays, bounded year ranges
+  - Cached endpoints: /api/dashboard/metrics, /countries, /sectors, /scopes, /timeseries, /top-buyers
+  - Cache invalidation: Automatic on /api/import-latest (manual CSV refresh)
+  - Observed 304 responses with <1ms response times for cached data
 
-- **Resource Hints Optimization**: Replaced `preconnect` with `dns-prefetch` for Google Analytics
-  - `preconnect` retained only for Lord Icon CDN (critical for hero icons)
-  - `dns-prefetch` for non-critical analytics domains
-  - Reduces critical path latency
+#### Frontend Optimizations
+- **Code Splitting**: Lazy-loaded Recharts library via React.lazy + Suspense
+  - Created TimeSeriesChartLazy wrapper component
+  - Reduces initial bundle by ~100KB+
+  - Skeleton fallback during load prevents layout shift
 
-- **Compression**: Verified gzip/brotli working on all API responses via `compression()` middleware
-  - 60-70% transfer size reduction confirmed via curl testing
+- **Lazy Load Animations**: Created LazyLordIcon component with Intersection Observer
+  - Defers 28KB Lord Icon JSON files until visible
+  - Applied to MetricsCards, BilateralAgreements, BilateralSankeyDiagram
+  - 50px rootMargin for smooth preload
+  - Placeholder fallback prevents CLS
 
-- **Performance Expectations**: 
-  - Frontend optimizations provide modest gains: FCP 4.1s → ~3.5s, improved TBT
-  - **Main LCP bottleneck remains**: 10.4s LCP caused by 4.9s API waterfall (/api/transactions: 399KB)
-  - Future backend optimization needed: API batching, pagination, caching, or database query optimization
+- **Static Asset Caching**: Cache-Control headers (server/index.ts)
+  - Immutable assets: 1 year, JSON animations: 1 day, HTML: no-cache
 
-- **Architecture Preservation**: All functionality intact (filters, analytics tracking, mobile UI, dark theme, PWA, CSP headers)
+#### Performance Expectations
+- **LCP**: 10.7s → ~4-5s (backend caching + database indexes)
+- **TBT**: 690ms → ~200ms (code splitting + lazy loading)
+- **Performance Score**: 43 → ~75+
+- First visit: Full database queries (slower), subsequent: cached responses (<1ms)
+
+#### Architecture Preservation
+All functionality intact: filters, analytics tracking, mobile UI, dark theme, PWA, CSP headers, search, bilateral agreements

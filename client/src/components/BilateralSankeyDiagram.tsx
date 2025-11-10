@@ -1,26 +1,10 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LazyLordIcon } from "./LazyLordIcon";
 import { Network } from "lucide-react";
 import * as d3 from "d3";
 import * as d3Sankey from "d3-sankey";
 import type { BilateralAgreement } from "@shared/schema";
-
-// Define lord-icon element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        style?: React.CSSProperties;
-        onError?: (event: any) => void;
-        onLoad?: (event: any) => void;
-        state?: string;
-      };
-    }
-  }
-}
 
 interface BilateralSankeyDiagramProps {
   agreements: BilateralAgreement[];
@@ -287,12 +271,11 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
             <div className="hover-icon-trigger">
-              <lord-icon
+              <LazyLordIcon
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
                 style={{ width: '38px', height: '38px' }}
-                state="hover-pinch"
               />
             </div>
             Partnership Flow
@@ -327,12 +310,11 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
             <div className="hover-icon-trigger">
-              <lord-icon
+              <LazyLordIcon
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
                 style={{ width: '38px', height: '38px' }}
-                state="hover-pinch"
               />
             </div>
             Partnership Flow

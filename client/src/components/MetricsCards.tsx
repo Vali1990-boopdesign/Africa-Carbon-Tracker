@@ -1,22 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
+import { LazyLordIcon } from "./LazyLordIcon";
 import type { DashboardMetrics } from "@shared/schema";
 import { formatNumber } from "@/lib/formatNumber";
-
-// Define lord-icon element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        style?: React.CSSProperties;
-      };
-    }
-  }
-}
 
 
 
@@ -125,7 +112,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                   </div>
                   <div className="flex items-center justify-center flex-shrink-0 ml-3">
                     <div className="hover-icon-trigger">
-                      <lord-icon
+                      <LazyLordIcon
                         src={card.lottieIcon}
                         trigger="hover"
                         colors={card.colors}

@@ -24,31 +24,32 @@ export async function runMigrations() {
     console.log("✅ Bilateral agreements table created successfully");
     
     // Create composite indexes for transactions table to speed up dashboard queries
+    // Note: retirement_year is the leading column because most queries filter by year range first
     console.log("Creating performance indexes...");
     
     await db.execute(sql`
-      CREATE INDEX IF NOT EXISTS idx_transactions_country_year 
-      ON transactions(country, retirement_year)
+      CREATE INDEX IF NOT EXISTS idx_transactions_year_country 
+      ON transactions(retirement_year, country)
     `);
     
     await db.execute(sql`
-      CREATE INDEX IF NOT EXISTS idx_transactions_buyer_location_year 
-      ON transactions(buyer_hq_location, retirement_year)
+      CREATE INDEX IF NOT EXISTS idx_transactions_year_buyer_location 
+      ON transactions(retirement_year, buyer_hq_location)
     `);
     
     await db.execute(sql`
-      CREATE INDEX IF NOT EXISTS idx_transactions_buyer_sector_year 
-      ON transactions(buyer_sector, retirement_year)
+      CREATE INDEX IF NOT EXISTS idx_transactions_year_buyer_sector 
+      ON transactions(retirement_year, buyer_sector)
     `);
     
     await db.execute(sql`
-      CREATE INDEX IF NOT EXISTS idx_transactions_scope_year 
-      ON transactions(scope, retirement_year)
+      CREATE INDEX IF NOT EXISTS idx_transactions_year_scope 
+      ON transactions(retirement_year, scope)
     `);
     
     await db.execute(sql`
-      CREATE INDEX IF NOT EXISTS idx_transactions_type_year 
-      ON transactions(type, retirement_year)
+      CREATE INDEX IF NOT EXISTS idx_transactions_year_type 
+      ON transactions(retirement_year, type)
     `);
     
     console.log("✅ Performance indexes created successfully");

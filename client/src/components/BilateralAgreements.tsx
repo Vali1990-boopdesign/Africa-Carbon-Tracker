@@ -7,23 +7,10 @@ import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-
 import { motion } from "framer-motion";
 import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import { TermTooltip } from "./TermTooltip";
+import { LazyLordIcon } from "./LazyLordIcon";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { trackDataPointSelection, trackExternalLink } from "@/lib/analytics";
 import type { BilateralAgreement } from "@shared/schema";
-
-// Define lord-icon element for TypeScript
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        style?: React.CSSProperties;
-      };
-    }
-  }
-}
 
 interface BilateralAgreementsSummary {
   totalAgreements: number;
@@ -137,7 +124,7 @@ export function BilateralAgreements() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
           <div className="hover-icon-trigger">
-            <lord-icon
+            <LazyLordIcon
               src="/wired-outline-56-document-hover-swipe.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"

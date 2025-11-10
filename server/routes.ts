@@ -549,12 +549,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log("🔄 Starting manual import of latest CSV data...");
       const result = await importLatestCSVData();
+      
+      clearCache();
+      console.log("✅ Cache cleared after import");
+      
       res.json({ 
         success: true, 
         message: "Latest CSV data imported successfully",
         result 
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Import failed:", error);
       res.status(500).json({ 
         success: false, 
