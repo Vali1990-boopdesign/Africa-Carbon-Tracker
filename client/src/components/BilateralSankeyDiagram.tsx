@@ -270,15 +270,6 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
-            <div className="hover-icon-trigger">
-              <LazyLordIcon
-                src="/wired-outline-456-handshake-deal-hover-pinch.json"
-                trigger="hover"
-                colors="primary:#10b981,secondary:#059669"
-                loading="lazy"
-                style={{ width: '38px', height: '38px' }}
-              />
-            </div>
             Partnership Flow
           </CardTitle>
         </CardHeader>
@@ -310,15 +301,6 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
     >
       <CardHeader>
           <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
-            <div className="hover-icon-trigger">
-              <LazyLordIcon
-                src="/wired-outline-456-handshake-deal-hover-pinch.json"
-                trigger="hover"
-                colors="primary:#10b981,secondary:#059669"
-                loading="lazy"
-                style={{ width: '38px', height: '38px' }}
-              />
-            </div>
             Partnership Flow
           </CardTitle>
         </CardHeader>
