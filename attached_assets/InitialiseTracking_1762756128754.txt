@@ -1,0 +1,17 @@
+// /src/main.tsx (or App.tsx)
+import { useEffect } from 'react'
+import { initEngagementTracking, trackReferrer } from './utils/analytics'
+
+function App() {
+  useEffect(() => {
+    // Initialize tracking on mount
+    initEngagementTracking();
+    trackReferrer();
+  }, []);
+
+  return (
+    // your app JSX
+  )
+}
+
+export default App
