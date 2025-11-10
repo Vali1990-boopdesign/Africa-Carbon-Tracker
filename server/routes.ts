@@ -109,6 +109,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cached = getCachedResponse(cacheKey);
       
       if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
         return res.json(cached);
       }
 
@@ -167,6 +168,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cached = getCachedResponse(cacheKey);
       
       if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
         return res.json(cached);
       }
 
@@ -218,7 +220,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = `countries:${normalizeFilterKey(filters)}`;
       const cached = getCachedResponse(cacheKey);
       
-      if (cached) return res.json(cached);
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+        return res.json(cached);
+      }
 
       const countryData = await storage.getCountryData(filters);
       setCachedResponse(cacheKey, countryData, 300);
@@ -236,7 +241,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = `sectors:${normalizeFilterKey(filters)}`;
       const cached = getCachedResponse(cacheKey);
       
-      if (cached) return res.json(cached);
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+        return res.json(cached);
+      }
 
       const sectorData = await storage.getSectorData(filters);
       setCachedResponse(cacheKey, sectorData, 300);
@@ -254,7 +262,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = `scopes:${normalizeFilterKey(filters)}`;
       const cached = getCachedResponse(cacheKey);
       
-      if (cached) return res.json(cached);
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+        return res.json(cached);
+      }
 
       const scopeData = await storage.getScopeData(filters);
       setCachedResponse(cacheKey, scopeData, 300);
@@ -272,7 +283,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = `timeseries:${normalizeFilterKey(filters)}`;
       const cached = getCachedResponse(cacheKey);
       
-      if (cached) return res.json(cached);
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+        return res.json(cached);
+      }
 
       const timeSeriesData = await storage.getTimeSeriesData(filters);
       setCachedResponse(cacheKey, timeSeriesData, 300);
@@ -291,7 +305,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cacheKey = `top-buyers:${limit}:${normalizeFilterKey(filters)}`;
       const cached = getCachedResponse(cacheKey);
       
-      if (cached) return res.json(cached);
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+        return res.json(cached);
+      }
 
       const topBuyers = await storage.getTopBuyers(limit, filters);
       setCachedResponse(cacheKey, topBuyers, 300);
