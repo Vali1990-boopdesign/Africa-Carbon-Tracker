@@ -67,7 +67,7 @@ export function Header({
 
   // Memoize lottie source based on theme to prevent re-renders
   const lottieSrc = useMemo(() => {
-    return theme === "dark" 
+    return theme === "dark"
       ? "/wired-outline-2332-carbon-neutral-hover-pinch-dark.json"
       : "/wired-outline-2332-carbon-neutral-hover-pinch.json";
   }, [theme]);
@@ -172,9 +172,9 @@ export function Header({
   const handleSearchChange = (value: string) => {
     setSearchValue(value);
     onFilterChange("search", value);
-    
+
     if (value && allTransactions) {
-      const filteredCount = allTransactions.filter(t => 
+      const filteredCount = allTransactions.filter(t =>
         t.buyerBrandName.toLowerCase().includes(value.toLowerCase()) ||
         t.country.toLowerCase().includes(value.toLowerCase()) ||
         t.projectName.toLowerCase().includes(value.toLowerCase()) ||
@@ -188,9 +188,9 @@ export function Header({
     setSearchValue(suggestion);
     onFilterChange("search", suggestion);
     setIsSearchFocused(false);
-    
+
     if (allTransactions) {
-      const filteredCount = allTransactions.filter(t => 
+      const filteredCount = allTransactions.filter(t =>
         t.buyerBrandName.toLowerCase().includes(suggestion.toLowerCase()) ||
         t.country.toLowerCase().includes(suggestion.toLowerCase()) ||
         t.projectName.toLowerCase().includes(suggestion.toLowerCase()) ||
@@ -222,7 +222,7 @@ export function Header({
           >
             {/* Hamburger Menu (Mobile Only) */}
             <HamburgerMenuButton onClick={onOpenDrawer} />
-            
+
             <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
               <lord-icon
                 trigger="in"
