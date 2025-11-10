@@ -29,25 +29,32 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
-### November 10, 2025 - Lord Icon Optimization & NPM Integration
-Optimized Lord Icon animations to play only once and switched from CDN to NPM package for better control and performance:
+### November 10, 2025 - Lord Icon Optimization with React Player Component
+Switched to `@lordicon/react` Player component for better control over animations and one-time playback:
 
-- **NPM Package Integration**: Replaced CDN script with `@lordicon/element` NPM package
-  - Removed `<script src="https://cdn.lordicon.com/lordicon.js">` from index.html
-  - Initialized with `defineElement(lottie.loadAnimation.bind(lottie))` in main.tsx
-  - Better bundle control and no external CDN dependency
+- **NPM Package Migration**: Replaced `@lordicon/element` with `@lordicon/react`
+  - Installed `@lordicon/react` package
+  - Removed CDN script and `@lordicon/element` initialization
+  - Uses React Player component with ref-based API control
 
-- **One-Time Animation Play**: Updated LazyLordIcon component
-  - Tracks `hasPlayed` state via 'complete' event listener
-  - Changes trigger from "hover" to "none" after first animation completes
-  - Prevents repeated animations on subsequent hovers
-  - Smooth 200ms opacity fade-in on load
+- **LazyLordIcon Component Refactor**:
+  - Fetches JSON animation data from public folder using fetch()
+  - Tracks hover state and hasPlayed state for one-time animation
+  - Uses `playerRef.current?.playFromBeginning()` on first hover only
+  - Sets `hasPlayed=true` in onComplete callback to prevent replay
+  - Shows skeleton placeholder while loading icon data
+  - Properly handles colors as string prop (e.g., "primary:#10b981,secondary:#059669")
 
-- **Performance-Optimized Loading**: Maintained native loading strategies
-  - Metrics cards: `loading="interaction"` (loads on first hover only)
-  - Bilateral agreements: `loading="lazy"` (loads when scrolled into view)
-  - Placeholder skeleton with pointer-events-none prevents blocking
-  - Expected ~6.4s reduction in critical path blocking
+- **Component Updates**:
+  - MetricsCards: Simplified to use size prop instead of style width/height
+  - Header: Replaced raw `<lord-icon>` element with LazyLordIcon component
+  - All icons load from local JSON files in client/public/
+
+- **Performance Benefits**:
+  - No external CDN dependency for better reliability
+  - Icons play only once on first interaction
+  - Smooth loading experience with skeleton states
+  - Better control over animation lifecycle
 
 ### November 10, 2025 - Performance Optimization (Backend + Frontend)
 Addressed performance bottleneck (Performance Score: 43/100, LCP: 10.7s, TBT: 690ms) with comprehensive backend and frontend optimizations:
