@@ -134,6 +134,12 @@ export function Header({
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
+      // On mobile, always keep header visible
+      if (!isDesktop) {
+        setIsHeaderVisible(true);
+        return;
+      }
+
       if (currentScrollY < 10) {
         // Always show header at top of page
         setIsHeaderVisible(true);
@@ -150,7 +156,7 @@ export function Header({
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, [lastScrollY, isDesktop]);
 
   const dateRangeOptions = [
     { key: "all", label: "All Years" },
