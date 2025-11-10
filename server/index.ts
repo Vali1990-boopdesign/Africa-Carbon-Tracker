@@ -15,6 +15,27 @@ app.use(compression());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// Cache-Control for static assets
+app.use((req, res, next) => {
+  // Long cache for immutable assets (fonts, images, hashed JS/CSS)
+  if (req.path.match(/\.(woff2|woff|ttf|eot|webp|png|jpg|jpeg|svg|ico)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  // Long cache for hashed JS/CSS from Vite build
+  else if (req.path.match(/\/assets\/.*\.(js|css)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  // Short cache for JSON animations
+  else if (req.path.match(/\.json$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+  }
+  // No cache for HTML to ensure fresh content
+  else if (req.path.match(/\.(html)$/) || req.path === '/') {
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  }
+  next();
+});
+
 // Security headers
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');

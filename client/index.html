@@ -18,10 +18,12 @@
     <meta property="twitter:title" content="Africa Carbon Credits Analytics Dashboard" />
     <meta property="twitter:description" content="Comprehensive analytics dashboard for African carbon credits data with real-time insights, interactive visualizations, and advanced filtering capabilities." />
 
-    <!-- Preconnect to external domains for faster DNS resolution -->
+    <!-- Preconnect for Lord Icon (critical for hero icons) -->
     <link rel="preconnect" href="https://cdn.lordicon.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://www.google-analytics.com">
+    
+    <!-- DNS prefetch for Google Analytics (non-critical third party) -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     
     <!-- Preload critical self-hosted fonts for faster rendering -->
     <link rel="preload" href="/fonts/StackSansText-Variable.woff2" as="font" type="font/woff2" crossorigin>
@@ -43,19 +45,19 @@
     <link rel="apple-touch-icon" href="/carbon-icon.webp" />
     <link rel="apple-touch-icon" type="image/png" href="/carbon-icon.png" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5F1JWSXTZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-B5F1JWSXTZ');
-    </script>
   </head>
   <body class="dark">
     <div id="root"></div>
     <script src="https://cdn.lordicon.com/lordicon.js" defer></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Google Analytics loaded after main content (non-blocking) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B5F1JWSXTZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B5F1JWSXTZ');
+    </script>
   </body>
 </html>
