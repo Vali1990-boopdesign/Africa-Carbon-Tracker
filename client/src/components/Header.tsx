@@ -15,16 +15,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TermTooltip } from "./TermTooltip";
 import { ContactModal } from "./ContactModal";
 import { HamburgerMenuButton } from "./NavigationDrawer";
+import { LazyLordIcon } from "./LazyLordIcon";
 import { useTheme } from "./ThemeProvider";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { trackSearch } from "@/lib/analytics";
-import lottie from "lottie-web";
-import { defineElement } from "@lordicon/element";
 import type { DashboardFilters } from "@/hooks/use-dashboard";
 import type { Transaction } from "@shared/schema";
-
-// Define lord-icon custom element
-defineElement(lottie.loadAnimation);
 
 interface HeaderProps {
   dateRange: string;
@@ -223,16 +219,11 @@ export function Header({
             {/* Hamburger Menu (Mobile Only) */}
             <HamburgerMenuButton onClick={onOpenDrawer} />
 
-            <div key={lottieSrc} className="flex items-center justify-center w-12 h-12">
-              <lord-icon
-                trigger="in"
-                src={lottieSrc}
-                style={{
-                  width: "43px",
-                  height: "43px",
-                }}
-              />
-            </div>
+            <LazyLordIcon
+              key={lottieSrc}
+              src={lottieSrc}
+              size={43}
+            />
             <div className="hidden sm:block">
               <h1 className="text-foreground font-display" style={{ fontSize: '22px', fontWeight: 400, letterSpacing: '0.02em' }}>
                 <TermTooltip

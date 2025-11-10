@@ -19,13 +19,11 @@ export function LazyLordIcon({
   const [isHovered, setIsHovered] = useState(false);
   const playerRef = useRef<Player>(null);
 
-  // Fetch icon JSON from CDN
+  // Fetch icon JSON from public folder
   useEffect(() => {
     const loadIcon = async () => {
       try {
-        // Convert public path to CDN URL
-        const cdnUrl = `https://cdn.lordicon.com${src}`;
-        const response = await fetch(cdnUrl);
+        const response = await fetch(src);
         const data = await response.json();
         setIconData(data);
       } catch (error) {
@@ -57,15 +55,6 @@ export function LazyLordIcon({
     );
   }
 
-  // Parse colors string (e.g., "primary:#10b981,secondary:#059669")
-  const colorMapping = colors?.split(',').reduce((acc, pair) => {
-    const [key, value] = pair.split(':');
-    if (key && value) {
-      acc[key.trim()] = value.trim();
-    }
-    return acc;
-  }, {} as Record<string, string>);
-
   return (
     <div 
       style={{ width: size, height: size, ...style }}
@@ -77,7 +66,7 @@ export function LazyLordIcon({
         icon={iconData}
         size={size}
         onComplete={handleComplete}
-        colors={colorMapping}
+        colors={colors}
       />
     </div>
   );

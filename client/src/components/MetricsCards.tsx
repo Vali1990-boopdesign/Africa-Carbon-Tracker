@@ -89,20 +89,6 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
           >
             <Card 
               className="glass-effect border hover:border-emerald-500/30 hover:bg-primary/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-500/10 group metrics-card"
-              onMouseEnter={(e) => {
-                const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
-                if (lordIcon) {
-                  // Trigger animation by simulating hover on the icon
-                  lordIcon.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
-                }
-              }}
-              onMouseLeave={(e) => {
-                const lordIcon = e.currentTarget.querySelector('lord-icon') as any;
-                if (lordIcon) {
-                  // Reset animation by simulating mouse leave on the icon
-                  lordIcon.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
-                }
-              }}
             >
               <CardContent className="p-6" style={{ fontFamily: '"Stack Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
                 <div className="flex items-start justify-between">
@@ -111,18 +97,11 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                     <div className="text-2xl font-bold text-on-surface">{card.value}</div>
                   </div>
                   <div className="flex items-center justify-center flex-shrink-0 ml-3">
-                    <div className="hover-icon-trigger">
-                      <LazyLordIcon
-                        src={card.lottieIcon}
-                        trigger="hover"
-                        colors={card.colors}
-                        loading="interaction"
-                        style={{
-                          width: "48px",
-                          height: "48px"
-                        }}
-                      />
-                    </div>
+                    <LazyLordIcon
+                      src={card.lottieIcon}
+                      colors={card.colors}
+                      size={48}
+                    />
                   </div>
                 </div>
               </CardContent>
