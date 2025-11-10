@@ -153,7 +153,7 @@ async function startServer() {
       } else {
         serveStatic(app);
       }
-    } catch (staticError) {
+    } catch (staticError: any) {
       console.warn("Static file serving failed, using fallback:", staticError.message);
       // Fallback: serve basic responses if static files aren't available
       app.use("*", (_req, res) => {
