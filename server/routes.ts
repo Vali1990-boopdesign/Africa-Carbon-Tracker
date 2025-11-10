@@ -98,6 +98,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     };
   };
 
+  // Batched dashboard endpoint - combines all dashboard data in a single request
+  app.get("/api/dashboard/initial", async (req, res) => {
+    try {
+      const filters = validateFilters(req.query);
+      const ip = getClientIP(req);
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
+      
+      const cacheKey = `initial:${limit}:${normalizeFilterKey(filters)}`;
+      const cached = getCachedResponse(cacheKey);
+      
+      if (cached) {
+        return res.json(cached);
+      }
+
+      // Fetch all dashboard data in parallel
+      const [metrics, countries, sectors, scopes, timeseries, topBuyers] = await Promise.all([
+        storage.getDashboardMetrics(filters),
+        storage.getCountryData(filters),
+        storage.getSectorData(filters),
+        storage.getScopeData(filters),
+        storage.getTimeSeriesData(filters),
+        storage.getTopBuyers(limit, filters)
+      ]);
+
+      const response = {
+        metrics,
+        countries,
+        sectors,
+        scopes,
+        timeseries,
+        topBuyers
+      };
+
+      // Cache for 5 minutes
+      setCachedResponse(cacheKey, response, 300);
+      
+      // Add stale-while-revalidate header for better UX
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+      
+      trackSuccessfulAttempt(ip);
+      
+      res.json(response);
+    } catch (error: any) {
+      console.error("Dashboard initial data error:", error);
+      
+      if (error.code === '57P01' || error.message?.includes('terminating connection')) {
+        res.status(503).json({ 
+          error: "Database temporarily unavailable. Please try again.",
+          code: "DB_UNAVAILABLE" 
+        });
+      } else {
+        res.status(500).json({ 
+          error: "Failed to fetch dashboard data",
+          code: "DASHBOARD_ERROR"
+        });
+      }
+    }
+  });
+
   // Dashboard metrics endpoint with filters and caching
   app.get("/api/dashboard/metrics", async (req, res) => {
     try {
@@ -114,6 +173,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const metrics = await storage.getDashboardMetrics(filters);
       
       setCachedResponse(cacheKey, metrics, 300);
+      
+      // Add stale-while-revalidate header
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       
       // Track successful API usage
       trackSuccessfulAttempt(ip);
@@ -160,6 +222,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const countryData = await storage.getCountryData(filters);
       setCachedResponse(cacheKey, countryData, 300);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       res.json(countryData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch country data" });
@@ -177,6 +240,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const sectorData = await storage.getSectorData(filters);
       setCachedResponse(cacheKey, sectorData, 300);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       res.json(sectorData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch sector data" });
@@ -194,6 +258,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const scopeData = await storage.getScopeData(filters);
       setCachedResponse(cacheKey, scopeData, 300);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       res.json(scopeData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch scope data" });
@@ -211,6 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const timeSeriesData = await storage.getTimeSeriesData(filters);
       setCachedResponse(cacheKey, timeSeriesData, 300);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       res.json(timeSeriesData);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch time series data" });
@@ -229,6 +295,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const topBuyers = await storage.getTopBuyers(limit, filters);
       setCachedResponse(cacheKey, topBuyers, 300);
+      res.setHeader('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
       res.json(topBuyers);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch top buyers" });
