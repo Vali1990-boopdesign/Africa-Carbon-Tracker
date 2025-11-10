@@ -1,77 +1,83 @@
 import { useState, useEffect, useRef } from "react";
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'lord-icon': {
-        ref?: React.Ref<any>;
-        src?: string;
-        trigger?: string;
-        colors?: string;
-        loading?: 'lazy' | 'interaction' | 'delay';
-        style?: React.CSSProperties;
-      };
-    }
-  }
-}
+import { Player } from "@lordicon/react";
 
 interface LazyLordIconProps {
   src: string;
-  trigger?: string;
   colors?: string;
-  loading?: 'lazy' | 'interaction' | 'delay';
+  size?: number;
   style?: React.CSSProperties;
 }
 
 export function LazyLordIcon({ 
   src, 
-  trigger = "hover", 
-  colors, 
-  loading = "lazy",
+  colors,
+  size = 48,
   style 
 }: LazyLordIconProps) {
-  const [isReady, setIsReady] = useState(false);
+  const [iconData, setIconData] = useState<any>(null);
   const [hasPlayed, setHasPlayed] = useState(false);
-  const iconRef = useRef<any>(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const playerRef = useRef<Player>(null);
 
+  // Fetch icon JSON from CDN
   useEffect(() => {
-    const icon = iconRef.current;
-    if (!icon) return;
-
-    const handleReady = () => setIsReady(true);
-    const handleComplete = () => {
-      // After first play, disable further interactions
-      setHasPlayed(true);
+    const loadIcon = async () => {
+      try {
+        // Convert public path to CDN URL
+        const cdnUrl = `https://cdn.lordicon.com${src}`;
+        const response = await fetch(cdnUrl);
+        const data = await response.json();
+        setIconData(data);
+      } catch (error) {
+        console.error('Error loading icon:', error);
+      }
     };
 
-    icon.addEventListener('ready', handleReady);
-    icon.addEventListener('complete', handleComplete);
+    loadIcon();
+  }, [src]);
 
-    return () => {
-      icon.removeEventListener('ready', handleReady);
-      icon.removeEventListener('complete', handleComplete);
-    };
-  }, []);
+  // Play animation on first hover only
+  useEffect(() => {
+    if (isHovered && !hasPlayed && playerRef.current && iconData) {
+      playerRef.current.playFromBeginning();
+    }
+  }, [isHovered, hasPlayed, iconData]);
+
+  // Handle animation complete
+  const handleComplete = () => {
+    setHasPlayed(true);
+  };
+
+  if (!iconData) {
+    return (
+      <div 
+        className="bg-surface-container-high/20 rounded-lg animate-pulse"
+        style={{ width: size, height: size, ...style }}
+      />
+    );
+  }
+
+  // Parse colors string (e.g., "primary:#10b981,secondary:#059669")
+  const colorMapping = colors?.split(',').reduce((acc, pair) => {
+    const [key, value] = pair.split(':');
+    if (key && value) {
+      acc[key.trim()] = value.trim();
+    }
+    return acc;
+  }, {} as Record<string, string>);
 
   return (
-    <div style={style} className="relative flex items-center justify-center">
-      {!isReady && (
-        <div 
-          className="absolute inset-0 bg-surface-container-high/20 rounded-lg animate-pulse pointer-events-none"
-          style={style}
-        />
-      )}
-      <lord-icon 
-        ref={iconRef}
-        src={src} 
-        trigger={hasPlayed ? "none" : trigger}
-        colors={colors} 
-        loading={loading}
-        style={{ 
-          ...style, 
-          opacity: isReady ? 1 : 0,
-          transition: 'opacity 200ms ease-in-out'
-        }}
+    <div 
+      style={{ width: size, height: size, ...style }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Player
+        ref={playerRef}
+        icon={iconData}
+        size={size}
+        onComplete={handleComplete}
+        colors={colorMapping}
       />
     </div>
   );
