@@ -29,6 +29,26 @@ Data flows from PostgreSQL via Drizzle ORM, through Express.js APIs, and is mana
 
 ## Recent Changes
 
+### November 10, 2025 - Lord Icon Optimization & NPM Integration
+Optimized Lord Icon animations to play only once and switched from CDN to NPM package for better control and performance:
+
+- **NPM Package Integration**: Replaced CDN script with `@lordicon/element` NPM package
+  - Removed `<script src="https://cdn.lordicon.com/lordicon.js">` from index.html
+  - Initialized with `defineElement(lottie.loadAnimation.bind(lottie))` in main.tsx
+  - Better bundle control and no external CDN dependency
+
+- **One-Time Animation Play**: Updated LazyLordIcon component
+  - Tracks `hasPlayed` state via 'complete' event listener
+  - Changes trigger from "hover" to "none" after first animation completes
+  - Prevents repeated animations on subsequent hovers
+  - Smooth 200ms opacity fade-in on load
+
+- **Performance-Optimized Loading**: Maintained native loading strategies
+  - Metrics cards: `loading="interaction"` (loads on first hover only)
+  - Bilateral agreements: `loading="lazy"` (loads when scrolled into view)
+  - Placeholder skeleton with pointer-events-none prevents blocking
+  - Expected ~6.4s reduction in critical path blocking
+
 ### November 10, 2025 - Performance Optimization (Backend + Frontend)
 Addressed performance bottleneck (Performance Score: 43/100, LCP: 10.7s, TBT: 690ms) with comprehensive backend and frontend optimizations:
 

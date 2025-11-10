@@ -31,6 +31,7 @@ export function LazyLordIcon({
   style 
 }: LazyLordIconProps) {
   const [isReady, setIsReady] = useState(false);
+  const [hasPlayed, setHasPlayed] = useState(false);
   const iconRef = useRef<any>(null);
 
   useEffect(() => {
@@ -38,9 +39,18 @@ export function LazyLordIcon({
     if (!icon) return;
 
     const handleReady = () => setIsReady(true);
-    icon.addEventListener('ready', handleReady);
+    const handleComplete = () => {
+      // After first play, disable further interactions
+      setHasPlayed(true);
+    };
 
-    return () => icon.removeEventListener('ready', handleReady);
+    icon.addEventListener('ready', handleReady);
+    icon.addEventListener('complete', handleComplete);
+
+    return () => {
+      icon.removeEventListener('ready', handleReady);
+      icon.removeEventListener('complete', handleComplete);
+    };
   }, []);
 
   return (
@@ -54,7 +64,7 @@ export function LazyLordIcon({
       <lord-icon 
         ref={iconRef}
         src={src} 
-        trigger={trigger} 
+        trigger={hasPlayed ? "none" : trigger}
         colors={colors} 
         loading={loading}
         style={{ 
