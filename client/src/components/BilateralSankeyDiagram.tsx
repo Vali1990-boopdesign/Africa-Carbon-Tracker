@@ -275,6 +275,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
+                loading="lazy"
                 style={{ width: '38px', height: '38px' }}
               />
             </div>
@@ -314,6 +315,7 @@ export function BilateralSankeyDiagram({ agreements }: BilateralSankeyDiagramPro
                 src="/wired-outline-456-handshake-deal-hover-pinch.json"
                 trigger="hover"
                 colors="primary:#10b981,secondary:#059669"
+                loading="lazy"
                 style={{ width: '38px', height: '38px' }}
               />
             </div>

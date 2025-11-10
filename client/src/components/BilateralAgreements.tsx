@@ -128,6 +128,7 @@ export function BilateralAgreements() {
               src="/wired-outline-56-document-hover-swipe.json"
               trigger="hover"
               colors="primary:#10b981,secondary:#059669"
+              loading="lazy"
               style={{ width: '32px', height: '32px' }}
             />
           </div>

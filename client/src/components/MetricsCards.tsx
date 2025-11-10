@@ -116,6 +116,7 @@ export function MetricsCards({ metrics, isLoading }: MetricsCardsProps) {
                         src={card.lottieIcon}
                         trigger="hover"
                         colors={card.colors}
+                        loading="interaction"
                         style={{
                           width: "48px",
                           height: "48px"
