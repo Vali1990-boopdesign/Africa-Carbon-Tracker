@@ -1,16 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FileText, Users, Globe, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { BilateralSankeyDiagram } from "./BilateralSankeyDiagram";
 import { TermTooltip } from "./TermTooltip";
 import { LazyLordIcon } from "./LazyLordIcon";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { trackDataPointSelection, trackExternalLink } from "@/lib/analytics";
 import type { BilateralAgreement } from "@shared/schema";
+
+const BilateralSankeyDiagram = lazy(() => 
+  import("./BilateralSankeyDiagram").then(module => ({ 
+    default: module.BilateralSankeyDiagram 
+  }))
+);
 
 interface BilateralAgreementsSummary {
   totalAgreements: number;
@@ -190,9 +195,20 @@ export function BilateralAgreements() {
             </div>
           )}
 
-          {/* Sankey Diagram - Desktop Only */}
+          {/* Sankey Diagram - Desktop Only (Lazy loaded for performance) */}
           {!isMobile && agreements.length > 0 && (
-            <BilateralSankeyDiagram agreements={agreements} />
+            <Suspense fallback={
+              <Card className="glass-effect border">
+                <CardHeader>
+                  <div className="h-6 bg-surface-container rounded w-64 animate-pulse"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-96 bg-surface-container rounded animate-pulse"></div>
+                </CardContent>
+              </Card>
+            }>
+              <BilateralSankeyDiagram agreements={agreements} />
+            </Suspense>
           )}
 
           {/* Agreements List */}

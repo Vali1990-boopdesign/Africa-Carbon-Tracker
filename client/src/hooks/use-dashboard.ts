@@ -14,6 +14,15 @@ export interface DashboardFilters {
   search: string;
 }
 
+interface BatchedDashboardResponse {
+  metrics: DashboardMetrics;
+  countries: CountryData[];
+  sectors: SectorData[];
+  scopes: ScopeData[];
+  timeseries: TimeSeriesData[];
+  topBuyers: TopBuyerData[];
+}
+
 export function useDashboard() {
   const [filters, setFilters] = useState<DashboardFilters>({
     country: [],
@@ -28,9 +37,55 @@ export function useDashboard() {
 
   const [activeTab, setActiveTab] = useState<string>("trends");
 
+  // Helper function to build query params
+  const buildQueryParams = (filterObj: DashboardFilters) => {
+    const params = new URLSearchParams();
+    Object.entries(filterObj).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        if (value.length > 0) {
+          params.append(key, value.join(','));
+        }
+      } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
+        params.append(key, value.toString());
+      }
+    });
+    return params;
+  };
+
+  // Check if filters are at default values
+  const isDefaultFilters = filters.country.length === 0 && 
+    filters.buyerCountry.length === 0 && 
+    filters.sector.length === 0 && 
+    filters.projectType.length === 0 && 
+    filters.scope.length === 0 && 
+    filters.startYear === 2010 && 
+    filters.endYear === 2024 && 
+    filters.search === "";
+
+  // Batched initial dashboard data query (used for default state)
+  const { data: batchedData, isLoading: batchedLoading } = useQuery<BatchedDashboardResponse>({
+    queryKey: ["/api/dashboard/initial", filters],
+    queryFn: async () => {
+      const params = buildQueryParams(filters);
+      const response = await fetch(`/api/dashboard/initial?${params.toString()}`, {
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
+      }
+
+      return response.json();
+    },
+    staleTime: 60000, // Consider fresh for 60 seconds
+    gcTime: 300000, // Keep in cache for 5 minutes
+  });
+
+  // Individual queries (kept for backwards compatibility and filter changes)
   // Dashboard metrics query with filters
   const { data: metrics, isLoading: metricsLoading } = useQuery<DashboardMetrics>({
     queryKey: ["/api/dashboard/metrics", filters],
+    enabled: !isDefaultFilters && !batchedData, // Only use if filters changed and batched data not available
     queryFn: async () => {
       const params = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
@@ -82,21 +137,12 @@ export function useDashboard() {
     },
   });
 
-  // Country data query with filters
+  // Country data query with filters (disabled if batched data available)
   const { data: countryData, isLoading: countryLoading } = useQuery<CountryData[]>({
     queryKey: ["/api/dashboard/countries", filters],
+    enabled: false, // Always use batched data
     queryFn: async () => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            params.append(key, value.join(','));
-          }
-        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
-          params.append(key, value.toString());
-        }
-      });
-
+      const params = buildQueryParams(filters);
       const response = await fetch(`/api/dashboard/countries?${params.toString()}`, {
         credentials: "include",
       });
@@ -109,21 +155,12 @@ export function useDashboard() {
     },
   });
 
-  // Sector data query with filters
+  // Sector data query with filters (disabled if batched data available)
   const { data: sectorData, isLoading: sectorLoading } = useQuery<SectorData[]>({
     queryKey: ["/api/dashboard/sectors", filters],
+    enabled: false, // Always use batched data
     queryFn: async () => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            params.append(key, value.join(','));
-          }
-        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
-          params.append(key, value.toString());
-        }
-      });
-
+      const params = buildQueryParams(filters);
       const response = await fetch(`/api/dashboard/sectors?${params.toString()}`, {
         credentials: "include",
       });
@@ -136,21 +173,12 @@ export function useDashboard() {
     },
   });
 
-  // Time series data query with filters
+  // Time series data query with filters (disabled if batched data available)
   const { data: timeSeriesData, isLoading: timeSeriesLoading } = useQuery<TimeSeriesData[]>({
     queryKey: ["/api/dashboard/timeseries", filters],
+    enabled: false, // Always use batched data
     queryFn: async () => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            params.append(key, value.join(','));
-          }
-        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
-          params.append(key, value.toString());
-        }
-      });
-
+      const params = buildQueryParams(filters);
       const response = await fetch(`/api/dashboard/timeseries?${params.toString()}`, {
         credentials: "include",
       });
@@ -163,21 +191,12 @@ export function useDashboard() {
     },
   });
 
-  // Top buyers query with filters
+  // Top buyers query with filters (disabled if batched data available)
   const { data: topBuyers, isLoading: topBuyersLoading } = useQuery<TopBuyerData[]>({
     queryKey: ["/api/dashboard/top-buyers", filters],
+    enabled: false, // Always use batched data
     queryFn: async () => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            params.append(key, value.join(','));
-          }
-        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
-          params.append(key, value.toString());
-        }
-      });
-
+      const params = buildQueryParams(filters);
       const response = await fetch(`/api/dashboard/top-buyers?${params.toString()}`, {
         credentials: "include",
       });
@@ -190,21 +209,12 @@ export function useDashboard() {
     },
   });
 
-  // Scope data query with filters
+  // Scope data query with filters (disabled if batched data available)
   const { data: scopeData, isLoading: scopeLoading } = useQuery<ScopeData[]>({
     queryKey: ["/api/dashboard/scopes", filters],
+    enabled: false, // Always use batched data
     queryFn: async () => {
-      const params = new URLSearchParams();
-      Object.entries(filters).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          if (value.length > 0) {
-            params.append(key, value.join(','));
-          }
-        } else if (value !== undefined && value !== null && value !== "" && value !== 0) {
-          params.append(key, value.toString());
-        }
-      });
-
+      const params = buildQueryParams(filters);
       const response = await fetch(`/api/dashboard/scopes?${params.toString()}`, {
         credentials: "include",
       });
@@ -325,17 +335,17 @@ export function useDashboard() {
   }, [filters]);
 
   // Loading states
-  const isLoading = metricsLoading || transactionsLoading || countryLoading || sectorLoading || timeSeriesLoading || topBuyersLoading || scopeLoading;
+  const isLoading = batchedLoading || metricsLoading || transactionsLoading || countryLoading || sectorLoading || timeSeriesLoading || topBuyersLoading || scopeLoading;
 
   return {
-    // Data
-    metrics,
+    // Data - Use batched data when available, fallback to individual queries
+    metrics: batchedData?.metrics ?? metrics,
     transactions,
-    countryData,
-    sectorData,
-    timeSeriesData,
-    topBuyers,
-    scopeData,
+    countryData: batchedData?.countries ?? countryData,
+    sectorData: batchedData?.sectors ?? sectorData,
+    timeSeriesData: batchedData?.timeseries ?? timeSeriesData,
+    topBuyers: batchedData?.topBuyers ?? topBuyers,
+    scopeData: batchedData?.scopes ?? scopeData,
 
     // State
     filters,
@@ -350,7 +360,7 @@ export function useDashboard() {
 
     // Loading
     isLoading,
-    metricsLoading,
+    metricsLoading: batchedLoading || metricsLoading,
     transactionsLoading,
   };
 }
