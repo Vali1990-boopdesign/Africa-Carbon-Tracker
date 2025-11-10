@@ -123,7 +123,7 @@
   --glass-shadow: 220 20% 50% / 0.15; /* rgba with alpha */
 }
 
-/* Self-hosted Font Declarations - WOFF2 optimized (60% smaller) */
+/* Self-hosted Font Declarations */
 @font-face {
   font-family: "Stack Sans Text";
   src: url("/fonts/StackSansText-Variable.woff2") format("woff2"),
