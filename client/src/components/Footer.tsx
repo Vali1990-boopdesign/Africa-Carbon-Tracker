@@ -16,6 +16,8 @@ export function Footer() {
             <img
               src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
               alt="Catalyst Fund"
+              width="240"
+              height="32"
               className="h-8 object-contain"
             />
           </div>
@@ -23,8 +25,10 @@ export function Footer() {
           {/* BFA Global Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
             <img
-              src="/bfa-global-logo.png"
+              src="/bfa-global-logo.webp"
               alt="BFA Global"
+              width="238"
+              height="32"
               className="h-8 object-contain"
               onError={(e) => {
                 console.error("BFA Global logo failed to load:", e);
@@ -37,6 +41,8 @@ export function Footer() {
             <img
               src="/fsd-africa-logo.png"
               alt="FSD Africa"
+              width="122"
+              height="32"
               className="h-8 object-contain"
             />
           </div>
