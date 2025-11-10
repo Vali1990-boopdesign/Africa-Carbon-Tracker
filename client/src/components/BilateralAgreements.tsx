@@ -122,14 +122,12 @@ export function BilateralAgreements() {
     >
       <Card className="glass-effect border">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-semibold text-on-surface">
-          <div className="hover-icon-trigger">
+          <CardTitle className="flex items-center gap-3 text-xl font-semibold text-on-surface">
+          <div className="hover-icon-trigger flex-shrink-0">
             <LazyLordIcon
               src="/wired-outline-56-document-hover-swipe.json"
-              trigger="hover"
               colors="primary:#10b981,secondary:#059669"
-              loading="lazy"
-              style={{ width: '32px', height: '32px' }}
+              size={24}
             />
           </div>
           <TermTooltip 
