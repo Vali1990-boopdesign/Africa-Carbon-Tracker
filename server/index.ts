@@ -17,13 +17,13 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 // Cache-Control for static assets
 app.use((req, res, next) => {
-  // Long cache for immutable assets (fonts, images, hashed JS/CSS)
-  if (req.path.match(/\.(woff2|woff|ttf|eot|webp|png|jpg|jpeg|svg|ico)$/)) {
+  // Long immutable cache ONLY for Vite-hashed assets (fonts in /assets/, hashed JS/CSS)
+  if (req.path.match(/\/assets\/.*\.(woff2|woff|ttf|eot|webp|png|jpg|jpeg|svg|ico|js|css)$/)) {
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
   }
-  // Long cache for hashed JS/CSS from Vite build
-  else if (req.path.match(/\/assets\/.*\.(js|css)$/)) {
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  // Short revalidation cache for plain public images (replaceable files)
+  else if (req.path.match(/\.(webp|png|jpg|jpeg|svg|ico)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=86400, must-revalidate');
   }
   // Short cache for JSON animations
   else if (req.path.match(/\.json$/)) {

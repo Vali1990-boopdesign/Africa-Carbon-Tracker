@@ -13,47 +13,35 @@ export function Footer() {
         <div className="flex justify-center items-center gap-6 mb-6">
           {/* Catalyst Fund Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
-            <picture>
-              <source srcSet="/catalyst-fund-logo.webp" type="image/webp" />
-              <img
-                src="https://cdn.prod.website-files.com/6704d988d44fef67a9c2878e/6749cd4bf1f583e1b4ab5c5c_%E2%80%8BHorizontal%20logo%2C%20full%20color.png"
-                alt="Catalyst Fund"
-                className="h-8 object-contain"
-                width="112"
-                height="24"
-              />
-            </picture>
+            <img
+              src="/catalyst-fund-logo-v2.png"
+              alt="Catalyst Fund"
+              className="h-8 object-contain"
+              width="112"
+              height="24"
+            />
           </div>
 
           {/* BFA Global Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
-            <picture>
-              <source srcSet="/bfa-global-logo.webp" type="image/webp" />
-              <img
-                src="/bfa-global-logo.png"
-                alt="BFA Global"
-                className="h-8 object-contain"
-                width="112"
-                height="24"
-                onError={(e) => {
-                  console.error("BFA Global logo failed to load:", e);
-                }}
-              />
-            </picture>
+            <img
+              src="/bfa-global-logo.png"
+              alt="BFA Global"
+              className="h-8 object-contain"
+              width="112"
+              height="24"
+            />
           </div>
 
           {/* FSD Africa Logo */}
           <div className="bg-white rounded-lg p-2 shadow-lg">
-            <picture>
-              <source srcSet="/fsd-africa-logo.webp" type="image/webp" />
-              <img
-                src="/fsd-africa-logo.png"
-                alt="FSD Africa"
-                className="h-8 object-contain"
-                width="112"
-                height="24"
-              />
-            </picture>
+            <img
+              src="/fsd-africa-logo.png"
+              alt="FSD Africa"
+              className="h-8 object-contain"
+              width="112"
+              height="24"
+            />
           </div>
         </div>
 

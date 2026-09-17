@@ -1,12 +1,8 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
+import pg from 'pg';
+const { Pool } = pg;
+import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from "@shared/schema";
 import { sql } from 'drizzle-orm';
-
-// Configure Neon for WebSocket connections
-neonConfig.webSocketConstructor = ws;
-neonConfig.poolQueryViaFetch = true;
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
@@ -14,9 +10,10 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-// Create pool with better error handling and connection settings
-export const pool = new Pool({ 
+// Create pool — no SSL in development (Helium runs locally), SSL in production
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,

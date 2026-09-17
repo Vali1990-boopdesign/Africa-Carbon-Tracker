@@ -123,25 +123,14 @@
   --glass-shadow: 220 20% 50% / 0.15; /* rgba with alpha */
 }
 
-/* Self-hosted Font Declarations */
-@font-face {
-  font-family: "Stack Sans Text";
-  src: url("/fonts/StackSansText-Variable.woff2") format("woff2"),
-       url("/fonts/StackSansText-Variable.ttf") format("truetype");
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-  font-optical-sizing: auto;
-}
-
-@font-face {
-  font-family: "Stack Sans Notch";
-  src: url("/fonts/StackSansNotch-Variable.woff2") format("woff2"),
-       url("/fonts/StackSansNotch-Variable.ttf") format("truetype");
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-  font-optical-sizing: auto;
+/* ─── Font configuration ────────────────────────────────────────────────────
+   To change the app typeface, update --font-sans (body copy) and
+   --font-display (headings) here, then swap the Google Fonts <link> in
+   client/index.html. No other files need to change.
+   ──────────────────────────────────────────────────────────────────────── */
+:root {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * {
@@ -151,15 +140,13 @@
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: "Stack Sans Text", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-sans);
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
-/* Stack Sans Notch - Display font for main heading only */
+/* Display variant used for main headings */
 .font-display {
-  font-family: "Stack Sans Notch", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-optical-sizing: auto;
+  font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.02em;
 }

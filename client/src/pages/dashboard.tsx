@@ -13,6 +13,7 @@ import { Intermediaries } from "@/components/Intermediaries";
 import { FeedbackModal, useFeedbackTrigger } from "@/components/FeedbackModal";
 import { FilterBottomSheet } from "@/components/FilterBottomSheet";
 import { NavigationDrawer } from "@/components/NavigationDrawer";
+import { Footer } from "@/components/Footer";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { motion } from "framer-motion";
 
@@ -243,6 +244,8 @@ export default function Dashboard() {
         onFilterChange={updateFilter}
         onClearFilters={clearFilters}
       />
+
+      <Footer />
     </div>
   );
 }
